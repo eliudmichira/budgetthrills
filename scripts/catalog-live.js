@@ -3,7 +3,7 @@
 // catalog/live document that the eBay sync publishes. One Firestore read per visit,
 // served from the persistent cache on repeat visits. Falls back to the static file
 // if the document is missing or empty.
-import { db } from './firebase-init.js?v=27';
+import { db } from './firebase-init.js?v=28';
 import { doc, getDoc } from 'https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js';
 
 (async () => {
