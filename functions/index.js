@@ -265,9 +265,10 @@ function sortObject(obj) {
 }
 
 function siteOrigin(req) {
-  if (PUBLIC_BASE_URL) return PUBLIC_BASE_URL.replace(/\/$/, "");
   const origin = req.headers.origin || (req.headers.referer ? new URL(req.headers.referer).origin : "");
-  return origin || "https://budgetthrills.com";
+  if (origin) return origin.replace(/\/$/, "");
+  if (PUBLIC_BASE_URL) return PUBLIC_BASE_URL.replace(/\/$/, "");
+  return "https://budgetthrills.web.app";
 }
 
 const round2 = (n) => Math.round((Number(n) || 0) * 100) / 100;
