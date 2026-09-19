@@ -142,15 +142,15 @@ const checkIsAdmin = async (user) => {
   }
 };
 
+const AUTH_PAGES = /^\/(signin|signup|forgot|reset)(\.html)?(\?|$)/;
 const goNext = async (user, fallback = '/account.html') => {
   const params = new URLSearchParams(window.location.search);
-  const next = params.get('next');
-  if (next && next.startsWith('/') && !next.startsWith('//')) {
-    window.location.replace(next);
-    return;
+  const candidates = [params.get('next'), fallback];
+  let target = candidates.find(n => n && n.startsWith('/') && !n.startsWith('//') && !AUTH_PAGES.test(n));
+  if (!target || target === '/account.html') {
+    const isAdmin = await checkIsAdmin(user);
+    target = isAdmin ? '/admin.html' : (target || '/account.html');
   }
-  const isAdmin = await checkIsAdmin(user);
-  const target = isAdmin ? '/admin.html' : fallback;
   window.location.replace(target);
 };
 
@@ -171,45 +171,88 @@ const writeUserDoc = async (user, extra = {}) => {
   }
 };
 
-/* ===== UNIFIED GOOGLE AUTH (REDIRECT — avoids COOP popup-blocking issue) ===== */
+/* ===== GOOGLE SIGN-IN =====
+ * Popup first: it completes on the same page, keeps the `next` target, and does not
+ * depend on third-party cookies. Fall back to a full redirect only when the popup is
+ * blocked or the environment cannot open one (some in-app browsers). */
+const GOOGLE_BTN_HTML = `<svg width="18" height="18" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg> Continue with Google`;
+const REDIRECT_FALLBACK_CODES = ['auth/popup-blocked', 'auth/operation-not-supported-in-this-environment', 'auth/web-storage-unsupported'];
+
+const currentNext = () => {
+  const next = new URLSearchParams(window.location.search).get('next');
+  return next && next.startsWith('/') && !next.startsWith('//') ? next : '/account.html';
+};
+
 const handleGoogleAuth = async (formEl, btnEl) => {
   clearError(formEl);
-  if (btnEl) {
-    btnEl.disabled = true;
-    btnEl.innerHTML = '<span class="inline-block animate-pulse">Redirecting to Google…</span>';
-  }
+  const setBusy = (busy, label) => {
+    if (!btnEl) return;
+    btnEl.disabled = busy;
+    btnEl.innerHTML = busy ? `<span class="inline-block animate-pulse">${label}</span>` : GOOGLE_BTN_HTML;
+  };
+  setBusy(true, 'Opening Google…');
+  googleProvider.setCustomParameters({ prompt: 'select_account' });
 
   try {
-    // Store the intended destination so we can redirect after returning
-    const goTo = new URLSearchParams(window.location.search).get('next') || '/account.html';
-    sessionStorage.setItem('bt_auth_next', goTo);
+    const res = await signInWithPopup(auth, googleProvider);
+    setBusy(true, 'Signed in, redirecting…');
+    writeUserDoc(res.user, { isNew: true }).catch(console.warn);
+    await goNext(res.user, currentNext());
+    return;
+  } catch (err) {
+    if (err?.code === 'auth/popup-closed-by-user' || err?.code === 'auth/cancelled-popup-request') {
+      setBusy(false);
+      if (formEl) showError(formEl, errMsg(err));
+      return;
+    }
+    if (!REDIRECT_FALLBACK_CODES.includes(err?.code)) {
+      console.warn('Google popup sign-in error:', err?.code, err?.message);
+      setBusy(false);
+      if (formEl) showError(formEl, errMsg(err));
+      return;
+    }
+  }
+
+  // Popup unavailable: full-page redirect. Remember where to land afterwards.
+  try {
+    setBusy(true, 'Redirecting to Google…');
+    sessionStorage.setItem('bt_auth_next', currentNext());
+    sessionStorage.setItem('bt_auth_redirect_started', String(Date.now()));
     await signInWithRedirect(auth, googleProvider);
   } catch (err) {
-    console.warn('Google sign-in error:', err.code, err.message);
-    if (btnEl) {
-      btnEl.disabled = false;
-      btnEl.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg> Continue with Google`;
-    }
+    console.warn('Google redirect sign-in error:', err?.code, err?.message);
+    sessionStorage.removeItem('bt_auth_redirect_started');
+    setBusy(false);
     if (formEl) showError(formEl, errMsg(err));
   }
 };
 
-/* ===== HANDLE REDIRECT RESULT (fires when user returns from Google) ===== */
+/* ===== HANDLE REDIRECT RESULT (only used after the popup fallback) ===== */
 getRedirectResult(auth).then(async (res) => {
   if (res && res.user) {
     writeUserDoc(res.user, { isNew: true }).catch(console.warn);
     const goTo = sessionStorage.getItem('bt_auth_next') || '/account.html';
     sessionStorage.removeItem('bt_auth_next');
+    sessionStorage.removeItem('bt_auth_redirect_started');
     await goNext(res.user, goTo);
+    return;
+  }
+  // We started a redirect but came back without a result: the browser dropped the
+  // auth state (third-party cookie blocking) or the domain is not authorised.
+  const started = Number(sessionStorage.getItem('bt_auth_redirect_started') || 0);
+  if (started && Date.now() - started < 10 * 60 * 1000 && !auth.currentUser) {
+    sessionStorage.removeItem('bt_auth_redirect_started');
+    const form = document.querySelector('[data-auth-form]');
+    if (form) showError(form, 'Google sign-in did not complete. Please allow popups for this site and try again, or sign in with email.');
   }
 }).catch((err) => {
+  sessionStorage.removeItem('bt_auth_redirect_started');
   if (err.code !== 'auth/no-current-user') {
     console.warn('Redirect result error:', err.code, err.message);
+    const form = document.querySelector('[data-auth-form]');
+    if (form) showError(form, errMsg(err));
   }
 });
-
-
-
 
 /* ===== GLOBAL AUTH STATE — NAV BAR & ROUTE GUARDS ===== */
 onAuthStateChanged(auth, async (user) => {
@@ -242,9 +285,10 @@ onAuthStateChanged(auth, async (user) => {
   const isProtectedPage = ['account', 'order-detail'].includes(page) ||
     ['/account', '/account.html', '/order-detail', '/order-detail.html'].some(p => path === p || path.endsWith(p));
 
-  // ✅ If user is signed in and lands on signin/signup page, redirect immediately
+  // Signed-in user on signin/signup: send them on (the sign-in handlers redirect too; this
+  // covers people who open the page while already logged in).
   if (user && isAuthPage) {
-    await goNext(user, '/account.html');
+    await goNext(user, currentNext());
     return;
   }
 
@@ -267,7 +311,7 @@ if (signinForm) {
     btn.textContent = 'Signing in…';
     try {
       const res = await signInWithEmailAndPassword(auth, email.value.trim(), password.value);
-      await goNext(res.user, '/account.html');
+      await goNext(res.user, currentNext());
     } catch (err) {
       showError(signinForm, errMsg(err));
       btn.disabled = false;
@@ -297,8 +341,8 @@ if (signupForm) {
       const res = await createUserWithEmailAndPassword(auth, email.value.trim(), password.value);
       const displayName = `${first.value.trim()} ${last.value.trim()}`.trim();
       await updateProfile(res.user, { displayName });
-      writeUserDoc(res.user, { displayName, phone: phone.value.trim(), marketingOptIn, isNew: true });
-      goNext('/account.html');
+      await writeUserDoc(res.user, { displayName, phone: phone.value.trim(), marketingOptIn, isNew: true });
+      await goNext(res.user, currentNext());
     } catch (err) {
       showError(signupForm, errMsg(err));
       btn.disabled = false;
