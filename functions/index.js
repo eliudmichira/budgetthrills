@@ -69,7 +69,7 @@ exports.sendReplyEmail = onDocumentCreated(
         <div style="margin-top: 28px; padding-top: 20px; border-top: 1px solid #27272A;">
           <p style="font-size: 11px; color: #3F3F46; line-height: 1.6;">
             BudgetThrills · Trendy products. Budget prices. Real thrills.
-            <br>Need more help? Reply to this email or visit <a href="https://budgetthrills.com/contact" style="color: #BFFF1A;">budgetthrills.com/contact</a>
+            <br>Need more help? Reply to this email or visit <a href="https://budgetthrills.web.app/contact.html" style="color: #BFFF1A;">budgetthrills.com/contact</a>
           </p>
         </div>
       </div>
@@ -183,7 +183,7 @@ exports.onOrderPaid = onDocumentWritten(
     <div style="font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#6E6E6E;margin-bottom:6px">Shipping to</div>
     <div>${order.address || "&mdash;"}</div>
   </div>
-  <p style="color:#6E6E6E;font-size:13px">Track at <a href="https://budgetthrills.com/track.html" style="color:#BFFF1A">budgetthrills.com/track</a> using your order number + this email.</p>
+  <p style="color:#6E6E6E;font-size:13px">Track at <a href="https://budgetthrills.web.app/track.html" style="color:#BFFF1A">budgetthrills.web.app/track</a> using your order number + this email.</p>
   <p style="color:#6E6E6E;font-size:13px">Questions? <a href="mailto:support@budgetthrills.com" style="color:#BFFF1A">support@budgetthrills.com</a></p>
   <div style="margin-top:32px;padding-top:20px;border-top:1px solid #1C1C1C;font-size:11px;color:#6E6E6E">&copy; 2026 BudgetThrills</div>
 </div></body></html>`;
@@ -195,7 +195,7 @@ exports.onOrderPaid = onDocumentWritten(
       replyTo: "support@budgetthrills.com",
       subject: `Your order ${order.id || orderId} is confirmed \u2713`,
       html,
-      text: `Order ${order.id || orderId} confirmed!\n\nTotal: $${total.toFixed(2)}\nShipping to: ${order.address || "\u2014"}\n\nTrack: https://budgetthrills.com/track.html\nHelp: support@budgetthrills.com`
+      text: `Order ${order.id || orderId} confirmed!\n\nTotal: $${total.toFixed(2)}\nShipping to: ${order.address || "\u2014"}\n\nTrack: https://budgetthrills.web.app/track.html\nHelp: support@budgetthrills.com`
     });
     console.log("✓ Confirmation email sent to", order.email, "for", orderId);
     await db.collection("orders").doc(orderId).set({ confirmationEmailSent: true }, { merge: true });

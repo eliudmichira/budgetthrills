@@ -15,7 +15,9 @@ import {
 // signInWithRedirect when the auth domain is a different site from the page, which
 // is what made "Continue with Google" silently return to the sign-in page.
 // Firebase Hosting serves /__/auth/* on every connected domain, so this is safe.
-const SAME_SITE_AUTH_HOSTS = ['budgetthrills.com', 'www.budgetthrills.com', 'budgetthrills.web.app', 'budgetthrills.firebaseapp.com'];
+// Add a custom domain here once it is connected to Firebase Hosting and listed under
+// Authentication > Settings > Authorized domains.
+const SAME_SITE_AUTH_HOSTS = ['budgetthrills.web.app', 'budgetthrills.firebaseapp.com'];
 const authDomain = (typeof location !== 'undefined' && SAME_SITE_AUTH_HOSTS.includes(location.hostname))
   ? location.hostname
   : 'budgetthrills.firebaseapp.com';
