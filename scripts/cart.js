@@ -959,6 +959,7 @@
 
   /* ---------- Page: order-detail.html dynamic order loading ---------- */
   function initOrderDetailPage() {
+    if (document.body?.dataset?.page !== 'order-detail' && !window.location.pathname.includes('order-detail')) return;
     const params = new URLSearchParams(window.location.search);
     const orderId = params.get('id');
     const raw = localStorage.getItem(ORDERS_KEY);

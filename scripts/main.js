@@ -296,25 +296,29 @@
     });
   });
 
-  /* ---- Qty stepper ---- */
-  document.querySelectorAll('.qty').forEach(q => {
-    const input = q.querySelector('input');
-    q.querySelector('[data-qty-down]')?.addEventListener('click', () => {
-      input.value = Math.max(1, (parseInt(input.value, 10) || 1) - 1);
-      input.dispatchEvent(new Event('change'));
+  /* ---- Qty stepper (static pages only) ---- */
+  if (!document.querySelector('[data-cart-lines]')) {
+    document.querySelectorAll('.qty').forEach(q => {
+      const input = q.querySelector('input');
+      q.querySelector('[data-qty-down]')?.addEventListener('click', () => {
+        input.value = Math.max(1, (parseInt(input.value, 10) || 1) - 1);
+        input.dispatchEvent(new Event('change'));
+      });
+      q.querySelector('[data-qty-up]')?.addEventListener('click', () => {
+        input.value = (parseInt(input.value, 10) || 1) + 1;
+        input.dispatchEvent(new Event('change'));
+      });
     });
-    q.querySelector('[data-qty-up]')?.addEventListener('click', () => {
-      input.value = (parseInt(input.value, 10) || 1) + 1;
-      input.dispatchEvent(new Event('change'));
-    });
-  });
+  }
 
-  /* ---- Cart line totals ---- */
+  /* ---- Cart line totals (legacy static template helper) ---- */
   function recalcCart() {
+    const lines = document.querySelectorAll('[data-line]');
+    if (!lines.length) return;
     const subEl = document.querySelector('[data-cart-subtotal]');
     if (!subEl) return;
     let sub = 0;
-    document.querySelectorAll('[data-line]').forEach(line => {
+    lines.forEach(line => {
       const price = parseFloat(line.dataset.price) || 0;
       const qty = parseInt(line.querySelector('input')?.value, 10) || 1;
       const total = price * qty;
@@ -335,7 +339,9 @@
       recalcCart();
     });
   });
-  recalcCart();
+  if (document.querySelectorAll('[data-line]').length > 0) {
+    recalcCart();
+  }
 
   /* ---- Newsletter ---- */
   const nlForm = document.querySelector('[data-newsletter]');
