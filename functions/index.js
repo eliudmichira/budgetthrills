@@ -7,9 +7,8 @@ const { initializeApp } = require("firebase-admin/app");
 const { getFirestore } = require("firebase-admin/firestore");
 const crypto = require("crypto");
 const sgMail = require("@sendgrid/mail");
-
 initializeApp();
-
+const db = getFirestore("default");
 // Configure SendGrid API key from environment variable
 // Set with: firebase functions:config:set sendgrid.key="SG.xxx"
 const SENDGRID_KEY = process.env.SENDGRID_API_KEY || "";
@@ -22,7 +21,7 @@ const FROM_NAME = "BudgetThrills";
  * send the reply as an email to the original customer.
  */
 exports.sendReplyEmail = onDocumentCreated(
-  "contact-messages/{msgId}/replies/{replyId}",
+  { document: "contact-messages/{msgId}/replies/{replyId}", database: "default" },
   async (event) => {
     const reply = event.data.data();
     const msgId = event.params.msgId;
@@ -33,7 +32,7 @@ exports.sendReplyEmail = onDocumentCreated(
     }
 
     // Fetch the original message for context
-    const msgSnap = await getFirestore()
+    const msgSnap = await db
       .collection("contact-messages")
       .doc(msgId)
       .get();
@@ -78,7 +77,7 @@ exports.sendReplyEmail = onDocumentCreated(
     if (!SENDGRID_KEY) {
       console.warn("SENDGRID_API_KEY not set. Saving reply but not sending email.");
       // Still mark reply as sent (no email provider configured)
-      await getFirestore()
+      await db
         .collection("contact-messages")
         .doc(msgId)
         .collection("replies")
@@ -86,7 +85,7 @@ exports.sendReplyEmail = onDocumentCreated(
         .update({ emailSent: false, error: "No SendGrid API key configured" });
 
       // Mark original as replied
-      await getFirestore()
+      await db
         .collection("contact-messages")
         .doc(msgId)
         .update({ replied: true, repliedAt: new Date() });
@@ -110,7 +109,7 @@ exports.sendReplyEmail = onDocumentCreated(
       console.log(`Reply email sent to ${reply.toEmail} for message ${msgId}`);
 
       // Mark reply as sent
-      await getFirestore()
+      await db
         .collection("contact-messages")
         .doc(msgId)
         .collection("replies")
@@ -118,7 +117,7 @@ exports.sendReplyEmail = onDocumentCreated(
         .update({ emailSent: true, sentAt: new Date() });
 
       // Mark original message as replied
-      await getFirestore()
+      await db
         .collection("contact-messages")
         .doc(msgId)
         .update({ replied: true, repliedAt: new Date() });
@@ -126,7 +125,7 @@ exports.sendReplyEmail = onDocumentCreated(
       console.error(`Failed to send reply email:`, err.message);
 
       // Mark reply with error
-      await getFirestore()
+      await db
         .collection("contact-messages")
         .doc(msgId)
         .collection("replies")
@@ -137,7 +136,9 @@ exports.sendReplyEmail = onDocumentCreated(
 );
 
 // ─── Order Confirmation Email ─────────────────────────────────────────────────
-exports.onOrderPaid = onDocumentWritten("orders/{orderId}", async (event) => {
+exports.onOrderPaid = onDocumentWritten(
+  { document: "orders/{orderId}", database: "default" },
+  async (event) => {
   const after   = event.data.after.exists ? event.data.after.data() : null;
   const before  = event.data.before.exists ? event.data.before.data() : null;
   const orderId = event.params.orderId;
@@ -193,8 +194,8 @@ exports.onOrderPaid = onDocumentWritten("orders/{orderId}", async (event) => {
       html,
       text: `Order ${order.id || orderId} confirmed!\n\nTotal: $${total.toFixed(2)}\nShipping to: ${order.address || "\u2014"}\n\nTrack: https://budgetthrills.com/track.html\nHelp: support@budgetthrills.com`
     });
-    console.log("\u2713 Confirmation email sent to", order.email, "for", orderId);
-    await getFirestore().collection("orders").doc(orderId).set({ confirmationEmailSent: true }, { merge: true });
+    console.log("✓ Confirmation email sent to", order.email, "for", orderId);
+    await db.collection("orders").doc(orderId).set({ confirmationEmailSent: true }, { merge: true });
   } catch (err) {
     console.error("SendGrid error for order", orderId, ":", err.response?.body || err.message);
   }
@@ -202,7 +203,9 @@ exports.onOrderPaid = onDocumentWritten("orders/{orderId}", async (event) => {
 });
 
 // ─── Contact Form Admin Alert ─────────────────────────────────────────────────
-exports.onContactMessage = onDocumentCreated("contact-messages/{msgId}", async (event) => {
+exports.onContactMessage = onDocumentCreated(
+  { document: "contact-messages/{msgId}", database: "default" },
+  async (event) => {
   const msg = event.data.data();
 
   if (!SENDGRID_KEY) {
@@ -273,7 +276,7 @@ const round2 = (n) => Math.round((Number(n) || 0) * 100) / 100;
  */
 async function loadPendingOrder(orderId) {
   if (!orderId || !/^BT-[A-Z0-9-]{3,20}$/i.test(String(orderId))) return { error: "Invalid orderId" };
-  const snap = await getFirestore().collection("orders").doc(String(orderId)).get();
+  const snap = await db.collection("orders").doc(String(orderId)).get();
   if (!snap.exists) return { error: "Order not found. Please refresh and try again." };
   const order = snap.data();
   if (order.status !== "pending_payment") return { error: "This order is no longer awaiting payment." };
@@ -282,7 +285,7 @@ async function loadPendingOrder(orderId) {
 }
 
 async function markOrder(orderId, patch) {
-  await getFirestore().collection("orders").doc(orderId).set({ ...patch, updatedAt: new Date() }, { merge: true });
+  await db.collection("orders").doc(orderId).set({ ...patch, updatedAt: new Date() }, { merge: true });
 }
 
 /** POST /api/create-invoice — NOWPayments crypto invoice */
@@ -354,7 +357,7 @@ exports.nowpaymentsWebhook = onRequest({ cors: true }, async (req, res) => {
   };
 
   try {
-    const ref = getFirestore().collection("orders").doc(String(orderId));
+    const ref = db.collection("orders").doc(String(orderId));
     const snap = await ref.get();
     if (!snap.exists) { console.warn("IPN for unknown order", orderId); return res.sendStatus(200); }
     const current = snap.data();
@@ -451,7 +454,7 @@ exports.stripeWebhook = onRequest({ cors: false }, async (req, res) => {
     } else if ((event.type === "checkout.session.async_payment_failed" || event.type === "checkout.session.expired") && orderId) {
       await markOrder(orderId, { status: "payment_failed", paymentStatus: event.type.replace("checkout.session.", "") });
     } else if (event.type === "charge.refunded") {
-      const q = await getFirestore().collection("orders").where("stripePaymentIntent", "==", obj.payment_intent).limit(1).get();
+      const q = await db.collection("orders").where("stripePaymentIntent", "==", obj.payment_intent).limit(1).get();
       if (!q.empty) await markOrder(q.docs[0].id, { status: "refunded", paymentStatus: "refunded" });
     }
   } catch (err) {
@@ -468,7 +471,7 @@ exports.trackOrder = onRequest({ cors: true }, async (req, res) => {
   const email = String(req.body?.email || "").trim().toLowerCase();
   if (!orderId || !email) return res.status(400).json({ error: "orderId and email are required." });
   try {
-    const snap = await getFirestore().collection("orders").doc(orderId).get();
+    const snap = await db.collection("orders").doc(orderId).get();
     if (!snap.exists || String(snap.data().email || "").toLowerCase() !== email) return res.status(404).json({ error: "Order not found." });
     const o = snap.data();
     const createdAt = o.createdAt && o.createdAt.toDate ? o.createdAt.toDate().toISOString() : (o.createdAt || null);
