@@ -333,7 +333,7 @@ async function discover(db, token, settings, existingIds, log) {
 }
 
 /** Compile the storefront document from active, unhidden products. */
-async function publishLiveCatalog(db) {
+async function publishLiveCatalog(db = getFirestore("default")) {
   const snap = await db.collection("products").where("active", "==", true).get();
   const toMs = (v) => (v && v.toMillis ? v.toMillis() : (typeof v === "number" ? v : 0));
   const products = snap.docs.map((d) => d.data()).filter((p) => !p.hidden && Array.isArray(p.images) && p.images.length)
@@ -350,7 +350,7 @@ async function publishLiveCatalog(db) {
 }
 
 async function runSync({ trigger = "schedule" } = {}) {
-  const db = getFirestore();
+  const db = getFirestore("default");
   const started = Date.now();
   const logLines = [];
   const log = (m) => { logLines.push(m); console.log("[catalog-sync]", m); };

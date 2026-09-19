@@ -499,7 +499,7 @@ async function requireAdmin(req) {
   try {
     const t = await getAuth().verifyIdToken(m[1]);
     if (ADMIN_UIDS.includes(t.uid) || ADMIN_EMAILS.includes(String(t.email || "").toLowerCase())) return t;
-    const prof = await getFirestore().collection("users").doc(t.uid).get();
+    const prof = await db.collection("users").doc(t.uid).get();
     const d = prof.exists ? prof.data() : {};
     if (d.isAdmin === true || String(d.role || "").toLowerCase() === "admin") return t;
   } catch (e) { console.warn("requireAdmin:", e.message); }
@@ -526,6 +526,6 @@ exports.publishCatalog = onRequest({ cors: true }, async (req, res) => {
   if (req.method !== "POST") return res.status(405).json({ error: "Method not allowed." });
   const admin = await requireAdmin(req);
   if (!admin) return res.status(403).json({ error: "Admin sign-in required." });
-  try { const count = await catalogSync.publishLiveCatalog(getFirestore()); return res.json({ ok: true, count }); }
+  try { const count = await catalogSync.publishLiveCatalog(db); return res.json({ ok: true, count }); }
   catch (err) { return res.status(500).json({ error: err.message }); }
 });
