@@ -1,5 +1,5 @@
 // BudgetThrills — auth wiring (included on every page via type="module")
-import { auth, db, googleProvider } from './firebase-init.js?v=28';
+import { auth, db, googleProvider } from './firebase-init.js?v=29';
 import {
   onAuthStateChanged,
   signInWithEmailAndPassword,

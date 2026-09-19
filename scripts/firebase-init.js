@@ -10,21 +10,12 @@ import {
   persistentMultipleTabManager
 } from 'https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js';
 
-// Use the site's own host as the auth domain when it is served by Firebase Hosting.
-// Browsers that block third-party cookies (Safari, Chrome incognito, Brave) break
-// signInWithRedirect when the auth domain is a different site from the page, which
-// is what made "Continue with Google" silently return to the sign-in page.
-// Firebase Hosting serves /__/auth/* on every connected domain, so this is safe.
-// Add a custom domain here once it is connected to Firebase Hosting and listed under
-// Authentication > Settings > Authorized domains.
-const SAME_SITE_AUTH_HOSTS = ['budgetthrills.web.app', 'budgetthrills.firebaseapp.com'];
-const authDomain = (typeof location !== 'undefined' && SAME_SITE_AUTH_HOSTS.includes(location.hostname))
-  ? location.hostname
-  : 'budgetthrills.firebaseapp.com';
-
+// Keep the default auth domain: Google's OAuth client is registered for
+// budgetthrills.firebaseapp.com/__/auth/handler only. Sign-in uses a popup, which
+// works from any host with this domain and does not depend on third-party cookies.
 const firebaseConfig = {
   apiKey: "AIzaSyB3KGIZcuAVtDueP-ex5G274Mh8cyNvc8I",
-  authDomain,
+  authDomain: "budgetthrills.firebaseapp.com",
   projectId: "budgetthrills",
   storageBucket: "budgetthrills.firebasestorage.app",
   messagingSenderId: "1081492343396",
