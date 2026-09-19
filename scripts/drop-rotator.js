@@ -11,8 +11,12 @@ const https = require('https');
 const fs = require('fs');
 const path = require('path');
 
-const CLIENT_ID = process.env.EBAY_CLIENT_ID || 'EliudSam-ACTU-PRD-74e965bbe-5e8b161b';
-const CLIENT_SECRET = process.env.EBAY_CLIENT_SECRET || 'PRD-4e965bbef8a2-d80d-4afa-a745-3caf';
+const CLIENT_ID = process.env.EBAY_CLIENT_ID;
+const CLIENT_SECRET = process.env.EBAY_CLIENT_SECRET;
+if (!process.env.EBAY_CLIENT_ID || !process.env.EBAY_CLIENT_SECRET) {
+  console.error('Set EBAY_CLIENT_ID and EBAY_CLIENT_SECRET in your environment (see .env.example) before running this script.');
+  process.exit(1);
+}
 const HOST = 'api.ebay.com';
 
 function getOAuthToken() {

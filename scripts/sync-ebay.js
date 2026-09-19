@@ -9,7 +9,7 @@
 const https = require('https');
 const fs = require('fs');
 
-const CLIENT_ID = process.argv[2] || process.env.EBAY_CLIENT_ID || 'EliudSam-ACTU-PRD-74e965bbe-5e8b161b';
+const CLIENT_ID = process.argv[2] || process.env.EBAY_CLIENT_ID;
 const CLIENT_SECRET = process.argv[3] || process.env.EBAY_CLIENT_SECRET;
 const ENV = process.argv[4] || 'production'; // 'production' or 'sandbox'
 

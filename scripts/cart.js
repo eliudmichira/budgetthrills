@@ -171,7 +171,8 @@
       }
     }
 
-    const total = Math.max(0, subtotal - discount + shipping);
+    discount = Math.round(discount * 100) / 100;
+    const total = Math.round(Math.max(0, subtotal - discount + shipping) * 100) / 100;
 
     return {
       items,
@@ -341,7 +342,7 @@
       promoForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         const input = promoForm.querySelector('input');
-        const out = promoForm.querySelector('[data-promo-msg]');
+        const out = promoForm.querySelector('[data-promo-msg]') || document.querySelector('[data-promo-msg]');
         if (out) { out.textContent = 'Checking code…'; out.className = 'text-xs text-mute mt-2'; }
         const res = await applyPromoAsync(input.value);
         if (out) {
@@ -366,17 +367,29 @@
     if (!checkoutForm) return;
 
     let selectedShipping = 'standard';
-    const shipRadios = document.querySelectorAll('input[name="ship"]');
-    shipRadios.forEach(r => {
+    document.querySelectorAll('input[name="ship"]').forEach(r => {
       r.addEventListener('change', () => {
-        const optText = r.closest('label')?.textContent || '';
-        selectedShipping = optText.includes('Express') ? 'express' : 'standard';
+        selectedShipping = r.value === 'express' ? 'express' : 'standard';
         renderSummary();
       });
     });
 
+    // Returned from a cancelled payment page
+    const params = new URLSearchParams(window.location.search);
+    const notice = document.querySelector('[data-checkout-notice]');
+    if (notice && /cancel/.test(params.get('status') || '')) {
+      notice.textContent = 'Your payment was cancelled. Your cart is still here — you can try again or pick a different payment method.';
+      notice.classList.remove('hidden');
+      // Restore the cart if it was cleared before redirect
+      try {
+        const last = JSON.parse(localStorage.getItem(LAST_ORDER_KEY) || 'null');
+        if (last && last.items && getCart().length === 0) saveCart(last.items);
+      } catch (e) {}
+    }
+
     function renderSummary() {
       const summary = getCartSummary(selectedShipping);
+      const cfg = storeSettings();
       const linesWrap = document.querySelector('[data-checkout-lines]');
       if (linesWrap) {
         linesWrap.innerHTML = summary.items.map(item => `
@@ -391,11 +404,12 @@
         `).join('');
       }
 
-      const subEl = document.querySelector('[data-checkout-subtotal]');
-      if (subEl) subEl.textContent = '$' + summary.subtotal.toFixed(2);
-
-      const shipEl = document.querySelector('[data-checkout-shipping]');
-      if (shipEl) shipEl.textContent = summary.shipping === 0 ? 'Free' : '$' + summary.shipping.toFixed(2);
+      const setText = (sel, txt) => { const el = document.querySelector(sel); if (el) el.textContent = txt; };
+      setText('[data-checkout-subtotal]', '$' + summary.subtotal.toFixed(2));
+      setText('[data-checkout-shipping]', summary.shipping === 0 ? 'Free' : '$' + summary.shipping.toFixed(2));
+      setText('[data-ship-fee-standard]', '$' + cfg.standardShipping.toFixed(2));
+      setText('[data-ship-fee-express]', '$' + cfg.expressShipping.toFixed(2));
+      setText('[data-free-ship-min]', '$' + cfg.freeShippingMin);
 
       const discRow = document.querySelector('[data-checkout-discount-row]');
       const discEl = document.querySelector('[data-checkout-discount]');
@@ -405,165 +419,123 @@
       } else if (discRow) {
         discRow.classList.add('hidden');
       }
+      setText('[data-checkout-total]', '$' + summary.total.toFixed(2));
+      updatePayButton(summary.total);
+    }
 
-      const totalEl = document.querySelector('[data-checkout-total]');
-      if (totalEl) totalEl.textContent = '$' + summary.total.toFixed(2);
-
+    function updatePayButton(total) {
       const payBtn = document.querySelector('[data-pay-button]');
-      if (payBtn) payBtn.innerHTML = `Pay $${summary.total.toFixed(2)} <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 5l7 7-7 7"/></svg>`;
+      if (!payBtn) return;
+      const isCrypto = checkoutForm.querySelector('input[name="pay"]:checked')?.value === 'crypto';
+      payBtn.innerHTML = (isCrypto ? 'Pay with Crypto $' : 'Pay $') + Number(total).toFixed(2) +
+        ' <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 5l7 7-7 7"/></svg>';
     }
 
     renderSummary();
+    window.addEventListener('bt:settings-loaded', renderSummary);
+    window.addEventListener('bt:cart-updated', renderSummary);
+    checkoutForm.querySelectorAll('input[name="pay"]').forEach(r => r.addEventListener('change', () => updatePayButton(getCartSummary(selectedShipping).total)));
 
-    // Checkout submission handling
+    // Empty cart guard
+    if (getCart().length === 0) {
+      const payBtn = document.querySelector('[data-pay-button]');
+      if (payBtn) { payBtn.disabled = true; payBtn.textContent = 'Your cart is empty'; }
+    }
+
+    async function postJSON(url, body) {
+      const res = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(data.error || ('Payment service error (' + res.status + ')'));
+      return data;
+    }
+
     checkoutForm.addEventListener('submit', async (e) => {
       e.preventDefault();
-      const submitBtn = checkoutForm.querySelector('button[type="submit"]');
-      if (submitBtn) {
-        submitBtn.disabled = true;
-        submitBtn.innerHTML = 'Processing payment…';
-        submitBtn.style.opacity = '0.7';
-      }
-
       const summary = getCartSummary(selectedShipping);
-      const email = checkoutForm.querySelector('input[type="email"]')?.value || '';
-      const phone = checkoutForm.querySelector('input[type="tel"]')?.value || '';
-      const inputs = checkoutForm.querySelectorAll('input[type="text"]');
-      const firstName = inputs[0]?.value || '';
-      const lastName = inputs[1]?.value || '';
-      const address = inputs[2]?.value || '';
-      const city = inputs[3]?.value || '';
-      const zip = inputs[4]?.value || '';
+      if (summary.items.length === 0) { showToast('Your cart is empty.'); return; }
+
+      const submitBtn = checkoutForm.querySelector('button[type="submit"]');
+      const originalBtn = submitBtn ? submitBtn.innerHTML : '';
+      const setBusy = (busy) => {
+        if (!submitBtn) return;
+        submitBtn.disabled = busy;
+        submitBtn.style.opacity = busy ? '0.7' : '1';
+        if (busy) submitBtn.innerHTML = 'Redirecting to secure payment…'; else submitBtn.innerHTML = originalBtn;
+      };
+      setBusy(true);
+
+      const f = (name) => (checkoutForm.querySelector('[name="' + name + '"]')?.value || '').trim();
+      const email = f('email').toLowerCase();
       const selectedPay = checkoutForm.querySelector('input[name="pay"]:checked')?.value || 'card';
-
-      const orderId = 'BT-' + Math.floor(10000 + Math.random() * 90000);
-
-      // Handle Crypto Checkout via NOWPayments
-      if (selectedPay === 'crypto') {
-        const orderData = {
-          id: orderId,
-          date: new Date().toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' }),
-          timestamp: Date.now(),
-          customer: {
-            name: `${firstName} ${lastName}`.trim() || 'Customer',
-            email: email,
-            phone: phone,
-            address: `${address}, ${city} ${zip}`.trim()
-          },
-          items: summary.items,
-          subtotal: summary.subtotal,
-          shipping: summary.shipping,
-          discount: summary.discount,
-          total: summary.total,
-          paymentMethod: 'Crypto (NOWPayments)',
-          status: 'pending_payment'
-        };
-
-        try {
-          localStorage.setItem(LAST_ORDER_KEY, JSON.stringify(orderData));
-          const orders = JSON.parse(localStorage.getItem(ORDERS_KEY) || '[]');
-          orders.unshift(orderData);
-          localStorage.setItem(ORDERS_KEY, JSON.stringify(orders));
-        } catch (err) {
-          console.error(err);
-        }
-
-        // Persist initial pending order in Firestore in background without blocking redirect
-        if (typeof window.BT_SAVE_FIRESTORE_ORDER === 'function') {
-          try {
-            window.BT_SAVE_FIRESTORE_ORDER(orderData).catch(e => console.warn('Background order save error:', e));
-          } catch (e) {
-            console.warn('Firestore order save error:', e);
-          }
-        }
-
-        const productDescription = summary.items.map(it => `${it.name}${it.qty > 1 ? ' x' + it.qty : ''}`).join(', ') || 'BudgetThrills Order';
-
-        try {
-          // Call NOWPayments invoice API directly — api.nowpayments.io is in our CSP.
-          const NP_API_KEY = 'B0ZTQPJ-EAVMDB7-PYBB3F1-Z3X0ZM3';
-          const invoicePayload = {
-            price_amount: parseFloat(summary.total),
-            price_currency: 'usd',
-            order_id: orderId,
-            order_description: productDescription.substring(0, 150),
-            ipn_callback_url: window.location.origin + '/api/nowpayments-webhook',
-            success_url: window.location.origin + '/order-confirmation.html?id=' + encodeURIComponent(orderId) + '&status=crypto_success',
-            cancel_url: window.location.origin + '/checkout.html?status=crypto_cancelled'
-          };
-          if (email) invoicePayload.customer_email = email;
-
-          const response = await fetch('https://api.nowpayments.io/v1/invoice', {
-            method: 'POST',
-            headers: {
-              'x-api-key': NP_API_KEY,
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(invoicePayload)
-          });
-
-          const data = await response.json().catch(() => ({}));
-          console.log('[BT] NOWPayments invoice response:', response.status, data);
-
-          if (response.ok && data && data.invoice_url) {
-            clearCart();
-            window.location.href = data.invoice_url;
-            return;
-          } else {
-            throw new Error(data.message || data.error || 'NOWPayments error (' + response.status + ')');
-          }
-        } catch (err) {
-          console.error('[BT] NOWPayments checkout failed:', err);
-          if (submitBtn) {
-            submitBtn.disabled = false;
-            submitBtn.innerHTML = `Pay with Crypto $${summary.total.toFixed(2)} <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 5l7 7-7 7"/></svg>`;
-            submitBtn.style.opacity = '1';
-          }
-          alert('Could not start crypto payment: ' + err.message + '\n\nPlease try again or choose a different payment method.');
-          return;
-        }
-      }
+      const orderId = 'BT-' + Date.now().toString(36).toUpperCase().slice(-5) + Math.floor(100 + Math.random() * 900);
+      const addressLine = [f('address'), f('city'), f('state'), f('zip')].filter(Boolean).join(', ');
 
       const orderData = {
         id: orderId,
         date: new Date().toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' }),
         timestamp: Date.now(),
         customer: {
-          name: `${firstName} ${lastName}`.trim() || 'Customer',
+          name: `${f('firstName')} ${f('lastName')}`.trim() || 'Customer',
           email: email,
-          phone: phone,
-          address: `${address}, ${city} ${zip}`.trim()
+          phone: f('phone'),
+          address: addressLine,
+          notes: f('notes')
         },
         items: summary.items,
         subtotal: summary.subtotal,
         shipping: summary.shipping,
+        shippingMethod: selectedShipping,
         discount: summary.discount,
+        promoCode: summary.promo ? summary.promo.code : '',
         total: summary.total,
-        paymentMethod: 'Credit Card (Stripe ref: ' + Math.random().toString(36).substring(2, 10).toUpperCase() + ')'
+        paymentMethod: selectedPay === 'crypto' ? 'Crypto (NOWPayments)' : 'Card (Stripe)',
+        status: 'pending_payment'
       };
 
+      // Keep a local copy so the confirmation page can render immediately.
       try {
         localStorage.setItem(LAST_ORDER_KEY, JSON.stringify(orderData));
         const orders = JSON.parse(localStorage.getItem(ORDERS_KEY) || '[]');
         orders.unshift(orderData);
-        localStorage.setItem(ORDERS_KEY, JSON.stringify(orders));
-      } catch (err) {
-        console.error(err);
+        localStorage.setItem(ORDERS_KEY, JSON.stringify(orders.slice(0, 50)));
+      } catch (err) { console.error(err); }
+
+      // Create the pending order in Firestore before handing off to the payment provider,
+      // so the webhook has a document to mark as paid.
+      if (typeof window.BT_SAVE_FIRESTORE_ORDER === 'function') {
+        try { await window.BT_SAVE_FIRESTORE_ORDER(orderData); } catch (err) { console.warn('Order save failed:', err); }
       }
 
-      // Clear the active cart
-      clearCart();
+      const description = summary.items.map(it => `${it.name}${it.qty > 1 ? ' x' + it.qty : ''}`).join(', ').substring(0, 150) || 'BudgetThrills Order';
 
-      // Persist order in Firestore
-      if (typeof window.BT_SAVE_FIRESTORE_ORDER === 'function') {
-        try {
-          await window.BT_SAVE_FIRESTORE_ORDER(orderData);
-        } catch (e) {
-          console.warn('Firestore order save error:', e);
+      try {
+        let redirectUrl;
+        if (selectedPay === 'crypto') {
+          const data = await postJSON('/api/create-invoice', { orderId, price: summary.total, currency: 'USD', product: description, customerEmail: email });
+          redirectUrl = data.checkout_url;
+        } else {
+          const data = await postJSON('/api/create-checkout-session', {
+            orderId,
+            customerEmail: email,
+            shipping: summary.shipping,
+            discount: summary.discount,
+            items: summary.items.map(it => ({ name: it.name, price: it.price, qty: it.qty, image: it.img }))
+          });
+          redirectUrl = data.checkout_url;
+        }
+        if (!redirectUrl) throw new Error('No checkout URL returned');
+        clearCart();
+        window.location.href = redirectUrl;
+      } catch (err) {
+        console.error('[BT] Checkout failed:', err);
+        setBusy(false);
+        showToast('Could not start payment: ' + err.message);
+        if (notice) {
+          notice.textContent = 'Could not start payment: ' + err.message + '. Please try again or choose a different payment method.';
+          notice.classList.remove('hidden');
+          notice.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
       }
-
-      window.location.href = `/order-confirmation.html?id=${orderId}`;
     });
   }
 
@@ -604,12 +576,15 @@
     }
 
     const isCrypto = (order.paymentMethod && order.paymentMethod.includes('Crypto')) || params.get('status') === 'crypto_success';
+    const isPaid = params.get('status') === 'paid';
     const msgEl = document.querySelector('[data-conf-message]');
     if (msgEl && order.customer?.email) {
       if (isCrypto) {
         msgEl.innerHTML = `Your crypto order <span class="text-ink font-mono">${order.id}</span> has been received! Once confirmed on the blockchain, your tracking dispatch and confirmation will follow to <span class="text-ink">${order.customer.email}</span>.`;
       } else {
-        msgEl.innerHTML = `Your order <span class="text-ink font-mono">${order.id}</span> is confirmed. We've sent a receipt to <span class="text-ink">${order.customer.email}</span>.`;
+        msgEl.innerHTML = isPaid
+          ? `Your order <span class="text-ink font-mono">${order.id}</span> is confirmed. We've sent a receipt to <span class="text-ink">${order.customer.email}</span>.`
+          : `Your order <span class="text-ink font-mono">${order.id}</span> has been received. You'll get a receipt at <span class="text-ink">${order.customer.email}</span> as soon as payment is confirmed.`;
       }
     }
 
@@ -620,7 +595,7 @@
     if (totalEl) totalEl.textContent = '$' + Number(order.total || 0).toFixed(2);
 
     const payEl = document.querySelector('[data-conf-paymethod]');
-    if (payEl) payEl.textContent = isCrypto ? 'Crypto (NOWPayments)' : (order.paymentMethod || 'Paid via Card');
+    if (payEl) payEl.textContent = order.paymentMethod || (isCrypto ? 'Crypto (NOWPayments)' : 'Card (Stripe)');
 
     const addrEl = document.querySelector('[data-conf-address]');
     if (addrEl && order.customer) {

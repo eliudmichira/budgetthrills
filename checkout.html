@@ -44,6 +44,7 @@
       <div class="eyebrow mb-6">Checkout</div>
       <h1 class="display text-[44px] sm:text-[72px] mb-16">Almost yours<span class="text-lime">.</span></h1>
 
+      <div data-checkout-notice class="hidden mb-8 p-4 border hairline text-sm" style="border-color:var(--bt-orange);color:var(--bt-orange)"></div>
       <form class="grid lg:grid-cols-12 gap-16" data-checkout>
 
         <div class="lg:col-span-7 space-y-16">
@@ -51,48 +52,38 @@
           <div>
             <h2 class="step"><span class="step-num">1</span>Contact</h2>
             <div class="grid sm:grid-cols-2 gap-x-10">
-              <div class="field"><label>Email</label><input type="email" required></div>
-              <div class="field"><label>Phone</label><input type="tel" placeholder="(555) 000-0000" required></div>
+              <div class="field"><label>Email</label><input type="email" name="email" autocomplete="email" required></div>
+              <div class="field"><label>Phone</label><input type="tel" name="phone" autocomplete="tel" placeholder="(555) 000-0000" required></div>
             </div>
           </div>
 
           <div>
             <h2 class="step"><span class="step-num">2</span>Delivery</h2>
             <div class="grid sm:grid-cols-2 gap-x-10">
-              <div class="field"><label>First name</label><input type="text" required></div>
-              <div class="field"><label>Last name</label><input type="text" required></div>
-              <div class="field"><label>Address</label><input type="text" placeholder="Street address, apt, suite" required></div>
-              <div class="field"><label>City</label><input type="text" value="" required></div>
-              <div class="field"><label>State</label><select><option>Alabama</option><option>Alaska</option><option>Arizona</option><option>Arkansas</option><option selected>California</option><option>Colorado</option><option>Connecticut</option><option>Delaware</option><option>Florida</option><option>Georgia</option><option>Hawaii</option><option>Idaho</option><option>Illinois</option><option>Indiana</option><option>Iowa</option><option>Kansas</option><option>Kentucky</option><option>Louisiana</option><option>Maine</option><option>Maryland</option><option>Massachusetts</option><option>Michigan</option><option>Minnesota</option><option>Mississippi</option><option>Missouri</option><option>Montana</option><option>Nebraska</option><option>Nevada</option><option>New Hampshire</option><option>New Jersey</option><option>New Mexico</option><option>New York</option><option>North Carolina</option><option>North Dakota</option><option>Ohio</option><option>Oklahoma</option><option>Oregon</option><option>Pennsylvania</option><option>Rhode Island</option><option>South Carolina</option><option>South Dakota</option><option>Tennessee</option><option>Texas</option><option>Utah</option><option>Vermont</option><option>Virginia</option><option>Washington</option><option>West Virginia</option><option>Wisconsin</option><option>Wyoming</option></select></div>
-              <div class="field"><label>ZIP Code</label><input type="text" placeholder="90210" maxlength="10" required></div>
-              <div class="field sm:col-span-2"><label>Delivery notes <span class="lowercase">(optional)</span></label><input type="text" placeholder="Apartment, suite, building instructions, etc."></div>
+              <div class="field"><label>First name</label><input type="text" name="firstName" autocomplete="given-name" required></div>
+              <div class="field"><label>Last name</label><input type="text" name="lastName" autocomplete="family-name" required></div>
+              <div class="field"><label>Address</label><input type="text" name="address" autocomplete="address-line1" placeholder="Street address, apt, suite" required></div>
+              <div class="field"><label>City</label><input type="text" name="city" autocomplete="address-level2" required></div>
+              <div class="field"><label>State</label><select name="state" autocomplete="address-level1"><option>Alabama</option><option>Alaska</option><option>Arizona</option><option>Arkansas</option><option selected>California</option><option>Colorado</option><option>Connecticut</option><option>Delaware</option><option>Florida</option><option>Georgia</option><option>Hawaii</option><option>Idaho</option><option>Illinois</option><option>Indiana</option><option>Iowa</option><option>Kansas</option><option>Kentucky</option><option>Louisiana</option><option>Maine</option><option>Maryland</option><option>Massachusetts</option><option>Michigan</option><option>Minnesota</option><option>Mississippi</option><option>Missouri</option><option>Montana</option><option>Nebraska</option><option>Nevada</option><option>New Hampshire</option><option>New Jersey</option><option>New Mexico</option><option>New York</option><option>North Carolina</option><option>North Dakota</option><option>Ohio</option><option>Oklahoma</option><option>Oregon</option><option>Pennsylvania</option><option>Rhode Island</option><option>South Carolina</option><option>South Dakota</option><option>Tennessee</option><option>Texas</option><option>Utah</option><option>Vermont</option><option>Virginia</option><option>Washington</option><option>West Virginia</option><option>Wisconsin</option><option>Wyoming</option></select></div>
+              <div class="field"><label>ZIP Code</label><input type="text" name="zip" autocomplete="postal-code" placeholder="90210" maxlength="10" required></div>
+              <div class="field sm:col-span-2"><label>Delivery notes <span class="lowercase">(optional)</span></label><input type="text" name="notes" placeholder="Apartment, suite, building instructions, etc."></div>
             </div>
 
             <div class="mt-6 space-y-3">
-              <label class="pay-opt active"><input type="radio" name="ship" checked><div><div class="text-sm font-medium">Standard US Shipping</div><div class="text-mute text-xs mt-1">3–5 business days · USPS / FedEx · Free over $50</div></div><div class="ml-auto text-sm font-semibold">$4.99</div></label>
-              <label class="pay-opt"><input type="radio" name="ship"><div><div class="text-sm font-medium">Express US Shipping</div><div class="text-mute text-xs mt-1">1–2 business days · FedEx Priority</div></div><div class="ml-auto text-sm font-semibold">$12.99</div></label>
+              <label class="pay-opt active"><input type="radio" name="ship" value="standard" checked><div><div class="text-sm font-medium">Standard US Shipping</div><div class="text-mute text-xs mt-1">3–5 business days · USPS / FedEx · Free over <span data-free-ship-min>$50</span></div></div><div class="ml-auto text-sm font-semibold" data-ship-fee-standard>$4.99</div></label>
+              <label class="pay-opt"><input type="radio" name="ship" value="express"><div><div class="text-sm font-medium">Express US Shipping</div><div class="text-mute text-xs mt-1">1–2 business days · FedEx Priority</div></div><div class="ml-auto text-sm font-semibold" data-ship-fee-express>$12.99</div></label>
             </div>
           </div>
 
           <div>
             <h2 class="step"><span class="step-num">3</span>Payment</h2>
             <div class="space-y-3">
-              <label class="pay-opt active"><input type="radio" name="pay" value="card" checked><div><div class="text-sm font-medium">Credit / Debit Card</div><div class="text-mute text-xs mt-1">Visa &middot; Mastercard &middot; Amex &middot; Discover &middot; Secured by Stripe</div></div></label>
+              <label class="pay-opt active"><input type="radio" name="pay" value="card" checked><div><div class="text-sm font-medium">Card &middot; Apple Pay &middot; Google Pay</div><div class="text-mute text-xs mt-1">Visa &middot; Mastercard &middot; Amex &middot; Discover &middot; Secure Stripe checkout</div></div></label>
               
-              <div id="card-fields" class="p-4 border border-t-0 hairline -mt-3 space-y-4 bg-ink/5">
-                <div class="field mb-2">
-                  <label>Card number</label>
-                  <input type="text" placeholder="4242 4242 4242 4242" maxlength="19" inputmode="numeric" required>
-                </div>
-                <div class="grid grid-cols-2 gap-4">
-                  <div class="field mb-0">
-                    <label>Expires</label>
-                    <input type="text" placeholder="MM / YY" maxlength="5" inputmode="numeric" required>
-                  </div>
-                  <div class="field mb-0">
-                    <label>CVC</label>
-                    <input type="text" placeholder="123" maxlength="4" inputmode="numeric" required>
-                  </div>
+              <div id="card-fields" class="p-4 border border-t-0 hairline -mt-3 bg-ink/5">
+                <div class="flex items-center gap-2 text-xs text-mute">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-lime shrink-0"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                  <span>You will be taken to Stripe's secure payment page to enter your card. We never see or store your card number.</span>
                 </div>
               </div>
 
@@ -111,9 +102,6 @@
                   <span class="px-2 py-0.5 rounded bg-surface border hairline text-mute">+150 more</span>
                 </div>
               </div>
-
-              <label class="pay-opt"><input type="radio" name="pay" value="applepay"><div><div class="text-sm font-medium">Apple Pay / Google Pay</div><div class="text-mute text-xs mt-1">One-tap fast checkout</div></div></label>
-              <label class="pay-opt"><input type="radio" name="pay" value="paypal"><div><div class="text-sm font-medium">PayPal</div><div class="text-mute text-xs mt-1">Pay with PayPal balance or card</div></div></label>
             </div>
           </div>
         </div>
@@ -152,7 +140,7 @@
         
         if (cardFields) {
           cardFields.style.display = isCard ? 'block' : 'none';
-          cardFields.querySelectorAll('input').forEach(function(inp){ inp.required = isCard; });
+          
         }
         if (cryptoFields) {
           cryptoFields.style.display = isCrypto ? 'block' : 'none';

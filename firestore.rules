@@ -33,11 +33,18 @@ service cloud.firestore {
       }
     }
 
-    // Orders collection - customers create at checkout, authenticated admins manage & stream
+    // Orders: guests create a pending order at checkout; payment webhooks and the admin
+    // dashboard (server SDK / isAdmin) are the only writers after that. Customers list
+    // their own orders; guest tracking goes through the trackOrder function.
     match /orders/{orderId} {
-      allow create: if true;
-      allow read: if true;
-      allow update: if true;
+      allow create: if request.resource.data.status == 'pending_payment'
+                    && request.resource.data.total is number
+                    && request.resource.data.total >= 0
+                    && request.resource.data.items is list
+                    && request.resource.data.id == orderId;
+      allow get: if isAdmin() || (request.auth != null && resource.data.userId == request.auth.uid);
+      allow list: if isAdmin() || (request.auth != null && resource.data.userId == request.auth.uid);
+      allow update: if isAdmin();
       allow delete: if false;
     }
 

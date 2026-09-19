@@ -15,6 +15,9 @@
     "rewrites": [
       { "source": "/api/create-invoice", "function": "createInvoice" },
       { "source": "/api/nowpayments-webhook", "function": "nowpaymentsWebhook" },
+      { "source": "/api/create-checkout-session", "function": "createCheckoutSession" },
+      { "source": "/api/stripe-webhook", "function": "stripeWebhook" },
+      { "source": "/api/track-order", "function": "trackOrder" },
       { "source": "**", "destination": "/404.html" }
     ],
     "headers": [

@@ -59,15 +59,18 @@ window.BT_SAVE_FIRESTORE_ORDER = async (orderData) => {
       paymentMethod: orderData.paymentMethod || 'Credit Card',
       items: items,
       userId: user ? user.uid : null,
-      status: orderData.status || 'processing',
+      status: 'pending_payment',
       date: orderData.date || new Date().toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' }),
       createdAt: serverTimestamp(),
       updatedAt: serverTimestamp()
     };
 
-    await setDoc(orderDocRef, sanitizeForFirestore(payload), { merge: true });
+    // Create only. Firestore rules deny client updates so a stale local copy can never
+    // overwrite a status set by the payment webhook or the admin dashboard.
+    await setDoc(orderDocRef, sanitizeForFirestore(payload));
     return true;
   } catch (err) {
+    if (err && err.code === 'permission-denied') return true; // already exists
     console.error('Firestore order write error:', err);
     return false;
   }

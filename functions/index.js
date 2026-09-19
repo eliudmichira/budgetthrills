@@ -1,7 +1,7 @@
 // BudgetThrills Cloud Functions
 // Handles contact-form reply emails via SendGrid
 
-const { onDocumentCreated } = require("firebase-functions/v2/firestore");
+const { onDocumentCreated, onDocumentWritten } = require("firebase-functions/v2/firestore");
 const { onRequest } = require("firebase-functions/v2/https");
 const { initializeApp } = require("firebase-admin/app");
 const { getFirestore } = require("firebase-admin/firestore");
@@ -137,9 +137,18 @@ exports.sendReplyEmail = onDocumentCreated(
 );
 
 // ─── Order Confirmation Email ─────────────────────────────────────────────────
-exports.onOrderCreated = onDocumentCreated("orders/{orderId}", async (event) => {
-  const order   = event.data.data();
+exports.onOrderPaid = onDocumentWritten("orders/{orderId}", async (event) => {
+  const after   = event.data.after.exists ? event.data.after.data() : null;
+  const before  = event.data.before.exists ? event.data.before.data() : null;
   const orderId = event.params.orderId;
+  if (!after) return null;
+
+  const PAID = ["paid", "processing"];
+  const wasPaid = before && PAID.includes(before.status);
+  const isPaid  = PAID.includes(after.status);
+  if (!isPaid || wasPaid || after.confirmationEmailSent) return null;
+
+  const order = after;
 
   if (!SENDGRID_KEY) {
     console.warn("SENDGRID_API_KEY not set — skipping confirmation email for", orderId);
@@ -185,6 +194,7 @@ exports.onOrderCreated = onDocumentCreated("orders/{orderId}", async (event) => 
       text: `Order ${order.id || orderId} confirmed!\n\nTotal: $${total.toFixed(2)}\nShipping to: ${order.address || "\u2014"}\n\nTrack: https://budgetthrills.com/track.html\nHelp: support@budgetthrills.com`
     });
     console.log("\u2713 Confirmation email sent to", order.email, "for", orderId);
+    await getFirestore().collection("orders").doc(orderId).set({ confirmationEmailSent: true }, { merge: true });
   } catch (err) {
     console.error("SendGrid error for order", orderId, ":", err.response?.body || err.message);
   }
@@ -229,10 +239,14 @@ exports.onContactMessage = onDocumentCreated("contact-messages/{msgId}", async (
   return null;
 });
 
-// ─── NOWPayments Cryptocurrency Integration ────────────────────────────────────
-const NOWPAYMENTS_API_KEY = process.env.NOWPAYMENTS_API_KEY || "B0ZTQPJ-EAVMDB7-PYBB3F1-Z3X0ZM3";
-const NOWPAYMENTS_IPN_SECRET = process.env.NOWPAYMENTS_IPN_SECRET || process.env.NOWPAYMENTS_IPN_KEY || "GZ48khcSJXMHVbNj5d2pxA3jV07ppaHK";
-const NOWPAYMENTS_BASE = "https://api.nowpayments.io/v1";
+// ─── Payments ────────────────────────────────────────────────────────────────
+// Secrets come from functions/.env (see functions/.env.example). Nothing is hardcoded.
+const NOWPAYMENTS_API_KEY    = process.env.NOWPAYMENTS_API_KEY || "";
+const NOWPAYMENTS_IPN_SECRET = process.env.NOWPAYMENTS_IPN_SECRET || process.env.NOWPAYMENTS_IPN_KEY || "";
+const NOWPAYMENTS_BASE       = "https://api.nowpayments.io/v1";
+const STRIPE_SECRET_KEY      = process.env.STRIPE_SECRET_KEY || "";
+const STRIPE_WEBHOOK_SECRET  = process.env.STRIPE_WEBHOOK_SECRET || "";
+const PUBLIC_BASE_URL        = process.env.PUBLIC_BASE_URL || "";
 
 function sortObject(obj) {
   if (!obj || typeof obj !== "object" || Array.isArray(obj)) return obj;
@@ -244,167 +258,227 @@ function sortObject(obj) {
   }, {});
 }
 
+function siteOrigin(req) {
+  if (PUBLIC_BASE_URL) return PUBLIC_BASE_URL.replace(/\/$/, "");
+  const origin = req.headers.origin || (req.headers.referer ? new URL(req.headers.referer).origin : "");
+  return origin || "https://budgetthrills.com";
+}
+
+const round2 = (n) => Math.round((Number(n) || 0) * 100) / 100;
+
 /**
- * Endpoint to create a NOWPayments payment invoice
- * POST /api/create-invoice
+ * Loads the pending order the storefront wrote at checkout. The amount charged is
+ * always taken from Firestore, never from the request body, so a customer cannot
+ * change the price on the way to the payment provider.
  */
+async function loadPendingOrder(orderId) {
+  if (!orderId || !/^BT-[A-Z0-9-]{3,20}$/i.test(String(orderId))) return { error: "Invalid orderId" };
+  const snap = await getFirestore().collection("orders").doc(String(orderId)).get();
+  if (!snap.exists) return { error: "Order not found. Please refresh and try again." };
+  const order = snap.data();
+  if (order.status !== "pending_payment") return { error: "This order is no longer awaiting payment." };
+  if (!(Number(order.total) > 0)) return { error: "Order total is invalid." };
+  return { order };
+}
+
+async function markOrder(orderId, patch) {
+  await getFirestore().collection("orders").doc(orderId).set({ ...patch, updatedAt: new Date() }, { merge: true });
+}
+
+/** POST /api/create-invoice — NOWPayments crypto invoice */
 exports.createInvoice = onRequest({ cors: true }, async (req, res) => {
-  if (req.method !== "POST") {
-    return res.status(405).json({ error: "Method not allowed. Use POST." });
-  }
+  if (req.method !== "POST") return res.status(405).json({ error: "Method not allowed. Use POST." });
+  if (!NOWPAYMENTS_API_KEY) return res.status(503).json({ error: "Crypto payments are not configured (NOWPAYMENTS_API_KEY missing)." });
 
-  const { product, price, currency = "USD", customerEmail, orderId } = req.body || {};
+  const { orderId, product, customerEmail } = req.body || {};
+  const { order, error } = await loadPendingOrder(orderId).catch((e) => ({ error: e.message }));
+  if (error) return res.status(400).json({ error });
 
-  if (!price || !orderId) {
-    return res.status(400).json({ error: "Missing required fields: price and orderId." });
-  }
-
-  const origin = req.headers.origin || "https://budgetthrills.web.app";
-
+  const origin = siteOrigin(req);
   try {
-    let normalizedPayCurrency = req.body?.pay_currency;
-    if (normalizedPayCurrency) {
-      normalizedPayCurrency = String(normalizedPayCurrency).toLowerCase().trim();
-      if (normalizedPayCurrency === "usdt") {
-        normalizedPayCurrency = "usdttrc20";
-      }
-    }
+    let payCurrency = req.body?.pay_currency ? String(req.body.pay_currency).toLowerCase().trim() : "";
+    if (payCurrency === "usdt") payCurrency = "usdttrc20";
 
     const payload = {
-      price_amount: parseFloat(price),
-      price_currency: String(currency).toLowerCase(),
+      price_amount: round2(order.total),
+      price_currency: "usd",
       order_id: String(orderId),
-      order_description: String(product || "BudgetThrills Order").substring(0, 150),
-      customer_email: customerEmail || undefined,
+      order_description: String(product || `BudgetThrills order ${orderId}`).substring(0, 150),
+      customer_email: customerEmail || order.email || undefined,
       ipn_callback_url: `${origin}/api/nowpayments-webhook`,
       success_url: `${origin}/order-confirmation.html?id=${encodeURIComponent(orderId)}&status=crypto_success`,
       cancel_url: `${origin}/checkout.html?status=crypto_cancelled`
     };
-
-    if (normalizedPayCurrency) {
-      payload.pay_currency = normalizedPayCurrency;
-    }
+    if (payCurrency) payload.pay_currency = payCurrency;
 
     const response = await fetch(`${NOWPAYMENTS_BASE}/invoice`, {
       method: "POST",
-      headers: {
-        "x-api-key": NOWPAYMENTS_API_KEY,
-        "Content-Type": "application/json"
-      },
+      headers: { "x-api-key": NOWPAYMENTS_API_KEY, "Content-Type": "application/json" },
       body: JSON.stringify(payload)
     });
-
-    const data = await response.json();
-
+    const data = await response.json().catch(() => ({}));
     if (!response.ok) {
       console.error("NOWPayments invoice API error:", data);
-      return res.status(response.status).json({
-        error: data.message || "NOWPayments API error",
-        details: data
-      });
+      return res.status(502).json({ error: data.message || "NOWPayments rejected the invoice request." });
     }
-
-    return res.status(200).json({
-      invoice_id: data.id,
-      checkout_url: data.invoice_url,
-      amount: data.price_amount,
-      currency: data.pay_currency
-    });
-  } catch (error) {
-    console.error("Invoice creation failed:", error);
-    return res.status(500).json({ error: "Failed to create invoice", details: error.message });
+    await markOrder(orderId, { paymentProvider: "nowpayments", nowpaymentsInvoiceId: data.id || null });
+    return res.status(200).json({ invoice_id: data.id, checkout_url: data.invoice_url, amount: data.price_amount, currency: data.pay_currency });
+  } catch (err) {
+    console.error("Invoice creation failed:", err);
+    return res.status(500).json({ error: "Failed to create invoice." });
   }
 });
 
-/**
- * NOWPayments IPN Webhook handler
- * POST /api/nowpayments-webhook
- */
+/** POST /api/nowpayments-webhook — NOWPayments IPN */
 exports.nowpaymentsWebhook = onRequest({ cors: true }, async (req, res) => {
-  if (req.method !== "POST") {
-    return res.status(405).send("Method not allowed");
-  }
+  if (req.method !== "POST") return res.status(405).send("Method not allowed");
+  if (!NOWPAYMENTS_IPN_SECRET) { console.error("NOWPAYMENTS_IPN_SECRET not set; rejecting IPN"); return res.status(503).send("IPN not configured"); }
 
-  const ipnSecret = NOWPAYMENTS_IPN_SECRET;
   const receivedSig = req.headers["x-nowpayments-sig"];
-
-  // Verify signature if secret is configured and not default placeholder
-  if (ipnSecret && ipnSecret !== "your-ipn-key-here") {
-    const rawBody = req.rawBody ? req.rawBody.toString("utf8") : JSON.stringify(req.body);
-    const sortedString = JSON.stringify(sortObject(req.body));
-    const expectedSig1 = crypto.createHmac("sha256", ipnSecret).update(rawBody).digest("hex");
-    const expectedSig2 = crypto.createHmac("sha256", ipnSecret).update(sortedString).digest("hex");
-
-    if (receivedSig !== expectedSig1 && receivedSig !== expectedSig2) {
-      console.warn("Invalid NOWPayments IPN signature:", { receivedSig, expectedSig1, expectedSig2 });
-      return res.status(401).send("Invalid signature");
-    }
+  const sortedString = JSON.stringify(sortObject(req.body));
+  const expected = crypto.createHmac("sha512", NOWPAYMENTS_IPN_SECRET).update(sortedString).digest("hex");
+  const expectedSha256 = crypto.createHmac("sha256", NOWPAYMENTS_IPN_SECRET).update(sortedString).digest("hex");
+  if (!receivedSig || (receivedSig !== expected && receivedSig !== expectedSha256)) {
+    console.warn("Invalid NOWPayments IPN signature");
+    return res.status(401).send("Invalid signature");
   }
 
   const body = req.body || {};
-  console.log("NOWPayments IPN callback received:", JSON.stringify(body));
+  const orderId = body.order_id;
+  const status = String(body.payment_status || "").toLowerCase();
+  if (!orderId) return res.sendStatus(200);
 
-  // Support both custom event structure and official NOWPayments IPN payload
-  let orderId = body.order_id || (body.data && body.data.order_id);
-  let status = String(body.payment_status || body.type || "").toUpperCase();
-  let paymentAmount = body.actually_paid || body.pay_amount || (body.data && body.data.amount);
-  let payCurrency = body.pay_currency || (body.data && body.data.currency);
-  let paymentId = body.payment_id || (body.data && body.data.payment_id);
-
-  if (!orderId) {
-    console.warn("No order_id in IPN body, ignoring.");
-    return res.sendStatus(200);
-  }
-
-  const db = getFirestore();
-  const orderRef = db.collection("orders").doc(orderId);
+  const crypto_ = {
+    paymentId: body.payment_id || null, payAmount: body.pay_amount || null, actuallyPaid: body.actually_paid || null,
+    payCurrency: body.pay_currency || null, priceAmount: body.price_amount || null, outcomeAmount: body.outcome_amount || null
+  };
 
   try {
-    if (status === "PAYMENT_CONFIRMED" || status === "FINISHED" || status === "CONFIRMED") {
-      console.log(`\u2705 Payment confirmed for Order ${orderId}`);
-      await orderRef.set({
-        status: "paid",
-        paymentStatus: "confirmed",
-        paidAt: new Date().toISOString(),
-        paymentMethod: "Crypto (NOWPayments)",
-        cryptoPayment: {
-          paymentId: paymentId || null,
-          amount: paymentAmount || null,
-          currency: payCurrency || null,
-          confirmedAt: new Date().toISOString()
-        },
-        updatedAt: new Date()
-      }, { merge: true });
-    } else if (status === "PAYMENT_EXPIRED" || status === "EXPIRED" || status === "FAILED") {
-      console.log(`\u274C Payment expired/failed for Order ${orderId}`);
-      await orderRef.set({
-        status: "payment_failed",
-        paymentStatus: "failed",
-        updatedAt: new Date()
-      }, { merge: true });
-    } else if (status === "PAYMENT_PARTIALLY_PAID" || status === "PARTIALLY_PAID") {
-      console.log(`\u26A0\uFE0F Partial payment for Order ${orderId}: ${paymentAmount}`);
-      await orderRef.set({
-        status: "partially_paid",
-        paymentStatus: "partially_paid",
-        cryptoPayment: {
-          paymentId: paymentId || null,
-          actuallyPaid: paymentAmount || null,
-          currency: payCurrency || null
-        },
-        updatedAt: new Date()
-      }, { merge: true });
-    } else if (status === "WAITING" || status === "CONFIRMING" || status === "SENDING") {
-      console.log(`\u23F3 Payment state '${status}' for Order ${orderId}`);
-      await orderRef.set({
-        status: "processing",
-        paymentStatus: status.toLowerCase(),
-        updatedAt: new Date()
-      }, { merge: true });
+    const ref = getFirestore().collection("orders").doc(String(orderId));
+    const snap = await ref.get();
+    if (!snap.exists) { console.warn("IPN for unknown order", orderId); return res.sendStatus(200); }
+    const current = snap.data();
+    // Never downgrade an order that is already fulfilled.
+    if (["shipped", "delivered", "refunded"].includes(current.status)) return res.sendStatus(200);
+
+    // Guard against underpayment: NOWPayments reports the fiat outcome; require >= 98% of the order total.
+    const outcomeOk = !body.outcome_amount || Number(body.outcome_amount) >= Number(current.total) * 0.98;
+
+    if (status === "finished" || (status === "confirmed" && outcomeOk)) {
+      await markOrder(orderId, { status: "paid", paymentStatus: status, paidAt: new Date().toISOString(), paymentMethod: "Crypto (NOWPayments)", cryptoPayment: crypto_ });
+    } else if (status === "expired" || status === "failed" || status === "refunded") {
+      await markOrder(orderId, { status: status === "refunded" ? "refunded" : "payment_failed", paymentStatus: status, cryptoPayment: crypto_ });
+    } else if (status === "partially_paid") {
+      await markOrder(orderId, { status: "partially_paid", paymentStatus: status, cryptoPayment: crypto_ });
+    } else if (["waiting", "confirming", "sending"].includes(status)) {
+      await markOrder(orderId, { paymentStatus: status, cryptoPayment: crypto_ });
+    } else {
+      console.log(`Unhandled NOWPayments status '${status}' for ${orderId}`);
     }
   } catch (err) {
-    console.error(`Error updating Firestore for Order ${orderId}:`, err);
+    console.error(`Error updating order ${orderId} from IPN:`, err);
+    return res.status(500).send("error");
   }
-
   return res.sendStatus(200);
+});
+
+/** POST /api/create-checkout-session — Stripe Checkout (card, Apple Pay, Google Pay) */
+exports.createCheckoutSession = onRequest({ cors: true }, async (req, res) => {
+  if (req.method !== "POST") return res.status(405).json({ error: "Method not allowed. Use POST." });
+  if (!STRIPE_SECRET_KEY) return res.status(503).json({ error: "Card payments are not configured yet (STRIPE_SECRET_KEY missing). Please pay with crypto." });
+
+  const { orderId, customerEmail } = req.body || {};
+  const { order, error } = await loadPendingOrder(orderId).catch((e) => ({ error: e.message }));
+  if (error) return res.status(400).json({ error });
+
+  const origin = siteOrigin(req);
+  try {
+    const stripe = require("stripe")(STRIPE_SECRET_KEY);
+    const items = (order.items || []).map((it) => ({
+      quantity: Math.max(1, Number(it.qty) || 1),
+      price_data: {
+        currency: "usd",
+        unit_amount: Math.round((Number(it.price) || 0) * 100),
+        product_data: { name: String(it.name || "Item").substring(0, 120), images: it.image && /^https?:\/\//.test(it.image) ? [it.image] : [] }
+      }
+    }));
+    if (Number(order.shipping) > 0) {
+      items.push({ quantity: 1, price_data: { currency: "usd", unit_amount: Math.round(Number(order.shipping) * 100), product_data: { name: "Shipping" } } });
+    }
+    const sessionParams = {
+      mode: "payment",
+      line_items: items,
+      client_reference_id: String(orderId),
+      customer_email: customerEmail || order.email || undefined,
+      metadata: { orderId: String(orderId) },
+      success_url: `${origin}/order-confirmation.html?id=${encodeURIComponent(orderId)}&status=paid`,
+      cancel_url: `${origin}/checkout.html?status=cancelled`
+    };
+    if (Number(order.discount) > 0) {
+      const coupon = await stripe.coupons.create({ amount_off: Math.round(Number(order.discount) * 100), currency: "usd", duration: "once", name: order.promoCode || "Discount" });
+      sessionParams.discounts = [{ coupon: coupon.id }];
+    }
+    const session = await stripe.checkout.sessions.create(sessionParams);
+    await markOrder(orderId, { paymentProvider: "stripe", stripeSessionId: session.id });
+    return res.status(200).json({ checkout_url: session.url, session_id: session.id });
+  } catch (err) {
+    console.error("Stripe session creation failed:", err);
+    return res.status(502).json({ error: err.message || "Stripe error" });
+  }
+});
+
+/** POST /api/stripe-webhook — marks the order paid once Stripe confirms the charge */
+exports.stripeWebhook = onRequest({ cors: false }, async (req, res) => {
+  if (req.method !== "POST") return res.status(405).send("Method not allowed");
+  if (!STRIPE_SECRET_KEY || !STRIPE_WEBHOOK_SECRET) return res.status(503).send("Stripe webhook not configured");
+  const stripe = require("stripe")(STRIPE_SECRET_KEY);
+  let event;
+  try {
+    event = stripe.webhooks.constructEvent(req.rawBody, req.headers["stripe-signature"], STRIPE_WEBHOOK_SECRET);
+  } catch (err) {
+    console.warn("Invalid Stripe signature:", err.message);
+    return res.status(400).send("Invalid signature");
+  }
+  try {
+    const obj = event.data.object;
+    const orderId = obj.metadata?.orderId || obj.client_reference_id;
+    if (event.type === "checkout.session.completed" && orderId) {
+      if (obj.payment_status === "paid") {
+        await markOrder(orderId, { status: "paid", paymentStatus: "paid", paidAt: new Date().toISOString(), paymentMethod: "Card (Stripe)", stripePaymentIntent: obj.payment_intent || null, amountPaid: (obj.amount_total || 0) / 100 });
+      }
+    } else if (event.type === "checkout.session.async_payment_succeeded" && orderId) {
+      await markOrder(orderId, { status: "paid", paymentStatus: "paid", paidAt: new Date().toISOString(), paymentMethod: "Card (Stripe)" });
+    } else if ((event.type === "checkout.session.async_payment_failed" || event.type === "checkout.session.expired") && orderId) {
+      await markOrder(orderId, { status: "payment_failed", paymentStatus: event.type.replace("checkout.session.", "") });
+    } else if (event.type === "charge.refunded") {
+      const q = await getFirestore().collection("orders").where("stripePaymentIntent", "==", obj.payment_intent).limit(1).get();
+      if (!q.empty) await markOrder(q.docs[0].id, { status: "refunded", paymentStatus: "refunded" });
+    }
+  } catch (err) {
+    console.error("Stripe webhook handling error:", err);
+    return res.status(500).send("error");
+  }
+  return res.sendStatus(200);
+});
+
+/** POST /api/track-order — guest order lookup by order number + email (no public Firestore read) */
+exports.trackOrder = onRequest({ cors: true }, async (req, res) => {
+  if (req.method !== "POST") return res.status(405).json({ error: "Method not allowed." });
+  const orderId = String(req.body?.orderId || "").trim().toUpperCase();
+  const email = String(req.body?.email || "").trim().toLowerCase();
+  if (!orderId || !email) return res.status(400).json({ error: "orderId and email are required." });
+  try {
+    const snap = await getFirestore().collection("orders").doc(orderId).get();
+    if (!snap.exists || String(snap.data().email || "").toLowerCase() !== email) return res.status(404).json({ error: "Order not found." });
+    const o = snap.data();
+    const createdAt = o.createdAt && o.createdAt.toDate ? o.createdAt.toDate().toISOString() : (o.createdAt || null);
+    return res.status(200).json({ order: {
+      id: o.id || orderId, status: o.status, createdAt, carrier: o.carrier || "", trackingNumber: o.trackingNumber || "",
+      address: o.address || "", eta: o.eta || "", total: o.total, shippedAt: o.shippedAt && o.shippedAt.toDate ? o.shippedAt.toDate().toISOString() : (o.shippedAt || null),
+      items: (o.items || []).map((it) => ({ name: it.name, qty: it.qty, price: it.price, image: it.image, variant: it.variant }))
+    } });
+  } catch (err) {
+    console.error("trackOrder error:", err);
+    return res.status(500).json({ error: "Lookup failed." });
+  }
 });

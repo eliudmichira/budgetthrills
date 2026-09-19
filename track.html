@@ -229,17 +229,17 @@
       btn.textContent = 'Searching…';
 
       try {
-        const q = query(
-          collection(db, 'orders'),
-          where('id',    '==', orderId),
-          where('email', '==', email),
-          limit(1)
-        );
-        const snap = await getDocs(q);
-        if (snap.empty) {
+        const res = await fetch('/api/track-order', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ orderId, email })
+        });
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok || !data.order) {
           showNotFound();
         } else {
-          renderResult(snap.docs[0].data());
+          const o = data.order;
+          if (o.createdAt && !o.createdAt.toDate) { const d = new Date(o.createdAt); o.createdAt = { toDate: () => d }; }
+          renderResult(o);
         }
       } catch (err) {
         console.error('Track error:', err);
