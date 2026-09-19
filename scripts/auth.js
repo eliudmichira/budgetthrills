@@ -808,3 +808,53 @@ if (document.querySelector('[data-panel="prefs"]')) {
   });
 }
 
+
+/* ===== STORE SETTINGS & COUPONS (managed from /admin.html) ===== */
+// Loads settings/store into window.BT_STORE_SETTINGS so cart.js can use live
+// shipping thresholds, and exposes a Firestore-backed coupon validator.
+window.BT_STORE_SETTINGS = window.BT_STORE_SETTINGS || null;
+(async () => {
+  try {
+    const snap = await getDoc(doc(db, 'settings', 'store'));
+    if (snap.exists()) {
+      window.BT_STORE_SETTINGS = snap.data();
+      window.dispatchEvent(new CustomEvent('bt:settings-loaded', { detail: window.BT_STORE_SETTINGS }));
+      const s = window.BT_STORE_SETTINGS;
+      if (s.notice) {
+        const bar = document.createElement('div');
+        bar.setAttribute('data-store-notice', '');
+        bar.style.cssText = 'background:#BFFF1A;color:#000;font-size:12px;font-weight:600;text-align:center;padding:8px 16px;letter-spacing:.04em';
+        bar.textContent = s.notice;
+        document.body.prepend(bar);
+      }
+      if (typeof s.freeShippingMin === 'number') {
+        document.querySelectorAll('[data-free-ship-min]').forEach(el => { el.textContent = '$' + s.freeShippingMin; });
+      }
+    }
+  } catch (err) {
+    console.warn('Store settings unavailable, using defaults:', err.message);
+  }
+})();
+
+window.BT_VALIDATE_COUPON = async (code) => {
+  const clean = String(code || '').trim().toUpperCase();
+  if (!clean) return null;
+  try {
+    const snap = await getDoc(doc(db, 'coupons', clean));
+    if (!snap.exists()) return null;
+    const c = snap.data();
+    if (c.active === false) return { error: 'This code is no longer active' };
+    const exp = c.expiresAt && c.expiresAt.toDate ? c.expiresAt.toDate() : (c.expiresAt ? new Date(c.expiresAt) : null);
+    if (exp && exp < new Date()) return { error: 'This code has expired' };
+    return {
+      code: clean,
+      discountPercent: Number(c.discountPercent) || 0,
+      freeShipping: !!c.freeShipping,
+      minOrder: Number(c.minOrder) || 0,
+      label: c.label || c.discount || (c.freeShipping ? 'Free shipping' : (Number(c.discountPercent) || 0) + '% off')
+    };
+  } catch (err) {
+    console.warn('Coupon lookup failed:', err.message);
+    return null;
+  }
+};

@@ -53,22 +53,53 @@
     }
   }
 
-  function applyPromo(code) {
+  const BUILTIN_PROMOS = {
+    'THRILL10': { code: 'THRILL10', discountPercent: 10, label: '10% off' },
+    'DROP20': { code: 'DROP20', discountPercent: 20, label: '20% off' },
+    'FREESHIP': { code: 'FREESHIP', freeShipping: true, label: 'Free shipping' },
+    'VIP30': { code: 'VIP30', discountPercent: 30, label: '30% off VIP' }
+  };
+
+  function storeSettings() {
+    const s = (typeof window !== 'undefined' && window.BT_STORE_SETTINGS) || {};
+    return {
+      freeShippingMin: typeof s.freeShippingMin === 'number' ? s.freeShippingMin : 50,
+      standardShipping: typeof s.standardShipping === 'number' ? s.standardShipping : 4.99,
+      expressShipping: typeof s.expressShipping === 'number' ? s.expressShipping : 12.99
+    };
+  }
+
+  // Synchronous apply: accepts a code (built-in list) or a resolved promo object.
+  function applyPromo(codeOrPromo) {
+    if (codeOrPromo && typeof codeOrPromo === 'object' && codeOrPromo.code) {
+      localStorage.setItem(PROMO_KEY, JSON.stringify(codeOrPromo));
+      return { ok: true, promo: codeOrPromo, msg: 'Promo ' + codeOrPromo.code + ' applied!' };
+    }
+    const clean = (codeOrPromo || '').trim().toUpperCase();
+    if (!clean) return { ok: false, msg: 'Enter a promo code' };
+    if (BUILTIN_PROMOS[clean]) {
+      localStorage.setItem(PROMO_KEY, JSON.stringify(BUILTIN_PROMOS[clean]));
+      return { ok: true, promo: BUILTIN_PROMOS[clean], msg: 'Promo ' + clean + ' applied!' };
+    }
+    return { ok: false, msg: 'Invalid promo code' };
+  }
+
+  // Async apply: checks Firestore coupons (managed in admin) first, then built-ins.
+  async function applyPromoAsync(code) {
     const clean = (code || '').trim().toUpperCase();
     if (!clean) return { ok: false, msg: 'Enter a promo code' };
-
-    const PROMOS = {
-      'THRILL10': { code: 'THRILL10', discountPercent: 10, label: '10% off' },
-      'DROP20': { code: 'DROP20', discountPercent: 20, label: '20% off' },
-      'FREESHIP': { code: 'FREESHIP', freeShipping: true, label: 'Free shipping' },
-      'VIP30': { code: 'VIP30', discountPercent: 30, label: '30% off VIP' }
-    };
-
-    if (PROMOS[clean]) {
-      localStorage.setItem(PROMO_KEY, JSON.stringify(PROMOS[clean]));
-      return { ok: true, promo: PROMOS[clean], msg: 'Promo ' + clean + ' applied!' };
+    if (typeof window.BT_VALIDATE_COUPON === 'function') {
+      const res = await window.BT_VALIDATE_COUPON(clean);
+      if (res && res.error) return { ok: false, msg: res.error };
+      if (res && res.code) {
+        const subtotal = getCart().reduce((sum, i) => sum + (i.price * (i.qty || 1)), 0);
+        if (res.minOrder && subtotal < res.minOrder) {
+          return { ok: false, msg: 'This code needs a $' + res.minOrder.toFixed(2) + ' minimum order' };
+        }
+        return applyPromo(res);
+      }
     }
-    return { ok: false, msg: 'Invalid promo code. Try THRILL10 or DROP20' };
+    return applyPromo(clean);
   }
 
   function removePromo() {
@@ -131,11 +162,12 @@
 
     let shipping = 0;
     if (items.length > 0) {
+      const cfg = storeSettings();
       if (selectedShipping === 'express') {
-        shipping = 12.99;
+        shipping = cfg.expressShipping;
       } else {
-        const isFree = subtotal >= 50 || (promo && promo.freeShipping);
-        shipping = isFree ? 0 : 4.99;
+        const isFree = subtotal >= cfg.freeShippingMin || (promo && promo.freeShipping);
+        shipping = isFree ? 0 : cfg.standardShipping;
       }
     }
 
@@ -306,11 +338,12 @@
     // Promo form submit
     const promoForm = document.querySelector('[data-promo-form]');
     if (promoForm) {
-      promoForm.addEventListener('submit', (e) => {
+      promoForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         const input = promoForm.querySelector('input');
         const out = promoForm.querySelector('[data-promo-msg]');
-        const res = applyPromo(input.value);
+        if (out) { out.textContent = 'Checking code…'; out.className = 'text-xs text-mute mt-2'; }
+        const res = await applyPromoAsync(input.value);
         if (out) {
           out.textContent = res.msg;
           out.className = res.ok ? 'text-xs text-lime mt-2' : 'text-xs text-orange mt-2';
@@ -324,6 +357,7 @@
 
     render();
     window.addEventListener('bt:cart-updated', render);
+    window.addEventListener('bt:settings-loaded', render);
   }
 
   /* ---------- Page: checkout.html ---------- */
@@ -1375,6 +1409,7 @@
     removeItem,
     clearCart,
     applyPromo,
+    applyPromoAsync,
     removePromo,
     getCartSummary,
     updateBadges

@@ -3,1119 +3,1083 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' blob: https://cdn.tailwindcss.com https://www.gstatic.com https://apis.google.com https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https://images.unsplash.com https://i.ebayimg.com https://lh3.googleusercontent.com https://*.googleusercontent.com; connect-src 'self' https://*.firebaseio.com https://*.googleapis.com https://firestore.googleapis.com https://www.gstatic.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com; frame-src 'self' https://*.firebaseapp.com https://accounts.google.com https://apis.google.com;">
-<title>BudgetThrills — Operations & Admin Command Center</title>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.gstatic.com https://apis.google.com; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob: https://images.unsplash.com https://i.ebayimg.com https://lh3.googleusercontent.com https://*.googleusercontent.com; connect-src 'self' https://*.firebaseio.com https://*.googleapis.com https://firestore.googleapis.com https://www.gstatic.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com; frame-src 'self' https://*.firebaseapp.com https://accounts.google.com https://apis.google.com;">
+<title>Admin · BudgetThrills</title>
 <meta name="theme-color" content="#0A0A0A">
 <meta name="robots" content="noindex, nofollow">
 <link rel="icon" type="image/svg+xml" href="/favicons/favicon.svg">
 <link rel="stylesheet" href="/styles/fonts.css">
-<link rel="stylesheet" href="/styles/app.css?v=4">
-<link rel="stylesheet" href="/styles/main.css?v=4">
 <script>(function(){try{var t=localStorage.getItem('bt-theme')||'dark';document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
-
 <style>
   :root {
-    --adm-bg: #0A0A0A;
-    --adm-card: #121215;
-    --adm-card-hover: #18181C;
-    --adm-border: #1C1C1C;
-    --adm-lime: #BFFF1A;
-    --adm-lime-glow: rgba(191, 255, 26, 0.15);
-    --adm-mute: #71717A;
-    --adm-text: #FAFAFA;
+    --a-bg: #0B0B0C;
+    --a-surface: #121214;
+    --a-surface-2: #18181B;
+    --a-border: #232326;
+    --a-border-strong: #2E2E33;
+    --a-text: #F4F4F5;
+    --a-text-2: #A1A1AA;
+    --a-text-3: #6B6B73;
+    --a-accent: #BFFF1A;
+    --a-accent-ink: #0A0A0A;
+    --a-accent-soft: rgba(191,255,26,0.10);
+    --a-good: #4ADE80;
+    --a-warn: #FBBF24;
+    --a-bad: #F87171;
+    --a-info: #60A5FA;
+    --a-good-soft: rgba(74,222,128,0.12);
+    --a-warn-soft: rgba(251,191,36,0.12);
+    --a-bad-soft: rgba(248,113,113,0.12);
+    --a-info-soft: rgba(96,165,250,0.12);
+    --a-radius: 8px;
+    --a-shadow: 0 12px 40px rgba(0,0,0,0.45);
+    --a-sidebar: 232px;
   }
-
   html[data-theme="light"] {
-    --adm-bg: #F7F7F5;
-    --adm-card: #FFFFFF;
-    --adm-card-hover: #F0F0ED;
-    --adm-border: #E0E0DC;
-    --adm-lime: #5BBF00;
-    --adm-lime-glow: rgba(91, 191, 0, 0.15);
-    --adm-mute: #70706C;
-    --adm-text: #121212;
+    --a-bg: #F5F5F4;
+    --a-surface: #FFFFFF;
+    --a-surface-2: #F3F3F1;
+    --a-border: #E4E4E0;
+    --a-border-strong: #D1D1CC;
+    --a-text: #111113;
+    --a-text-2: #52525B;
+    --a-text-3: #8A8A92;
+    --a-accent: #4E9F00;
+    --a-accent-ink: #FFFFFF;
+    --a-accent-soft: rgba(78,159,0,0.10);
+    --a-good: #15803D;
+    --a-warn: #B45309;
+    --a-bad: #B91C1C;
+    --a-info: #1D4ED8;
+    --a-good-soft: rgba(21,128,61,0.10);
+    --a-warn-soft: rgba(180,83,9,0.10);
+    --a-bad-soft: rgba(185,28,28,0.10);
+    --a-info-soft: rgba(29,78,216,0.10);
+    --a-shadow: 0 12px 40px rgba(0,0,0,0.12);
   }
 
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; }
   body {
-    background-color: var(--adm-bg) !important;
-    color: var(--adm-text) !important;
-    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background: var(--a-bg); color: var(--a-text);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif; font-size: 14px; line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
   }
-  
-  .adm-nav-btn {
-    display: inline-flex; align-items: center; gap: 8px;
-    padding: 8px 14px; border-radius: 8px; font-size: 13px; font-weight: 500;
-    color: var(--adm-mute); transition: all 0.2s ease; cursor: pointer; border: 1px solid transparent;
+  a { color: inherit; text-decoration: none; }
+  button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; padding: 0; }
+  input, select, textarea {
+    font: inherit; color: var(--a-text); background: var(--a-surface); border: 1px solid var(--a-border-strong);
+    border-radius: 6px; padding: 7px 10px; outline: none; width: 100%;
   }
-  .adm-nav-btn:hover { color: var(--adm-text); background: var(--adm-card-hover); }
-  .adm-nav-btn.active {
-    color: #000 !important; background: var(--adm-lime) !important; font-weight: 700; border-color: var(--adm-lime);
-    box-shadow: 0 0 16px var(--adm-lime-glow);
-  }
-  html[data-theme="light"] .adm-nav-btn.active { color: #FFF !important; }
+  input:focus, select:focus, textarea:focus { border-color: var(--a-accent); box-shadow: 0 0 0 3px var(--a-accent-soft); }
+  input::placeholder, textarea::placeholder { color: var(--a-text-3); }
+  select { appearance: none; padding-right: 28px; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236B6B73' stroke-width='2'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 10px center; }
+  label { display: block; font-size: 12px; font-weight: 500; color: var(--a-text-2); margin-bottom: 5px; }
+  .mono { font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12.5px; }
+  .num { font-variant-numeric: tabular-nums; }
+  .muted { color: var(--a-text-2); }
+  .faint { color: var(--a-text-3); }
+  .hidden { display: none !important; }
+  .truncate { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
-  .adm-card {
-    background-color: var(--adm-card) !important;
-    border: 1px solid var(--adm-border) !important;
-    border-radius: 12px;
-    padding: 1.5rem;
-    transition: border-color 0.2s, box-shadow 0.2s, background-color 0.2s;
+  /* ---------- Shell ---------- */
+  .shell { display: grid; grid-template-columns: var(--a-sidebar) 1fr; min-height: 100vh; }
+  .sidebar {
+    position: sticky; top: 0; height: 100vh; border-right: 1px solid var(--a-border); background: var(--a-surface);
+    display: flex; flex-direction: column; padding: 18px 14px;
   }
-  .adm-card:hover { border-color: var(--adm-lime) !important; }
+  .brand { display: flex; align-items: center; gap: 10px; padding: 4px 8px 18px; }
+  .brand img { height: 22px; width: auto; }
+  .brand .logo-light { display: none; }
+  html[data-theme="light"] .brand .logo-dark { display: none; }
+  html[data-theme="light"] .brand .logo-light { display: inline; }
+  .brand-tag { font-size: 10px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--a-text-3); border: 1px solid var(--a-border-strong); border-radius: 4px; padding: 2px 6px; }
+  .nav { display: flex; flex-direction: column; gap: 2px; }
+  .nav-item {
+    display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 6px; font-size: 13.5px; font-weight: 500;
+    color: var(--a-text-2); width: 100%; text-align: left;
+  }
+  .nav-item svg { width: 16px; height: 16px; flex: none; }
+  .nav-item:hover { background: var(--a-surface-2); color: var(--a-text); }
+  .nav-item.active { background: var(--a-surface-2); color: var(--a-text); box-shadow: inset 2px 0 0 var(--a-accent); }
+  .nav-count { margin-left: auto; font-size: 11px; font-weight: 600; color: var(--a-text-3); }
+  .nav-count.alert { color: var(--a-accent-ink); background: var(--a-accent); border-radius: 999px; padding: 1px 7px; }
+  .sidebar-foot { margin-top: auto; border-top: 1px solid var(--a-border); padding-top: 12px; font-size: 12px; }
+  .user-row { display: flex; align-items: center; gap: 10px; padding: 6px 8px; }
+  .avatar { width: 28px; height: 28px; border-radius: 50%; background: var(--a-surface-2); border: 1px solid var(--a-border-strong); display: grid; place-items: center; font-size: 11px; font-weight: 700; color: var(--a-text-2); }
+  .foot-links { display: flex; gap: 2px; padding: 6px 4px 0; white-space: nowrap; }
+  .foot-links a, .foot-links button { color: var(--a-text-3); font-size: 12px; padding: 4px 5px; border-radius: 4px; }
+  .foot-links a:hover, .foot-links button:hover { color: var(--a-text); background: var(--a-surface-2); }
 
-  .stat-glow {
-    font-size: 2.25rem; font-weight: 800; line-height: 1; letter-spacing: -0.04em; color: var(--adm-lime);
+  .main { min-width: 0; }
+  .topbar {
+    position: sticky; top: 0; z-index: 30; height: 56px; display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    padding: 0 28px; background: color-mix(in srgb, var(--a-bg) 88%, transparent); backdrop-filter: blur(10px); border-bottom: 1px solid var(--a-border);
   }
+  .topbar h1 { font-size: 16px; font-weight: 600; margin: 0; letter-spacing: -0.01em; }
+  .topbar .sub { font-size: 12px; color: var(--a-text-3); margin-left: 10px; }
+  .conn { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: var(--a-text-2); }
+  .conn i { width: 7px; height: 7px; border-radius: 50%; background: var(--a-text-3); display: inline-block; }
+  .conn.live i { background: var(--a-good); }
+  .conn.err i { background: var(--a-bad); }
+  .content { padding: 24px 28px 64px; max-width: 1440px; }
+  .page { display: none; }
+  .page.active { display: block; }
 
-  /* Table styling */
-  .adm-table { width: 100%; border-collapse: separate; border-spacing: 0; }
-  .adm-table th {
-    padding: 12px 16px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.15em;
-    color: var(--adm-mute); border-bottom: 1px solid var(--adm-border); text-align: left; font-weight: 600;
-  }
-  .adm-table td {
-    padding: 14px 16px; font-size: 13px; border-bottom: 1px solid var(--adm-border); vertical-align: middle;
-    color: var(--adm-text);
-  }
-  .adm-table tbody tr { transition: background 0.15s ease; cursor: pointer; }
-  .adm-table tbody tr:hover { background: var(--adm-card-hover); }
+  /* ---------- Cards / grids ---------- */
+  .card { background: var(--a-surface); border: 1px solid var(--a-border); border-radius: var(--a-radius); }
+  .card-h { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 18px; border-bottom: 1px solid var(--a-border); }
+  .card-h h2 { font-size: 13.5px; font-weight: 600; margin: 0; }
+  .card-b { padding: 18px; }
+  .grid { display: grid; gap: 16px; align-items: start; }
+  .grid > * { min-width: 0; }
+  .kpis { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .kpi { padding: 16px 18px; }
+  .kpi .l { font-size: 12px; color: var(--a-text-2); font-weight: 500; display: flex; justify-content: space-between; }
+  .kpi .v { font-size: 26px; font-weight: 600; letter-spacing: -0.02em; margin-top: 6px; line-height: 1.1; }
+  .kpi .d { font-size: 12px; color: var(--a-text-3); margin-top: 6px; display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+  .delta { font-weight: 600; }
+  .delta.up { color: var(--a-good); } .delta.down { color: var(--a-bad); }
+  .two { grid-template-columns: 2fr 1fr; }
+  .three { grid-template-columns: repeat(3, 1fr); }
+  .split { grid-template-columns: 360px 1fr; }
 
-  .badge-lime { background: rgba(191, 255, 26, 0.15); color: var(--adm-lime); border: 1px solid rgba(191, 255, 26, 0.3); }
-  .badge-zinc { background: var(--adm-card-hover); color: var(--adm-mute); border: 1px solid var(--adm-border); }
-  .badge-orange { background: rgba(249, 115, 22, 0.12); color: #EA580C; border: 1px solid rgba(249, 115, 22, 0.25); }
-  .badge-blue { background: rgba(59, 130, 246, 0.12); color: #2563EB; border: 1px solid rgba(59, 130, 246, 0.25); }
-  .badge-purple { background: rgba(168, 85, 247, 0.12); color: #9333EA; border: 1px solid rgba(168, 85, 247, 0.25); }
+  /* ---------- Buttons ---------- */
+  .btn { display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0 12px; border-radius: 6px; font-size: 13px; font-weight: 500; border: 1px solid var(--a-border-strong); background: var(--a-surface); color: var(--a-text); white-space: nowrap; }
+  .btn:hover { background: var(--a-surface-2); border-color: var(--a-text-3); }
+  .btn:disabled { opacity: .5; cursor: not-allowed; }
+  .btn.primary { background: var(--a-accent); color: var(--a-accent-ink); border-color: var(--a-accent); font-weight: 600; }
+  .btn.primary:hover { filter: brightness(1.06); }
+  .btn.danger { color: var(--a-bad); }
+  .btn.danger:hover { background: var(--a-bad-soft); border-color: var(--a-bad); }
+  .btn.sm { height: 28px; padding: 0 9px; font-size: 12px; }
+  .btn.ghost { border-color: transparent; background: transparent; }
+  .btn svg { width: 14px; height: 14px; }
+  .link { color: var(--a-accent); font-weight: 500; }
+  .link:hover { text-decoration: underline; }
 
-  /* Product grid cards */
-  .p-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1.25rem; }
-  .p-card {
-    background: var(--adm-card); border: 1px solid var(--adm-border); border-radius: 12px;
-    overflow: hidden; cursor: pointer; transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
-  }
-  .p-card:hover {
-    transform: translateY(-2px); border-color: var(--adm-lime);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1), 0 0 16px var(--adm-lime-glow);
-  }
+  /* ---------- Toolbar / segmented ---------- */
+  .toolbar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; padding: 12px 18px; border-bottom: 1px solid var(--a-border); }
+  .toolbar .grow { flex: 1; min-width: 200px; }
+  .toolbar input, .toolbar select { height: 32px; padding-top: 0; padding-bottom: 0; width: auto; }
+  .seg { display: inline-flex; border: 1px solid var(--a-border-strong); border-radius: 6px; overflow: hidden; background: var(--a-surface); }
+  .seg button { height: 30px; padding: 0 11px; font-size: 12.5px; font-weight: 500; color: var(--a-text-2); border-right: 1px solid var(--a-border); display: inline-flex; align-items: center; gap: 6px; }
+  .seg button:last-child { border-right: 0; }
+  .seg button:hover { color: var(--a-text); }
+  .seg button.active { background: var(--a-surface-2); color: var(--a-text); }
+  .seg button b { font-weight: 600; color: var(--a-text-3); font-size: 11px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .chip { height: 28px; padding: 0 11px; border-radius: 999px; border: 1px solid var(--a-border-strong); font-size: 12.5px; color: var(--a-text-2); display: inline-flex; align-items: center; gap: 6px; }
+  .chip.active { background: var(--a-text); color: var(--a-bg); border-color: var(--a-text); }
+  .chip b { font-weight: 500; opacity: .7; }
 
-  .toast {
-    position: fixed; bottom: 24px; right: 24px; background: var(--adm-card); border: 1px solid var(--adm-lime);
-    color: var(--adm-text); padding: 14px 20px; border-radius: 8px; font-size: 13px; font-weight: 500;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.25); z-index: 1000; transform: translateY(100px); opacity: 0;
-    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-  .toast.show { transform: translateY(0); opacity: 1; }
+  /* ---------- Table ---------- */
+  .tbl-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; }
+  th { text-align: left; font-size: 11.5px; font-weight: 600; color: var(--a-text-3); text-transform: uppercase; letter-spacing: 0.04em; padding: 10px 14px; border-bottom: 1px solid var(--a-border); white-space: nowrap; user-select: none; }
+  th.sort { cursor: pointer; } th.sort:hover { color: var(--a-text); }
+  th.sorted { color: var(--a-text); }
+  td { padding: 11px 14px; border-bottom: 1px solid var(--a-border); vertical-align: middle; font-size: 13px; }
+  tbody tr:last-child td { border-bottom: 0; }
+  tbody tr.row { cursor: pointer; }
+  tbody tr.row:hover { background: var(--a-surface-2); }
+  tbody tr.selected { background: var(--a-accent-soft); }
+  td.r, th.r { text-align: right; }
+  .cb { width: 15px; height: 15px; accent-color: var(--a-accent); cursor: pointer; padding: 0; }
+  .thumb { width: 36px; height: 36px; border-radius: 6px; object-fit: cover; background: var(--a-surface-2); border: 1px solid var(--a-border); flex: none; }
+  .prod { display: flex; align-items: center; gap: 10px; min-width: 240px; }
+  .prod .n { font-weight: 500; max-width: 360px; }
+  .empty { padding: 48px 20px; text-align: center; color: var(--a-text-3); font-size: 13px; }
+  .empty strong { display: block; color: var(--a-text-2); font-weight: 500; margin-bottom: 4px; }
+  .pager { display: flex; align-items: center; justify-content: space-between; padding: 10px 18px; font-size: 12.5px; color: var(--a-text-3); border-top: 1px solid var(--a-border); }
+  .pager .btns { display: flex; gap: 6px; }
 
-  .tab-pane { display: none; }
-  .tab-pane.active { display: block; animation: fadeIn 0.25s ease; }
-  @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+  /* ---------- Status ---------- */
+  .st { display: inline-flex; align-items: center; gap: 6px; height: 22px; padding: 0 8px; border-radius: 999px; font-size: 11.5px; font-weight: 600; white-space: nowrap; border: 1px solid transparent; }
+  .st::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+  .st.good { color: var(--a-good); background: var(--a-good-soft); }
+  .st.warn { color: var(--a-warn); background: var(--a-warn-soft); }
+  .st.bad { color: var(--a-bad); background: var(--a-bad-soft); }
+  .st.info { color: var(--a-info); background: var(--a-info-soft); }
+  .st.neutral { color: var(--a-text-2); background: var(--a-surface-2); }
+  .tag { display: inline-block; font-size: 11.5px; font-weight: 500; color: var(--a-text-2); background: var(--a-surface-2); border: 1px solid var(--a-border); border-radius: 4px; padding: 1px 6px; white-space: nowrap; }
 
-  .modal-overlay {
-    position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(8px);
-    z-index: 200; display: flex; align-items: center; justify-content: center; padding: 1.5rem;
-    opacity: 0; pointer-events: none; transition: opacity 0.2s;
+  /* ---------- Lists ---------- */
+  .list { display: flex; flex-direction: column; }
+  .li { display: flex; align-items: center; gap: 12px; padding: 11px 18px; border-bottom: 1px solid var(--a-border); font-size: 13px; }
+  .li:last-child { border-bottom: 0; }
+  .li.click { cursor: pointer; } .li.click:hover { background: var(--a-surface-2); }
+  .li .t { flex: 1; min-width: 0; }
+  .li .t small { display: block; color: var(--a-text-3); font-size: 12px; margin-top: 1px; }
+  .bar { height: 6px; border-radius: 3px; background: var(--a-surface-2); overflow: hidden; }
+  .bar i { display: block; height: 100%; background: var(--a-accent); border-radius: 3px; }
+
+  /* ---------- Chart ---------- */
+  .chart { position: relative; }
+  .chart svg { width: 100%; height: 200px; display: block; overflow: visible; }
+  .chart .bar-rect { fill: var(--a-accent); opacity: .85; }
+  .chart .bar-rect:hover, .chart .bar-rect.hot { opacity: 1; }
+  .chart .hit { fill: transparent; }
+  .chart .grid-line { stroke: var(--a-border); stroke-width: 1; }
+  .chart .axis-t { fill: var(--a-text-3); font-size: 11px; }
+  .tip { position: absolute; pointer-events: none; background: var(--a-text); color: var(--a-bg); font-size: 12px; padding: 6px 9px; border-radius: 6px; white-space: nowrap; transform: translate(-50%, -110%); opacity: 0; transition: opacity .1s; }
+  .tip.show { opacity: 1; }
+  .tip b { font-weight: 600; }
+
+  /* ---------- Drawer / modal ---------- */
+  .scrim { position: fixed; inset: 0; background: rgba(0,0,0,.5); z-index: 80; opacity: 0; pointer-events: none; transition: opacity .18s; }
+  .scrim.open { opacity: 1; pointer-events: auto; }
+  .drawer { position: fixed; top: 0; right: 0; bottom: 0; width: min(560px, 100vw); background: var(--a-surface); border-left: 1px solid var(--a-border); z-index: 90; transform: translateX(100%); transition: transform .22s cubic-bezier(.2,.8,.2,1); display: flex; flex-direction: column; box-shadow: var(--a-shadow); }
+  .drawer.open { transform: none; }
+  .drawer-h { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 20px; border-bottom: 1px solid var(--a-border); }
+  .drawer-h h2 { font-size: 15px; font-weight: 600; margin: 0; }
+  .drawer-b { padding: 20px; overflow-y: auto; flex: 1; }
+  .drawer-f { padding: 12px 20px; border-top: 1px solid var(--a-border); display: flex; gap: 8px; justify-content: flex-end; }
+  .modal { position: fixed; inset: 0; z-index: 95; display: grid; place-items: center; padding: 20px; opacity: 0; pointer-events: none; transition: opacity .15s; }
+  .modal.open { opacity: 1; pointer-events: auto; }
+  .modal .box { background: var(--a-surface); border: 1px solid var(--a-border); border-radius: 10px; width: min(460px, 100%); box-shadow: var(--a-shadow); }
+  .kv { display: grid; grid-template-columns: 120px 1fr; gap: 6px 12px; font-size: 13px; }
+  .kv dt { color: var(--a-text-3); } .kv dd { margin: 0; }
+  .sec { margin-top: 22px; }
+  .sec h3 { font-size: 11.5px; text-transform: uppercase; letter-spacing: .06em; color: var(--a-text-3); font-weight: 600; margin: 0 0 10px; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .form-grp { margin-bottom: 14px; }
+  .timeline { border-left: 2px solid var(--a-border); margin-left: 5px; padding-left: 14px; }
+  .timeline .ev { position: relative; padding-bottom: 12px; font-size: 13px; }
+  .timeline .ev::before { content: ''; position: absolute; left: -19px; top: 6px; width: 8px; height: 8px; border-radius: 50%; background: var(--a-text-3); }
+  .timeline .ev:first-child::before { background: var(--a-accent); }
+  .timeline .ev small { display: block; color: var(--a-text-3); font-size: 12px; }
+  .msg-body { white-space: pre-wrap; line-height: 1.6; background: var(--a-surface-2); border: 1px solid var(--a-border); border-radius: 8px; padding: 14px; font-size: 13.5px; }
+  .reply { border-left: 3px solid var(--a-accent); padding: 8px 12px; margin-top: 10px; background: var(--a-surface-2); border-radius: 0 6px 6px 0; font-size: 13px; white-space: pre-wrap; }
+  .reply small { display: block; color: var(--a-text-3); font-size: 11.5px; margin-bottom: 4px; }
+  .msg-item { padding: 12px 16px; border-bottom: 1px solid var(--a-border); cursor: pointer; }
+  .msg-item:hover { background: var(--a-surface-2); }
+  .msg-item.active { background: var(--a-surface-2); box-shadow: inset 2px 0 0 var(--a-accent); }
+  .msg-item .top { display: flex; justify-content: space-between; gap: 8px; font-size: 13px; }
+  .msg-item .top b { font-weight: 600; }
+  .msg-item.unread .top b::before { content: ''; display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--a-accent); margin-right: 7px; vertical-align: 1px; }
+  .msg-item .prev { color: var(--a-text-3); font-size: 12.5px; margin-top: 3px; }
+  .bulk { display: none; align-items: center; gap: 10px; padding: 10px 18px; background: var(--a-accent-soft); border-bottom: 1px solid var(--a-border); font-size: 13px; }
+  .bulk.show { display: flex; }
+  .toast-wrap { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); z-index: 120; display: flex; flex-direction: column; gap: 8px; align-items: center; }
+  .toast { background: var(--a-text); color: var(--a-bg); font-size: 13px; font-weight: 500; padding: 10px 14px; border-radius: 8px; box-shadow: var(--a-shadow); animation: tin .2s ease; display: flex; gap: 10px; align-items: center; }
+  .toast.err { background: var(--a-bad); color: #fff; }
+  @keyframes tin { from { opacity: 0; transform: translateY(8px);} to { opacity: 1; transform: none; } }
+  .banner { padding: 10px 14px; border-radius: 6px; font-size: 13px; border: 1px solid; margin-bottom: 16px; display: flex; gap: 10px; align-items: flex-start; }
+  .banner.warn { color: var(--a-warn); border-color: var(--a-warn); background: var(--a-warn-soft); }
+  .banner.bad { color: var(--a-bad); border-color: var(--a-bad); background: var(--a-bad-soft); }
+  .guard { max-width: 420px; margin: 80px auto; padding: 32px; text-align: center; }
+  .guard h2 { font-size: 18px; margin: 12px 0 6px; }
+  .guard p { color: var(--a-text-2); font-size: 13.5px; margin: 0 0 18px; }
+  .guard code { font-family: 'JetBrains Mono', monospace; font-size: 12px; background: var(--a-surface-2); padding: 2px 5px; border-radius: 4px; }
+  .skeleton { background: linear-gradient(90deg, var(--a-surface-2) 25%, var(--a-border) 50%, var(--a-surface-2) 75%); background-size: 200% 100%; animation: sk 1.2s infinite; border-radius: 4px; height: 12px; }
+  @keyframes sk { to { background-position: -200% 0; } }
+  .switch { position: relative; width: 34px; height: 20px; border-radius: 999px; background: var(--a-border-strong); flex: none; transition: background .15s; }
+  .switch::after { content: ''; position: absolute; top: 2px; left: 2px; width: 16px; height: 16px; border-radius: 50%; background: #fff; transition: transform .15s; }
+  .switch.on { background: var(--a-accent); } .switch.on::after { transform: translateX(14px); }
+  .kbd { font-family: 'JetBrains Mono', monospace; font-size: 11px; border: 1px solid var(--a-border-strong); border-radius: 4px; padding: 0 5px; color: var(--a-text-3); }
+  .mobile-nav { display: none; }
+  #print-area { display: none; }
+
+  @media (max-width: 1100px) { .kpis { grid-template-columns: repeat(2, 1fr); } .two, .three, .split { grid-template-columns: 1fr; } }
+  @media (max-width: 860px) {
+    .shell { grid-template-columns: 1fr; }
+    .sidebar { display: none; }
+    .mobile-nav { display: flex; gap: 4px; overflow-x: auto; padding: 8px 16px; border-bottom: 1px solid var(--a-border); background: var(--a-surface); position: sticky; top: 56px; z-index: 29; }
+    .mobile-nav .nav-item { width: auto; white-space: nowrap; }
+    .topbar, .content { padding-left: 16px; padding-right: 16px; }
+    .kpis { grid-template-columns: 1fr 1fr; }
+    .form-row { grid-template-columns: 1fr; }
   }
-  .modal-overlay.open { opacity: 1; pointer-events: auto; }
+  @media print {
+    body * { visibility: hidden; }
+    #print-area, #print-area * { visibility: visible; }
+    #print-area { display: block; position: absolute; left: 0; top: 0; width: 100%; padding: 32px; color: #000; background: #fff; font-size: 13px; }
+    #print-area table { width: 100%; border-collapse: collapse; } #print-area td, #print-area th { border-bottom: 1px solid #ccc; padding: 6px 4px; text-align: left; color: #000; }
+  }
 </style>
 </head>
-<body class="min-h-screen flex flex-col">
+<body>
 
-  <!-- Top Utilities Bar -->
-  <div class="border-b border-[var(--adm-border)] bg-[var(--adm-card)]">
-    <div class="max-w-7xl mx-auto px-6 h-10 flex items-center justify-between text-[11px] tracking-[0.18em] uppercase text-[var(--adm-mute)]">
-      <div class="flex items-center gap-3">
-        <span class="w-2 h-2 rounded-full bg-lime animate-pulse"></span>
-        <span class="font-semibold text-[var(--adm-text)]">Store Operations Command</span>
-        <span class="text-[var(--adm-border)]">|</span>
-        <span class="text-lime">Live Production</span>
+<div id="guard" class="hidden"></div>
+
+<div class="shell" id="shell">
+  <aside class="sidebar">
+    <a class="brand" href="/">
+      <img src="/brand/logo-dark.svg" alt="BudgetThrills" class="logo-dark"><img src="/brand/logo-light.svg" alt="BudgetThrills" class="logo-light">
+      <span class="brand-tag">Admin</span>
+    </a>
+    <nav class="nav" id="nav">
+      <button class="nav-item active" data-page="overview"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>Overview</button>
+      <button class="nav-item" data-page="orders"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2 2h2l2.7 12.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L22 7H5.1"/></svg>Orders<span class="nav-count" id="nc-orders"></span></button>
+      <button class="nav-item" data-page="catalog"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 8a2 2 0 0 0-1-1.7l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.7l7 4a2 2 0 0 0 2 0l7-4a2 2 0 0 0 1-1.7Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg>Catalog<span class="nav-count" id="nc-catalog"></span></button>
+      <button class="nav-item" data-page="messages"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg>Messages<span class="nav-count" id="nc-messages"></span></button>
+      <button class="nav-item" data-page="promos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.6 13.4 13.4 20.6a2 2 0 0 1-2.8 0L2 12V2h10l8.6 8.6a2 2 0 0 1 0 2.8Z"/><circle cx="7.5" cy="7.5" r="1.5"/></svg>Promos</button>
+      <button class="nav-item" data-page="settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1Z"/></svg>Settings</button>
+    </nav>
+    <div class="sidebar-foot">
+      <div class="user-row"><div class="avatar" id="avatar">–</div><div class="truncate"><div id="user-email" class="truncate" style="font-weight:500">Not signed in</div><div class="faint" id="user-role">Checking access…</div></div></div>
+      <div class="foot-links">
+        <a href="/" target="_blank" rel="noopener">View store</a>
+        <button id="theme-btn">Theme</button>
+        <button id="signout-btn" class="hidden">Sign out</button>
       </div>
-      <div class="flex items-center gap-6">
-        <span id="quick-clock"></span>
-        <span id="admin-user-pill" class="font-mono lowercase text-[var(--adm-text)] hidden md:inline"></span>
-        <button id="btn-admin-signout" class="hover:text-orange-500 transition hidden">&larr; Sign Out</button>
-        <a href="/" class="hover:text-lime transition flex items-center gap-1.5">&larr; Live Store</a>
+    </div>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <div style="display:flex;align-items:baseline;min-width:0"><h1 id="page-title">Overview</h1><span class="sub" id="page-sub"></span></div>
+      <div style="display:flex;align-items:center;gap:14px">
+        <span class="conn" id="conn"><i></i><span>Connecting</span></span>
+        <span class="faint" id="clock" style="font-size:12px"></span>
       </div>
+    </header>
+    <nav class="mobile-nav" id="mobile-nav"></nav>
+
+    <div class="content" id="content">
+      <div id="rules-banner"></div>
+
+      <!-- ===== OVERVIEW ===== -->
+      <section class="page active" id="page-overview">
+        <div class="grid kpis" id="kpis">
+          <div class="card kpi"><div class="l"><span>Revenue · 30 days</span></div><div class="v num" id="k-rev">—</div><div class="d" id="k-rev-d"></div></div>
+          <div class="card kpi"><div class="l"><span>Orders · 30 days</span></div><div class="v num" id="k-ord">—</div><div class="d" id="k-ord-d"></div></div>
+          <div class="card kpi"><div class="l"><span>Awaiting fulfilment</span></div><div class="v num" id="k-fulfil">—</div><div class="d" id="k-fulfil-d"></div></div>
+          <div class="card kpi"><div class="l"><span>Unread messages</span></div><div class="v num" id="k-msg">—</div><div class="d" id="k-msg-d"></div></div>
+        </div>
+
+        <div class="grid two" style="margin-top:16px">
+          <div class="card">
+            <div class="card-h"><h2>Daily revenue</h2><div class="seg" id="chart-range"><button data-days="7">7d</button><button data-days="30" class="active">30d</button><button data-days="90">90d</button></div></div>
+            <div class="card-b"><div class="chart" id="rev-chart"></div></div>
+          </div>
+          <div class="card">
+            <div class="card-h"><h2>Needs attention</h2><span class="faint" id="attn-count"></span></div>
+            <div class="list" id="attn-list" style="max-height:340px;overflow-y:auto"></div>
+          </div>
+        </div>
+
+        <div class="grid two" style="margin-top:16px">
+          <div class="card">
+            <div class="card-h"><h2>Recent orders</h2><button class="btn sm ghost link" data-go="orders">View all</button></div>
+            <div class="tbl-wrap"><table><thead><tr><th>Order</th><th>Customer</th><th>Date</th><th class="r">Total</th><th>Status</th></tr></thead><tbody id="recent-orders"></tbody></table></div>
+          </div>
+          <div class="card">
+            <div class="card-h"><h2>Top products · all time</h2><span class="faint">by units sold</span></div>
+            <div class="list" id="top-products"></div>
+          </div>
+        </div>
+
+        <div class="grid two" style="margin-top:16px">
+          <div class="card">
+            <div class="card-h"><h2>Order status breakdown</h2></div>
+            <div class="list" id="status-breakdown"></div>
+          </div>
+          <div class="card">
+            <div class="card-h"><h2>Catalog by category</h2><span class="faint" id="cat-total"></span></div>
+            <div class="list" id="cat-breakdown"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== ORDERS ===== -->
+      <section class="page" id="page-orders">
+        <div class="card">
+          <div class="toolbar">
+            <div class="seg" id="order-status-seg"></div>
+            <select id="order-range" style="width:auto"><option value="0">All time</option><option value="7">Last 7 days</option><option value="30">Last 30 days</option><option value="90">Last 90 days</option></select>
+            <input class="grow" id="order-search" type="search" placeholder="Search order ID, customer, email, item…">
+            <button class="btn" id="export-orders"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m0 0 4-4m-4 4-4-4M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>Export CSV</button>
+          </div>
+          <div class="bulk" id="bulk"><span><b id="bulk-n">0</b> selected</span>
+            <select id="bulk-status" style="width:auto;height:30px;padding-top:0;padding-bottom:0"><option value="">Change status…</option></select>
+            <button class="btn sm primary" id="bulk-apply">Apply</button>
+            <button class="btn sm ghost" id="bulk-clear">Clear</button>
+          </div>
+          <div class="tbl-wrap"><table id="orders-table"><thead><tr>
+            <th style="width:36px"><input type="checkbox" class="cb" id="sel-all"></th>
+            <th class="sort" data-sort="id">Order</th><th class="sort" data-sort="date">Date</th><th class="sort" data-sort="customer">Customer</th><th>Items</th><th>Payment</th><th class="r sort" data-sort="total">Total</th><th class="sort" data-sort="status">Status</th><th>Tracking</th>
+          </tr></thead><tbody id="orders-body"></tbody></table></div>
+          <div class="pager" id="orders-pager"></div>
+        </div>
+      </section>
+
+      <!-- ===== CATALOG ===== -->
+      <section class="page" id="page-catalog">
+        <div class="grid kpis" style="margin-bottom:16px">
+          <div class="card kpi"><div class="l">Products listed</div><div class="v num" id="c-count">—</div><div class="d" id="c-cats"></div></div>
+          <div class="card kpi"><div class="l">Average list price</div><div class="v num" id="c-avg">—</div><div class="d">median <span id="c-median" class="num"></span></div></div>
+          <div class="card kpi"><div class="l">Average discount vs MSRP</div><div class="v num" id="c-disc">—</div><div class="d">across items with an MSRP</div></div>
+          <div class="card kpi"><div class="l">Products with sales</div><div class="v num" id="c-sold">—</div><div class="d" id="c-sold-d"></div></div>
+        </div>
+        <div class="card">
+          <div class="toolbar">
+            <div class="chips" id="cat-chips"></div>
+            <select id="cat-cond" style="width:auto"><option value="">Any condition</option></select>
+            <select id="cat-sort" style="width:auto"><option value="name">Name A–Z</option><option value="price-desc">Price high → low</option><option value="price-asc">Price low → high</option><option value="discount">Biggest discount</option><option value="sold">Best selling</option><option value="photos">Fewest photos</option></select>
+            <input class="grow" id="cat-search" type="search" placeholder="Search name, brand, condition…">
+            <button class="btn" id="export-catalog">Export JSON</button>
+          </div>
+          <div class="tbl-wrap"><table><thead><tr><th>Product</th><th>Category</th><th>Condition</th><th class="r">Price</th><th class="r">MSRP</th><th class="r">Off</th><th class="r">Sold</th><th class="r">Revenue</th><th class="r">Photos</th></tr></thead><tbody id="catalog-body"></tbody></table></div>
+          <div class="pager" id="catalog-pager"></div>
+        </div>
+      </section>
+
+      <!-- ===== MESSAGES ===== -->
+      <section class="page" id="page-messages">
+        <div class="grid split">
+          <div class="card" style="overflow:hidden">
+            <div class="toolbar" style="gap:8px">
+              <div class="seg" id="msg-seg"><button data-f="unread" class="active">Unread <b id="msg-n-unread"></b></button><button data-f="all">All <b id="msg-n-all"></b></button><button data-f="replied">Replied</button></div>
+              <input id="msg-search" type="search" placeholder="Search…" class="grow" style="min-width:120px">
+            </div>
+            <div id="msg-list" style="max-height:calc(100vh - 220px);overflow-y:auto"></div>
+          </div>
+          <div class="card" id="msg-detail"><div class="empty"><strong>No message selected</strong>Pick a message from the list to read and reply.</div></div>
+        </div>
+      </section>
+
+      <!-- ===== PROMOS ===== -->
+      <section class="page" id="page-promos">
+        <div class="grid two">
+          <div class="card">
+            <div class="card-h"><h2>Coupon codes</h2><span class="faint" id="coupon-count"></span></div>
+            <div class="tbl-wrap"><table><thead><tr><th>Code</th><th>Benefit</th><th class="r">Min. order</th><th class="r">Uses</th><th>Active</th><th></th></tr></thead><tbody id="coupons-body"></tbody></table></div>
+          </div>
+          <div class="card">
+            <div class="card-h"><h2>New coupon</h2></div>
+            <div class="card-b">
+              <form id="coupon-form">
+                <div class="form-grp"><label>Code</label><input id="cp-code" class="mono" placeholder="SUMMER15" required maxlength="24" style="text-transform:uppercase"></div>
+                <div class="form-row">
+                  <div class="form-grp"><label>Type</label><select id="cp-type"><option value="percent">Percent off</option><option value="freeship">Free shipping</option></select></div>
+                  <div class="form-grp" id="cp-pct-wrap"><label>Percent off</label><input id="cp-pct" type="number" min="1" max="100" step="1" value="10"></div>
+                </div>
+                <div class="form-row">
+                  <div class="form-grp"><label>Minimum order ($, optional)</label><input id="cp-min" type="number" min="0" step="1" placeholder="0"></div>
+                  <div class="form-grp"><label>Expires (optional)</label><input id="cp-exp" type="date"></div>
+                </div>
+                <div class="form-grp"><label>Label shown to customer</label><input id="cp-label" placeholder="15% off your order"></div>
+                <button class="btn primary" type="submit">Create coupon</button>
+              </form>
+              <p class="faint" style="font-size:12px;margin:14px 0 0">Coupons are stored in Firestore and validated live at checkout. Codes with the same name as a built-in default override it.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== SETTINGS ===== -->
+      <section class="page" id="page-settings">
+        <div class="grid two">
+          <div class="card">
+            <div class="card-h"><h2>Shipping &amp; policies</h2><span class="faint" id="settings-saved"></span></div>
+            <div class="card-b">
+              <form id="settings-form">
+                <div class="form-row">
+                  <div class="form-grp"><label>Free shipping threshold ($)</label><input id="s-freemin" type="number" min="0" step="1"></div>
+                  <div class="form-grp"><label>Standard shipping ($)</label><input id="s-std" type="number" min="0" step="0.01"></div>
+                </div>
+                <div class="form-row">
+                  <div class="form-grp"><label>Express shipping ($)</label><input id="s-exp" type="number" min="0" step="0.01"></div>
+                  <div class="form-grp"><label>Return window (days)</label><input id="s-ret" type="number" min="0" step="1"></div>
+                </div>
+                <div class="form-grp"><label>Support email</label><input id="s-support" type="email"></div>
+                <div class="form-grp"><label>Storefront notice (optional, shown above the header)</label><input id="s-notice" placeholder="e.g. Shipping paused until Monday"></div>
+                <button class="btn primary" type="submit">Save settings</button>
+              </form>
+            </div>
+          </div>
+          <div>
+            <div class="card">
+              <div class="card-h"><h2>Access</h2></div>
+              <div class="card-b">
+                <dl class="kv"><dt>Signed in as</dt><dd id="a-email">—</dd><dt>User ID</dt><dd class="mono" id="a-uid">—</dd><dt>Access via</dt><dd id="a-via">—</dd></dl>
+                <p class="faint" style="font-size:12px;margin:14px 0 0">To grant another account access, set <code class="kbd">role: "admin"</code> on their <code class="kbd">users/{uid}</code> document and add them to <code class="kbd">isAdmin()</code> in firestore.rules.</p>
+              </div>
+            </div>
+            <div class="card" style="margin-top:16px">
+              <div class="card-h"><h2>Data</h2></div>
+              <div class="list">
+                <div class="li"><div class="t">Orders in Firestore<small id="d-orders">—</small></div><button class="btn sm" data-go="orders">Open</button></div>
+                <div class="li"><div class="t">Messages<small id="d-msgs">—</small></div><button class="btn sm" data-go="messages">Open</button></div>
+                <div class="li"><div class="t">Local pending orders on this device<small id="d-local">—</small></div><button class="btn sm" id="sync-local">Sync</button></div>
+              </div>
+            </div>
+            <div class="card" style="margin-top:16px">
+              <div class="card-h"><h2>Keyboard shortcuts</h2></div>
+              <div class="list" style="font-size:13px">
+                <div class="li"><div class="t">Go to Overview / Orders / Catalog / Messages</div><span class="kbd">1</span> <span class="kbd">2</span> <span class="kbd">3</span> <span class="kbd">4</span></div>
+                <div class="li"><div class="t">Focus search on the current page</div><span class="kbd">/</span></div>
+                <div class="li"><div class="t">Close panel</div><span class="kbd">Esc</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
   </div>
-
-  <!-- Primary Navigation Header -->
-  <header class="sticky top-0 z-40 bg-[var(--adm-bg)]/90 backdrop-blur-md border-b border-[var(--adm-border)]">
-    <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between gap-6">
-      
-      <div class="flex items-center gap-4">
-        <a href="/" class="flex items-center gap-3">
-          <img src="/brand/logo-dark.svg" alt="BudgetThrills" class="h-7 w-auto">
-          <span class="text-[10px] font-bold uppercase tracking-[0.2em] px-2 py-0.5 rounded bg-[var(--adm-card)] border border-[var(--adm-border)] text-lime">Admin Hub</span>
-        </a>
-      </div>
-
-      <!-- Main Section Tabs -->
-      <nav class="hidden md:flex items-center gap-1" id="admin-tabs-nav">
-        <button class="adm-nav-btn active" data-tab="overview">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
-          Overview
-        </button>
-        <button class="adm-nav-btn" data-tab="orders">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
-          Orders (<span id="nav-orders-count">0</span>)
-        </button>
-        <button class="adm-nav-btn" data-tab="catalog">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m7.5 4.27 9 5.15"/><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg>
-          Catalog (<span id="nav-cat-count">32</span>)
-        </button>
-        <button class="adm-nav-btn" data-tab="messages">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-          Messages (<span id="nav-msg-count">0</span>)
-        </button>
-        <button class="adm-nav-btn" data-tab="settings">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
-          Promos &amp; Settings
-        </button>
-      </nav>
-
-      <!-- Theme Switcher -->
-      <div class="flex items-center gap-3">
-        <button data-theme-toggle class="theme-toggle" aria-label="Toggle theme">
-          <svg class="icon-moon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
-          <svg class="icon-sun" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
-        </button>
-      </div>
-
-    </div>
-  </header>
-
-  <!-- Main Container -->
-  <main class="max-w-7xl mx-auto px-6 py-8 flex-1 w-full">
-
-    <!-- Role / Auth State Guard Container -->
-    <div id="admin-guard-container" class="hidden"></div>
-
-    <!-- Admin Content Wrapper -->
-    <div id="admin-main-content">
-
-      <!-- ==================== TAB 1: OVERVIEW ==================== -->
-      <div id="tab-overview" class="tab-pane active space-y-8">
-        
-        <!-- Top Metrics Banner -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-          <div class="adm-card">
-            <div class="flex items-center justify-between text-[11px] uppercase tracking-wider text-[var(--adm-mute)] font-semibold mb-2">
-              <span>Gross Revenue</span>
-              <span class="badge-lime px-2 py-0.5 rounded text-[10px] font-bold">Real-time</span>
-            </div>
-            <div class="stat-glow" id="stat-revenue">$0.00</div>
-            <div class="text-xs text-[var(--adm-mute)] mt-2 flex items-center gap-1.5">
-              <span class="text-lime font-semibold" id="stat-order-count">0 orders</span> processed
-            </div>
-          </div>
-
-          <div class="adm-card">
-            <div class="flex items-center justify-between text-[11px] uppercase tracking-wider text-[var(--adm-mute)] font-semibold mb-2">
-              <span>Pending Fulfillment</span>
-              <span class="badge-orange px-2 py-0.5 rounded text-[10px] font-bold">Action Needed</span>
-            </div>
-            <div class="stat-glow text-orange-500" id="stat-pending-orders">0</div>
-            <div class="text-xs text-[var(--adm-mute)] mt-2 flex items-center gap-1.5">
-              <span>Ready for eBay / Courier</span>
-            </div>
-          </div>
-
-          <div class="adm-card">
-            <div class="flex items-center justify-between text-[11px] uppercase tracking-wider text-[var(--adm-mute)] font-semibold mb-2">
-              <span>Average Order Value</span>
-              <span class="badge-blue px-2 py-0.5 rounded text-[10px] font-bold">AOV</span>
-            </div>
-            <div class="stat-glow text-blue-500" id="stat-aov">$0.00</div>
-            <div class="text-xs text-[var(--adm-mute)] mt-2">
-              Catalog Average: <span class="text-[var(--adm-text)] font-semibold" id="stat-avg-price">$112.92</span>
-            </div>
-          </div>
-
-          <div class="adm-card">
-            <div class="flex items-center justify-between text-[11px] uppercase tracking-wider text-[var(--adm-mute)] font-semibold mb-2">
-              <span>Unread Messages</span>
-              <span class="badge-purple px-2 py-0.5 rounded text-[10px] font-bold">Inbox</span>
-            </div>
-            <div class="stat-glow text-purple-500" id="stat-unread-msgs">0</div>
-            <div class="text-xs text-[var(--adm-mute)] mt-2">
-              Customer inquiries waiting reply
-            </div>
-          </div>
-        </div>
-
-        <!-- Quick Operations & Actions -->
-        <div class="grid lg:grid-cols-3 gap-6">
-          
-          <!-- Category Distribution (2 cols) -->
-          <div class="adm-card lg:col-span-2 space-y-6">
-            <div class="flex items-center justify-between">
-              <div>
-                <div class="eyebrow mb-1">Catalog Structure</div>
-                <h3 class="text-lg font-bold text-[var(--adm-text)]">Category Distribution &amp; Balance</h3>
-              </div>
-              <span class="text-xs text-[var(--adm-mute)]">4 Categories &middot; Active Inventory</span>
-            </div>
-
-            <div class="space-y-4" id="cat-bars-container"></div>
-          </div>
-
-          <!-- Quick Operations & Actions (1 col) -->
-          <div class="adm-card space-y-5">
-            <div>
-              <div class="eyebrow mb-1">Operations</div>
-              <h3 class="text-lg font-bold text-[var(--adm-text)]">Quick Actions</h3>
-            </div>
-
-            <div class="space-y-3">
-              <button class="w-full py-3 px-4 rounded-lg bg-[var(--adm-card-hover)] border border-[var(--adm-border)] hover:border-lime text-left flex items-center justify-between group transition" onclick="window.switchTab('orders')">
-                <div>
-                  <div class="text-xs font-semibold text-[var(--adm-text)] group-hover:text-lime transition">🛒 Manage &amp; Fulfill Orders</div>
-                  <div class="text-[11px] text-[var(--adm-mute)]">Stream live customer purchases</div>
-                </div>
-                <span class="text-xs text-lime">&rarr;</span>
-              </button>
-
-              <button class="w-full py-3 px-4 rounded-lg bg-[var(--adm-card-hover)] border border-[var(--adm-border)] hover:border-lime text-left flex items-center justify-between group transition" onclick="window.exportOrdersCSV()">
-                <div>
-                  <div class="text-xs font-semibold text-[var(--adm-text)] group-hover:text-lime transition">📊 Export Orders (CSV)</div>
-                  <div class="text-[11px] text-[var(--adm-mute)]">Download customer sales ledger</div>
-                </div>
-                <span class="text-xs text-lime">&darr;</span>
-              </button>
-
-              <button class="w-full py-3 px-4 rounded-lg bg-[var(--adm-card-hover)] border border-[var(--adm-border)] hover:border-lime text-left flex items-center justify-between group transition" onclick="window.exportCatalogJSON()">
-                <div>
-                  <div class="text-xs font-semibold text-[var(--adm-text)] group-hover:text-lime transition">📥 Export Catalog (JSON)</div>
-                  <div class="text-[11px] text-[var(--adm-mute)]">Download live store catalog data</div>
-                </div>
-                <span class="text-xs text-lime">&darr;</span>
-              </button>
-            </div>
-          </div>
-        </div>
-
-      </div>
-
-      <!-- ==================== TAB 2: LIVE ORDERS & FULFILLMENT ==================== -->
-      <div id="tab-orders" class="tab-pane space-y-6">
-        <div class="adm-card">
-          <div class="flex items-center justify-between flex-wrap gap-4 mb-6">
-            <div>
-              <div class="eyebrow mb-1">Live Firestore Feed</div>
-              <h3 class="text-xl font-bold text-[var(--adm-text)]">Orders &amp; Auto-Fulfillment Hub</h3>
-              <p class="text-xs text-[var(--adm-mute)] mt-1">Real customer orders stream live from the checkout page.</p>
-            </div>
-            <div class="flex items-center gap-3 flex-wrap">
-              <div class="flex items-center border border-[var(--adm-border)] rounded-lg overflow-hidden bg-[var(--adm-card-hover)]">
-                <button class="px-3 py-1.5 text-xs font-medium border-r border-[var(--adm-border)] order-filter-btn active" data-filter="all">All</button>
-                <button class="px-3 py-1.5 text-xs font-medium border-r border-[var(--adm-border)] order-filter-btn" data-filter="pending">Pending</button>
-                <button class="px-3 py-1.5 text-xs font-medium border-r border-[var(--adm-border)] order-filter-btn" data-filter="processing">Processing</button>
-                <button class="px-3 py-1.5 text-xs font-medium order-filter-btn" data-filter="shipped">Shipped</button>
-              </div>
-              <input type="text" id="order-search" placeholder="Search order #, customer, email..." class="bg-[var(--adm-card-hover)] border border-[var(--adm-border)] rounded-lg px-3 py-1.5 text-xs text-[var(--adm-text)] placeholder-[var(--adm-mute)] focus:border-lime outline-none w-56">
-              <span class="text-xs uppercase tracking-wider text-lime px-3 py-1 rounded-full bg-lime/10 border border-lime/30 font-bold" id="orders-pill">Connecting...</span>
-            </div>
-          </div>
-
-          <div id="orders-full-list" class="space-y-4"></div>
-        </div>
-      </div>
-
-      <!-- ==================== TAB 3: CATALOG & INVENTORY ==================== -->
-      <div id="tab-catalog" class="tab-pane space-y-6">
-        
-        <!-- Toolbar & Filters -->
-        <div class="adm-card flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-          <div class="flex items-center gap-2 flex-wrap">
-            <button class="px-3.5 py-1.5 rounded-full text-xs font-medium border border-[var(--adm-border)] cat-filter-btn active" data-cat="all">All (32)</button>
-            <button class="px-3.5 py-1.5 rounded-full text-xs font-medium border border-[var(--adm-border)] cat-filter-btn" data-cat="Sneakers">Sneakers (8)</button>
-            <button class="px-3.5 py-1.5 rounded-full text-xs font-medium border border-[var(--adm-border)] cat-filter-btn" data-cat="Phones">Phones (8)</button>
-            <button class="px-3.5 py-1.5 rounded-full text-xs font-medium border border-[var(--adm-border)] cat-filter-btn" data-cat="Tech">Tech (8)</button>
-            <button class="px-3.5 py-1.5 rounded-full text-xs font-medium border border-[var(--adm-border)] cat-filter-btn" data-cat="Accessories">Accessories (8)</button>
-          </div>
-
-          <div class="flex items-center gap-3 w-full md:w-auto">
-            <div class="relative flex-1 md:w-64">
-              <input type="text" id="catalog-search" placeholder="Search title, brand, tag..." class="w-full bg-[var(--adm-card-hover)] border border-[var(--adm-border)] rounded-lg px-3.5 py-2 text-xs text-[var(--adm-text)] placeholder-[var(--adm-mute)] focus:border-lime outline-none">
-            </div>
-
-            <select id="catalog-sort" class="bg-[var(--adm-card-hover)] border border-[var(--adm-border)] rounded-lg px-3 py-2 text-xs text-[var(--adm-text)] outline-none focus:border-lime">
-              <option value="featured">Sort: Featured</option>
-              <option value="price-asc">Price: Low &rarr; High</option>
-              <option value="price-desc">Price: High &rarr; Low</option>
-              <option value="discount">Highest Discount</option>
-              <option value="photos">Most Photos</option>
-            </select>
-
-            <!-- View Toggle -->
-            <div class="flex items-center border border-[var(--adm-border)] rounded-lg overflow-hidden bg-[var(--adm-card-hover)]">
-              <button id="view-table-btn" class="p-2 text-lime bg-[var(--adm-card)]" title="Table View">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" x2="21" y1="6" y2="6"/><line x1="3" x2="21" y1="12" y2="12"/><line x1="3" x2="21" y1="18" y2="18"/></svg>
-              </button>
-              <button id="view-grid-btn" class="p-2 text-[var(--adm-mute)] hover:text-[var(--adm-text)]" title="Grid View">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/></svg>
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Table View Container -->
-        <div id="catalog-table-container" class="adm-card overflow-x-auto p-0">
-          <table class="adm-table">
-            <thead>
-              <tr>
-                <th>Product</th>
-                <th>Category</th>
-                <th>Condition</th>
-                <th>Store Price</th>
-                <th>MSRP Original</th>
-                <th>Savings</th>
-                <th>Photos</th>
-                <th class="text-right">Actions</th>
-              </tr>
-            </thead>
-            <tbody id="catalog-tbody"></tbody>
-          </table>
-        </div>
-
-        <!-- Grid View Container -->
-        <div id="catalog-grid-container" class="p-grid hidden"></div>
-        <div id="no-catalog-match" class="text-center py-16 text-sm text-[var(--adm-mute)] hidden">No items found matching your filters.</div>
-      </div>
-
-      <!-- ==================== TAB 4: CONTACT MESSAGES ==================== -->
-      <div id="tab-messages" class="tab-pane space-y-6">
-        <div class="adm-card">
-          <div class="flex items-center justify-between flex-wrap gap-4 mb-6">
-            <div>
-              <div class="eyebrow mb-1">Customer Inbox</div>
-              <h3 class="text-xl font-bold text-[var(--adm-text)]">Contact Form Messages</h3>
-              <p class="text-xs text-[var(--adm-mute)] mt-1">Submissions from the /contact page stream in real-time with customer reply tracking.</p>
-            </div>
-            <div class="flex items-center gap-3">
-              <span class="text-xs uppercase tracking-wider text-lime px-3 py-1 rounded-full bg-lime/10 border border-lime/30 font-bold" id="messages-pill">Connecting...</span>
-            </div>
-          </div>
-          <div id="messages-list" class="space-y-4"></div>
-        </div>
-      </div>
-
-      <!-- ==================== TAB 5: PROMOS & STORE POLICIES ==================== -->
-      <div id="tab-settings" class="tab-pane space-y-6">
-        <div class="grid lg:grid-cols-2 gap-6">
-          
-          <!-- Active Promo Codes -->
-          <div class="adm-card space-y-4">
-            <div class="flex items-center justify-between">
-              <div>
-                <div class="eyebrow mb-1">Discount Engine</div>
-                <h3 class="text-lg font-bold text-[var(--adm-text)]">Active Store Coupons</h3>
-              </div>
-              <button onclick="window.openNewCouponModal()" class="px-3 py-1.5 rounded-lg bg-lime text-black font-bold text-xs uppercase tracking-wider hover:opacity-90 transition">+ Add Code</button>
-            </div>
-
-            <div class="space-y-3" id="coupons-list"></div>
-          </div>
-
-          <!-- Store Configuration -->
-          <div class="adm-card space-y-4">
-            <div>
-              <div class="eyebrow mb-1">Global Parameters</div>
-              <h3 class="text-lg font-bold text-[var(--adm-text)]">Store Policies &amp; Thresholds</h3>
-            </div>
-
-            <div class="space-y-3 text-xs">
-              <div class="flex items-center justify-between py-2 border-b border-[var(--adm-border)]">
-                <span class="text-[var(--adm-mute)]">Free Shipping Minimum:</span>
-                <span class="font-bold text-[var(--adm-text)]">$50.00 USD</span>
-              </div>
-              <div class="flex items-center justify-between py-2 border-b border-[var(--adm-border)]">
-                <span class="text-[var(--adm-mute)]">Standard US Shipping Fee:</span>
-                <span class="font-bold text-[var(--adm-text)]">$4.99 USD</span>
-              </div>
-              <div class="flex items-center justify-between py-2 border-b border-[var(--adm-border)]">
-                <span class="text-[var(--adm-mute)]">Express FedEx Shipping:</span>
-                <span class="font-bold text-[var(--adm-text)]">$12.99 USD</span>
-              </div>
-              <div class="flex items-center justify-between py-2 border-b border-[var(--adm-border)]">
-                <span class="text-[var(--adm-mute)]">Default Return Window:</span>
-                <span class="font-bold text-lime">30 Days (No-Question)</span>
-              </div>
-            </div>
-          </div>
-
-        </div>
-      </div>
-
-    </div>
-
-  </main>
-
-  <!-- Modal Product Inspector & Quick Editor -->
-  <div class="modal-overlay" id="adm-modal">
-    <div class="bg-[var(--adm-card)] border border-[var(--adm-border)] rounded-2xl max-w-2xl w-full max-h-[85vh] overflow-y-auto relative shadow-2xl">
-      <button class="absolute top-4 right-4 w-8 h-8 rounded-full bg-[var(--adm-card-hover)] border border-[var(--adm-border)] text-[var(--adm-text)] hover:border-lime flex items-center justify-center font-bold text-sm transition" onclick="window.closeModal()">&times;</button>
-      <div id="modal-content" class="p-6"></div>
-    </div>
-  </div>
-
-  <!-- Toast Alert -->
-  <div id="adm-toast" class="toast">Operation completed successfully.</div>
-
-  <!-- Catalog Data Base & Global Scripts -->
-  <script src="/scripts/products.js?v=4"></script>
-  <script src="/scripts/main.js?v=4" defer></script>
-
-  <!-- ==================== MAIN ADMIN SCRIPT (ES MODULE) ==================== -->
-  <script type="module">
-    import { db, auth } from '/scripts/firebase-init.js';
-    import {
-      onAuthStateChanged, signOut
-    } from 'https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js';
-    import {
-      collection, query, orderBy, onSnapshot, doc, getDoc, updateDoc, addDoc, serverTimestamp
-    } from 'https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js';
-
-    var catalog = window.BT_CATALOG || [];
-    var liveOrders = [];
-
-    // Toast helper
-    window.showToast = function(msg) {
-      var t = document.getElementById('adm-toast');
-      if (!t) return;
-      t.textContent = msg;
-      t.classList.add('show');
-      setTimeout(function() { t.classList.remove('show'); }, 3000);
-    };
-
-    // Live clock
-    function updateClock() {
-      var d = new Date();
-      var el = document.getElementById('quick-clock');
-      if (el) el.textContent = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) + ' · ' + d.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
-    }
-    setInterval(updateClock, 1000);
-    updateClock();
-
-    // Tab switcher
-    window.switchTab = function(tabId) {
-      document.querySelectorAll('.adm-nav-btn').forEach(function(btn) {
-        btn.classList.toggle('active', btn.getAttribute('data-tab') === tabId);
-      });
-      document.querySelectorAll('.tab-pane').forEach(function(pane) {
-        pane.classList.toggle('active', pane.id === 'tab-' + tabId);
-      });
-    };
-
-    document.querySelectorAll('.adm-nav-btn').forEach(function(btn) {
-      btn.addEventListener('click', function() {
-        window.switchTab(btn.getAttribute('data-tab'));
-      });
-    });
-
-    // ─── FIRESTORE ADMIN ROLE AUTHENTICATION CHECK ───────────────────────────
-    var guardContainer = document.getElementById('admin-guard-container');
-    var mainContent = document.getElementById('admin-main-content');
-    var tabsNav = document.getElementById('admin-tabs-nav');
-    var userPill = document.getElementById('admin-user-pill');
-    var signoutBtn = document.getElementById('btn-admin-signout');
-
-    onAuthStateChanged(auth, async function(user) {
-      if (!user) {
-        // Not signed in at all -> Show friendly sign-in prompt
-        mainContent.classList.add('hidden');
-        tabsNav.classList.add('opacity-30', 'pointer-events-none');
-        userPill.textContent = '';
-        signoutBtn.classList.add('hidden');
-
-        guardContainer.innerHTML = '<div class="adm-card max-w-lg mx-auto my-16 p-8 rounded-2xl text-center space-y-5">' +
-          '<div class="inline-flex p-4 rounded-full bg-lime/10 text-lime mb-2">' +
-            '<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>' +
-          '</div>' +
-          '<h2 class="text-2xl font-bold text-[var(--adm-text)]">Admin Sign In Required</h2>' +
-          '<p class="text-sm text-[var(--adm-mute)] leading-relaxed">Please sign in with your BudgetThrills account to access store operations.</p>' +
-          '<div class="pt-2">' +
-            '<a href="/signin.html?next=/admin.html" class="btn-lime">Sign in &rarr;</a>' +
-          '</div>' +
-        '</div>';
-        guardContainer.classList.remove('hidden');
-        return;
-      }
-
-      // User is signed in -> Check Firestore users/{uid} for admin role
-      userPill.textContent = user.email || 'Admin';
-      signoutBtn.classList.remove('hidden');
-
-      try {
-        var userDocSnap = await getDoc(doc(db, 'users', user.uid));
-        var userData = userDocSnap.exists() ? userDocSnap.data() : {};
-        
-        // Grant access if:
-        // 1. UID matches master admin ExPolSW2P8UvRYLI4bowoRjCRix1
-        // 2. isAdmin: true OR role: "admin" / "Admin" in Firestore users/{uid}
-        // 3. Or if matches store owner email
-        var isStoreAdmin = user.uid === 'ExPolSW2P8UvRYLI4bowoRjCRix1' ||
-          userData.isAdmin === true ||
-          userData.isAdmin === 'true' ||
-          (typeof userData.role === 'string' && userData.role.toLowerCase() === 'admin') ||
-          user.email === 'eliudsamwels7@gmail.com' ||
-          user.email === 'eliudsamuel17@gmail.com' ||
-          (user.email && user.email.includes('budgetthrills.com'));
-
-        if (isStoreAdmin) {
-          // Access granted!
-          guardContainer.classList.add('hidden');
-          mainContent.classList.remove('hidden');
-          tabsNav.classList.remove('opacity-30', 'pointer-events-none');
-          initLiveFirestoreStreams();
-        } else {
-          // Signed in but not an admin role
-          mainContent.classList.add('hidden');
-          tabsNav.classList.add('opacity-30', 'pointer-events-none');
-          guardContainer.innerHTML = '<div class="adm-card max-w-lg mx-auto my-16 p-8 rounded-2xl text-center space-y-5">' +
-            '<div class="inline-flex p-4 rounded-full bg-orange-500/10 text-orange-500 mb-2">' +
-              '<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>' +
-            '</div>' +
-            '<h2 class="text-2xl font-bold text-[var(--adm-text)]">Admin Role Required</h2>' +
-            '<p class="text-sm text-[var(--adm-mute)] leading-relaxed">Signed in as <strong class="text-[var(--adm-text)]">' + user.email + '</strong>. This account does not have the <code>admin</code> role assigned in Firestore yet.</p>' +
-            '<div class="text-xs text-[var(--adm-mute)] bg-[var(--adm-bg)] p-3 rounded-lg border border-[var(--adm-border)] font-mono text-left space-y-1">' +
-              '<div>Collection: <code>users/' + user.uid + '</code></div>' +
-              '<div>Add field: <code>role: "admin"</code> or <code>isAdmin: true</code></div>' +
-            '</div>' +
-            '<div class="pt-2 flex gap-3 justify-center">' +
-              '<a href="/account.html" class="btn-lime">Go to Account</a>' +
-            '</div>' +
-          '</div>';
-          guardContainer.classList.remove('hidden');
-        }
-      } catch (err) {
-        console.warn('Admin check note:', err.message);
-        // Fallback: If Firestore read rules are restricting, allow authenticated session
-        guardContainer.classList.add('hidden');
-        mainContent.classList.remove('hidden');
-        tabsNav.classList.remove('opacity-30', 'pointer-events-none');
-        initLiveFirestoreStreams();
-      }
-    });
-
-    signoutBtn?.addEventListener('click', async function() {
-      await signOut(auth);
-      window.location.reload();
-    });
-
-    // ─── 1. OVERVIEW & METRICS ──────────────────────────────────────────────
-    function updateMetrics() {
-      var totalRev = liveOrders.reduce(function(acc, ord) { return acc + (Number(ord.total) || 0); }, 0);
-      var pending = liveOrders.filter(function(ord) { return (ord.status || 'pending').toLowerCase() === 'pending' || (ord.status || '').toLowerCase() === 'processing'; }).length;
-      var aov = liveOrders.length > 0 ? (totalRev / liveOrders.length) : 0;
-
-      document.getElementById('stat-revenue').textContent = '$' + totalRev.toFixed(2);
-      document.getElementById('stat-order-count').textContent = liveOrders.length + ' order' + (liveOrders.length === 1 ? '' : 's');
-      document.getElementById('stat-pending-orders').textContent = pending;
-      document.getElementById('stat-aov').textContent = '$' + aov.toFixed(2);
-
-      var prices = catalog.map(function(item) { return item.price; }).sort(function(a, b) { return a - b; });
-      var avgPrice = prices.reduce(function(a, b) { return a + b; }, 0) / (prices.length || 1);
-      document.getElementById('stat-avg-price').textContent = '$' + avgPrice.toFixed(2);
-      document.getElementById('nav-cat-count').textContent = catalog.length;
-
-      // Category breakdown
-      var catCounts = {};
-      catalog.forEach(function(p) { catCounts[p.category] = (catCounts[p.category] || 0) + 1; });
-      var catBarContainer = document.getElementById('cat-bars-container');
-      if (catBarContainer) {
-        catBarContainer.innerHTML = Object.keys(catCounts).map(function(cat) {
-          var count = catCounts[cat];
-          var pct = Math.round((count / (catalog.length || 1)) * 100);
-          return '<div class="space-y-1.5">' +
-            '<div class="flex justify-between text-xs font-semibold">' +
-              '<span class="text-[var(--adm-text)]">' + cat + '</span>' +
-              '<span class="text-lime">' + count + ' products (' + pct + '%)</span>' +
-            '</div>' +
-            '<div class="h-2 rounded-full bg-[var(--adm-card-hover)] border border-[var(--adm-border)] overflow-hidden">' +
-              '<div class="h-full bg-lime rounded-full" style="width:' + pct + '%"></div>' +
-            '</div>' +
-          '</div>';
-        }).join('');
-      }
-    }
-
-    // ─── 2. LIVE FIRESTORE STREAMS (ORDERS & MESSAGES) ───────────────────────
-    function initLiveFirestoreStreams() {
-      // Stream Orders
-      function processOrdersSnapshot(snap) {
-        liveOrders = [];
-        snap.forEach(function(docSnap) {
-          var data = docSnap.data();
-          data._docId = docSnap.id;
-          liveOrders.push(data);
-        });
-
-        // Merge any client-side orders from localStorage that are pending sync
-        try {
-          var localOrders = JSON.parse(localStorage.getItem('bt-orders-v1') || '[]');
-          localOrders.forEach(function(lo) {
-            if (lo && lo.id && !liveOrders.some(function(ro) { return ro.id === lo.id || ro._docId === lo.id; })) {
-              liveOrders.push({ ...lo, _docId: lo.id });
-              // Backfill to Firestore
-              if (typeof window.BT_SAVE_FIRESTORE_ORDER === 'function') {
-                window.BT_SAVE_FIRESTORE_ORDER(lo);
-              }
-            }
-          });
-        } catch (e) {}
-
-        // Sort newest first by createdAt, timestamp, or date
-        liveOrders.sort(function(a, b) {
-          var ta = a.createdAt?.toDate ? a.createdAt.toDate().getTime() : (a.timestamp || 0);
-          var tb = b.createdAt?.toDate ? b.createdAt.toDate().getTime() : (b.timestamp || 0);
-          return tb - ta;
-        });
-        document.getElementById('orders-pill').textContent = liveOrders.length + ' Live Orders';
-        document.getElementById('nav-orders-count').textContent = liveOrders.length;
-        renderOrders();
-        updateMetrics();
-      }
-
-      try {
-        onSnapshot(collection(db, 'orders'), processOrdersSnapshot, function(err) {
-          console.warn('Orders collection stream note:', err.message);
-          document.getElementById('orders-pill').textContent = 'Ready';
-        });
-      } catch (err) {
-        console.error('Orders stream error:', err);
-      }
-
-      // Stream Messages
-      try {
-        var msgsQuery = query(collection(db, 'contact-messages'), orderBy('createdAt', 'desc'));
-        onSnapshot(msgsQuery, function(snap) {
-          var docs = [];
-          var unread = 0;
-          snap.forEach(function(docSnap) {
-            var d = docSnap.data();
-            d._id = docSnap.id;
-            if (!d.replied) unread++;
-            docs.push(d);
-          });
-          document.getElementById('stat-unread-msgs').textContent = unread;
-          document.getElementById('messages-pill').textContent = docs.length + ' Messages';
-          document.getElementById('nav-msg-count').textContent = unread;
-          renderMessagesList(docs);
-        }, function(err) {
-          console.warn('Messages stream note:', err.message);
-        });
-      } catch (err) {
-        console.error('Messages stream error:', err);
-      }
-    }
-
-    // ─── 3. ORDERS HUB RENDERER ──────────────────────────────────────────────
-    var activeOrderFilter = 'all';
-    var orderSearchQuery = '';
-
-    function renderOrders() {
-      var container = document.getElementById('orders-full-list');
-      if (!container) return;
-
-      var filtered = liveOrders.filter(function(ord) {
-        var status = (ord.status || 'pending').toLowerCase();
-        var matchFilter = activeOrderFilter === 'all' || status === activeOrderFilter;
-        var q = orderSearchQuery.toLowerCase();
-        var matchSearch = !q ||
-          (ord.id || '').toLowerCase().includes(q) ||
-          (ord.customerName || ord.email || '').toLowerCase().includes(q) ||
-          (ord.address || '').toLowerCase().includes(q);
-        return matchFilter && matchSearch;
-      });
-
-      if (filtered.length === 0) {
-        container.innerHTML = '<div class="p-12 text-center text-sm text-[var(--adm-mute)] border border-dashed border-[var(--adm-border)] rounded-xl">' +
-          (liveOrders.length === 0 ? 'No customer orders in Firestore yet. Orders placed at checkout will appear here in real-time.' : 'No orders matching filter.') +
-        '</div>';
-        return;
-      }
-
-      container.innerHTML = filtered.map(function(ord) {
-        var status = (ord.status || 'pending').toLowerCase();
-        var badgeCls = status === 'delivered' ? 'badge-lime' : status === 'shipped' ? 'badge-blue' : status === 'processing' ? 'badge-purple' : 'badge-orange';
-        var statusLabel = status.charAt(0).toUpperCase() + status.slice(1);
-        var dateStr = ord.createdAt?.toDate ? ord.createdAt.toDate().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : 'Recent';
-        var items = ord.items || [];
-
-        return '<div class="p-5 rounded-xl bg-[var(--adm-card-hover)] border border-[var(--adm-border)] flex flex-wrap items-center justify-between gap-6 hover:border-[var(--adm-lime)] transition">' +
-          '<div class="space-y-1.5 flex-1 min-w-[280px]">' +
-            '<div class="flex items-center gap-3">' +
-              '<span class="font-mono font-bold text-sm text-lime">' + (ord.id || ord._docId) + '</span>' +
-              '<span class="text-xs text-[var(--adm-mute)]">' + dateStr + '</span>' +
-              '<span class="text-[10px] uppercase tracking-wider px-2 py-0.5 rounded font-bold ' + badgeCls + '">' + statusLabel + '</span>' +
-            '</div>' +
-            '<div class="text-sm font-semibold text-[var(--adm-text)]">' + (ord.customerName || ord.email || 'Customer') + ' &middot; <span class="text-xs text-[var(--adm-mute)] font-normal">' + (ord.address || '') + '</span></div>' +
-            '<div class="text-xs text-[var(--adm-mute)]">' + items.map(function(it){ return it.name + (it.qty > 1 ? ' (x' + it.qty : ''); }).join(', ') + '</div>' +
-          '</div>' +
-          '<div class="flex items-center gap-4 flex-wrap">' +
-            '<div class="text-right">' +
-              '<div class="text-[10px] uppercase text-[var(--adm-mute)]">Total</div>' +
-              '<div class="font-bold text-lg text-[var(--adm-text)]">$' + Number(ord.total || 0).toFixed(2) + '</div>' +
-            '</div>' +
-            '<div class="flex items-center gap-2">' +
-              '<button class="px-3 py-2 rounded-lg bg-[var(--adm-card)] border border-[var(--adm-border)] text-xs text-[var(--adm-text)] hover:border-lime transition" onclick="window.inspectOrder(\'' + ord._docId + '\')">Details</button>' +
-              '<button class="px-4 py-2 rounded-lg bg-lime text-black font-bold text-xs uppercase tracking-wider hover:opacity-90 transition" onclick="window.updateOrderStatusModal(\'' + ord._docId + '\', \'' + status + '\')">Update Status</button>' +
-            '</div>' +
-          '</div>' +
-        '</div>';
-      }).join('');
-    }
-
-    document.querySelectorAll('.order-filter-btn').forEach(function(b) {
-      b.addEventListener('click', function() {
-        document.querySelectorAll('.order-filter-btn').forEach(function(x) { x.classList.remove('active'); });
-        b.classList.add('active');
-        activeOrderFilter = b.getAttribute('data-filter');
-        renderOrders();
-      });
-    });
-
-    document.getElementById('order-search')?.addEventListener('input', function(e) {
-      orderSearchQuery = e.target.value;
-      renderOrders();
-    });
-
-    // ─── 4. ORDER INSPECTION & STATUS MODAL ──────────────────────────────────
-    window.inspectOrder = function(docId) {
-      var ord = liveOrders.find(function(o) { return o._docId === docId; });
-      if (!ord) return;
-
-      var itemsHtml = (ord.items || []).map(function(it) {
-        return '<div class="flex justify-between py-2 border-b border-[var(--adm-border)] text-xs">' +
-          '<span class="text-[var(--adm-text)]">' + it.name + (it.qty > 1 ? ' × ' + it.qty : '') + '</span>' +
-          '<span class="font-mono font-bold text-[var(--adm-text)]">$' + Number(it.price * (it.qty || 1)).toFixed(2) + '</span>' +
-        '</div>';
-      }).join('');
-
-      var content = '<div class="space-y-5">' +
-        '<div class="flex justify-between items-start">' +
-          '<div><div class="eyebrow mb-1">Order Details</div><h3 class="text-xl font-bold font-mono text-lime">' + (ord.id || docId) + '</h3></div>' +
-          '<span class="px-2.5 py-1 rounded text-xs font-bold badge-lime uppercase">' + (ord.status || 'pending') + '</span>' +
-        '</div>' +
-        '<div class="grid grid-cols-2 gap-4 text-xs bg-[var(--adm-card-hover)] p-4 rounded-xl border border-[var(--adm-border)]">' +
-          '<div><span class="text-[var(--adm-mute)] block">Customer:</span><strong class="text-[var(--adm-text)]">' + (ord.customerName || ord.email) + '</strong></div>' +
-          '<div><span class="text-[var(--adm-mute)] block">Email:</span><strong class="text-[var(--adm-text)]">' + (ord.email || '—') + '</strong></div>' +
-          '<div><span class="text-[var(--adm-mute)] block">Phone:</span><strong class="text-[var(--adm-text)]">' + (ord.phone || '—') + '</strong></div>' +
-          '<div><span class="text-[var(--adm-mute)] block">Carrier Tracking:</span><strong class="text-lime font-mono">' + (ord.trackingNumber || 'Pending scan') + '</strong></div>' +
-          '<div class="col-span-2"><span class="text-[var(--adm-mute)] block">Shipping Address:</span><strong class="text-[var(--adm-text)] leading-relaxed">' + (ord.address || '—') + '</strong></div>' +
-        '</div>' +
-        '<div><div class="eyebrow mb-2">Purchased Items</div>' + itemsHtml + '</div>' +
-        '<div class="flex justify-between text-sm font-bold pt-2"><span class="text-[var(--adm-text)]">Order Total</span><span class="text-lime">$' + Number(ord.total || 0).toFixed(2) + '</span></div>' +
-      '</div>';
-
-      document.getElementById('modal-content').innerHTML = content;
-      document.getElementById('adm-modal').classList.add('open');
-    };
-
-    window.updateOrderStatusModal = function(docId, currentStatus) {
-      var content = '<div class="space-y-5">' +
-        '<div><div class="eyebrow mb-1">Fulfillment Action</div><h3 class="text-xl font-bold text-[var(--adm-text)]">Update Order Status</h3></div>' +
-        '<div class="space-y-3">' +
-          '<div><label class="text-xs text-[var(--adm-mute)] block mb-1">New Status</label>' +
-            '<select id="new-order-status" class="w-full bg-[var(--adm-card-hover)] border border-[var(--adm-border)] rounded-lg p-2.5 text-sm text-[var(--adm-text)] focus:border-lime outline-none">' +
-              '<option value="pending"' + (currentStatus === 'pending' ? ' selected' : '') + '>Pending</option>' +
-              '<option value="processing"' + (currentStatus === 'processing' ? ' selected' : '') + '>Processing</option>' +
-              '<option value="shipped"' + (currentStatus === 'shipped' ? ' selected' : '') + '>Shipped (Tracking Issued)</option>' +
-              '<option value="delivered"' + (currentStatus === 'delivered' ? ' selected' : '') + '>Delivered</option>' +
-            '</select>' +
-          '</div>' +
-          '<div><label class="text-xs text-[var(--adm-mute)] block mb-1">Carrier Tracking # (Optional)</label>' +
-            '<input type="text" id="new-order-tracking" class="w-full bg-[var(--adm-card-hover)] border border-[var(--adm-border)] rounded-lg p-2.5 text-sm text-[var(--adm-text)] focus:border-lime outline-none font-mono" placeholder="USPS-940012345678">' +
-          '</div>' +
-        '</div>' +
-        '<div class="flex justify-end gap-3 pt-3">' +
-          '<button class="px-4 py-2 rounded-lg bg-[var(--adm-card-hover)] text-xs text-[var(--adm-text)] hover:border-lime border border-[var(--adm-border)]" onclick="window.closeModal()">Cancel</button>' +
-          '<button class="px-5 py-2.5 rounded-lg bg-lime text-black font-bold text-xs uppercase tracking-wider" onclick="window.saveOrderStatus(\'' + docId + '\')">Save Changes</button>' +
-        '</div>' +
-      '</div>';
-
-      document.getElementById('modal-content').innerHTML = content;
-      document.getElementById('adm-modal').classList.add('open');
-    };
-
-    window.saveOrderStatus = async function(docId) {
-      var newStatus = document.getElementById('new-order-status')?.value;
-      var tracking = document.getElementById('new-order-tracking')?.value?.trim();
-      try {
-        var updatePayload = { status: newStatus, updatedAt: serverTimestamp() };
-        if (tracking) updatePayload.trackingNumber = tracking;
-        await updateDoc(doc(db, 'orders', docId), updatePayload);
-        window.closeModal();
-        window.showToast('Order ' + docId + ' updated to ' + newStatus);
-      } catch (err) {
-        console.error('Error updating order:', err);
-        window.showToast('Error: ' + err.message);
-      }
-    };
-
-    window.closeModal = function() {
-      document.getElementById('adm-modal').classList.remove('open');
-    };
-
-    // ─── 5. CATALOG TABLE & GRID RENDERING ──────────────────────────────────
-    var activeCategory = 'all';
-    var catalogSearchQuery = '';
-    var activeSort = 'featured';
-
-    function renderCatalog() {
-      var q = catalogSearchQuery.toLowerCase().trim();
-      var filtered = catalog.filter(function(p) {
-        var matchCat = activeCategory === 'all' || p.category === activeCategory;
-        var matchSearch = !q || p.name.toLowerCase().indexOf(q) >= 0 || (p.tag || '').toLowerCase().indexOf(q) >= 0 || p.category.toLowerCase().indexOf(q) >= 0;
-        return matchCat && matchSearch;
-      });
-
-      if (activeSort === 'price-asc') filtered.sort(function(a, b) { return a.price - b.price; });
-      else if (activeSort === 'price-desc') filtered.sort(function(a, b) { return b.price - a.price; });
-      else if (activeSort === 'discount') filtered.sort(function(a, b) { return (b.originalPrice - b.price) - (a.originalPrice - a.price); });
-      else if (activeSort === 'photos') filtered.sort(function(a, b) { return (b.images?.length || 0) - (a.images?.length || 0); });
-
-      var tbody = document.getElementById('catalog-tbody');
-      var gridContainer = document.getElementById('catalog-grid-container');
-      var noMatch = document.getElementById('no-catalog-match');
-
-      if (filtered.length === 0) {
-        if (tbody) tbody.innerHTML = '';
-        if (gridContainer) gridContainer.innerHTML = '';
-        if (noMatch) noMatch.classList.remove('hidden');
-        return;
-      }
-      if (noMatch) noMatch.classList.add('hidden');
-
-      if (tbody) {
-        tbody.innerHTML = filtered.map(function(item) {
-          var img = (item.images && item.images[0]) || 'https://i.ebayimg.com/images/g/Tf4AAeSwEChqcrXi/s-l1600.jpg';
-          return '<tr onclick="window.inspectProduct(\'' + item.id + '\')">' +
-            '<td><div class="flex items-center gap-3"><img src="' + img + '" class="w-10 h-10 rounded-lg object-cover bg-black border border-[var(--adm-border)]"><span class="font-medium text-[var(--adm-text)] hover:text-lime transition">' + item.name + '</span></div></td>' +
-            '<td><span class="badge-zinc px-2 py-0.5 rounded text-[11px] font-semibold">' + item.category + '</span></td>' +
-            '<td><span class="text-xs text-[var(--adm-mute)]">' + (item.tag || 'Verified') + '</span></td>' +
-            '<td><span class="font-semibold text-lime">$' + item.price.toFixed(2) + '</span></td>' +
-            '<td><span class="line-through text-xs text-[var(--adm-mute)]">$' + (item.originalPrice ? item.originalPrice.toFixed(2) : '—') + '</span></td>' +
-            '<td><span class="badge-orange px-2 py-0.5 rounded text-[10px] font-bold">' + (item.discount || 'Special') + '</span></td>' +
-            '<td><span class="text-xs text-[var(--adm-mute)]">' + (item.images ? item.images.length : 1) + ' HD</span></td>' +
-            '<td class="text-right"><button class="px-3 py-1 rounded bg-[var(--adm-card-hover)] border border-[var(--adm-border)] text-xs text-lime hover:border-lime">Inspect &rarr;</button></td>' +
-          '</tr>';
-        }).join('');
-      }
-
-      if (gridContainer) {
-        gridContainer.innerHTML = filtered.map(function(item) {
-          var img = (item.images && item.images[0]) || 'https://i.ebayimg.com/images/g/Tf4AAeSwEChqcrXi/s-l1600.jpg';
-          return '<div class="p-card group" onclick="window.inspectProduct(\'' + item.id + '\')">' +
-            '<div class="aspect-square bg-black overflow-hidden relative">' +
-              '<img src="' + img + '" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">' +
-              '<span class="absolute top-2 right-2 badge-lime px-2 py-0.5 rounded text-[10px] font-bold">' + item.category + '</span>' +
-            '</div>' +
-            '<div class="p-4 space-y-2">' +
-              '<h4 class="font-semibold text-sm text-[var(--adm-text)] line-clamp-1 group-hover:text-lime transition">' + item.name + '</h4>' +
-              '<div class="flex items-baseline justify-between">' +
-                '<span class="font-bold text-lime">$' + item.price.toFixed(2) + '</span>' +
-                '<span class="text-xs line-through text-[var(--adm-mute)]">$' + (item.originalPrice ? item.originalPrice.toFixed(2) : '') + '</span>' +
-              '</div>' +
-            '</div>' +
-          '</div>';
-        }).join('');
-      }
-    }
-
-    document.querySelectorAll('.cat-filter-btn').forEach(function(btn) {
-      btn.addEventListener('click', function() {
-        document.querySelectorAll('.cat-filter-btn').forEach(function(b) { b.classList.remove('active'); });
-        btn.classList.add('active');
-        activeCategory = btn.getAttribute('data-cat');
-        renderCatalog();
-      });
-    });
-
-    document.getElementById('catalog-search')?.addEventListener('input', function(e) {
-      catalogSearchQuery = e.target.value;
-      renderCatalog();
-    });
-
-    document.getElementById('catalog-sort')?.addEventListener('change', function(e) {
-      activeSort = e.target.value;
-      renderCatalog();
-    });
-
-    document.getElementById('view-table-btn')?.addEventListener('click', function() {
-      document.getElementById('catalog-table-container').classList.remove('hidden');
-      document.getElementById('catalog-grid-container').classList.add('hidden');
-      this.classList.add('text-lime', 'bg-[var(--adm-card)]');
-      document.getElementById('view-grid-btn').classList.remove('text-lime', 'bg-[var(--adm-card)]');
-    });
-
-    document.getElementById('view-grid-btn')?.addEventListener('click', function() {
-      document.getElementById('catalog-table-container').classList.add('hidden');
-      document.getElementById('catalog-grid-container').classList.remove('hidden');
-      this.classList.add('text-lime', 'bg-[var(--adm-card)]');
-      document.getElementById('view-table-btn').classList.remove('text-lime', 'bg-[var(--adm-card)]');
-    });
-
-    window.inspectProduct = function(productId) {
-      var item = catalog.find(function(p) { return p.id === productId; });
-      if (!item) return;
-
-      var imagesHtml = (item.images || []).map(function(img) {
-        return '<img src="' + img + '" class="w-16 h-16 rounded-lg object-cover bg-black border border-[var(--adm-border)]">';
-      }).join('');
-
-      var content = '<div class="space-y-5">' +
-        '<div class="flex justify-between items-start">' +
-          '<div><div class="eyebrow mb-1">' + item.category + ' &middot; ' + (item.tag || 'Active') + '</div><h3 class="text-xl font-bold text-[var(--adm-text)]">' + item.name + '</h3></div>' +
-          '<a href="/pdp.html?id=' + item.id + '" target="_blank" class="text-xs text-lime hover:underline">&rarr; View on Store</a>' +
-        '</div>' +
-        '<div class="flex gap-2 overflow-x-auto py-2">' + imagesHtml + '</div>' +
-        '<div class="grid grid-cols-2 gap-4 text-xs bg-[var(--adm-card-hover)] p-4 rounded-xl border border-[var(--adm-border)]">' +
-          '<div><span class="text-[var(--adm-mute)] block">Store Price:</span><strong class="text-lime text-base">$' + item.price.toFixed(2) + '</strong></div>' +
-          '<div><span class="text-[var(--adm-mute)] block">Original MSRP:</span><strong class="text-[var(--adm-text)] text-base">$' + (item.originalPrice ? item.originalPrice.toFixed(2) : '—') + '</strong></div>' +
-          '<div class="col-span-2"><span class="text-[var(--adm-mute)] block">Description:</span><p class="text-[var(--adm-mute)] leading-relaxed mt-1">' + (item.desc || item.details || '—') + '</p></div>' +
-        '</div>' +
-      '</div>';
-
-      document.getElementById('modal-content').innerHTML = content;
-      document.getElementById('adm-modal').classList.add('open');
-    };
-
-    // ─── 6. PROMOS & COUPONS ENGINE ──────────────────────────────────────────
-    var defaultCoupons = [
-      { code: 'THRILL10', discount: '10% Off Entire Order', active: true },
-      { code: 'DROP20', discount: '20% Off Orders Over $100', active: true },
-      { code: 'FREESHIP', discount: 'Free Express Shipping', active: true },
-      { code: 'VIP30', discount: '30% Off VIP Drop', active: true }
-    ];
-
-    function renderCoupons() {
-      var container = document.getElementById('coupons-list');
-      if (!container) return;
-
-      container.innerHTML = defaultCoupons.map(function(c, idx) {
-        return '<div class="p-3 rounded-lg bg-[var(--adm-card-hover)] border border-[var(--adm-border)] flex items-center justify-between">' +
-          '<div>' +
-            '<span class="font-mono font-bold text-lime text-sm">' + c.code + '</span>' +
-            '<span class="text-xs text-[var(--adm-mute)] ml-2">&middot; ' + c.discount + '</span>' +
-          '</div>' +
-          '<div class="flex items-center gap-2">' +
-            '<span class="badge-lime px-2 py-0.5 rounded text-[10px] font-bold">' + (c.active ? 'Active' : 'Paused') + '</span>' +
-            '<button class="text-xs text-[var(--adm-mute)] hover:text-orange-400 p-1" onclick="window.removeCoupon(' + idx + ')">&times;</button>' +
-          '</div>' +
-        '</div>';
-      }).join('');
-    }
-
-    window.openNewCouponModal = function() {
-      var content = '<div class="space-y-4">' +
-        '<div><div class="eyebrow mb-1">Create Coupon</div><h3 class="text-xl font-bold text-[var(--adm-text)]">New Promo Code</h3></div>' +
-        '<div class="space-y-3">' +
-          '<div><label class="text-xs text-[var(--adm-mute)] block mb-1">Coupon Code</label><input type="text" id="new-code-input" class="w-full bg-[var(--adm-card-hover)] border border-[var(--adm-border)] rounded-lg p-2 text-sm text-[var(--adm-text)] font-mono uppercase focus:border-lime outline-none" placeholder="SUMMER25"></div>' +
-          '<div><label class="text-xs text-[var(--adm-mute)] block mb-1">Discount Description</label><input type="text" id="new-desc-input" class="w-full bg-[var(--adm-card-hover)] border border-[var(--adm-border)] rounded-lg p-2 text-sm text-[var(--adm-text)] focus:border-lime outline-none" placeholder="25% Off All Products"></div>' +
-        '</div>' +
-        '<div class="flex justify-end gap-3 pt-2">' +
-          '<button class="px-4 py-2 rounded-lg bg-[var(--adm-card-hover)] text-xs text-[var(--adm-text)] hover:border-lime border border-[var(--adm-border)]" onclick="window.closeModal()">Cancel</button>' +
-          '<button class="px-5 py-2.5 rounded-lg bg-lime text-black font-bold text-xs uppercase tracking-wider" onclick="window.saveNewCoupon()">Create</button>' +
-        '</div>' +
-      '</div>';
-      document.getElementById('modal-content').innerHTML = content;
-      document.getElementById('adm-modal').classList.add('open');
-    };
-
-    window.saveNewCoupon = function() {
-      var code = document.getElementById('new-code-input')?.value?.trim().toUpperCase();
-      var desc = document.getElementById('new-desc-input')?.value?.trim();
-      if (!code) return;
-      defaultCoupons.push({ code: code, discount: desc || 'Special Promotion', active: true });
-      renderCoupons();
-      window.closeModal();
-      window.showToast('Coupon ' + code + ' created!');
-    };
-
-    window.removeCoupon = function(idx) {
-      defaultCoupons.splice(idx, 1);
-      renderCoupons();
-      window.showToast('Coupon removed.');
-    };
-
-    // ─── 7. EXPORT DATA HELPERS ──────────────────────────────────────────────
-    window.exportOrdersCSV = function() {
-      if (liveOrders.length === 0) {
-        window.showToast('No orders to export yet.');
-        return;
-      }
-      var headers = ['Order ID', 'Date', 'Customer', 'Email', 'Total ($)', 'Status', 'Address'];
-      var rows = liveOrders.map(function(o) {
-        return [
-          o.id || o._docId,
-          o.createdAt?.toDate ? o.createdAt.toDate().toISOString() : 'Recent',
-          '"' + (o.customerName || '').replace(/"/g, '""') + '"',
-          o.email || '',
-          (o.total || 0).toFixed(2),
-          o.status || 'pending',
-          '"' + (o.address || '').replace(/"/g, '""') + '"'
-        ].join(',');
-      });
-      var csvContent = 'data:text/csv;charset=utf-8,' + [headers.join(',')].concat(rows).join('\n');
-      var encodedUri = encodeURI(csvContent);
-      var link = document.createElement('a');
-      link.setAttribute('href', encodedUri);
-      link.setAttribute('download', 'budgetthrills_orders_' + Date.now() + '.csv');
-      document.body.appendChild(link);
-      link.click();
-      link.remove();
-      window.showToast('Orders exported to CSV!');
-    };
-
-    window.exportCatalogJSON = function() {
-      var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(catalog, null, 2));
-      var downloadAnchor = document.createElement('a');
-      downloadAnchor.setAttribute("href", dataStr);
-      downloadAnchor.setAttribute("download", "budgetthrills_catalog.json");
-      document.body.appendChild(downloadAnchor);
-      downloadAnchor.click();
-      downloadAnchor.remove();
-      window.showToast('Catalog exported to JSON.');
-    };
-
-    // ─── 8. MESSAGES RENDERER ────────────────────────────────────────────────
-    function renderMessagesList(docs) {
-      var messagesList = document.getElementById('messages-list');
-      if (!messagesList) return;
-
-      if (docs.length === 0) {
-        messagesList.innerHTML = '<div class="p-12 text-center text-sm text-[var(--adm-mute)] border border-dashed border-[var(--adm-border)] rounded-xl">No customer inquiries yet. Messages from /contact will appear here in real-time.</div>';
-        return;
-      }
-
-      messagesList.innerHTML = docs.map(function(d) {
-        var date = d.createdAt?.toDate ? d.createdAt.toDate() : new Date();
-        var dateStr = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) + ' at ' + date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
-        var replied = d.replied ? '<span class="badge-lime px-2 py-0.5 rounded text-[10px] font-bold">Replied</span>' : '<span class="badge-orange px-2 py-0.5 rounded text-[10px] font-bold">Unread</span>';
-
-        return '<div class="p-5 rounded-xl bg-[var(--adm-card-hover)] border border-[var(--adm-border)] space-y-3">' +
-          '<div class="flex flex-wrap items-center justify-between gap-3">' +
-            '<div class="flex items-center gap-3">' +
-              '<span class="font-mono font-bold text-sm text-[var(--adm-text)]">' + (d.name || 'Visitor') + '</span>' +
-              '<span class="text-xs text-[var(--adm-mute)]">&lt;' + (d.email || '') + '&gt;</span>' +
-              replied +
-            '</div>' +
-            '<div class="flex items-center gap-3">' +
-              '<span class="text-[10px] uppercase tracking-wider px-2 py-0.5 rounded font-bold badge-zinc">' + (d.topic || 'General') + '</span>' +
-              '<span class="text-xs text-[var(--adm-mute)]">' + dateStr + '</span>' +
-            '</div>' +
-          '</div>' +
-          (d.orderNumber ? '<div class="text-xs text-[var(--adm-mute)]">Referenced Order: <span class="font-mono text-lime">' + d.orderNumber + '</span></div>' : '') +
-          '<div class="text-sm text-[var(--adm-text)] leading-relaxed bg-[var(--adm-card)] p-3 rounded-lg border border-[var(--adm-border)]">' + (d.message || '') + '</div>' +
-        '</div>';
-      }).join('');
-    }
-
-    // Init static catalog & coupons
-    renderCatalog();
+</div>
+
+<div class="scrim" id="scrim"></div>
+<aside class="drawer" id="drawer" aria-hidden="true">
+  <div class="drawer-h"><h2 id="drawer-title"></h2><button class="btn sm ghost" id="drawer-close" aria-label="Close">✕</button></div>
+  <div class="drawer-b" id="drawer-body"></div>
+  <div class="drawer-f" id="drawer-foot"></div>
+</aside>
+<div class="modal" id="modal"><div class="box"><div class="card-b" id="modal-body"></div><div class="drawer-f" id="modal-foot"></div></div></div>
+<div class="toast-wrap" id="toasts"></div>
+<div id="print-area"></div>
+
+<script src="/scripts/products.js?v=5"></script>
+<script type="module">
+import { db, auth } from '/scripts/firebase-init.js';
+import { onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js';
+import {
+  collection, query, orderBy, onSnapshot, doc, getDoc, getDocs, setDoc, updateDoc, addDoc, deleteDoc,
+  serverTimestamp, arrayUnion, writeBatch, increment
+} from 'https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js';
+
+/* ============================== helpers ============================== */
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
+const esc = (v) => String(v ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const money = (n) => '$' + (Number(n) || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const DAY = 86400000;
+const fmtDate = (d, withTime) => d ? d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: d.getFullYear() !== new Date().getFullYear() ? 'numeric' : undefined }) + (withTime ? ' · ' + d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' }) : '') : '—';
+const rel = (d) => { if (!d) return ''; const m = Math.round((Date.now() - d.getTime()) / 60000); if (m < 1) return 'just now'; if (m < 60) return m + 'm ago'; const h = Math.round(m / 60); if (h < 24) return h + 'h ago'; const dd = Math.round(h / 24); return dd < 30 ? dd + 'd ago' : fmtDate(d); };
+const toDate = (v) => { if (!v) return null; if (v.toDate) return v.toDate(); if (typeof v === 'number') return new Date(v); const d = new Date(v); return isNaN(d) ? null : d; };
+const pct = (a, b) => b ? Math.round(((a - b) / b) * 100) : null;
+const debounce = (fn, ms) => { let t; return (...a) => { clearTimeout(t); t = setTimeout(() => fn(...a), ms); }; };
+
+function toast(msg, isErr) {
+  const el = document.createElement('div'); el.className = 'toast' + (isErr ? ' err' : ''); el.textContent = msg;
+  $('#toasts').appendChild(el); setTimeout(() => el.remove(), isErr ? 5000 : 2800);
+}
+function download(name, content, type) {
+  const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([content], { type })); a.download = name; document.body.appendChild(a); a.click(); a.remove();
+}
+function csvCell(v) { const s = String(v ?? ''); return /[",\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s; }
+
+/* ============================== status model ============================== */
+const STATUS = {
+  pending_payment: { label: 'Awaiting payment', tone: 'warn', group: 'unpaid' },
+  partially_paid:  { label: 'Partially paid',   tone: 'warn', group: 'unpaid' },
+  payment_failed:  { label: 'Payment failed',   tone: 'bad',  group: 'closed' },
+  pending:         { label: 'Pending',          tone: 'warn', group: 'open' },
+  paid:            { label: 'Paid',             tone: 'info', group: 'open' },
+  processing:      { label: 'Processing',       tone: 'info', group: 'open' },
+  shipped:         { label: 'Shipped',          tone: 'good', group: 'shipped' },
+  delivered:       { label: 'Delivered',        tone: 'good', group: 'done' },
+  cancelled:       { label: 'Cancelled',        tone: 'neutral', group: 'closed' },
+  refunded:        { label: 'Refunded',         tone: 'neutral', group: 'closed' }
+};
+const SETTABLE = ['pending', 'processing', 'paid', 'shipped', 'delivered', 'cancelled', 'refunded'];
+const normStatus = (s) => { s = String(s || 'pending').toLowerCase().trim(); return STATUS[s] ? s : (s.includes('ship') ? 'shipped' : s.includes('deliver') ? 'delivered' : s.includes('cancel') ? 'cancelled' : s.includes('paid') ? 'paid' : 'pending'); };
+const stHtml = (s) => { const k = normStatus(s), m = STATUS[k]; return `<span class="st ${m.tone}">${m.label}</span>`; };
+const countsRevenue = (o) => !['unpaid', 'closed'].includes(STATUS[normStatus(o.status)].group);
+const needsFulfil = (o) => STATUS[normStatus(o.status)].group === 'open';
+
+/* ============================== state ============================== */
+const S = {
+  catalog: (window.BT_CATALOG || []).slice(),
+  orders: [], messages: [], coupons: [], settings: null, replies: {},
+  user: null, page: 'overview',
+  o: { status: 'all', range: 0, q: '', sort: 'date', dir: -1, page: 1, per: 25, sel: new Set() },
+  c: { cat: 'all', cond: '', q: '', sort: 'name', page: 1, per: 30 },
+  m: { f: 'unread', q: '', active: null },
+  chartDays: 30,
+  unsub: []
+};
+const CATALOG_MAP = new Map(S.catalog.map(p => [p.id, p]));
+
+function normOrder(id, d) {
+  const o = { ...d, _id: id };
+  o.id = o.id || id;
+  o.status = normStatus(o.status);
+  o.customerName = o.customerName || o.customer?.name || '';
+  o.email = o.email || o.customer?.email || '';
+  o.phone = o.phone || o.customer?.phone || '';
+  o.address = o.address || o.customer?.address || '';
+  o.total = Number(o.total) || 0;
+  o.items = Array.isArray(o.items) ? o.items : [];
+  o._date = toDate(o.createdAt) || toDate(o.timestamp) || toDate(o.date) || null;
+  o._units = o.items.reduce((n, it) => n + (Number(it.qty) || 1), 0);
+  o._search = [o.id, o.customerName, o.email, o.address, o.trackingNumber, ...o.items.map(i => i.name)].join(' ').toLowerCase();
+  return o;
+}
+
+/* ============================== nav ============================== */
+const TITLES = { overview: ['Overview', ''], orders: ['Orders', 'Fulfilment & payments'], catalog: ['Catalog', 'Static listing from products.js'], messages: ['Messages', 'Contact form inbox'], promos: ['Promos', 'Coupon codes'], settings: ['Settings', 'Shipping, policies, access'] };
+function go(page) {
+  if (!TITLES[page]) page = 'overview';
+  S.page = page;
+  $$('.nav-item').forEach(b => b.classList.toggle('active', b.dataset.page === page));
+  $$('.page').forEach(p => p.classList.toggle('active', p.id === 'page-' + page));
+  $('#page-title').textContent = TITLES[page][0]; $('#page-sub').textContent = TITLES[page][1];
+  if (location.hash !== '#' + page) history.replaceState(null, '', '#' + page);
+  window.scrollTo({ top: 0 });
+}
+$('#mobile-nav').innerHTML = $('#nav').innerHTML;
+document.addEventListener('click', (e) => {
+  const nb = e.target.closest('.nav-item'); if (nb) return go(nb.dataset.page);
+  const gb = e.target.closest('[data-go]'); if (gb) return go(gb.dataset.go);
+});
+window.addEventListener('hashchange', () => go(location.hash.slice(1)));
+document.addEventListener('keydown', (e) => {
+  if (e.target.matches('input,textarea,select')) { if (e.key === 'Escape') e.target.blur(); return; }
+  if (e.key === 'Escape') { closeDrawer(); closeModal(); }
+  const map = { '1': 'overview', '2': 'orders', '3': 'catalog', '4': 'messages', '5': 'promos', '6': 'settings' };
+  if (map[e.key] && !e.metaKey && !e.ctrlKey) go(map[e.key]);
+  if (e.key === '/') { const f = $('#page-' + S.page + ' input[type=search]'); if (f) { e.preventDefault(); f.focus(); } }
+});
+$('#theme-btn').addEventListener('click', () => { const n = document.documentElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light'; document.documentElement.setAttribute('data-theme', n); try { localStorage.setItem('bt-theme', n); } catch (e) {} });
+setInterval(() => { $('#clock').textContent = new Date().toLocaleString('en-US', { weekday: 'short', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' }); }, 1000);
+
+function setConn(state, text) { const c = $('#conn'); c.className = 'conn ' + state; c.querySelector('span').textContent = text; }
+
+/* ============================== drawer / modal ============================== */
+function openDrawer(title, body, foot) {
+  $('#drawer-title').innerHTML = title; $('#drawer-body').innerHTML = body; $('#drawer-foot').innerHTML = foot || '';
+  $('#drawer').classList.add('open'); $('#scrim').classList.add('open'); $('#drawer').setAttribute('aria-hidden', 'false');
+}
+function closeDrawer() { $('#drawer').classList.remove('open'); $('#scrim').classList.remove('open'); $('#drawer').setAttribute('aria-hidden', 'true'); }
+$('#drawer-close').addEventListener('click', closeDrawer); $('#scrim').addEventListener('click', () => { closeDrawer(); closeModal(); });
+function confirmModal(title, text, okLabel, danger) {
+  return new Promise((res) => {
+    $('#modal-body').innerHTML = `<h2 style="font-size:15px;margin:0 0 8px">${esc(title)}</h2><p class="muted" style="margin:0;font-size:13.5px">${esc(text)}</p>`;
+    $('#modal-foot').innerHTML = `<button class="btn" id="m-cancel">Cancel</button><button class="btn ${danger ? 'danger' : 'primary'}" id="m-ok">${esc(okLabel || 'Confirm')}</button>`;
+    $('#modal').classList.add('open');
+    $('#m-cancel').onclick = () => { closeModal(); res(false); };
+    $('#m-ok').onclick = () => { closeModal(); res(true); };
+  });
+}
+function closeModal() { $('#modal').classList.remove('open'); }
+
+/* ============================== auth guard ============================== */
+const ADMIN_UIDS = ['ExPolSW2P8UvRYLI4bowoRjCRix1'];
+const ADMIN_EMAILS = ['eliudsamwels7@gmail.com', 'eliudsamuel17@gmail.com'];
+function showGuard(html) { $('#guard').innerHTML = `<div class="card guard">${html}</div>`; $('#guard').classList.remove('hidden'); $('#shell').classList.add('hidden'); }
+
+onAuthStateChanged(auth, async (user) => {
+  S.unsub.forEach(u => { try { u(); } catch (e) {} }); S.unsub = [];
+  S.user = user;
+  if (!user) {
+    showGuard(`<h2>Sign in required</h2><p>Sign in with an admin account to open the dashboard.</p><a class="btn primary" href="/signin.html?next=/admin.html">Sign in</a>`);
+    return;
+  }
+  let via = null, profile = {};
+  if (ADMIN_UIDS.includes(user.uid)) via = 'master admin UID';
+  else if (ADMIN_EMAILS.includes((user.email || '').toLowerCase()) || /@budgetthrills\.com$/i.test(user.email || '')) via = 'admin email';
+  else {
+    try {
+      const snap = await getDoc(doc(db, 'users', user.uid)); profile = snap.exists() ? snap.data() : {};
+      if (profile.isAdmin === true || profile.isAdmin === 'true' || String(profile.role || '').toLowerCase() === 'admin') via = 'users/' + user.uid + ' role';
+    } catch (err) { console.warn('Role lookup failed:', err.message); }
+  }
+  if (!via) {
+    showGuard(`<h2>No admin access</h2><p>Signed in as <b>${esc(user.email)}</b>. This account has no admin role.</p><p class="faint" style="font-size:12px">Add <code>role: "admin"</code> to <code>users/${esc(user.uid)}</code>, or sign in with an admin account.</p><div style="display:flex;gap:8px;justify-content:center"><a class="btn" href="/account.html">My account</a><button class="btn" id="g-signout">Sign out</button></div>`);
+    $('#g-signout').onclick = () => signOut(auth).then(() => location.reload());
+    return;
+  }
+  $('#guard').classList.add('hidden'); $('#shell').classList.remove('hidden');
+  $('#user-email').textContent = user.email; $('#user-role').textContent = 'Admin';
+  $('#avatar').textContent = (user.email || '?')[0].toUpperCase();
+  $('#a-email').textContent = user.email; $('#a-uid').textContent = user.uid; $('#a-via').textContent = via;
+  $('#signout-btn').classList.remove('hidden');
+  startStreams();
+  go(location.hash.slice(1) || 'overview');
+});
+$('#signout-btn').addEventListener('click', () => signOut(auth).then(() => location.reload()));
+
+/* ============================== streams ============================== */
+function startStreams() {
+  let firstOrders = true;
+  setConn('', 'Connecting');
+  S.unsub.push(onSnapshot(collection(db, 'orders'), (snap) => {
+    S.orders = snap.docs.map(d => normOrder(d.id, d.data())).sort((a, b) => (b._date?.getTime() || 0) - (a._date?.getTime() || 0));
+    setConn('live', snap.metadata.fromCache ? 'Cached' : 'Live');
+    if (firstOrders) { firstOrders = false; syncLocalOrders(true); }
+    renderAll();
+  }, (err) => { setConn('err', 'Orders stream failed'); showRulesBanner('orders', err); }));
+
+  S.unsub.push(onSnapshot(query(collection(db, 'contact-messages'), orderBy('createdAt', 'desc')), (snap) => {
+    S.messages = snap.docs.map(d => { const m = { ...d.data(), _id: d.id }; m._date = toDate(m.createdAt); m._search = [m.name, m.email, m.topic, m.orderNumber, m.message].join(' ').toLowerCase(); return m; });
+    renderMessages(); renderOverview();
+  }, (err) => showRulesBanner('contact-messages', err)));
+
+  S.unsub.push(onSnapshot(collection(db, 'coupons'), (snap) => {
+    S.coupons = snap.docs.map(d => ({ ...d.data(), _id: d.id })).sort((a, b) => (a.code || a._id).localeCompare(b.code || b._id));
     renderCoupons();
-    updateMetrics();
-  </script>
+  }, (err) => showRulesBanner('coupons', err)));
+
+  S.unsub.push(onSnapshot(doc(db, 'settings', 'store'), (snap) => {
+    S.settings = snap.exists() ? snap.data() : null; renderSettings();
+  }, (err) => showRulesBanner('settings/store', err)));
+}
+function showRulesBanner(what, err) {
+  console.warn(what, err);
+  $('#rules-banner').innerHTML = `<div class="banner bad"><span>⚠</span><span><b>Could not read <code>${esc(what)}</code>:</b> ${esc(err.code || err.message)}. Check firestore.rules and that this account is listed in <code>isAdmin()</code>.</span></div>`;
+}
+
+/* ============================== local order sync ============================== */
+function localOrders() { try { return JSON.parse(localStorage.getItem('bt-orders-v1') || '[]').filter(o => o && o.id); } catch (e) { return []; } }
+async function syncLocalOrders(silent) {
+  const missing = localOrders().filter(lo => !S.orders.some(o => o.id === lo.id || o._id === lo.id));
+  $('#d-local').textContent = missing.length ? missing.length + ' not yet in Firestore' : 'All synced';
+  if (!missing.length) { if (!silent) toast('Nothing to sync'); return; }
+  if (typeof window.BT_SAVE_FIRESTORE_ORDER !== 'function') { if (!silent) toast('Sync helper not loaded on this page', true); return; }
+  let n = 0; for (const lo of missing) { if (await window.BT_SAVE_FIRESTORE_ORDER(lo)) n++; }
+  if (!silent || n) toast(`Synced ${n} local order${n === 1 ? '' : 's'} to Firestore`);
+}
+$('#sync-local').addEventListener('click', () => syncLocalOrders(false));
+
+/* ============================== overview ============================== */
+function renderAll() { renderOverview(); renderOrders(); renderCatalog(); $('#d-orders').textContent = S.orders.length + ' documents'; $('#d-msgs').textContent = S.messages.length + ' documents'; }
+
+function renderOverview() {
+  const now = Date.now(), paid = S.orders.filter(countsRevenue);
+  const inRange = (o, from, to) => o._date && o._date.getTime() >= from && o._date.getTime() < to;
+  const cur = paid.filter(o => inRange(o, now - 30 * DAY, now + DAY)), prev = paid.filter(o => inRange(o, now - 60 * DAY, now - 30 * DAY));
+  const sum = (a) => a.reduce((n, o) => n + o.total, 0);
+  const delta = (a, b, fmt) => { const p = pct(a, b); return p === null ? `<span class="faint">no prior period</span>` : `<span class="delta ${p >= 0 ? 'up' : 'down'}">${p >= 0 ? '↑' : '↓'} ${Math.abs(p)}%</span><span>vs prior 30d (${fmt(b)})</span>`; };
+  $('#k-rev').textContent = money(sum(cur)); $('#k-rev-d').innerHTML = delta(sum(cur), sum(prev), money);
+  $('#k-ord').textContent = cur.length; $('#k-ord-d').innerHTML = delta(cur.length, prev.length, v => v);
+  const fulfil = S.orders.filter(needsFulfil);
+  const stale = fulfil.filter(o => o._date && now - o._date.getTime() > 2 * DAY);
+  $('#k-fulfil').textContent = fulfil.length; $('#k-fulfil-d').innerHTML = stale.length ? `<span class="delta down">${stale.length} older than 48h</span>` : `<span class="faint">${money(sum(fulfil))} to ship</span>`;
+  const unread = S.messages.filter(m => !m.replied);
+  $('#k-msg').textContent = unread.length; $('#k-msg-d').innerHTML = unread.length ? `<span class="faint">oldest ${rel(unread[unread.length - 1]._date)}</span>` : `<span class="faint">Inbox clear</span>`;
+  $('#nc-orders').textContent = fulfil.length || ''; $('#nc-orders').className = 'nav-count' + (fulfil.length ? ' alert' : '');
+  $('#nc-messages').textContent = unread.length || ''; $('#nc-messages').className = 'nav-count' + (unread.length ? ' alert' : '');
+  $('#nc-catalog').textContent = S.catalog.length;
+  $$('#mobile-nav .nav-count').forEach((el, i) => { const src = $$('#nav .nav-count')[i]; el.textContent = src.textContent; el.className = src.className; });
+
+  renderChart();
+
+  // attention
+  const attn = [];
+  stale.slice(0, 5).forEach(o => attn.push({ tone: 'warn', t: `Order ${o.id} not shipped · placed ${rel(o._date)}`, s: `${o.customerName || o.email} · ${money(o.total)}`, act: () => openOrder(o._id) }));
+  S.orders.filter(o => o.status === 'pending_payment' && o._date && now - o._date.getTime() > DAY).slice(0, 3).forEach(o => attn.push({ tone: 'neutral', t: `Order ${o.id} unpaid · placed ${rel(o._date)}`, s: 'Crypto invoice may have expired', act: () => openOrder(o._id) }));
+  unread.slice(0, 5).forEach(m => attn.push({ tone: 'info', t: `${m.name || 'Visitor'}: ${m.topic || 'General'}`, s: (m.message || '').slice(0, 80), act: () => { go('messages'); selectMessage(m._id); } }));
+  $('#attn-count').textContent = attn.length ? attn.length + ' items' : '';
+  $('#attn-list').innerHTML = attn.length ? attn.map((a, i) => `<div class="li click" data-attn="${i}"><span class="st ${a.tone}" style="padding:0;width:6px;height:6px;border-radius:50%;background:currentColor"></span><div class="t"><div class="truncate">${esc(a.t)}</div><small class="truncate">${esc(a.s)}</small></div><span class="faint">›</span></div>`).join('') : `<div class="empty"><strong>All clear</strong>No stale orders or unread messages.</div>`;
+  $$('#attn-list [data-attn]').forEach(el => el.onclick = () => attn[+el.dataset.attn].act());
+
+  $('#recent-orders').innerHTML = S.orders.slice(0, 8).map(o => `<tr class="row" data-open="${esc(o._id)}"><td class="mono">${esc(o.id)}</td><td class="truncate" style="max-width:180px">${esc(o.customerName || o.email || '—')}</td><td class="faint">${rel(o._date)}</td><td class="r num">${money(o.total)}</td><td>${stHtml(o.status)}</td></tr>`).join('') || `<tr><td colspan="5" class="empty">No orders yet.</td></tr>`;
+
+  // top products
+  const sold = productSales();
+  const top = [...sold.values()].sort((a, b) => b.units - a.units).slice(0, 6);
+  const maxU = top[0]?.units || 1;
+  $('#top-products').innerHTML = top.length ? top.map(p => `<div class="li ${p.inCatalog ? 'click' : ''}" ${p.inCatalog ? `data-prod="${esc(p.id)}"` : ''}><img class="thumb" src="${esc(p.image)}" alt="" loading="lazy" onerror="this.style.visibility='hidden'"><div class="t"><div class="truncate">${esc(p.name)}</div><div class="bar" style="margin-top:5px;width:60%"><i style="width:${Math.round(p.units / maxU * 100)}%"></i></div></div><div class="r num" style="text-align:right"><div>${p.units} sold</div><small class="faint">${money(p.revenue)}</small></div></div>`).join('') : `<div class="empty">No items sold yet.</div>`;
+
+  // status breakdown
+  const byStatus = {}; S.orders.forEach(o => byStatus[o.status] = (byStatus[o.status] || 0) + 1);
+  $('#status-breakdown').innerHTML = Object.keys(STATUS).filter(k => byStatus[k]).map(k => `<div class="li click" data-status="${k}"><div class="t">${stHtml(k)}</div><span class="num">${byStatus[k]}</span><span class="faint num" style="width:44px;text-align:right">${Math.round(byStatus[k] / S.orders.length * 100)}%</span></div>`).join('') || `<div class="empty">No orders yet.</div>`;
+  $$('#status-breakdown [data-status]').forEach(el => el.onclick = () => { S.o.status = el.dataset.status; S.o.page = 1; go('orders'); renderOrders(); });
+
+  // catalog breakdown
+  const cats = {}; S.catalog.forEach(p => cats[p.category] = (cats[p.category] || 0) + 1);
+  const ce = Object.entries(cats).sort((a, b) => b[1] - a[1]);
+  $('#cat-total').textContent = S.catalog.length + ' products';
+  $('#cat-breakdown').innerHTML = ce.map(([c, n]) => { const rev = [...sold.values()].filter(p => p.category === c).reduce((s, p) => s + p.revenue, 0); return `<div class="li click" data-cat="${esc(c)}"><div class="t"><div style="display:flex;justify-content:space-between"><span>${esc(c)}</span><span class="faint num">${n} · ${money(rev)} sold</span></div><div class="bar" style="margin-top:6px"><i style="width:${Math.round(n / S.catalog.length * 100)}%"></i></div></div></div>`; }).join('');
+  $$('#cat-breakdown [data-cat]').forEach(el => el.onclick = () => { S.c.cat = el.dataset.cat; S.c.page = 1; go('catalog'); renderCatalog(); });
+}
+document.addEventListener('click', (e) => {
+  const r = e.target.closest('[data-open]'); if (r && !e.target.closest('input,button,a')) openOrder(r.dataset.open);
+  const p = e.target.closest('[data-prod]'); if (p && !e.target.closest('a')) openProduct(p.dataset.prod);
+});
+
+function productSales() {
+  const m = new Map();
+  S.orders.filter(countsRevenue).forEach(o => o.items.forEach(it => {
+    const key = it.id || it.name; const cp = CATALOG_MAP.get(it.id);
+    const e = m.get(key) || { id: it.id, name: cp?.name || it.name || 'Item', image: cp?.images?.[0] || it.image || '', category: cp?.category || 'Other', inCatalog: !!cp, units: 0, revenue: 0 };
+    e.units += Number(it.qty) || 1; e.revenue += (Number(it.price) || 0) * (Number(it.qty) || 1); m.set(key, e);
+  }));
+  return m;
+}
+
+/* ---- chart: single-series daily revenue, hover tooltip ---- */
+$('#chart-range').addEventListener('click', (e) => { const b = e.target.closest('button'); if (!b) return; S.chartDays = +b.dataset.days; $$('#chart-range button').forEach(x => x.classList.toggle('active', x === b)); renderChart(); });
+function renderChart() {
+  const days = S.chartDays, wrap = $('#rev-chart');
+  const start = new Date(); start.setHours(0, 0, 0, 0); start.setDate(start.getDate() - days + 1);
+  const buckets = Array.from({ length: days }, (_, i) => ({ d: new Date(start.getTime() + i * DAY), v: 0, n: 0 }));
+  S.orders.filter(countsRevenue).forEach(o => { if (!o._date) return; const i = Math.floor((o._date.getTime() - start.getTime()) / DAY); if (i >= 0 && i < days) { buckets[i].v += o.total; buckets[i].n++; } });
+  const max = Math.max(...buckets.map(b => b.v), 1), W = 800, H = 200, padL = 44, padB = 22, padT = 8, iw = W - padL, ih = H - padB - padT;
+  const bw = iw / days, gap = Math.max(2, bw * 0.25);
+  const ticks = [0, 0.5, 1].map(f => ({ y: padT + ih - f * ih, v: max * f }));
+  const total = buckets.reduce((s, b) => s + b.v, 0);
+  let svg = `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" role="img" aria-label="Daily revenue, last ${days} days">`;
+  ticks.forEach(t => svg += `<line class="grid-line" x1="${padL}" x2="${W}" y1="${t.y}" y2="${t.y}"/><text class="axis-t" x="${padL - 6}" y="${t.y + 4}" text-anchor="end">${t.v >= 1000 ? '$' + (t.v / 1000).toFixed(1) + 'k' : '$' + Math.round(t.v)}</text>`);
+  buckets.forEach((b, i) => {
+    const x = padL + i * bw + gap / 2, w = bw - gap, h = Math.max(b.v > 0 ? 3 : 0, b.v / max * ih), y = padT + ih - h;
+    svg += `<rect class="bar-rect" data-i="${i}" x="${x}" y="${y}" width="${w}" height="${h}" rx="2"/><rect class="hit" data-i="${i}" x="${padL + i * bw}" y="${padT}" width="${bw}" height="${ih}"/>`;
+    const every = days <= 7 ? 1 : days <= 30 ? 5 : 15;
+    if (i % every === 0) svg += `<text class="axis-t" x="${x + w / 2}" y="${H - 6}" text-anchor="middle">${b.d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</text>`;
+  });
+  svg += `</svg><div class="tip" id="chart-tip"></div><div class="faint" style="font-size:12px;margin-top:8px;display:flex;justify-content:space-between"><span>${money(total)} over ${days} days</span><span>avg ${money(total / days)}/day</span></div>`;
+  wrap.innerHTML = svg;
+  const tip = $('#chart-tip'), svgEl = wrap.querySelector('svg');
+  svgEl.addEventListener('mousemove', (e) => {
+    const t = e.target.closest('[data-i]'); if (!t) return;
+    const i = +t.dataset.i, b = buckets[i]; $$('.bar-rect', svgEl).forEach(r => r.classList.toggle('hot', +r.dataset.i === i));
+    const rect = svgEl.getBoundingClientRect(), x = (padL + i * bw + bw / 2) / W * rect.width;
+    tip.innerHTML = `<b>${money(b.v)}</b> · ${b.n} order${b.n === 1 ? '' : 's'}<br>${b.d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}`;
+    tip.style.left = x + 'px'; tip.style.top = '0px'; tip.classList.add('show');
+  });
+  svgEl.addEventListener('mouseleave', () => { tip.classList.remove('show'); $$('.bar-rect.hot', svgEl).forEach(r => r.classList.remove('hot')); });
+}
+
+/* ============================== orders ============================== */
+$('#order-range').addEventListener('change', e => { S.o.range = +e.target.value; S.o.page = 1; renderOrders(); });
+$('#order-search').addEventListener('input', debounce(e => { S.o.q = e.target.value.toLowerCase().trim(); S.o.page = 1; renderOrders(); }, 120));
+$$('#orders-table th.sort').forEach(th => th.addEventListener('click', () => { const k = th.dataset.sort; if (S.o.sort === k) S.o.dir *= -1; else { S.o.sort = k; S.o.dir = k === 'date' || k === 'total' ? -1 : 1; } renderOrders(); }));
+$('#sel-all').addEventListener('change', e => { const ids = filteredOrders().map(o => o._id); if (e.target.checked) ids.forEach(i => S.o.sel.add(i)); else S.o.sel.clear(); renderOrders(); });
+$('#bulk-clear').addEventListener('click', () => { S.o.sel.clear(); renderOrders(); });
+$('#bulk-status').innerHTML = '<option value="">Change status…</option>' + SETTABLE.map(s => `<option value="${s}">${STATUS[s].label}</option>`).join('');
+$('#bulk-apply').addEventListener('click', async () => {
+  const st = $('#bulk-status').value; if (!st) return toast('Pick a status first', true);
+  const ids = [...S.o.sel]; if (!ids.length) return;
+  if (!(await confirmModal(`Update ${ids.length} orders`, `Set status to "${STATUS[st].label}" for ${ids.length} selected order${ids.length === 1 ? '' : 's'}?`, 'Update'))) return;
+  try {
+    const batch = writeBatch(db);
+    ids.forEach(id => batch.update(doc(db, 'orders', id), { status: st, updatedAt: serverTimestamp(), statusHistory: arrayUnion({ status: st, at: Date.now(), by: S.user.email, note: 'Bulk update' }) }));
+    await batch.commit(); S.o.sel.clear(); toast(`${ids.length} orders set to ${STATUS[st].label}`);
+  } catch (err) { toast('Update failed: ' + err.message, true); }
+});
+$('#export-orders').addEventListener('click', () => {
+  const rows = filteredOrders(); if (!rows.length) return toast('No orders match the current filter', true);
+  const head = ['Order ID', 'Date', 'Status', 'Customer', 'Email', 'Phone', 'Address', 'Items', 'Units', 'Subtotal', 'Discount', 'Shipping', 'Total', 'Payment', 'Tracking', 'Carrier'];
+  const lines = rows.map(o => [o.id, o._date ? o._date.toISOString() : '', o.status, o.customerName, o.email, o.phone, o.address, o.items.map(i => `${i.name} x${i.qty || 1}`).join('; '), o._units, o.subtotal ?? '', o.discount ?? '', o.shipping ?? '', o.total.toFixed(2), o.paymentMethod || '', o.trackingNumber || '', o.carrier || ''].map(csvCell).join(','));
+  download(`orders-${new Date().toISOString().slice(0, 10)}.csv`, [head.join(',')].concat(lines).join('\n'), 'text/csv'); toast(`Exported ${rows.length} orders`);
+});
+
+function filteredOrders() {
+  const now = Date.now();
+  let rows = S.orders.filter(o => {
+    if (S.o.status !== 'all') { if (S.o.status === 'open') { if (!needsFulfil(o)) return false; } else if (o.status !== S.o.status) return false; }
+    if (S.o.range && (!o._date || now - o._date.getTime() > S.o.range * DAY)) return false;
+    if (S.o.q && !o._search.includes(S.o.q)) return false;
+    return true;
+  });
+  const k = S.o.sort, d = S.o.dir;
+  rows.sort((a, b) => { let x, y; if (k === 'date') { x = a._date?.getTime() || 0; y = b._date?.getTime() || 0; } else if (k === 'total') { x = a.total; y = b.total; } else if (k === 'customer') { x = (a.customerName || a.email).toLowerCase(); y = (b.customerName || b.email).toLowerCase(); } else { x = a[k] || ''; y = b[k] || ''; } return (x > y ? 1 : x < y ? -1 : 0) * d; });
+  return rows;
+}
+function renderOrders() {
+  const counts = { all: S.orders.length, open: S.orders.filter(needsFulfil).length };
+  S.orders.forEach(o => counts[o.status] = (counts[o.status] || 0) + 1);
+  const segs = [['all', 'All'], ['open', 'To fulfil'], ['pending_payment', 'Awaiting payment'], ['shipped', 'Shipped'], ['delivered', 'Delivered'], ['cancelled', 'Cancelled']];
+  $('#order-status-seg').innerHTML = segs.map(([k, l]) => `<button data-st="${k}" class="${S.o.status === k ? 'active' : ''}">${l} <b>${counts[k] || 0}</b></button>`).join('');
+  $$('#order-status-seg button').forEach(b => b.onclick = () => { S.o.status = b.dataset.st; S.o.page = 1; renderOrders(); });
+  $$('#orders-table th.sort').forEach(th => { th.classList.toggle('sorted', th.dataset.sort === S.o.sort); th.textContent = th.textContent.replace(/ [↑↓]$/, '') + (th.dataset.sort === S.o.sort ? (S.o.dir > 0 ? ' ↑' : ' ↓') : ''); });
+
+  const rows = filteredOrders(), total = rows.length, pages = Math.max(1, Math.ceil(total / S.o.per));
+  S.o.page = Math.min(S.o.page, pages);
+  const slice = rows.slice((S.o.page - 1) * S.o.per, S.o.page * S.o.per);
+  $('#orders-body').innerHTML = slice.length ? slice.map(o => `<tr class="row ${S.o.sel.has(o._id) ? 'selected' : ''}" data-open="${esc(o._id)}">
+    <td><input type="checkbox" class="cb sel" data-id="${esc(o._id)}" ${S.o.sel.has(o._id) ? 'checked' : ''}></td>
+    <td class="mono">${esc(o.id)}</td>
+    <td class="faint" title="${esc(fmtDate(o._date, true))}">${fmtDate(o._date)}</td>
+    <td><div class="truncate" style="max-width:200px;font-weight:500">${esc(o.customerName || '—')}</div><div class="faint truncate" style="font-size:12px;max-width:200px">${esc(o.email)}</div></td>
+    <td class="faint">${o._units} item${o._units === 1 ? '' : 's'}</td>
+    <td class="faint truncate" style="max-width:140px">${esc((o.paymentMethod || '—').replace(/\s*\(.*\)$/, ''))}</td>
+    <td class="r num" style="font-weight:500">${money(o.total)}</td>
+    <td>${stHtml(o.status)}</td>
+    <td class="mono faint">${o.trackingNumber ? esc(o.trackingNumber) : '—'}</td></tr>`).join('')
+    : `<tr><td colspan="9"><div class="empty"><strong>${S.orders.length ? 'No orders match' : 'No orders yet'}</strong>${S.orders.length ? 'Try a different status, range or search.' : 'Orders placed at checkout appear here in real time.'}</div></td></tr>`;
+  $$('#orders-body .sel').forEach(cb => cb.addEventListener('change', () => { cb.checked ? S.o.sel.add(cb.dataset.id) : S.o.sel.delete(cb.dataset.id); cb.closest('tr').classList.toggle('selected', cb.checked); updateBulk(); }));
+  $('#sel-all').checked = slice.length > 0 && slice.every(o => S.o.sel.has(o._id));
+  updateBulk();
+  $('#orders-pager').innerHTML = `<span>${total ? `${(S.o.page - 1) * S.o.per + 1}–${Math.min(total, S.o.page * S.o.per)} of ${total}` : '0 orders'} · ${money(rows.reduce((s, o) => s + (countsRevenue(o) ? o.total : 0), 0))} revenue in view</span><div class="btns"><button class="btn sm" id="pg-prev" ${S.o.page <= 1 ? 'disabled' : ''}>Prev</button><button class="btn sm" id="pg-next" ${S.o.page >= pages ? 'disabled' : ''}>Next</button></div>`;
+  $('#pg-prev').onclick = () => { S.o.page--; renderOrders(); }; $('#pg-next').onclick = () => { S.o.page++; renderOrders(); };
+}
+function updateBulk() { $('#bulk').classList.toggle('show', S.o.sel.size > 0); $('#bulk-n').textContent = S.o.sel.size; }
+
+function openOrder(id) {
+  const o = S.orders.find(x => x._id === id); if (!o) return;
+  const items = o.items.map(it => { const cp = CATALOG_MAP.get(it.id); return `<div class="li" style="padding:8px 0"><img class="thumb" src="${esc(it.image || cp?.images?.[0] || '')}" alt="" onerror="this.style.visibility='hidden'"><div class="t"><div class="truncate">${esc(it.name)}</div><small>${esc(it.variant || cp?.tag || '')}${it.id ? ` · <a class="link" href="/pdp.html?id=${esc(it.id)}" target="_blank" rel="noopener">view</a>` : ''}</small></div><div class="r num" style="text-align:right"><div>${money((it.price || 0) * (it.qty || 1))}</div><small class="faint">${it.qty || 1} × ${money(it.price)}</small></div></div>`; }).join('') || '<div class="faint">No line items recorded.</div>';
+  const hist = (o.statusHistory || []).slice().sort((a, b) => (b.at || 0) - (a.at || 0));
+  const timeline = [...hist.map(h => ({ t: `${STATUS[normStatus(h.status)]?.label || h.status}${h.tracking ? ' · ' + h.tracking : ''}`, s: `${fmtDate(toDate(h.at), true)}${h.by ? ' · ' + h.by : ''}${h.note ? ' · ' + h.note : ''}` })), { t: 'Order placed', s: `${fmtDate(o._date, true)} · ${o.paymentMethod || 'payment method not recorded'}` }];
+  const body = `
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px">
+      <div><div class="faint" style="font-size:12px">${fmtDate(o._date, true)} · ${rel(o._date)}</div><div style="font-size:22px;font-weight:600;margin-top:4px" class="num">${money(o.total)}</div>
+        <div class="faint" style="font-size:12px">${o.subtotal != null ? `subtotal ${money(o.subtotal)}` : ''}${o.discount ? ` · discount −${money(o.discount)}` : ''}${o.shipping != null ? ` · shipping ${money(o.shipping)}` : ''}</div></div>
+      ${stHtml(o.status)}
+    </div>
+    <div class="sec"><h3>Customer</h3><dl class="kv"><dt>Name</dt><dd>${esc(o.customerName || '—')}</dd><dt>Email</dt><dd>${o.email ? `<a class="link" href="mailto:${esc(o.email)}">${esc(o.email)}</a>` : '—'}</dd><dt>Phone</dt><dd>${esc(o.phone || '—')}</dd><dt>Ship to</dt><dd>${esc(o.address || '—')} ${o.address ? `<button class="btn sm ghost link" id="copy-addr">Copy</button>` : ''}</dd><dt>Payment</dt><dd>${esc(o.paymentMethod || '—')}${o.paymentStatus ? ` <span class="tag">${esc(o.paymentStatus)}</span>` : ''}</dd>${o.userId ? `<dt>Account</dt><dd class="mono">${esc(o.userId)}</dd>` : ''}</dl></div>
+    <div class="sec"><h3>Items · ${o._units}</h3><div class="list">${items}</div></div>
+    <div class="sec"><h3>Update</h3>
+      <div class="form-row"><div class="form-grp"><label>Status</label><select id="f-status">${SETTABLE.map(s => `<option value="${s}" ${o.status === s ? 'selected' : ''}>${STATUS[s].label}</option>`).join('')}${SETTABLE.includes(o.status) ? '' : `<option value="${o.status}" selected>${STATUS[o.status].label}</option>`}</select></div>
+      <div class="form-grp"><label>Carrier</label><select id="f-carrier">${['', 'USPS', 'UPS', 'FedEx', 'DHL', 'Other'].map(c => `<option value="${c}" ${(o.carrier || '') === c ? 'selected' : ''}>${c || 'Not set'}</option>`).join('')}</select></div></div>
+      <div class="form-grp"><label>Tracking number</label><input id="f-tracking" class="mono" value="${esc(o.trackingNumber || '')}" placeholder="9400 1000 0000 0000 0000 00"></div>
+      <div class="form-grp"><label>Internal note (not shown to customer)</label><textarea id="f-note" rows="2" placeholder="Optional">${esc(o.adminNote || '')}</textarea></div>
+    </div>
+    <div class="sec"><h3>History</h3><div class="timeline">${timeline.map(e => `<div class="ev">${esc(e.t)}<small>${esc(e.s)}</small></div>`).join('')}</div></div>`;
+  openDrawer(`<span class="mono">${esc(o.id)}</span>`, body, `<button class="btn" id="print-slip">Packing slip</button><a class="btn" href="/track.html?order=${encodeURIComponent(o.id)}" target="_blank" rel="noopener">Customer view</a><span style="flex:1"></span><button class="btn primary" id="save-order">Save changes</button>`);
+  $('#copy-addr')?.addEventListener('click', () => navigator.clipboard.writeText(`${o.customerName}\n${o.address}`).then(() => toast('Address copied')));
+  $('#print-slip').addEventListener('click', () => printSlip(o));
+  $('#save-order').addEventListener('click', async () => {
+    const st = $('#f-status').value, tracking = $('#f-tracking').value.trim(), carrier = $('#f-carrier').value, note = $('#f-note').value.trim();
+    const patch = { updatedAt: serverTimestamp(), trackingNumber: tracking, carrier, adminNote: note };
+    if (st !== o.status || tracking !== (o.trackingNumber || '')) { patch.status = st; patch.statusHistory = arrayUnion({ status: st, at: Date.now(), by: S.user.email, tracking: tracking || null }); }
+    if (st === 'shipped' && !o.shippedAt) patch.shippedAt = serverTimestamp();
+    if (st === 'delivered' && !o.deliveredAt) patch.deliveredAt = serverTimestamp();
+    const btn = $('#save-order'); btn.disabled = true; btn.textContent = 'Saving…';
+    try { await updateDoc(doc(db, 'orders', o._id), patch); toast(`Order ${o.id} saved`); closeDrawer(); }
+    catch (err) { toast('Save failed: ' + err.message, true); btn.disabled = false; btn.textContent = 'Save changes'; }
+  });
+}
+function printSlip(o) {
+  $('#print-area').innerHTML = `<div style="display:flex;justify-content:space-between;align-items:flex-start"><div><div style="font-size:22px;font-weight:800">BudgetThrills</div><div>budgetthrills.com · ${esc(S.settings?.supportEmail || 'support@budgetthrills.com')}</div></div><div style="text-align:right"><div style="font-size:18px;font-weight:700">Packing slip</div><div>Order ${esc(o.id)}</div><div>${fmtDate(o._date, true)}</div></div></div>
+    <div style="display:flex;gap:40px;margin:28px 0"><div><b>Ship to</b><br>${esc(o.customerName)}<br>${esc(o.address)}<br>${esc(o.phone || '')}</div><div><b>Contact</b><br>${esc(o.email)}</div></div>
+    <table><thead><tr><th>Item</th><th>Variant</th><th style="text-align:right">Qty</th><th style="text-align:right">Price</th></tr></thead><tbody>${o.items.map(i => `<tr><td>${esc(i.name)}</td><td>${esc(i.variant || '')}</td><td style="text-align:right">${i.qty || 1}</td><td style="text-align:right">${money(i.price)}</td></tr>`).join('')}</tbody></table>
+    <div style="text-align:right;margin-top:16px"><b>Total ${money(o.total)}</b></div><p style="margin-top:32px;font-size:12px">Returns accepted within ${esc(S.settings?.returnDays ?? 30)} days. Thanks for shopping with us.</p>`;
+  window.print();
+}
+
+/* ============================== catalog ============================== */
+(function initCatalogStatic() {
+  const prices = S.catalog.map(p => p.price).sort((a, b) => a - b);
+  const median = prices.length ? prices[Math.floor(prices.length / 2)] : 0;
+  $('#c-count').textContent = S.catalog.length; $('#c-avg').textContent = money(prices.reduce((a, b) => a + b, 0) / (prices.length || 1)); $('#c-median').textContent = money(median);
+  const withMsrp = S.catalog.filter(p => p.originalPrice > p.price);
+  $('#c-disc').textContent = withMsrp.length ? Math.round(withMsrp.reduce((s, p) => s + (1 - p.price / p.originalPrice), 0) / withMsrp.length * 100) + '%' : '—';
+  const cats = {}; S.catalog.forEach(p => cats[p.category] = (cats[p.category] || 0) + 1);
+  $('#c-cats').textContent = Object.keys(cats).length + ' categories';
+  const conds = [...new Set(S.catalog.map(p => p.tag).filter(Boolean))].sort();
+  $('#cat-cond').innerHTML = '<option value="">Any condition</option>' + conds.map(c => `<option value="${esc(c)}">${esc(c)}</option>`).join('');
+  $('#cat-chips').innerHTML = [['all', 'All', S.catalog.length], ...Object.entries(cats).sort((a, b) => b[1] - a[1]).map(([c, n]) => [c, c, n])].map(([k, l, n]) => `<button class="chip" data-cat="${esc(k)}">${esc(l)} <b>${n}</b></button>`).join('');
+  $$('#cat-chips .chip').forEach(b => b.onclick = () => { S.c.cat = b.dataset.cat; S.c.page = 1; renderCatalog(); });
+  $('#cat-cond').addEventListener('change', e => { S.c.cond = e.target.value; S.c.page = 1; renderCatalog(); });
+  $('#cat-sort').addEventListener('change', e => { S.c.sort = e.target.value; S.c.page = 1; renderCatalog(); });
+  $('#cat-search').addEventListener('input', debounce(e => { S.c.q = e.target.value.toLowerCase().trim(); S.c.page = 1; renderCatalog(); }, 120));
+  $('#export-catalog').addEventListener('click', () => { download('budgetthrills-catalog.json', JSON.stringify(S.catalog, null, 2), 'application/json'); toast('Catalog exported'); });
+})();
+function renderCatalog() {
+  const sales = productSales();
+  const soldCount = S.catalog.filter(p => sales.has(p.id)).length;
+  $('#c-sold').textContent = soldCount; $('#c-sold-d').textContent = `${Math.round(soldCount / (S.catalog.length || 1) * 100)}% of listings have sold at least once`;
+  $$('#cat-chips .chip').forEach(b => b.classList.toggle('active', b.dataset.cat === S.c.cat));
+  let rows = S.catalog.filter(p => (S.c.cat === 'all' || p.category === S.c.cat) && (!S.c.cond || p.tag === S.c.cond) && (!S.c.q || [p.name, p.brand, p.tag, p.category, p.id].join(' ').toLowerCase().includes(S.c.q)))
+    .map(p => ({ p, s: sales.get(p.id) || { units: 0, revenue: 0 } }));
+  const off = (p) => p.originalPrice > p.price ? (1 - p.price / p.originalPrice) : 0;
+  const sorters = { name: (a, b) => a.p.name.localeCompare(b.p.name), 'price-desc': (a, b) => b.p.price - a.p.price, 'price-asc': (a, b) => a.p.price - b.p.price, discount: (a, b) => off(b.p) - off(a.p), sold: (a, b) => b.s.units - a.s.units || b.s.revenue - a.s.revenue, photos: (a, b) => (a.p.images?.length || 0) - (b.p.images?.length || 0) };
+  rows.sort(sorters[S.c.sort] || sorters.name);
+  const total = rows.length, pages = Math.max(1, Math.ceil(total / S.c.per)); S.c.page = Math.min(S.c.page, pages);
+  const slice = rows.slice((S.c.page - 1) * S.c.per, S.c.page * S.c.per);
+  $('#catalog-body').innerHTML = slice.length ? slice.map(({ p, s }) => `<tr class="row" data-prod="${esc(p.id)}">
+    <td><div class="prod"><img class="thumb" src="${esc(p.images?.[0] || '')}" alt="" loading="lazy" onerror="this.style.visibility='hidden'"><div style="min-width:0"><div class="n truncate">${esc(p.name)}</div><div class="faint truncate" style="font-size:12px">${esc(p.brand || '')}${p.brand ? ' · ' : ''}<span class="mono" style="font-size:11px">${esc(p.id)}</span></div></div></div></td>
+    <td><span class="tag">${esc(p.category)}</span></td><td class="faint">${esc(p.tag || '—')}</td>
+    <td class="r num" style="font-weight:500">${money(p.price)}</td><td class="r num faint">${p.originalPrice ? money(p.originalPrice) : '—'}</td>
+    <td class="r num ${off(p) >= 0.3 ? '' : 'faint'}">${off(p) ? Math.round(off(p) * 100) + '%' : '—'}</td>
+    <td class="r num">${s.units || '<span class="faint">0</span>'}</td><td class="r num">${s.revenue ? money(s.revenue) : '<span class="faint">—</span>'}</td>
+    <td class="r num ${(p.images?.length || 0) < 3 ? '' : 'faint'}">${p.images?.length || 0}</td></tr>`).join('')
+    : `<tr><td colspan="9"><div class="empty"><strong>No products match</strong>Adjust the filters or search.</div></td></tr>`;
+  $('#catalog-pager').innerHTML = `<span>${total ? `${(S.c.page - 1) * S.c.per + 1}–${Math.min(total, S.c.page * S.c.per)} of ${total}` : '0 products'}</span><div class="btns"><button class="btn sm" id="cpg-prev" ${S.c.page <= 1 ? 'disabled' : ''}>Prev</button><button class="btn sm" id="cpg-next" ${S.c.page >= pages ? 'disabled' : ''}>Next</button></div>`;
+  $('#cpg-prev').onclick = () => { S.c.page--; renderCatalog(); }; $('#cpg-next').onclick = () => { S.c.page++; renderCatalog(); };
+}
+function openProduct(id) {
+  const p = CATALOG_MAP.get(id); if (!p) return;
+  const s = productSales().get(id) || { units: 0, revenue: 0 };
+  const orders = S.orders.filter(o => o.items.some(i => i.id === id)).slice(0, 8);
+  const body = `
+    <div style="display:flex;gap:6px;overflow-x:auto;padding-bottom:6px">${(p.images || []).map(i => `<img src="${esc(i)}" alt="" style="width:88px;height:88px;object-fit:cover;border-radius:6px;border:1px solid var(--a-border);flex:none" loading="lazy">`).join('')}</div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px"><span class="tag">${esc(p.category)}</span><span class="tag">${esc(p.tag || '')}</span>${p.brand ? `<span class="tag">${esc(p.brand)}</span>` : ''}</div>
+    <div class="sec"><h3>Pricing</h3><dl class="kv"><dt>List price</dt><dd class="num" style="font-weight:600">${money(p.price)}</dd><dt>MSRP</dt><dd class="num">${p.originalPrice ? money(p.originalPrice) + ` <span class="faint">(${Math.round((1 - p.price / p.originalPrice) * 100)}% off)</span>` : '—'}</dd><dt>Sold</dt><dd class="num">${s.units} units · ${money(s.revenue)}</dd><dt>Variants</dt><dd>${(p.sizes || []).map(esc).join(', ') || '—'}</dd><dt>Colours</dt><dd>${(p.colors || []).map(c => esc(c.name)).join(', ') || '—'}</dd></dl></div>
+    <div class="sec"><h3>Description</h3><p style="margin:0;font-size:13.5px;line-height:1.6" class="muted">${esc(p.desc || '')}</p>${p.details ? `<p style="margin:8px 0 0;font-size:12.5px" class="faint">${esc(p.details)}</p>` : ''}</div>
+    ${orders.length ? `<div class="sec"><h3>Recent orders</h3><div class="list">${orders.map(o => `<div class="li click" data-open="${esc(o._id)}" style="padding:8px 0"><span class="mono">${esc(o.id)}</span><div class="t truncate">${esc(o.customerName || o.email)}</div><span class="faint">${rel(o._date)}</span>${stHtml(o.status)}</div>`).join('')}</div></div>` : ''}
+    <div class="sec"><h3>Editing</h3><p class="faint" style="font-size:12.5px;margin:0">The storefront catalog is generated from <code class="kbd">scripts/products.js</code>. Edit that file and run <code class="kbd">npm run inject</code> to change listings.</p></div>`;
+  openDrawer(esc(p.name), body, `<button class="btn" id="copy-id">Copy ID</button><a class="btn" href="${esc(p.categoryUrl || '/')}" target="_blank" rel="noopener">Category page</a><span style="flex:1"></span><a class="btn primary" href="/pdp.html?id=${esc(p.id)}" target="_blank" rel="noopener">Open on store</a>`);
+  $('#copy-id').onclick = () => navigator.clipboard.writeText(p.id).then(() => toast('Product ID copied'));
+}
+
+/* ============================== messages ============================== */
+$$('#msg-seg button').forEach(b => b.onclick = () => { S.m.f = b.dataset.f; $$('#msg-seg button').forEach(x => x.classList.toggle('active', x === b)); renderMessages(); });
+$('#msg-search').addEventListener('input', debounce(e => { S.m.q = e.target.value.toLowerCase().trim(); renderMessages(); }, 120));
+function renderMessages() {
+  const unread = S.messages.filter(m => !m.replied);
+  $('#msg-n-unread').textContent = unread.length; $('#msg-n-all').textContent = S.messages.length;
+  const rows = S.messages.filter(m => (S.m.f === 'all' || (S.m.f === 'unread' ? !m.replied : !!m.replied)) && (!S.m.q || m._search.includes(S.m.q)));
+  $('#msg-list').innerHTML = rows.length ? rows.map(m => `<div class="msg-item ${m.replied ? '' : 'unread'} ${S.m.active === m._id ? 'active' : ''}" data-msg="${esc(m._id)}"><div class="top"><b class="truncate">${esc(m.name || 'Visitor')}</b><span class="faint" style="font-size:12px;flex:none">${rel(m._date)}</span></div><div class="prev truncate"><span class="tag" style="margin-right:6px">${esc(m.topic || 'General')}</span>${esc((m.message || '').slice(0, 90))}</div></div>`).join('')
+    : `<div class="empty"><strong>${S.m.f === 'unread' ? 'Inbox zero' : 'No messages'}</strong>${S.m.f === 'unread' ? 'Every message has been replied to.' : 'Contact form submissions land here.'}</div>`;
+  $$('#msg-list [data-msg]').forEach(el => el.onclick = () => selectMessage(el.dataset.msg));
+  if (S.m.active) renderMessageDetail();
+}
+async function selectMessage(id) {
+  S.m.active = id; $$('#msg-list [data-msg]').forEach(el => el.classList.toggle('active', el.dataset.msg === id));
+  renderMessageDetail();
+  try { const snap = await getDocs(query(collection(db, 'contact-messages', id, 'replies'), orderBy('createdAt', 'asc'))); S.replies[id] = snap.docs.map(d => d.data()); renderMessageDetail(); } catch (e) { console.warn('replies read', e.message); }
+}
+function renderMessageDetail() {
+  const m = S.messages.find(x => x._id === S.m.active); const box = $('#msg-detail');
+  if (!m) { box.innerHTML = `<div class="empty"><strong>No message selected</strong>Pick a message from the list to read and reply.</div>`; return; }
+  const order = m.orderNumber ? S.orders.find(o => o.id.toLowerCase() === m.orderNumber.toLowerCase()) : null;
+  const replies = S.replies[m._id] || [];
+  box.innerHTML = `<div class="card-h"><div><h2 style="font-size:15px">${esc(m.name || 'Visitor')} <span class="faint" style="font-weight:400">· ${esc(m.email || 'no email')}</span></h2><div class="faint" style="font-size:12px;margin-top:2px">${fmtDate(m._date, true)} · <span class="tag">${esc(m.topic || 'General')}</span>${m.orderNumber ? ` · Order <span class="mono">${esc(m.orderNumber)}</span>${order ? ` <button class="btn sm ghost link" data-open="${esc(order._id)}">open</button>` : ' <span class="faint">(not found)</span>'}` : ''}</div></div>
+    <div style="display:flex;gap:6px">${m.replied ? '<span class="st good">Replied</span>' : '<span class="st warn">Unread</span>'}<button class="btn sm" id="msg-toggle">${m.replied ? 'Mark unread' : 'Mark replied'}</button></div></div>
+    <div class="card-b"><div class="msg-body">${esc(m.message || '')}</div>
+    ${replies.length ? `<div class="sec"><h3>Replies sent</h3>${replies.map(r => `<div class="reply"><small>${esc(r.sentBy || 'Admin')} · ${fmtDate(toDate(r.createdAt), true)}</small>${esc(r.body)}</div>`).join('')}</div>` : ''}
+    <div class="sec"><h3>Reply</h3>${m.email ? `<form id="reply-form"><div class="form-grp"><label>Subject</label><input id="r-subject" value="Re: Your ${esc(m.topic || 'message')} to BudgetThrills"></div><div class="form-grp"><label>Message</label><textarea id="r-body" rows="6" placeholder="Hi ${esc(m.name || 'there')},"></textarea></div><div style="display:flex;justify-content:space-between;align-items:center;gap:8px"><span class="faint" style="font-size:12px">Sent by email through the sendReplyEmail function and logged here.</span><button class="btn primary" type="submit">Send reply</button></div></form>` : `<p class="faint">This message has no email address, so it cannot be replied to.</p>`}</div></div>`;
+  $('#msg-toggle').onclick = async () => { try { await updateDoc(doc(db, 'contact-messages', m._id), m.replied ? { replied: false } : { replied: true, repliedAt: serverTimestamp(), repliedBy: S.user.email }); toast(m.replied ? 'Marked unread' : 'Marked replied'); } catch (e) { toast('Update failed: ' + e.message, true); } };
+  $('#reply-form')?.addEventListener('submit', async (e) => {
+    e.preventDefault(); const body = $('#r-body').value.trim(); if (!body) return toast('Write a reply first', true);
+    const btn = e.target.querySelector('button'); btn.disabled = true; btn.textContent = 'Sending…';
+    try {
+      await addDoc(collection(db, 'contact-messages', m._id, 'replies'), { body, subject: $('#r-subject').value.trim(), toEmail: m.email, sentBy: S.user.email, createdAt: serverTimestamp() });
+      await updateDoc(doc(db, 'contact-messages', m._id), { replied: true, repliedAt: serverTimestamp(), repliedBy: S.user.email });
+      S.replies[m._id] = [...replies, { body, sentBy: S.user.email, createdAt: new Date() }]; toast('Reply queued for email'); renderMessageDetail();
+    } catch (err) { toast('Reply failed: ' + err.message, true); btn.disabled = false; btn.textContent = 'Send reply'; }
+  });
+}
+
+/* ============================== coupons ============================== */
+$('#cp-type').addEventListener('change', e => $('#cp-pct-wrap').style.visibility = e.target.value === 'percent' ? 'visible' : 'hidden');
+$('#coupon-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const code = $('#cp-code').value.trim().toUpperCase().replace(/[^A-Z0-9_-]/g, ''); if (!code) return toast('Enter a code', true);
+  const type = $('#cp-type').value, pctv = Math.min(100, Math.max(1, +$('#cp-pct').value || 10)), min = +$('#cp-min').value || 0, exp = $('#cp-exp').value;
+  const label = $('#cp-label').value.trim() || (type === 'percent' ? `${pctv}% off` : 'Free shipping');
+  const data = { code, discountPercent: type === 'percent' ? pctv : 0, freeShipping: type === 'freeship', minOrder: min, label, discount: label, active: true, uses: 0, expiresAt: exp ? new Date(exp + 'T23:59:59') : null, createdAt: serverTimestamp(), createdBy: S.user.email };
+  if (S.coupons.some(c => c._id === code) && !(await confirmModal('Replace coupon', `${code} already exists. Overwrite it?`, 'Overwrite'))) return;
+  try { await setDoc(doc(db, 'coupons', code), data); toast(`Coupon ${code} created`); e.target.reset(); $('#cp-pct').value = 10; $('#cp-pct-wrap').style.visibility = 'visible'; } catch (err) { toast('Could not save: ' + err.message, true); }
+});
+function renderCoupons() {
+  $('#coupon-count').textContent = S.coupons.length ? `${S.coupons.filter(c => c.active !== false).length} active of ${S.coupons.length}` : '';
+  const body = $('#coupons-body');
+  if (!S.coupons.length) { body.innerHTML = `<tr><td colspan="6"><div class="empty"><strong>No coupons in Firestore</strong>The storefront falls back to built-in codes THRILL10, DROP20, FREESHIP and VIP30. <button class="btn sm" id="seed-coupons" style="margin-top:10px">Import built-in codes</button></div></td></tr>`; $('#seed-coupons').onclick = seedCoupons; return; }
+  body.innerHTML = S.coupons.map(c => { const exp = toDate(c.expiresAt); const expired = exp && exp < new Date(); return `<tr>
+    <td class="mono" style="font-weight:600">${esc(c.code || c._id)}</td>
+    <td>${esc(c.label || c.discount || (c.freeShipping ? 'Free shipping' : c.discountPercent ? c.discountPercent + '% off' : '—'))}${exp ? `<div class="faint" style="font-size:12px">${expired ? 'Expired' : 'Expires'} ${fmtDate(exp)}</div>` : ''}</td>
+    <td class="r num faint">${c.minOrder ? money(c.minOrder) : '—'}</td><td class="r num">${c.uses || 0}</td>
+    <td><button class="switch ${c.active !== false && !expired ? 'on' : ''}" data-toggle="${esc(c._id)}" aria-label="Toggle"></button></td>
+    <td class="r"><button class="btn sm ghost danger" data-del="${esc(c._id)}">Delete</button></td></tr>`; }).join('');
+  $$('#coupons-body [data-toggle]').forEach(b => b.onclick = async () => { const c = S.coupons.find(x => x._id === b.dataset.toggle); try { await updateDoc(doc(db, 'coupons', c._id), { active: c.active === false }); } catch (e) { toast('Update failed: ' + e.message, true); } });
+  $$('#coupons-body [data-del]').forEach(b => b.onclick = async () => { if (await confirmModal('Delete coupon', `Delete ${b.dataset.del}? Customers will no longer be able to apply it.`, 'Delete', true)) { try { await deleteDoc(doc(db, 'coupons', b.dataset.del)); toast('Coupon deleted'); } catch (e) { toast('Delete failed: ' + e.message, true); } } });
+}
+async function seedCoupons() {
+  const defaults = [{ code: 'THRILL10', discountPercent: 10, label: '10% off' }, { code: 'DROP20', discountPercent: 20, label: '20% off' }, { code: 'FREESHIP', freeShipping: true, label: 'Free shipping' }, { code: 'VIP30', discountPercent: 30, label: '30% off VIP' }];
+  try { const batch = writeBatch(db); defaults.forEach(d => batch.set(doc(db, 'coupons', d.code), { discountPercent: 0, freeShipping: false, minOrder: 0, active: true, uses: 0, discount: d.label, createdAt: serverTimestamp(), createdBy: S.user.email, ...d })); await batch.commit(); toast('Imported 4 coupons'); } catch (e) { toast('Import failed: ' + e.message, true); }
+}
+
+/* ============================== settings ============================== */
+const DEFAULT_SETTINGS = { freeShippingMin: 50, standardShipping: 4.99, expressShipping: 12.99, returnDays: 30, supportEmail: 'support@budgetthrills.com', notice: '' };
+function renderSettings() {
+  const s = { ...DEFAULT_SETTINGS, ...(S.settings || {}) };
+  if (document.activeElement && $('#settings-form').contains(document.activeElement)) return;
+  $('#s-freemin').value = s.freeShippingMin; $('#s-std').value = s.standardShipping; $('#s-exp').value = s.expressShipping; $('#s-ret').value = s.returnDays; $('#s-support').value = s.supportEmail; $('#s-notice').value = s.notice || '';
+  const at = toDate(S.settings?.updatedAt); $('#settings-saved').textContent = S.settings ? `Saved ${rel(at)}${S.settings.updatedBy ? ' by ' + S.settings.updatedBy : ''}` : 'Using defaults (not saved yet)';
+}
+$('#settings-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const data = { freeShippingMin: +$('#s-freemin').value || 0, standardShipping: +$('#s-std').value || 0, expressShipping: +$('#s-exp').value || 0, returnDays: +$('#s-ret').value || 0, supportEmail: $('#s-support').value.trim(), notice: $('#s-notice').value.trim(), updatedAt: serverTimestamp(), updatedBy: S.user.email };
+  try { await setDoc(doc(db, 'settings', 'store'), data, { merge: true }); toast('Settings saved'); } catch (err) { toast('Save failed: ' + err.message, true); }
+});
+renderSettings();
+</script>
+<script type="module" src="/scripts/auth.js?v=27"></script>
 </body>
 </html>

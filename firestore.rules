@@ -6,7 +6,8 @@ service cloud.firestore {
     function isAdmin() {
       return request.auth != null && (
         request.auth.uid == 'ExPolSW2P8UvRYLI4bowoRjCRix1' ||
-        request.auth.token.email == 'eliudsamuel17@gmail.com'
+        request.auth.token.email == 'eliudsamuel17@gmail.com' ||
+        request.auth.token.email == 'eliudsamwels7@gmail.com'
       );
     }
 
@@ -40,10 +41,16 @@ service cloud.firestore {
       allow delete: if false;
     }
 
-    // Coupons collection - customers read to validate, authenticated admins create/modify
+    // Coupons collection - customers read to validate, admins create/modify
     match /coupons/{couponId} {
       allow read: if true;
-      allow write: if request.auth != null;
+      allow write: if isAdmin();
+    }
+
+    // Store settings (shipping thresholds, notice) - public read, admin write
+    match /settings/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
     }
 
     // Default deny
