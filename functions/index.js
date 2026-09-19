@@ -421,8 +421,12 @@ exports.createCheckoutSession = onRequest({ cors: true }, async (req, res) => {
       cancel_url: `${origin}/checkout.html?status=cancelled`
     };
     if (Number(order.discount) > 0) {
-      const coupon = await stripe.coupons.create({ amount_off: Math.round(Number(order.discount) * 100), currency: "usd", duration: "once", name: order.promoCode || "Discount" });
-      sessionParams.discounts = [{ coupon: coupon.id }];
+      try {
+        const coupon = await stripe.coupons.create({ amount_off: Math.round(Number(order.discount) * 100), currency: "usd", duration: "once", name: order.promoCode || "Discount" });
+        sessionParams.discounts = [{ coupon: coupon.id }];
+      } catch (couponErr) {
+        console.warn("Could not create Stripe coupon, continuing without discount object:", couponErr.message);
+      }
     }
     const session = await stripe.checkout.sessions.create(sessionParams);
     await markOrder(orderId, { paymentProvider: "stripe", stripeSessionId: session.id });
