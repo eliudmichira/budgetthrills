@@ -54,8 +54,21 @@ service cloud.firestore {
       allow write: if isAdmin();
     }
 
-    // Store settings (shipping thresholds, notice) - public read, admin write
+    // Store settings (shipping thresholds, notice) - public read, admin write.
+    // settings/sync holds eBay sync rules and run logs: admin only.
     match /settings/{docId} {
+      allow read: if docId != 'sync' || isAdmin();
+      allow write: if isAdmin();
+    }
+
+    // Product records written by the eBay sync and edited in the admin dashboard
+    match /products/{productId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // Compiled storefront catalog (one document, one read per visitor)
+    match /catalog/{docId} {
       allow read: if true;
       allow write: if isAdmin();
     }

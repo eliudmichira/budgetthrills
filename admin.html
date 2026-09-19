@@ -314,6 +314,7 @@
       <button class="nav-item" data-page="orders"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2 2h2l2.7 12.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L22 7H5.1"/></svg>Orders<span class="nav-count" id="nc-orders"></span></button>
       <button class="nav-item" data-page="catalog"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 8a2 2 0 0 0-1-1.7l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.7l7 4a2 2 0 0 0 2 0l7-4a2 2 0 0 0 1-1.7Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg>Catalog<span class="nav-count" id="nc-catalog"></span></button>
       <button class="nav-item" data-page="messages"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg>Messages<span class="nav-count" id="nc-messages"></span></button>
+      <button class="nav-item" data-page="sync"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 0 1-15.5 6.2L3 16"/><path d="M3 21v-5h5"/><path d="M3 12a9 9 0 0 1 15.5-6.2L21 8"/><path d="M21 3v5h-5"/></svg>eBay Sync<span class="nav-count" id="nc-sync"></span></button>
       <button class="nav-item" data-page="promos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.6 13.4 13.4 20.6a2 2 0 0 1-2.8 0L2 12V2h10l8.6 8.6a2 2 0 0 1 0 2.8Z"/><circle cx="7.5" cy="7.5" r="1.5"/></svg>Promos</button>
       <button class="nav-item" data-page="settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1Z"/></svg>Settings</button>
     </nav>
@@ -408,20 +409,22 @@
       <!-- ===== CATALOG ===== -->
       <section class="page" id="page-catalog">
         <div class="grid kpis" style="margin-bottom:16px">
-          <div class="card kpi"><div class="l">Products listed</div><div class="v num" id="c-count">—</div><div class="d" id="c-cats"></div></div>
+          <div class="card kpi"><div class="l">Live on store</div><div class="v num" id="c-count">—</div><div class="d" id="c-cats"></div></div>
           <div class="card kpi"><div class="l">Average list price</div><div class="v num" id="c-avg">—</div><div class="d">median <span id="c-median" class="num"></span></div></div>
-          <div class="card kpi"><div class="l">Average discount vs MSRP</div><div class="v num" id="c-disc">—</div><div class="d">across items with an MSRP</div></div>
+          <div class="card kpi"><div class="l">Average margin</div><div class="v num" id="c-disc">—</div><div class="d" id="c-disc-d">after processing fees</div></div>
           <div class="card kpi"><div class="l">Products with sales</div><div class="v num" id="c-sold">—</div><div class="d" id="c-sold-d"></div></div>
         </div>
         <div class="card">
           <div class="toolbar">
             <div class="chips" id="cat-chips"></div>
             <select id="cat-cond" style="width:auto"><option value="">Any condition</option></select>
-            <select id="cat-sort" style="width:auto"><option value="name">Name A–Z</option><option value="price-desc">Price high → low</option><option value="price-asc">Price low → high</option><option value="discount">Biggest discount</option><option value="sold">Best selling</option><option value="photos">Fewest photos</option></select>
+            <select id="cat-status" style="width:auto"><option value="live">Live on store</option><option value="all">All records</option><option value="hidden">Hidden</option><option value="retired">Retired / sold out</option><option value="featured">Featured</option></select>
+            <select id="cat-sort" style="width:auto"><option value="newest">Newest first</option><option value="name">Name A–Z</option><option value="price-desc">Price high → low</option><option value="price-asc">Price low → high</option><option value="margin">Best margin</option><option value="sold">Best selling</option><option value="verified">Least recently verified</option></select>
             <input class="grow" id="cat-search" type="search" placeholder="Search name, brand, condition…">
+            <button class="btn" id="publish-catalog">Publish to store</button>
             <button class="btn" id="export-catalog">Export JSON</button>
           </div>
-          <div class="tbl-wrap"><table><thead><tr><th>Product</th><th>Category</th><th>Condition</th><th class="r">Price</th><th class="r">MSRP</th><th class="r">Off</th><th class="r">Sold</th><th class="r">Revenue</th><th class="r">Photos</th></tr></thead><tbody id="catalog-body"></tbody></table></div>
+          <div class="tbl-wrap"><table><thead><tr><th>Product</th><th>Category</th><th>Condition</th><th class="r">Price</th><th class="r">Cost</th><th class="r">Margin</th><th class="r">Sold</th><th>Verified</th><th>Status</th></tr></thead><tbody id="catalog-body"></tbody></table></div>
           <div class="pager" id="catalog-pager"></div>
         </div>
       </section>
@@ -437,6 +440,76 @@
             <div id="msg-list" style="max-height:calc(100vh - 220px);overflow-y:auto"></div>
           </div>
           <div class="card" id="msg-detail"><div class="empty"><strong>No message selected</strong>Pick a message from the list to read and reply.</div></div>
+        </div>
+      </section>
+
+      <!-- ===== EBAY SYNC ===== -->
+      <section class="page" id="page-sync">
+        <div id="sync-banner"></div>
+        <div class="grid two">
+          <div>
+            <div class="card">
+              <div class="card-h"><h2>Sourcing rules</h2><span class="faint" id="sync-saved"></span></div>
+              <div class="card-b">
+                <form id="sync-form">
+                  <div class="form-row">
+                    <div class="form-grp"><label>Target net margin (%)</label><input id="sy-margin" type="number" min="5" max="80" step="1"></div>
+                    <div class="form-grp"><label>Price ceiling ($)</label><input id="sy-ceiling" type="number" min="10" step="1"></div>
+                  </div>
+                  <div class="form-row">
+                    <div class="form-grp"><label>Price floor ($)</label><input id="sy-floor" type="number" min="1" step="1"></div>
+                    <div class="form-grp"><label>Prices end in (cents)</label><input id="sy-ending" type="number" min="0" max="99" step="1"></div>
+                  </div>
+                  <div class="form-row">
+                    <div class="form-grp"><label>Catalog size target</label><input id="sy-max" type="number" min="10" max="1000" step="10"></div>
+                    <div class="form-grp"><label>New listings per category per run</label><input id="sy-perrun" type="number" min="0" max="50" step="1"></div>
+                  </div>
+                  <div class="form-row">
+                    <div class="form-grp"><label>Min seller feedback (%)</label><input id="sy-fbpct" type="number" min="90" max="100" step="0.1"></div>
+                    <div class="form-grp"><label>Min seller feedback count</label><input id="sy-fbscore" type="number" min="0" step="10"></div>
+                  </div>
+                  <div class="list" style="margin-bottom:14px;border:1px solid var(--a-border);border-radius:6px">
+                    <div class="li"><div class="t">Scheduled sync enabled<small>Runs every 6 hours on Firebase</small></div><button type="button" class="switch" id="sy-enabled"></button></div>
+                    <div class="li"><div class="t">Require free shipping<small>Keeps landed cost predictable</small></div><button type="button" class="switch" id="sy-freeship"></button></div>
+                    <div class="li"><div class="t">Require returns accepted<small>So you can honour your own return window</small></div><button type="button" class="switch" id="sy-returns"></button></div>
+                    <div class="li"><div class="t">Top Rated sellers only<small>Stricter, fewer results</small></div><button type="button" class="switch" id="sy-toprated"></button></div>
+                  </div>
+                  <button class="btn primary" type="submit">Save rules</button>
+                </form>
+              </div>
+            </div>
+            <div class="card" style="margin-top:16px">
+              <div class="card-h"><h2>Categories &amp; searches</h2><button class="btn sm" id="sy-add-cat" type="button">Add category</button></div>
+              <div class="tbl-wrap"><table><thead><tr><th>Category</th><th class="r">Mix %</th><th>Store page</th><th>eBay searches (comma separated)</th><th></th></tr></thead><tbody id="sy-cats"></tbody></table></div>
+              <div class="pager"><span id="sy-weight-total"></span><button class="btn sm primary" id="sy-save-cats">Save categories</button></div>
+            </div>
+          </div>
+          <div>
+            <div class="card">
+              <div class="card-h"><h2>Run</h2><span class="faint" id="sy-last"></span></div>
+              <div class="card-b">
+                <div style="display:flex;gap:8px;flex-wrap:wrap">
+                  <button class="btn primary" id="sy-run">Sync now</button>
+                  <button class="btn" id="sy-publish">Publish live catalog</button>
+                  <button class="btn" id="sy-import">Import products.js</button>
+                </div>
+                <p class="faint" style="font-size:12px;margin:12px 0 0">Sync fetches listings from eBay with your keys, scores them, prices them at your margin, retires sold-out items and publishes the store catalog. Publish only rebuilds the store catalog from the records you have edited.</p>
+              </div>
+            </div>
+            <div class="card" style="margin-top:16px">
+              <div class="card-h"><h2>Last run</h2><span id="sy-status"></span></div>
+              <div class="card-b" id="sy-summary"><div class="empty">No sync has run yet.</div></div>
+            </div>
+            <div class="card" style="margin-top:16px">
+              <div class="card-h"><h2>Setup checklist</h2></div>
+              <div class="list" style="font-size:13px">
+                <div class="li"><div class="t">Add EBAY_CLIENT_ID and EBAY_CLIENT_SECRET to <span class="kbd">functions/.env</span></div></div>
+                <div class="li"><div class="t">Deploy functions and rules<small><span class="kbd">firebase deploy --only functions,firestore:rules,hosting</span></small></div></div>
+                <div class="li"><div class="t">Firebase project on the Blaze plan<small>Scheduled functions need Cloud Scheduler</small></div></div>
+                <div class="li"><div class="t">Press Sync now once, then Publish<small>The store switches from products.js to the live catalog automatically</small></div></div>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -534,7 +607,7 @@
 <script src="/scripts/products.js?v=5"></script>
 <script type="module">
 import { db, auth } from '/scripts/firebase-init.js';
-import { onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js';
+import { onAuthStateChanged, signOut, getIdToken } from 'https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js';
 import {
   collection, query, orderBy, onSnapshot, doc, getDoc, getDocs, setDoc, updateDoc, addDoc, deleteDoc,
   serverTimestamp, arrayUnion, writeBatch, increment
@@ -583,15 +656,17 @@ const needsFulfil = (o) => STATUS[normStatus(o.status)].group === 'open';
 /* ============================== state ============================== */
 const S = {
   catalog: (window.BT_CATALOG || []).slice(),
+  products: [], sync: null,
   orders: [], messages: [], coupons: [], settings: null, replies: {},
   user: null, page: 'overview',
   o: { status: 'all', range: 0, q: '', sort: 'date', dir: -1, page: 1, per: 25, sel: new Set() },
-  c: { cat: 'all', cond: '', q: '', sort: 'name', page: 1, per: 30 },
+  c: { cat: 'all', cond: '', status: 'live', q: '', sort: 'newest', page: 1, per: 30 },
   m: { f: 'unread', q: '', active: null },
   chartDays: 30,
   unsub: []
 };
-const CATALOG_MAP = new Map(S.catalog.map(p => [p.id, p]));
+let CATALOG_MAP = new Map(S.catalog.map(p => [p.id, p]));
+const STATIC_CATALOG = S.catalog.slice();
 
 function normOrder(id, d) {
   const o = { ...d, _id: id };
@@ -610,7 +685,7 @@ function normOrder(id, d) {
 }
 
 /* ============================== nav ============================== */
-const TITLES = { overview: ['Overview', ''], orders: ['Orders', 'Fulfilment & payments'], catalog: ['Catalog', 'Static listing from products.js'], messages: ['Messages', 'Contact form inbox'], promos: ['Promos', 'Coupon codes'], settings: ['Settings', 'Shipping, policies, access'] };
+const TITLES = { overview: ['Overview', ''], orders: ['Orders', 'Fulfilment & payments'], catalog: ['Catalog', 'Live products from the eBay sync'], sync: ['eBay Sync', 'Automated sourcing rules'], messages: ['Messages', 'Contact form inbox'], promos: ['Promos', 'Coupon codes'], settings: ['Settings', 'Shipping, policies, access'] };
 function go(page) {
   if (!TITLES[page]) page = 'overview';
   S.page = page;
@@ -629,7 +704,7 @@ window.addEventListener('hashchange', () => go(location.hash.slice(1)));
 document.addEventListener('keydown', (e) => {
   if (e.target.matches('input,textarea,select')) { if (e.key === 'Escape') e.target.blur(); return; }
   if (e.key === 'Escape') { closeDrawer(); closeModal(); }
-  const map = { '1': 'overview', '2': 'orders', '3': 'catalog', '4': 'messages', '5': 'promos', '6': 'settings' };
+  const map = { '1': 'overview', '2': 'orders', '3': 'catalog', '4': 'messages', '5': 'sync', '6': 'promos', '7': 'settings' };
   if (map[e.key] && !e.metaKey && !e.ctrlKey) go(map[e.key]);
   if (e.key === '/') { const f = $('#page-' + S.page + ' input[type=search]'); if (f) { e.preventDefault(); f.focus(); } }
 });
@@ -712,6 +787,15 @@ function startStreams() {
     S.coupons = snap.docs.map(d => ({ ...d.data(), _id: d.id })).sort((a, b) => (a.code || a._id).localeCompare(b.code || b._id));
     renderCoupons();
   }, (err) => showRulesBanner('coupons', err)));
+
+  S.unsub.push(onSnapshot(collection(db, 'products'), (snap) => {
+    S.products = snap.docs.map(d => ({ ...d.data(), _id: d.id }));
+    applyLiveCatalog();
+  }, (err) => showRulesBanner('products', err)));
+
+  S.unsub.push(onSnapshot(doc(db, 'settings', 'sync'), (snap) => {
+    S.sync = snap.exists() ? snap.data() : null; renderSync();
+  }, (err) => showRulesBanner('settings/sync', err)));
 
   S.unsub.push(onSnapshot(doc(db, 'settings', 'store'), (snap) => {
     S.settings = snap.exists() ? snap.data() : null; renderSettings();
@@ -942,60 +1026,244 @@ function printSlip(o) {
 }
 
 /* ============================== catalog ============================== */
-(function initCatalogStatic() {
-  const prices = S.catalog.map(p => p.price).sort((a, b) => a - b);
-  const median = prices.length ? prices[Math.floor(prices.length / 2)] : 0;
-  $('#c-count').textContent = S.catalog.length; $('#c-avg').textContent = money(prices.reduce((a, b) => a + b, 0) / (prices.length || 1)); $('#c-median').textContent = money(median);
-  const withMsrp = S.catalog.filter(p => p.originalPrice > p.price);
-  $('#c-disc').textContent = withMsrp.length ? Math.round(withMsrp.reduce((s, p) => s + (1 - p.price / p.originalPrice), 0) / withMsrp.length * 100) + '%' : '—';
-  const cats = {}; S.catalog.forEach(p => cats[p.category] = (cats[p.category] || 0) + 1);
-  $('#c-cats').textContent = Object.keys(cats).length + ' categories';
-  const conds = [...new Set(S.catalog.map(p => p.tag).filter(Boolean))].sort();
-  $('#cat-cond').innerHTML = '<option value="">Any condition</option>' + conds.map(c => `<option value="${esc(c)}">${esc(c)}</option>`).join('');
-  $('#cat-chips').innerHTML = [['all', 'All', S.catalog.length], ...Object.entries(cats).sort((a, b) => b[1] - a[1]).map(([c, n]) => [c, c, n])].map(([k, l, n]) => `<button class="chip" data-cat="${esc(k)}">${esc(l)} <b>${n}</b></button>`).join('');
+const toMs = (v) => { const d = toDate(v); return d ? d.getTime() : 0; };
+const recPrice = (p) => Number(p.priceOverride) > 0 ? Number(p.priceOverride) : Number(p.price) || 0;
+const recMargin = (p) => { const cost = Number(p.landedCost); const sale = recPrice(p); return cost > 0 && sale > 0 ? (sale - (sale * 0.035 + 0.30) - cost) / sale : null; };
+const isLive = (p) => p.active !== false && !p.hidden;
+
+/** Static products.js rows shaped like product records so both sources render the same way. */
+function staticRecords() {
+  return STATIC_CATALOG.map(p => ({ ...p, _id: p.id, source: 'static', active: true, hidden: false, featured: false, landedCost: null, firstSeenAt: 0, lastVerifiedAt: null }));
+}
+function records() { return S.products.length ? S.products : staticRecords(); }
+
+/** Storefront-shaped catalog: what customers currently see. */
+function applyLiveCatalog() {
+  const live = records().filter(isLive).map(p => ({ ...p, price: recPrice(p) }));
+  S.catalog = live;
+  CATALOG_MAP = new Map(records().map(p => [p.id, p]));
+  $('#nc-catalog').textContent = live.length;
+  renderCatalogChips();
+  renderAll();
+}
+
+function renderCatalogChips() {
+  const all = records();
+  const cats = {}; all.forEach(p => cats[p.category] = (cats[p.category] || 0) + 1);
+  const conds = [...new Set(all.map(p => p.tag).filter(Boolean))].sort();
+  $('#cat-cond').innerHTML = '<option value="">Any condition</option>' + conds.map(c => `<option value="${esc(c)}" ${S.c.cond === c ? 'selected' : ''}>${esc(c)}</option>`).join('');
+  $('#cat-chips').innerHTML = [['all', 'All', all.length], ...Object.entries(cats).sort((a, b) => b[1] - a[1]).map(([c, n]) => [c, c, n])].map(([k, l, n]) => `<button class="chip ${S.c.cat === k ? 'active' : ''}" data-cat="${esc(k)}">${esc(l)} <b>${n}</b></button>`).join('');
   $$('#cat-chips .chip').forEach(b => b.onclick = () => { S.c.cat = b.dataset.cat; S.c.page = 1; renderCatalog(); });
-  $('#cat-cond').addEventListener('change', e => { S.c.cond = e.target.value; S.c.page = 1; renderCatalog(); });
-  $('#cat-sort').addEventListener('change', e => { S.c.sort = e.target.value; S.c.page = 1; renderCatalog(); });
-  $('#cat-search').addEventListener('input', debounce(e => { S.c.q = e.target.value.toLowerCase().trim(); S.c.page = 1; renderCatalog(); }, 120));
-  $('#export-catalog').addEventListener('click', () => { download('budgetthrills-catalog.json', JSON.stringify(S.catalog, null, 2), 'application/json'); toast('Catalog exported'); });
-})();
+}
+$('#cat-cond').addEventListener('change', e => { S.c.cond = e.target.value; S.c.page = 1; renderCatalog(); });
+$('#cat-status').addEventListener('change', e => { S.c.status = e.target.value; S.c.page = 1; renderCatalog(); });
+$('#cat-sort').addEventListener('change', e => { S.c.sort = e.target.value; S.c.page = 1; renderCatalog(); });
+$('#cat-search').addEventListener('input', debounce(e => { S.c.q = e.target.value.toLowerCase().trim(); S.c.page = 1; renderCatalog(); }, 120));
+$('#export-catalog').addEventListener('click', () => { download('budgetthrills-catalog.json', JSON.stringify(S.catalog, null, 2), 'application/json'); toast('Catalog exported'); });
+$('#publish-catalog').addEventListener('click', publishCatalog);
+
 function renderCatalog() {
-  const sales = productSales();
-  const soldCount = S.catalog.filter(p => sales.has(p.id)).length;
-  $('#c-sold').textContent = soldCount; $('#c-sold-d').textContent = `${Math.round(soldCount / (S.catalog.length || 1) * 100)}% of listings have sold at least once`;
+  const all = records(), sales = productSales();
+  const live = all.filter(isLive);
+  const withMargin = live.map(recMargin).filter(m => m !== null);
+  const prices = live.map(recPrice).sort((a, b) => a - b);
+  $('#c-count').textContent = live.length;
+  $('#c-cats').textContent = `${new Set(live.map(p => p.category)).size} categories · ${all.length - live.length} hidden or retired`;
+  $('#c-avg').textContent = money(prices.reduce((a, b) => a + b, 0) / (prices.length || 1)); $('#c-median').textContent = money(prices[Math.floor(prices.length / 2)] || 0);
+  $('#c-disc').textContent = withMargin.length ? Math.round(withMargin.reduce((a, b) => a + b, 0) / withMargin.length * 100) + '%' : '—';
+  $('#c-disc-d').textContent = withMargin.length ? `on ${withMargin.length} eBay-sourced items after fees` : 'no cost data (static catalog)';
+  const soldCount = live.filter(p => sales.has(p.id)).length;
+  $('#c-sold').textContent = soldCount; $('#c-sold-d').textContent = `${Math.round(soldCount / (live.length || 1) * 100)}% of live listings have sold at least once`;
   $$('#cat-chips .chip').forEach(b => b.classList.toggle('active', b.dataset.cat === S.c.cat));
-  let rows = S.catalog.filter(p => (S.c.cat === 'all' || p.category === S.c.cat) && (!S.c.cond || p.tag === S.c.cond) && (!S.c.q || [p.name, p.brand, p.tag, p.category, p.id].join(' ').toLowerCase().includes(S.c.q)))
+
+  const st = S.c.status;
+  let rows = all.filter(p => (S.c.cat === 'all' || p.category === S.c.cat) && (!S.c.cond || p.tag === S.c.cond)
+    && (st === 'all' || (st === 'live' ? isLive(p) : st === 'hidden' ? !!p.hidden : st === 'retired' ? p.active === false : st === 'featured' ? !!p.featured : true))
+    && (!S.c.q || [p.name, p.brand, p.tag, p.category, p.id, p.seller?.username].join(' ').toLowerCase().includes(S.c.q)))
     .map(p => ({ p, s: sales.get(p.id) || { units: 0, revenue: 0 } }));
-  const off = (p) => p.originalPrice > p.price ? (1 - p.price / p.originalPrice) : 0;
-  const sorters = { name: (a, b) => a.p.name.localeCompare(b.p.name), 'price-desc': (a, b) => b.p.price - a.p.price, 'price-asc': (a, b) => a.p.price - b.p.price, discount: (a, b) => off(b.p) - off(a.p), sold: (a, b) => b.s.units - a.s.units || b.s.revenue - a.s.revenue, photos: (a, b) => (a.p.images?.length || 0) - (b.p.images?.length || 0) };
-  rows.sort(sorters[S.c.sort] || sorters.name);
+  const sorters = {
+    newest: (a, b) => toMs(b.p.firstSeenAt) - toMs(a.p.firstSeenAt) || a.p.name.localeCompare(b.p.name),
+    name: (a, b) => a.p.name.localeCompare(b.p.name), 'price-desc': (a, b) => recPrice(b.p) - recPrice(a.p), 'price-asc': (a, b) => recPrice(a.p) - recPrice(b.p),
+    margin: (a, b) => (recMargin(b.p) ?? -1) - (recMargin(a.p) ?? -1), sold: (a, b) => b.s.units - a.s.units || b.s.revenue - a.s.revenue,
+    verified: (a, b) => toMs(a.p.lastVerifiedAt) - toMs(b.p.lastVerifiedAt)
+  };
+  rows.sort(sorters[S.c.sort] || sorters.newest);
   const total = rows.length, pages = Math.max(1, Math.ceil(total / S.c.per)); S.c.page = Math.min(S.c.page, pages);
   const slice = rows.slice((S.c.page - 1) * S.c.per, S.c.page * S.c.per);
-  $('#catalog-body').innerHTML = slice.length ? slice.map(({ p, s }) => `<tr class="row" data-prod="${esc(p.id)}">
-    <td><div class="prod"><img class="thumb" src="${esc(p.images?.[0] || '')}" alt="" loading="lazy" onerror="this.style.visibility='hidden'"><div style="min-width:0"><div class="n truncate">${esc(p.name)}</div><div class="faint truncate" style="font-size:12px">${esc(p.brand || '')}${p.brand ? ' · ' : ''}<span class="mono" style="font-size:11px">${esc(p.id)}</span></div></div></div></td>
+  const statusHtml = (p) => p.active === false ? `<span class="st neutral">${esc(p.retiredReason || 'Retired')}</span>` : p.hidden ? '<span class="st warn">Hidden</span>' : p.featured ? '<span class="st info">Featured</span>' : '<span class="st good">Live</span>';
+  $('#catalog-body').innerHTML = slice.length ? slice.map(({ p, s }) => { const m = recMargin(p); return `<tr class="row" data-prod="${esc(p.id)}">
+    <td><div class="prod"><img class="thumb" src="${esc(p.images?.[0] || '')}" alt="" loading="lazy" onerror="this.style.visibility='hidden'"><div style="min-width:0"><div class="n truncate">${esc(p.name)}</div><div class="faint truncate" style="font-size:12px">${p.source === 'ebay' ? 'eBay · ' + esc(p.seller?.username || '') : 'products.js'}${p.brand ? ' · ' + esc(p.brand) : ''}</div></div></div></td>
     <td><span class="tag">${esc(p.category)}</span></td><td class="faint">${esc(p.tag || '—')}</td>
-    <td class="r num" style="font-weight:500">${money(p.price)}</td><td class="r num faint">${p.originalPrice ? money(p.originalPrice) : '—'}</td>
-    <td class="r num ${off(p) >= 0.3 ? '' : 'faint'}">${off(p) ? Math.round(off(p) * 100) + '%' : '—'}</td>
-    <td class="r num">${s.units || '<span class="faint">0</span>'}</td><td class="r num">${s.revenue ? money(s.revenue) : '<span class="faint">—</span>'}</td>
-    <td class="r num ${(p.images?.length || 0) < 3 ? '' : 'faint'}">${p.images?.length || 0}</td></tr>`).join('')
-    : `<tr><td colspan="9"><div class="empty"><strong>No products match</strong>Adjust the filters or search.</div></td></tr>`;
+    <td class="r num" style="font-weight:500">${money(recPrice(p))}${p.priceOverride ? ' <span class="faint" title="manual override">*</span>' : ''}</td>
+    <td class="r num faint">${p.landedCost ? money(p.landedCost) : '—'}</td>
+    <td class="r num ${m !== null && m < 0.2 ? '' : 'faint'}" style="${m !== null && m < 0.2 ? 'color:var(--a-warn)' : ''}">${m !== null ? Math.round(m * 100) + '%' : '—'}</td>
+    <td class="r num">${s.units || '<span class="faint">0</span>'}</td>
+    <td class="faint">${p.lastVerifiedAt ? rel(toDate(p.lastVerifiedAt)) : '—'}</td><td>${statusHtml(p)}</td></tr>`; }).join('')
+    : `<tr><td colspan="9"><div class="empty"><strong>No products match</strong>${S.products.length ? 'Adjust the filters or run a sync.' : 'The store is using the static products.js catalog. Run a sync from the eBay Sync tab, or import products.js to edit it here.'}</div></td></tr>`;
   $('#catalog-pager').innerHTML = `<span>${total ? `${(S.c.page - 1) * S.c.per + 1}–${Math.min(total, S.c.page * S.c.per)} of ${total}` : '0 products'}</span><div class="btns"><button class="btn sm" id="cpg-prev" ${S.c.page <= 1 ? 'disabled' : ''}>Prev</button><button class="btn sm" id="cpg-next" ${S.c.page >= pages ? 'disabled' : ''}>Next</button></div>`;
   $('#cpg-prev').onclick = () => { S.c.page--; renderCatalog(); }; $('#cpg-next').onclick = () => { S.c.page++; renderCatalog(); };
 }
+
 function openProduct(id) {
   const p = CATALOG_MAP.get(id); if (!p) return;
   const s = productSales().get(id) || { units: 0, revenue: 0 };
-  const orders = S.orders.filter(o => o.items.some(i => i.id === id)).slice(0, 8);
+  const orders = S.orders.filter(o => o.items.some(i => i.id === id)).slice(0, 6);
+  const m = recMargin(p), editable = S.products.length > 0;
+  const cats = [...new Set([...(S.sync?.categories || []).map(c => c.name), ...records().map(r => r.category)])].filter(Boolean).sort();
   const body = `
     <div style="display:flex;gap:6px;overflow-x:auto;padding-bottom:6px">${(p.images || []).map(i => `<img src="${esc(i)}" alt="" style="width:88px;height:88px;object-fit:cover;border-radius:6px;border:1px solid var(--a-border);flex:none" loading="lazy">`).join('')}</div>
-    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px"><span class="tag">${esc(p.category)}</span><span class="tag">${esc(p.tag || '')}</span>${p.brand ? `<span class="tag">${esc(p.brand)}</span>` : ''}</div>
-    <div class="sec"><h3>Pricing</h3><dl class="kv"><dt>List price</dt><dd class="num" style="font-weight:600">${money(p.price)}</dd><dt>MSRP</dt><dd class="num">${p.originalPrice ? money(p.originalPrice) + ` <span class="faint">(${Math.round((1 - p.price / p.originalPrice) * 100)}% off)</span>` : '—'}</dd><dt>Sold</dt><dd class="num">${s.units} units · ${money(s.revenue)}</dd><dt>Variants</dt><dd>${(p.sizes || []).map(esc).join(', ') || '—'}</dd><dt>Colours</dt><dd>${(p.colors || []).map(c => esc(c.name)).join(', ') || '—'}</dd></dl></div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px"><span class="tag">${esc(p.category)}</span><span class="tag">${esc(p.tag || '')}</span>${p.brand ? `<span class="tag">${esc(p.brand)}</span>` : ''}${p.source === 'ebay' ? '<span class="tag">eBay</span>' : ''}</div>
+    <div class="sec"><h3>Economics</h3><dl class="kv">
+      <dt>Store price</dt><dd class="num" style="font-weight:600">${money(recPrice(p))}${p.priceOverride ? ' <span class="faint">(override; computed ' + money(p.price) + ')</span>' : ''}</dd>
+      ${p.landedCost ? `<dt>eBay cost</dt><dd class="num">${money(p.ebayPrice)} + ${money(p.ebayShipping || 0)} shipping = ${money(p.landedCost)}</dd><dt>Net margin</dt><dd class="num" style="${m < 0.2 ? 'color:var(--a-warn)' : ''}">${Math.round(m * 100)}% after fees · ${money(recPrice(p) - (recPrice(p) * 0.035 + 0.3) - p.landedCost)} profit</dd>` : ''}
+      ${p.originalPrice ? `<dt>Compare at</dt><dd class="num">${money(p.originalPrice)} <span class="faint">(from eBay listing)</span></dd>` : ''}
+      <dt>Sold</dt><dd class="num">${s.units} units · ${money(s.revenue)}</dd>
+      ${p.seller?.username ? `<dt>Seller</dt><dd>${esc(p.seller.username)} · ${p.seller.feedbackPct}% (${p.seller.feedbackScore})${p.seller.topRated ? ' · Top Rated' : ''}</dd>` : ''}
+      ${p.returnsDays ? `<dt>Seller returns</dt><dd>${p.returnsDays} days</dd>` : ''}
+      ${p.lastVerifiedAt ? `<dt>Verified</dt><dd>${fmtDate(toDate(p.lastVerifiedAt), true)}</dd>` : ''}${p.firstSeenAt ? `<dt>Added</dt><dd>${fmtDate(toDate(p.firstSeenAt), true)}</dd>` : ''}
+    </dl></div>
+    ${editable ? `<div class="sec"><h3>Edit</h3>
+      <div class="form-row"><div class="form-grp"><label>Category</label><select id="pe-cat">${cats.map(c => `<option ${c === p.category ? 'selected' : ''}>${esc(c)}</option>`).join('')}</select></div>
+      <div class="form-grp"><label>Price override ($, blank = auto)</label><input id="pe-price" type="number" min="1" step="0.01" value="${p.priceOverride || ''}" placeholder="${p.price}"></div></div>
+      <div class="form-grp"><label>Name</label><input id="pe-name" value="${esc(p.name)}"></div>
+      <div class="list" style="border:1px solid var(--a-border);border-radius:6px"><div class="li"><div class="t">Featured on homepage</div><button type="button" class="switch ${p.featured ? 'on' : ''}" id="pe-featured"></button></div><div class="li"><div class="t">Hidden from store</div><button type="button" class="switch ${p.hidden ? 'on' : ''}" id="pe-hidden"></button></div></div>
+    </div>` : `<div class="sec"><h3>Editing</h3><p class="faint" style="font-size:12.5px;margin:0">This record comes from <code class="kbd">scripts/products.js</code>. Import the file from the eBay Sync tab to edit products here.</p></div>`}
     <div class="sec"><h3>Description</h3><p style="margin:0;font-size:13.5px;line-height:1.6" class="muted">${esc(p.desc || '')}</p>${p.details ? `<p style="margin:8px 0 0;font-size:12.5px" class="faint">${esc(p.details)}</p>` : ''}</div>
-    ${orders.length ? `<div class="sec"><h3>Recent orders</h3><div class="list">${orders.map(o => `<div class="li click" data-open="${esc(o._id)}" style="padding:8px 0"><span class="mono">${esc(o.id)}</span><div class="t truncate">${esc(o.customerName || o.email)}</div><span class="faint">${rel(o._date)}</span>${stHtml(o.status)}</div>`).join('')}</div></div>` : ''}
-    <div class="sec"><h3>Editing</h3><p class="faint" style="font-size:12.5px;margin:0">The storefront catalog is generated from <code class="kbd">scripts/products.js</code>. Edit that file and run <code class="kbd">npm run inject</code> to change listings.</p></div>`;
-  openDrawer(esc(p.name), body, `<button class="btn" id="copy-id">Copy ID</button><a class="btn" href="${esc(p.categoryUrl || '/')}" target="_blank" rel="noopener">Category page</a><span style="flex:1"></span><a class="btn primary" href="/pdp.html?id=${esc(p.id)}" target="_blank" rel="noopener">Open on store</a>`);
-  $('#copy-id').onclick = () => navigator.clipboard.writeText(p.id).then(() => toast('Product ID copied'));
+    ${orders.length ? `<div class="sec"><h3>Recent orders</h3><div class="list">${orders.map(o => `<div class="li click" data-open="${esc(o._id)}" style="padding:8px 0"><span class="mono">${esc(o.id)}</span><div class="t truncate">${esc(o.customerName || o.email)}</div><span class="faint">${rel(o._date)}</span>${stHtml(o.status)}</div>`).join('')}</div></div>` : ''}`;
+  const foot = `${p.ebayUrl ? `<a class="btn" href="${esc(p.ebayUrl)}" target="_blank" rel="noopener">eBay listing</a>` : ''}${editable && p.source === 'ebay' ? `<button class="btn danger" id="pe-block">Retire &amp; block</button>` : ''}<span style="flex:1"></span><a class="btn" href="/pdp.html?id=${esc(p.id)}" target="_blank" rel="noopener">View on store</a>${editable ? `<button class="btn primary" id="pe-save">Save</button>` : ''}`;
+  openDrawer(esc(p.name), body, foot);
+  $$('#drawer .switch').forEach(b => b.onclick = () => b.classList.toggle('on'));
+  $('#pe-save')?.addEventListener('click', async () => {
+    const price = parseFloat($('#pe-price').value);
+    const patch = { category: $('#pe-cat').value, name: $('#pe-name').value.trim() || p.name, priceOverride: price > 0 ? Math.round(price * 100) / 100 : null, featured: $('#pe-featured').classList.contains('on'), hidden: $('#pe-hidden').classList.contains('on'), updatedAt: serverTimestamp() };
+    const cat = (S.sync?.categories || []).find(c => c.name === patch.category); if (cat?.url) patch.categoryUrl = cat.url;
+    try { await updateDoc(doc(db, 'products', p._id), patch); toast('Saved. Publish to update the store.'); closeDrawer(); } catch (e) { toast('Save failed: ' + e.message, true); }
+  });
+  $('#pe-block')?.addEventListener('click', async () => {
+    if (!(await confirmModal('Retire product', 'Hide this item and stop the sync from adding it again?', 'Retire', true))) return;
+    try {
+      await updateDoc(doc(db, 'products', p._id), { active: false, hidden: true, retiredReason: 'blocked by admin', updatedAt: serverTimestamp() });
+      if (p.ebayItemId) await setDoc(doc(db, 'settings', 'sync'), { blockedItemIds: arrayUnion(p.ebayItemId) }, { merge: true });
+      toast('Retired'); closeDrawer();
+    } catch (e) { toast('Failed: ' + e.message, true); }
+  });
 }
+
+/* ============================== eBay sync ============================== */
+const SYNC_DEFAULTS = { enabled: true, targetMargin: 25, priceCeiling: 200, priceFloor: 40, maxProducts: 160, priceEnding: 99, minSellerFeedbackPct: 99, minSellerFeedbackScore: 100, requireTopRated: false, requireFreeShipping: true, requireReturns: true, newPerCategoryPerRun: 6,
+  categories: [
+    { name: 'Tech', weight: 0.20, url: '/tech.html', keywords: ['mechanical keyboard', 'wireless gaming mouse', 'usb-c hub', 'portable ssd 1tb', 'webcam 4k'] },
+    { name: 'Accessories', weight: 0.15, url: '/accessories.html', keywords: ['seiko automatic watch', 'anker power bank', 'leather wallet rfid', 'ray-ban sunglasses', 'belkin charger'] },
+    { name: 'Tools', weight: 0.15, url: '/trending.html', keywords: ['dewalt 20v tool only', 'milwaukee m18 tool only', 'makita 18v tool only', 'dewalt battery 5ah'] },
+    { name: 'Home', weight: 0.10, url: '/trending.html', keywords: ['ninja air fryer', 'dyson v8', 'vitamix blender', 'kitchenaid hand mixer', 'instant pot'] },
+    { name: 'Audio', weight: 0.10, url: '/trending.html', keywords: ['focusrite scarlett', 'shure sm58', 'audio-technica turntable', 'jbl flip 6', 'sony wh-1000xm4'] },
+    { name: 'Toys', weight: 0.10, url: '/trending.html', keywords: ['lego retired set', 'hot wheels premium', 'funko pop exclusive', 'nerf elite'] },
+    { name: 'Gaming', weight: 0.10, url: '/gaming.html', keywords: ['xbox elite controller series 2', 'dualsense edge', 'nintendo switch pro controller', 'logitech g pro'] },
+    { name: 'Sneakers', weight: 0.05, url: '/collection.html', keywords: ['nike air max new with box', 'adidas samba new with box', 'new balance 574 new'] },
+    { name: 'Phones', weight: 0.05, url: '/phones.html', keywords: ['iphone 13 unlocked refurbished', 'pixel 7 unlocked refurbished'] }
+  ] };
+let syncCatsDraft = null;
+function syncSettings() { const s = { ...SYNC_DEFAULTS, ...(S.sync || {}) }; if (s.targetMargin <= 1) s.targetMargin = Math.round(s.targetMargin * 100); if (!Array.isArray(s.categories) || !s.categories.length) s.categories = SYNC_DEFAULTS.categories; return s; }
+
+function renderSync() {
+  const s = syncSettings();
+  const form = $('#sync-form');
+  if (!(document.activeElement && form.contains(document.activeElement))) {
+    $('#sy-margin').value = s.targetMargin; $('#sy-ceiling').value = s.priceCeiling; $('#sy-floor').value = s.priceFloor; $('#sy-ending').value = s.priceEnding;
+    $('#sy-max').value = s.maxProducts; $('#sy-perrun').value = s.newPerCategoryPerRun; $('#sy-fbpct').value = s.minSellerFeedbackPct; $('#sy-fbscore').value = s.minSellerFeedbackScore;
+    $('#sy-enabled').classList.toggle('on', s.enabled !== false); $('#sy-freeship').classList.toggle('on', !!s.requireFreeShipping); $('#sy-returns').classList.toggle('on', !!s.requireReturns); $('#sy-toprated').classList.toggle('on', !!s.requireTopRated);
+  }
+  $('#sync-saved').textContent = S.sync?.updatedAt ? `Saved ${rel(toDate(S.sync.updatedAt))}` : 'Using defaults (not saved yet)';
+  if (!syncCatsDraft) { syncCatsDraft = s.categories.map(c => ({ ...c, keywords: [...(c.keywords || [])] })); renderSyncCats(); }
+  const run = S.sync?.lastRun; const status = S.sync?.lastRunStatus;
+  $('#nc-sync').textContent = status === 'error' ? '!' : ''; $('#nc-sync').className = 'nav-count' + (status === 'error' ? ' alert' : '');
+  $('#sy-last').textContent = S.sync?.lastRunAt ? `Last run ${rel(toDate(S.sync.lastRunAt))}` : '';
+  $('#sy-status').innerHTML = status === 'running' ? '<span class="st info">Running</span>' : status === 'ok' ? '<span class="st good">OK</span>' : status === 'error' ? '<span class="st bad">Failed</span>' : '';
+  if (run) {
+    const rej = Object.entries(run.discover?.rejected || {}).sort((a, b) => b[1] - a[1]).slice(0, 6).map(([k, v]) => `${esc(k)} ${v}`).join(' · ');
+    const cats = Object.entries(run.discover?.byCategory || {}).map(([k, v]) => `<div class="li" style="padding:6px 0"><div class="t">${esc(k)}</div><span class="faint num">${v.have}/${v.quota} live</span><span class="num" style="width:60px;text-align:right">+${v.added}</span></div>`).join('');
+    $('#sy-summary').innerHTML = `${run.error ? `<div class="banner bad"><span>⚠</span><span>${esc(run.error)}</span></div>` : ''}${run.skipped ? '<div class="banner warn"><span>ℹ</span><span>Scheduled sync is disabled in the rules.</span></div>' : ''}
+      <dl class="kv"><dt>Started</dt><dd>${fmtDate(toDate(run.startedAt), true)} · ${esc(run.trigger)} · ${Math.round((run.durationMs || 0) / 1000)}s</dd>
+      ${run.refresh ? `<dt>Re-verified</dt><dd>${run.refresh.checked} listings · ${run.refresh.repriced} repriced · ${run.refresh.retired} retired · ${run.refresh.restored} restored</dd>` : ''}
+      ${run.discover ? `<dt>Discovered</dt><dd>${run.discover.searched} searches · ${run.discover.considered} listings seen · <b>${run.discover.added} added</b></dd><dt>Rejected for</dt><dd class="faint">${rej || '—'}</dd>` : ''}
+      ${run.published != null ? `<dt>Published</dt><dd>${run.published} products live</dd>` : ''}${run.apiCalls != null ? `<dt>eBay calls</dt><dd>${run.apiCalls} of 5,000 daily</dd>` : ''}</dl>
+      ${cats ? `<div class="sec"><h3>Category fill</h3><div class="list">${cats}</div></div>` : ''}
+      ${run.log?.length ? `<details style="margin-top:14px"><summary class="faint" style="cursor:pointer;font-size:12px">Log</summary><pre class="mono faint" style="white-space:pre-wrap;font-size:11px;margin:8px 0 0">${esc(run.log.join('\n'))}</pre></details>` : ''}`;
+  }
+}
+function renderSyncCats() {
+  const total = syncCatsDraft.reduce((n, c) => n + (Number(c.weight) || 0), 0);
+  $('#sy-cats').innerHTML = syncCatsDraft.map((c, i) => `<tr>
+    <td><input data-i="${i}" data-k="name" value="${esc(c.name)}" style="min-width:110px"></td>
+    <td><input data-i="${i}" data-k="weight" type="number" min="0" max="100" step="1" value="${Math.round((Number(c.weight) || 0) * 100)}" style="width:70px;text-align:right"></td>
+    <td><select data-i="${i}" data-k="url" style="min-width:140px">${['/trending.html', '/tech.html', '/accessories.html', '/gaming.html', '/phones.html', '/collection.html'].map(u => `<option ${c.url === u ? 'selected' : ''}>${u}</option>`).join('')}</select></td>
+    <td><input data-i="${i}" data-k="keywords" value="${esc((c.keywords || []).join(', '))}" style="min-width:260px"></td>
+    <td class="r"><button class="btn sm ghost danger" data-del="${i}">Remove</button></td></tr>`).join('');
+  $('#sy-weight-total').innerHTML = `Mix adds up to <b class="${Math.abs(total - 1) > 0.01 ? '' : 'faint'}" style="${Math.abs(total - 1) > 0.01 ? 'color:var(--a-warn)' : ''}">${Math.round(total * 100)}%</b> · trending.html shows every category`;
+  $$('#sy-cats [data-k]').forEach(el => el.addEventListener('change', () => {
+    const c = syncCatsDraft[+el.dataset.i], k = el.dataset.k;
+    if (k === 'weight') c.weight = Math.max(0, Number(el.value) || 0) / 100; else if (k === 'keywords') c.keywords = el.value.split(',').map(x => x.trim()).filter(Boolean); else c[k] = el.value.trim();
+    if (k === 'weight') renderSyncCats();
+  }));
+  $$('#sy-cats [data-del]').forEach(b => b.onclick = () => { syncCatsDraft.splice(+b.dataset.del, 1); renderSyncCats(); });
+}
+$('#sy-add-cat').addEventListener('click', () => { syncCatsDraft.push({ name: 'New category', weight: 0.05, url: '/trending.html', keywords: [] }); renderSyncCats(); });
+$$('#sync-form .switch').forEach(b => b.addEventListener('click', () => b.classList.toggle('on')));
+$('#sync-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const data = {
+    targetMargin: Math.min(80, Math.max(5, +$('#sy-margin').value || 25)) / 100, priceCeiling: +$('#sy-ceiling').value || 200, priceFloor: +$('#sy-floor').value || 40, priceEnding: Math.min(99, Math.max(0, +$('#sy-ending').value || 0)),
+    maxProducts: +$('#sy-max').value || 160, newPerCategoryPerRun: +$('#sy-perrun').value || 0, minSellerFeedbackPct: +$('#sy-fbpct').value || 99, minSellerFeedbackScore: +$('#sy-fbscore').value || 0,
+    enabled: $('#sy-enabled').classList.contains('on'), requireFreeShipping: $('#sy-freeship').classList.contains('on'), requireReturns: $('#sy-returns').classList.contains('on'), requireTopRated: $('#sy-toprated').classList.contains('on'),
+    updatedAt: serverTimestamp(), updatedBy: S.user.email
+  };
+  try { await setDoc(doc(db, 'settings', 'sync'), data, { merge: true }); toast('Sourcing rules saved'); } catch (err) { toast('Save failed: ' + err.message, true); }
+});
+$('#sy-save-cats').addEventListener('click', async () => {
+  const cats = syncCatsDraft.filter(c => c.name).map(c => ({ name: c.name, weight: Number(c.weight) || 0, url: c.url || '/trending.html', keywords: c.keywords || [] }));
+  try { await setDoc(doc(db, 'settings', 'sync'), { categories: cats, updatedAt: serverTimestamp(), updatedBy: S.user.email }, { merge: true }); toast('Categories saved'); } catch (err) { toast('Save failed: ' + err.message, true); }
+});
+async function adminFetch(url) {
+  const token = await getIdToken(S.user, true);
+  const res = await fetch(url, { method: 'POST', headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' }, body: '{}' });
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(data.error || ('HTTP ' + res.status));
+  return data;
+}
+$('#sy-run').addEventListener('click', async () => {
+  const btn = $('#sy-run'); btn.disabled = true; btn.textContent = 'Syncing… this can take a minute';
+  $('#sync-banner').innerHTML = '';
+  try { const r = await adminFetch('/api/run-catalog-sync'); toast(`Sync done: ${r.discover?.added ?? 0} added, ${r.refresh?.retired ?? 0} retired, ${r.published ?? 0} live`); }
+  catch (err) { $('#sync-banner').innerHTML = `<div class="banner bad"><span>⚠</span><span><b>Sync failed:</b> ${esc(err.message)}. Check that functions are deployed and EBAY_CLIENT_ID / EBAY_CLIENT_SECRET are set in functions/.env.</span></div>`; }
+  btn.disabled = false; btn.textContent = 'Sync now';
+});
+$('#sy-publish').addEventListener('click', publishCatalog);
+async function publishCatalog() {
+  if (!S.products.length) return toast('No product records yet. Run a sync or import products.js first.', true);
+  const btn = $('#sy-publish'); btn.disabled = true;
+  try {
+    const products = S.products.filter(p => isLive(p) && p.images?.length)
+      .sort((a, b) => (b.featured === true) - (a.featured === true) || toMs(b.firstSeenAt) - toMs(a.firstSeenAt))
+      .map(p => ({ id: p.id, name: p.name, category: p.category, categoryUrl: p.categoryUrl || '/trending.html', tag: p.tag || 'New', price: recPrice(p), originalPrice: p.originalPrice || null, discount: p.discount || null,
+        desc: p.desc || '', details: p.details || '', brand: p.brand || '', colors: p.colors || [{ name: 'Standard', hex: '#1C1C1C', active: true }], sizes: p.sizes || ['Standard'], images: (p.images || []).slice(0, 6), featured: !!p.featured, source: p.source || 'manual', firstSeenAt: toMs(p.firstSeenAt), score: p.score || 0 }));
+    await setDoc(doc(db, 'catalog', 'live'), { products, count: products.length, updatedAt: serverTimestamp(), publishedBy: S.user.email });
+    toast(`Published ${products.length} products to the store`);
+  } catch (err) { toast('Publish failed: ' + err.message, true); }
+  btn.disabled = false;
+}
+$('#sy-import').addEventListener('click', async () => {
+  const missing = STATIC_CATALOG.filter(p => !S.products.some(r => r.id === p.id));
+  if (!missing.length) return toast('Everything in products.js is already imported');
+  if (!(await confirmModal('Import products.js', `Create ${missing.length} product records from the static catalog so they can be edited and published alongside eBay items?`, 'Import'))) return;
+  try {
+    for (let i = 0; i < missing.length; i += 400) {
+      const batch = writeBatch(db);
+      missing.slice(i, i + 400).forEach(p => batch.set(doc(db, 'products', p.id), { ...p, source: 'static', active: true, hidden: false, featured: false, priceOverride: null, landedCost: null, firstSeenAt: serverTimestamp(), updatedAt: serverTimestamp() }));
+      await batch.commit();
+    }
+    toast(`Imported ${missing.length} products`);
+  } catch (err) { toast('Import failed: ' + err.message, true); }
+});
 
 /* ============================== messages ============================== */
 $$('#msg-seg button').forEach(b => b.onclick = () => { S.m.f = b.dataset.f; $$('#msg-seg button').forEach(x => x.classList.toggle('active', x === b)); renderMessages(); });
@@ -1079,6 +1347,8 @@ $('#settings-form').addEventListener('submit', async (e) => {
   try { await setDoc(doc(db, 'settings', 'store'), data, { merge: true }); toast('Settings saved'); } catch (err) { toast('Save failed: ' + err.message, true); }
 });
 renderSettings();
+renderCatalogChips();
+renderSync();
 </script>
 <script type="module" src="/scripts/auth.js?v=27"></script>
 </body>

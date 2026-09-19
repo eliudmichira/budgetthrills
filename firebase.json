@@ -18,6 +18,8 @@
       { "source": "/api/create-checkout-session", "function": "createCheckoutSession" },
       { "source": "/api/stripe-webhook", "function": "stripeWebhook" },
       { "source": "/api/track-order", "function": "trackOrder" },
+      { "source": "/api/run-catalog-sync", "function": "runCatalogSync" },
+      { "source": "/api/publish-catalog", "function": "publishCatalog" },
       { "source": "**", "destination": "/404.html" }
     ],
     "headers": [

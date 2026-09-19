@@ -328,9 +328,10 @@
   </footer>
 
   <script src="/scripts/products.js?v=4"></script>
+  <script type="module" src="/scripts/catalog-live.js?v=1"></script>
   <script>
-  /* BudgetThrills — PDP dynamic population from BT_CATALOG */
-  (function() {
+  /* BudgetThrills — PDP dynamic population from BT_CATALOG (re-runs when the live catalog loads) */
+  function BT_RENDER_PDP() {
     'use strict';
     const params = new URLSearchParams(window.location.search);
     const id = params.get('id');
@@ -527,7 +528,9 @@
         </a>
       `).join('');
     }
-  })();
+  }
+  BT_RENDER_PDP();
+  window.addEventListener('bt:catalog-updated', BT_RENDER_PDP);
   </script>
   <script src="/scripts/main.js?v=4" defer></script>
   <script src="/scripts/cart.js?v=4" defer></script>

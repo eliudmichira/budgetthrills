@@ -1277,7 +1277,8 @@
         });
       }
 
-      // Filter Buttons
+      // Filter Buttons (cloned so a re-render after the live catalog loads drops old listeners)
+      document.querySelectorAll('.flex.flex-wrap.gap-2 button, section select').forEach(el => el.replaceWith(el.cloneNode(true)));
       const filterBtns = document.querySelectorAll('.flex.flex-wrap.gap-2 button');
       filterBtns.forEach(btn => {
         btn.addEventListener('click', (e) => {
@@ -1323,6 +1324,7 @@
 
       // Initial active state
       updateButtonStyles();
+      render();
     }
 
     // 2. Wishlist Grid
@@ -1389,6 +1391,11 @@
     getCartSummary,
     updateBadges
   };
+
+  // Live catalog (scripts/catalog-live.js) replaces BT_CATALOG asynchronously; re-render what depends on it.
+  window.addEventListener('bt:catalog-updated', () => {
+    try { initPDP(); initCatalogGrids(); } catch (e) { console.warn('catalog re-render:', e); }
+  });
 
   let isInitialized = false;
   function initAll() {

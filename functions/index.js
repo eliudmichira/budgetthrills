@@ -3,6 +3,9 @@
 
 const { onDocumentCreated, onDocumentWritten } = require("firebase-functions/v2/firestore");
 const { onRequest } = require("firebase-functions/v2/https");
+const { onSchedule } = require("firebase-functions/v2/scheduler");
+const { getAuth } = require("firebase-admin/auth");
+const catalogSync = require("./catalog-sync");
 const { initializeApp } = require("firebase-admin/app");
 const { getFirestore } = require("firebase-admin/firestore");
 const crypto = require("crypto");
@@ -484,4 +487,45 @@ exports.trackOrder = onRequest({ cors: true }, async (req, res) => {
     console.error("trackOrder error:", err);
     return res.status(500).json({ error: "Lookup failed." });
   }
+});
+
+// ─── eBay catalog sync ────────────────────────────────────────────────────────
+const ADMIN_UIDS = (process.env.ADMIN_UIDS || "ExPolSW2P8UvRYLI4bowoRjCRix1").split(",").map((s) => s.trim()).filter(Boolean);
+const ADMIN_EMAILS = (process.env.ADMIN_EMAILS || "eliudsamuel17@gmail.com,eliudsamwels7@gmail.com").split(",").map((s) => s.trim().toLowerCase()).filter(Boolean);
+
+async function requireAdmin(req) {
+  const m = /^Bearer (.+)$/.exec(req.headers.authorization || "");
+  if (!m) return null;
+  try {
+    const t = await getAuth().verifyIdToken(m[1]);
+    if (ADMIN_UIDS.includes(t.uid) || ADMIN_EMAILS.includes(String(t.email || "").toLowerCase())) return t;
+    const prof = await getFirestore().collection("users").doc(t.uid).get();
+    const d = prof.exists ? prof.data() : {};
+    if (d.isAdmin === true || String(d.role || "").toLowerCase() === "admin") return t;
+  } catch (e) { console.warn("requireAdmin:", e.message); }
+  return null;
+}
+
+/** Scheduled: refresh existing listings and discover new ones. Needs the Blaze plan (Cloud Scheduler). */
+exports.syncEbayCatalog = onSchedule({ schedule: "every 6 hours", timeoutSeconds: 540, memory: "512MiB", region: "us-central1" }, async () => {
+  const summary = await catalogSync.runSync({ trigger: "schedule" });
+  console.log("catalog sync:", JSON.stringify({ ...summary, log: undefined }));
+});
+
+/** POST /api/run-catalog-sync — admin-triggered run from the dashboard. */
+exports.runCatalogSync = onRequest({ cors: true, timeoutSeconds: 540, memory: "512MiB" }, async (req, res) => {
+  if (req.method !== "POST") return res.status(405).json({ error: "Method not allowed." });
+  const admin = await requireAdmin(req);
+  if (!admin) return res.status(403).json({ error: "Admin sign-in required." });
+  const summary = await catalogSync.runSync({ trigger: "manual:" + (admin.email || admin.uid) });
+  return res.status(summary.ok ? 200 : 500).json(summary);
+});
+
+/** POST /api/publish-catalog — recompile catalog/live after admin edits. */
+exports.publishCatalog = onRequest({ cors: true }, async (req, res) => {
+  if (req.method !== "POST") return res.status(405).json({ error: "Method not allowed." });
+  const admin = await requireAdmin(req);
+  if (!admin) return res.status(403).json({ error: "Admin sign-in required." });
+  try { const count = await catalogSync.publishLiveCatalog(getFirestore()); return res.json({ ok: true, count }); }
+  catch (err) { return res.status(500).json({ error: err.message }); }
 });
