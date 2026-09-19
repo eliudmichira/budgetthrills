@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en" class="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' blob: https://cdn.tailwindcss.com https://www.gstatic.com https://apis.google.com https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https://images.unsplash.com https://i.ebayimg.com https://lh3.googleusercontent.com https://*.googleusercontent.com; connect-src 'self' https://*.firebaseio.com https://*.googleapis.com https://firestore.googleapis.com https://www.gstatic.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://api.nowpayments.io https://*.cloudfunctions.net https://www.google-analytics.com https://*.google-analytics.com https://analytics.google.com; frame-src 'self' https://*.firebaseapp.com https://accounts.google.com https://apis.google.com;">
+<title>Order Confirmed — BudgetThrills</title>
+<meta name="theme-color" content="#0A0A0A">
+<link rel="icon" type="image/svg+xml" href="/favicons/favicon.svg">
+<link rel="stylesheet" href="/styles/fonts.css">
+<link rel="stylesheet" href="/styles/app.css?v=4">
+<link rel="stylesheet" href="/styles/main.css?v=4">
+<script>(function(){try{var t=localStorage.getItem('bt-theme')||'dark';document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+</head>
+<body class="bg-bg text-ink" data-page="order-confirmation">
+
+  <header class="hairline-b">
+    <div class="max-w-7xl mx-auto px-6 lg:px-10 h-20 flex items-center justify-between">
+      <a href="/" class="flex items-center"><img loading="lazy" src="/brand/logo-dark.svg" alt="BudgetThrills" class="h-7 w-auto"></a>
+      <div class="flex items-center gap-6 text-[13px] font-medium">
+        <button data-theme-toggle class="theme-toggle" aria-label="Toggle theme"><svg class="icon-moon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg><svg class="icon-sun" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg></button>
+        <a href="/" class="text-mute hover:text-ink text-[12px] tracking-[0.18em] uppercase">Continue shopping →</a>
+      </div>
+    </div>
+  </header>
+
+  <section class="py-20 sm:py-28">
+    <div class="max-w-5xl mx-auto px-6 lg:px-10">
+
+      <div class="display text-lime text-[120px] sm:text-[200px] leading-none">✓</div>
+
+      <div class="mt-10 max-w-2xl">
+        <div class="eyebrow mb-5">Order confirmed</div>
+        <h1 class="display text-[44px] sm:text-[72px] leading-[0.95]" data-conf-greeting>Thanks<span class="text-lime">.</span></h1>
+        <p class="text-mute text-lg mt-6 leading-relaxed" data-conf-message>Your order is confirmed. A receipt and tracking dispatch will follow.</p>
+      </div>
+
+      <div class="mt-16 grid sm:grid-cols-3 gap-8 hairline-t hairline-b py-10">
+        <div><div class="eyebrow mb-3">Order #</div><div class="font-mono text-base" data-conf-id>—</div></div>
+        <div><div class="eyebrow mb-3">Estimated delivery</div><div class="text-base" data-conf-estimate>2-4 Business Days</div><div class="text-mute text-xs mt-1">Standard Tracked Shipping</div></div>
+        <div><div class="eyebrow mb-3">Total paid</div><div class="text-base font-semibold" data-conf-total>$0.00</div><div class="text-mute text-xs mt-1" data-conf-paymethod>Paid</div></div>
+      </div>
+
+      <div class="mt-12">
+        <div class="eyebrow mb-6">Items in this order</div>
+        <div class="hairline-t" data-conf-items>
+          <!-- Populated dynamically from order -->
+        </div>
+      </div>
+
+      <div class="mt-12 grid sm:grid-cols-2 gap-10">
+        <div>
+          <div class="eyebrow mb-3">Delivery to</div>
+          <div class="text-base leading-relaxed" data-conf-address>—</div>
+        </div>
+        <div>
+          <div class="eyebrow mb-3">Next up</div>
+          <ul class="space-y-3 text-sm">
+            <li class="flex gap-3"><span class="text-lime">→</span> Instant confirmation email dispatched</li>
+            <li class="flex gap-3"><span class="text-lime">→</span> Live status & tracking available in your <a href="/account.html" class="text-ink hover:text-lime underline">account</a></li>
+            <li class="flex gap-3"><span class="text-lime">→</span> 14-day hassle-free returns on all items</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="mt-16 flex flex-wrap gap-4 hairline-t pt-10">
+        <a href="/account.html" class="btn-lime" data-conf-detail-link>View order in account <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+        <a href="/collection.html" class="btn-ghost">Keep shopping</a>
+      </div>
+
+      <div class="mt-16 hairline-t pt-10 text-mute text-sm">
+        Questions? <a href="/contact.html" class="text-ink hover:text-lime">Contact us</a> · Reply to your receipt email.
+      </div>
+    </div>
+  </section>
+
+  <footer class="hairline-t"><div class="max-w-7xl mx-auto px-6 lg:px-10 py-8 flex justify-between text-[11px] tracking-[0.18em] uppercase text-mute"><div>© 2026 BudgetThrills</div><div class="flex gap-8"><a href="/privacy.html" class="hover:text-ink">Privacy</a><a href="/terms.html" class="hover:text-ink">Terms</a></div></div></footer>
+  <script src="/scripts/main.js?v=4" defer></script>
+  <script src="/scripts/cart.js?v=4" defer></script>
+  <script type="module" src="/scripts/auth.js"></script>
+</body>
+</html>

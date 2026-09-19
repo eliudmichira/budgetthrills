@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" role="img" aria-label="BT monogram">
+  <defs>
+    <filter id="limeGlow3" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="5" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- rounded square background -->
+  <rect width="400" height="400" rx="80" fill="#0A0A0A"/>
+
+  <!-- "BT" monogram — heavy, lime -->
+  <text x="200" y="278"
+        text-anchor="middle"
+        font-family="'Arial Black','Inter',Arial,sans-serif"
+        font-weight="900"
+        font-size="220"
+        letter-spacing="-8"
+        fill="#A8FF00"
+        filter="url(#limeGlow3)">BT</text>
+
+  <!-- orange accent stripe — the "thrill / urgency" mark -->
+  <rect x="60" y="320" width="80" height="8" fill="#FF6B2C"/>
+</svg>

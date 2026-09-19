@@ -1,0 +1,138 @@
+﻿<!doctype html>
+<html lang="en" class="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' blob: https://cdn.tailwindcss.com https://www.gstatic.com https://apis.google.com https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https://images.unsplash.com https://i.ebayimg.com https://lh3.googleusercontent.com https://*.googleusercontent.com; connect-src 'self' https://*.firebaseio.com https://*.googleapis.com https://firestore.googleapis.com https://www.gstatic.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com; frame-src 'self' https://*.firebaseapp.com https://accounts.google.com https://apis.google.com;">
+<title>Search — BudgetThrills</title>
+<meta name="theme-color" content="#0A0A0A">
+<link rel="icon" type="image/svg+xml" href="/favicons/favicon.svg">
+<link rel="stylesheet" href="/styles/fonts.css">
+<link rel="stylesheet" href="/styles/app.css?v=4">
+<link rel="stylesheet" href="/styles/main.css?v=4">
+<script>(function(){try{var t=localStorage.getItem('bt-theme')||'dark';document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+</head>
+<body class="bg-bg text-ink">
+
+      <header class="sticky top-0 z-40 nav-shell">
+    <div class="max-w-7xl mx-auto px-6 lg:px-10 h-20 flex items-center justify-between">
+      <a href="/" class="flex items-center">
+        <img loading="lazy" src="/brand/logo-dark.svg" alt="BudgetThrills" class="h-7 w-auto">
+      </a>
+      <nav class="hidden md:flex items-center gap-10 text-[13px] font-medium">
+        <a href="/gaming.html" class="hover:text-lime transition">Gaming</a>
+        <a href="/collection.html" class="hover:text-lime transition">Drip</a>
+        <a href="/phones.html" class="hover:text-lime transition">Phones</a>
+        <a href="/tech.html" class="hover:text-lime transition">Tech</a>
+      </nav>
+      <div class="flex items-center gap-6 text-[13px] font-medium">
+        <a href="/search.html" class="hidden sm:flex items-center gap-2 hover:text-lime transition" aria-label="Search">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+          <span class="hidden lg:inline">Search</span>
+        </a>
+        <a href="/signin.html" class="hidden sm:flex items-center gap-2 hover:text-lime transition" aria-label="Sign in">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"/></svg>
+          <span class="hidden lg:inline">Account</span>
+        </a>
+        <button data-theme-toggle class="theme-toggle" aria-label="Toggle theme">
+          <svg class="icon-moon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+          <svg class="icon-sun" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+        </button>
+        <a href="/cart.html" class="flex items-center gap-2 hover:text-lime transition">
+          <span>Cart</span>
+          <span data-cart-count class="hidden bg-lime text-black text-[10px] font-bold rounded-full w-4 h-4 inline-flex items-center justify-center">0</span>
+        </a>
+        <button data-nav-toggle class="md:hidden" aria-label="Open menu">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+        </button>
+      </div>
+    </div>
+    <nav data-nav-menu class="hidden md:hidden hairline-t">
+      <div class="px-6 py-4 flex flex-col gap-4 text-sm">
+        <a href="/gaming.html" class="">Gaming</a>
+        <a href="/collection.html" class="">Drip</a>
+        <a href="/phones.html" class="">Phones</a>
+        <a href="/tech.html" class="">Tech</a>
+      </div>
+    </nav>
+  </header>
+
+  <section class="pt-16 pb-12 sm:pt-24 sm:pb-16 hairline-b">
+    <div class="max-w-7xl mx-auto px-6 lg:px-10">
+      <div class="eyebrow mb-6"><a href="/" class="hover:text-ink">Home</a> · Search</div>
+      <h1 class="display text-[56px] sm:text-[120px]">Find it<span class="text-lime">.</span></h1>
+
+      <div class="mt-14 max-w-3xl">
+        <div class="flex items-center gap-4 border-b-2 pb-4 hairline">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="text-mute"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+          <input id="q" type="text" autofocus placeholder="Search sneakers, phones, accessories, tech…" class="flex-1 bg-transparent outline-none text-2xl sm:text-3xl placeholder:text-mute/40">
+          <button id="clear" class="text-mute text-[11px] tracking-[0.2em] uppercase hover:text-ink">Clear</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-12 sm:py-16">
+    <div class="max-w-7xl mx-auto px-6 lg:px-10">
+
+      <div id="suggest" class="mb-12">
+        <div class="eyebrow mb-5">Popular searches</div>
+        <div class="flex flex-wrap gap-2">
+          <button class="tag">neon runner</button>
+          <button class="tag">hi-top</button>
+          <button class="tag">iphone 13</button>
+          <button class="tag">redmi</button>
+          <button class="tag">smartwatch</button>
+          <button class="tag">over-ear</button>
+          <button class="tag">sunglasses</button>
+          <button class="tag">power bank</button>
+        </div>
+      </div>
+
+      <div id="results" class="grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-10"></div>
+      <div id="empty" class="hidden text-mute text-sm">No matches. Try fewer words, or <a href="/" class="text-ink hover:text-lime">browse the homepage →</a></div>
+    </div>
+  </section>
+
+  <footer class="hairline-t"><div class="max-w-7xl mx-auto px-6 lg:px-10 py-8 flex justify-between text-[11px] tracking-[0.18em] uppercase text-mute"><div>© 2026 BudgetThrills</div><div class="flex gap-8"><a href="/privacy.html" class="hover:text-ink">Privacy</a><a href="/terms.html" class="hover:text-ink">Terms</a></div></div></footer>
+
+  <style>.tag{padding:8px 14px;border:1px solid var(--bt-border);font-size:13px;letter-spacing:.02em;transition:border-color .2s, color .2s}.tag:hover{border-color:var(--bt-text)}</style>
+
+  <script src="/scripts/main.js?v=4" defer></script>
+  <script src="/scripts/products.js?v=4"></script>
+  <script>
+    const CATALOG = (window.BT_CATALOG || []).map(i => ({
+      n: i.name,
+      c: i.category,
+      p: i.price,
+      u: '/pdp.html?id=' + i.id,
+      img: i.images ? i.images[0] : ''
+    }));
+    const $q = document.getElementById('q');
+    const $res = document.getElementById('results');
+    const $empty = document.getElementById('empty');
+    const $sug = document.getElementById('suggest');
+    function render(items){
+      $res.innerHTML = items.map(i=>`
+        <a href="${i.u}" class="card group">
+          <div class="card-media aspect-[4/5]">
+            <img loading="lazy" class="img-primary" src="${i.img}" alt="">
+            <span class="card-cta">View →</span>
+          </div>
+          <div class="pt-5"><h3 class="text-sm font-medium group-hover:text-lime transition">${i.n}</h3><div class="text-mute text-xs mt-1">${i.c}</div><div class="mt-3 font-semibold">$${i.p.toFixed(2)}</div></div>
+        </a>`).join('');
+      $empty.classList.toggle('hidden', items.length>0);
+    }
+    function search(q){
+      q = q.trim().toLowerCase();
+      $sug.classList.toggle('hidden', q.length>0);
+      if(!q){ $res.innerHTML=''; $empty.classList.add('hidden'); return; }
+      render(CATALOG.filter(i => (i.n+' '+i.c).toLowerCase().includes(q)));
+    }
+    $q.addEventListener('input', e=>search(e.target.value));
+    document.getElementById('clear').addEventListener('click', ()=>{ $q.value=''; search(''); $q.focus(); });
+    document.querySelectorAll('.tag').forEach(b=>b.addEventListener('click',()=>{ $q.value=b.textContent; search(b.textContent); }));
+  </script>
+  <script type="module" src="/scripts/auth.js"></script>
+</body>
+</html>

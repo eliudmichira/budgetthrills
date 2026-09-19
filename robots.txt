@@ -1,0 +1,12 @@
+User-agent: *
+Disallow: /account.html
+Disallow: /order-detail.html
+Disallow: /order-confirmation.html
+Disallow: /checkout.html
+Disallow: /signin.html
+Disallow: /signup.html
+Disallow: /forgot.html
+Disallow: /reset.html
+Allow: /
+
+Sitemap: https://budgetthrills.web.app/sitemap.xml

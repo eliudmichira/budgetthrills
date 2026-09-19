@@ -1,0 +1,664 @@
+<!doctype html>
+<html lang="en" class="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' blob: https://cdn.tailwindcss.com https://www.gstatic.com https://apis.google.com https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https://images.unsplash.com https://i.ebayimg.com https://lh3.googleusercontent.com https://*.googleusercontent.com; connect-src 'self' https://*.firebaseio.com https://*.googleapis.com https://firestore.googleapis.com https://www.gstatic.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com; frame-src 'self' https://*.firebaseapp.com https://accounts.google.com https://apis.google.com;">
+<title>Tech — BudgetThrills</title>
+<meta name="theme-color" content="#0A0A0A">
+
+<link rel="icon" type="image/svg+xml" href="/favicons/favicon.svg">
+<link rel="apple-touch-icon" sizes="180x180" href="/favicons/apple-touch-icon.png">
+
+<link rel="stylesheet" href="/styles/fonts.css">
+
+<link rel="stylesheet" href="/styles/app.css?v=4">
+<link rel="stylesheet" href="/styles/main.css?v=4">
+<script>(function(){try{var t=localStorage.getItem('bt-theme')||'dark';document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+</head>
+<body class="bg-bg text-ink">
+
+  <div class="hairline-b">
+    <div class="max-w-7xl mx-auto px-6 lg:px-10 h-10 flex items-center justify-between text-[11px] tracking-[0.18em] uppercase text-mute">
+      <span>Free US shipping over $50</span>
+      <span class="hidden sm:inline">12-month warranty on all tech</span>
+      <span class="hidden md:inline">USA · 2026</span>
+    </div>
+  </div>
+
+      <header class="sticky top-0 z-40 nav-shell">
+    <div class="max-w-7xl mx-auto px-6 lg:px-10 h-20 flex items-center justify-between">
+      <a href="/" class="flex items-center">
+        <img loading="lazy" src="/brand/logo-dark.svg" alt="BudgetThrills" class="h-7 w-auto">
+      </a>
+      <nav class="hidden md:flex items-center gap-10 text-[13px] font-medium">
+        <a href="/gaming.html" class="hover:text-lime transition">Gaming</a>
+        <a href="/collection.html" class="hover:text-lime transition">Drip</a>
+        <a href="/phones.html" class="hover:text-lime transition">Phones</a>
+        <a href="/tech.html" class="text-lime font-semibold">Tech</a>
+      </nav>
+      <div class="flex items-center gap-6 text-[13px] font-medium">
+        <a href="/search.html" class="hidden sm:flex items-center gap-2 hover:text-lime transition" aria-label="Search">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+          <span class="hidden lg:inline">Search</span>
+        </a>
+        <a href="/signin.html" class="hidden sm:flex items-center gap-2 hover:text-lime transition" aria-label="Sign in">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"/></svg>
+          <span class="hidden lg:inline">Account</span>
+        </a>
+        <button data-theme-toggle class="theme-toggle" aria-label="Toggle theme">
+          <svg class="icon-moon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+          <svg class="icon-sun" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+        </button>
+        <a href="/cart.html" class="flex items-center gap-2 hover:text-lime transition">
+          <span>Cart</span>
+          <span data-cart-count class="hidden bg-lime text-black text-[10px] font-bold rounded-full w-4 h-4 inline-flex items-center justify-center">0</span>
+        </a>
+        <button data-nav-toggle class="md:hidden" aria-label="Open menu">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+        </button>
+      </div>
+    </div>
+    <nav data-nav-menu class="hidden md:hidden hairline-t">
+      <div class="px-6 py-4 flex flex-col gap-4 text-sm">
+        <a href="/gaming.html" class="">Gaming</a>
+        <a href="/collection.html" class="">Drip</a>
+        <a href="/phones.html" class="">Phones</a>
+        <a href="/tech.html" class="text-lime font-semibold">Tech</a>
+      </div>
+    </nav>
+  </header>
+
+  <section class="pt-16 pb-12 sm:pt-24 sm:pb-16 hairline-b">
+    <div class="max-w-7xl mx-auto px-6 lg:px-10">
+      <div class="eyebrow mb-6"><a href="/" class="hover:text-ink">Home</a> · Tech</div>
+      <h1 class="display text-[64px] sm:text-[120px]">Tech<span class="text-lime">.</span></h1>
+      <div class="mt-6 text-mute text-sm max-w-md">MacBooks, AirPods Pro 2, high-performance audio & chargers. Flagship lifestyle hardware — without the retail tax.</div>
+    </div>
+  </section>
+
+  <section class="hairline-b">
+    <div class="max-w-7xl mx-auto px-6 lg:px-10 py-5 flex flex-wrap items-center justify-between gap-4 text-[12px] tracking-[0.18em] uppercase text-mute">
+      <div class="flex flex-wrap gap-2">
+        <button type="button" data-tech-filter="all" class="filter-pill active px-4 py-2 border hairline transition">All <span class="text-mute/60 ml-1" id="tech-count">27</span></button>
+        <button type="button" data-tech-filter="macbook" class="filter-pill px-4 py-2 border hairline transition">MacBooks</button>
+        <button type="button" data-tech-filter="airpods" class="filter-pill px-4 py-2 border hairline transition">AirPods &amp; Audio</button>
+        <button type="button" data-tech-filter="speakers" class="filter-pill px-4 py-2 border hairline transition">Speakers</button>
+        <button type="button" data-tech-filter="power" class="filter-pill px-4 py-2 border hairline transition">Power Banks</button>
+        <button type="button" data-tech-filter="sale" class="filter-pill px-4 py-2 border hairline transition">On sale</button>
+      </div>
+      <div class="flex items-center gap-3">
+        <span>Sort:</span>
+        <select id="tech-sort" class="bg-transparent border hairline px-3 py-2 text-ink outline-none focus:border-lime">
+          <option value="trending">Trending</option>
+          <option value="price-asc">Price — Low → High</option>
+          <option value="price-desc">Price — High → Low</option>
+          <option value="discount">Highest Discount</option>
+        </select>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-16 sm:py-20">
+    <div class="max-w-7xl mx-auto px-6 lg:px-10">
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-10" data-reveal data-catalog-category="Tech">
+        <a href="/pdp.html?id=apple-macbook-air-2022-a2681-13i" class="card group">
+          <div class="card-media aspect-[4/5]">
+            <img class="img-primary" src="https://i.ebayimg.com/images/g/wFkAAeSwPdNqiJyU/s-l1600.jpg" alt="Apple MacBook Air 2022 A2681 13in M2 8 Core GPU " loading="lazy">
+            <img class="img-hover" src="https://i.ebayimg.com/images/g/7OgAAeSw9IdqiJyW/s-l1600.jpg" alt="" loading="lazy">
+            <span class="card-cta">View →</span>
+          </div>
+          <div class="pt-5">
+            <h3 class="text-sm font-medium group-hover:text-lime transition">Apple MacBook Air 2022 A2681 13in M2 8 Core GPU </h3>
+            <div class="text-mute text-xs mt-1">Very Good - Refurbished</div>
+            <div class="mt-3 flex items-baseline gap-3">
+              <span class="font-semibold" lang="en-US" translate="no">$889.00</span>
+              <span class="text-mute text-xs line-through" lang="en-US" translate="no">$999.00</span>
+            </div>
+          </div>
+        </a>
+
+        <a href="/pdp.html?id=no-ship-apple-macbook-air-13-inc" class="card group">
+          <div class="card-media aspect-[4/5]">
+            <img class="img-primary" src="https://i.ebayimg.com/images/g/HFYAAeSwS3BqjSw6/s-l1600.jpg" alt="(NO Ship) Apple MacBook Air 13 Inch M2 Chip 8GB " loading="lazy">
+            <img class="img-hover" src="https://i.ebayimg.com/images/g/zJwAAeSwvEZqjSw7/s-l1600.jpg" alt="" loading="lazy">
+            <span class="card-cta">View →</span>
+          </div>
+          <div class="pt-5">
+            <h3 class="text-sm font-medium group-hover:text-lime transition">(NO Ship) Apple MacBook Air 13 Inch M2 Chip 8GB </h3>
+            <div class="text-mute text-xs mt-1">Used</div>
+            <div class="mt-3 flex items-baseline gap-3">
+              <span class="font-semibold" lang="en-US" translate="no">$889.00</span>
+              <span class="text-mute text-xs line-through" lang="en-US" translate="no">$999.00</span>
+            </div>
+          </div>
+        </a>
+
+        <a href="/pdp.html?id=apple-airpods-pro-2nd-gen-usb-c-" class="card group">
+          <div class="card-media aspect-[4/5]">
+            <img class="img-primary" src="https://i.ebayimg.com/images/g/VL8AAeSwE2hp3U8~/s-l1600.jpg" alt="Apple AirPods Pro (2nd Gen) USB-C w/ MagSafe – (" loading="lazy">
+            <img class="img-hover" src="https://i.ebayimg.com/images/g/zeIAAeSwCctp3U9I/s-l1600.jpg" alt="" loading="lazy">
+            <span class="card-cta">View →</span>
+          </div>
+          <div class="pt-5">
+            <h3 class="text-sm font-medium group-hover:text-lime transition">Apple AirPods Pro (2nd Gen) USB-C w/ MagSafe – (</h3>
+            <div class="text-mute text-xs mt-1">New</div>
+            <div class="mt-3 flex items-baseline gap-3">
+              <span class="font-semibold" lang="en-US" translate="no">$199.00</span>
+              <span class="text-mute text-xs line-through" lang="en-US" translate="no">$249.00</span>
+            </div>
+          </div>
+        </a>
+
+        <a href="/pdp.html?id=genuine-apple-airpods-pro-2nd-ge" class="card group">
+          <div class="card-media aspect-[4/5]">
+            <img class="img-primary" src="https://i.ebayimg.com/images/g/cAUAAeSw~wdozu~3/s-l1600.jpg" alt="Genuine Apple AirPods Pro (2nd Gen, USB-C) + Mag" loading="lazy">
+            <img class="img-hover" src="https://i.ebayimg.com/images/g/c6cAAeSwaNxowy2C/s-l1600.jpg" alt="" loading="lazy">
+            <span class="card-cta">View →</span>
+          </div>
+          <div class="pt-5">
+            <h3 class="text-sm font-medium group-hover:text-lime transition">Genuine Apple AirPods Pro (2nd Gen, USB-C) + Mag</h3>
+            <div class="text-mute text-xs mt-1">Used</div>
+            <div class="mt-3 flex items-baseline gap-3">
+              <span class="font-semibold" lang="en-US" translate="no">$199.00</span>
+              <span class="text-mute text-xs line-through" lang="en-US" translate="no">$249.00</span>
+            </div>
+          </div>
+        </a>
+
+        <a href="/pdp.html?id=sony-wh-1000xm4-wireless-noise" class="card group">
+          <div class="card-media aspect-[4/5]">
+            <img class="img-primary" src="https://i.ebayimg.com/images/g/dtEAAeSwc8FqjH-N/s-l1600.jpg" alt="Sony WH-1000XM4 Wireless Noise Cancellin" loading="lazy">
+            <img class="img-hover" src="https://i.ebayimg.com/images/g/iLUAAeSwoxhqjH-f/s-l1600.jpg" alt="" loading="lazy">
+            <span class="card-cta">View →</span>
+          </div>
+          <div class="pt-5">
+            <h3 class="text-sm font-medium group-hover:text-lime transition">Sony WH-1000XM4 Wireless Noise Cancellin</h3>
+            <div class="text-mute text-xs mt-1">Used</div>
+            <div class="mt-3 flex items-baseline gap-3">
+              <span class="font-semibold" lang="en-US" translate="no">$90.99</span>
+              <span class="text-mute text-xs line-through" lang="en-US" translate="no">$146.00</span>
+            </div>
+          </div>
+        </a>
+
+        <a href="/pdp.html?id=sony-wh-1000xm4-premium-wirele" class="card group">
+          <div class="card-media aspect-[4/5]">
+            <img class="img-primary" src="https://i.ebayimg.com/images/g/RKoAAeSwNbRqPrAT/s-l1600.jpg" alt="💙Sony WH-1000XM4 Premium Wireless Noise" loading="lazy">
+            <img class="img-hover" src="https://i.ebayimg.com/images/g/n8UAAeSwyxBqPrAV/s-l1600.jpg" alt="" loading="lazy">
+            <span class="card-cta">View →</span>
+          </div>
+          <div class="pt-5">
+            <h3 class="text-sm font-medium group-hover:text-lime transition">💙Sony WH-1000XM4 Premium Wireless Noise</h3>
+            <div class="text-mute text-xs mt-1">Open box</div>
+            <div class="mt-3 flex items-baseline gap-3">
+              <span class="font-semibold" lang="en-US" translate="no">$100.10</span>
+              <span class="text-mute text-xs line-through" lang="en-US" translate="no">$130.00</span>
+            </div>
+          </div>
+        </a>
+
+        <a href="/pdp.html?id=apple-airpods-pro-2nd-wireless" class="card group">
+          <div class="card-media aspect-[4/5]">
+            <img class="img-primary" src="https://i.ebayimg.com/images/g/W2UAAeSwZpxpcsep/s-l1600.jpg" alt="Apple Airpods Pro 2nd Wireless Active No" loading="lazy">
+            <img class="img-hover" src="https://i.ebayimg.com/images/g/Xy0AAeSwOv5pcsep/s-l1600.jpg" alt="" loading="lazy">
+            <span class="card-cta">View →</span>
+          </div>
+          <div class="pt-5">
+            <h3 class="text-sm font-medium group-hover:text-lime transition">Apple Airpods Pro 2nd Wireless Active No</h3>
+            <div class="text-mute text-xs mt-1">Good - Refurbished</div>
+            <div class="mt-3 flex items-baseline gap-3">
+              <span class="font-semibold" lang="en-US" translate="no">$114.99</span>
+              <span class="text-mute text-xs line-through" lang="en-US" translate="no">$172.00</span>
+            </div>
+          </div>
+        </a>
+
+        <a href="/pdp.html?id=apple-airpods-pro-2nd-gen-usb-" class="card group">
+          <div class="card-media aspect-[4/5]">
+            <img class="img-primary" src="https://i.ebayimg.com/images/g/VL8AAeSwE2hp3U8~/s-l1600.jpg" alt="Apple AirPods Pro (2nd Gen) USB-C w/ Mag" loading="lazy">
+            <img class="img-hover" src="https://i.ebayimg.com/images/g/zeIAAeSwCctp3U9I/s-l1600.jpg" alt="" loading="lazy">
+            <span class="card-cta">View →</span>
+          </div>
+          <div class="pt-5">
+            <h3 class="text-sm font-medium group-hover:text-lime transition">Apple AirPods Pro (2nd Gen) USB-C w/ Mag</h3>
+            <div class="text-mute text-xs mt-1">New</div>
+            <div class="mt-3 flex items-baseline gap-3">
+              <span class="font-semibold" lang="en-US" translate="no">$189.24</span>
+              <span class="text-mute text-xs line-through" lang="en-US" translate="no">$246.00</span>
+            </div>
+          </div>
+        </a>
+
+        <a href="/pdp.html?id=apple-airpods-pro-2nd-gen-a304" class="card group">
+          <div class="card-media aspect-[4/5]">
+            <img class="img-primary" src="https://i.ebayimg.com/images/g/2KEAAeSw7F9qiJkI/s-l1600.jpg" alt="Apple AirPods Pro 2nd Gen A3048 USB-C Ma" loading="lazy">
+            <img class="img-hover" src="https://i.ebayimg.com/images/g/mk0AAeSwXyxqiJkI/s-l1600.jpg" alt="" loading="lazy">
+            <span class="card-cta">View →</span>
+          </div>
+          <div class="pt-5">
+            <h3 class="text-sm font-medium group-hover:text-lime transition">Apple AirPods Pro 2nd Gen A3048 USB-C Ma</h3>
+            <div class="text-mute text-xs mt-1">Used</div>
+            <div class="mt-3 flex items-baseline gap-3">
+              <span class="font-semibold" lang="en-US" translate="no">$79.99</span>
+              <span class="text-mute text-xs line-through" lang="en-US" translate="no">$128.00</span>
+            </div>
+          </div>
+        </a>
+
+        <a href="/pdp.html?id=apple-airpods-pro-2nd-generati" class="card group">
+          <div class="card-media aspect-[4/5]">
+            <img class="img-primary" src="https://i.ebayimg.com/images/g/UcEAAeSw1nRqi7HK/s-l1600.jpg" alt="Apple AirPods Pro 2nd Generation with Ma" loading="lazy">
+            <img class="img-hover" src="https://i.ebayimg.com/images/g/LC8AAeSwTtFqi7EG/s-l1600.jpg" alt="" loading="lazy">
+            <span class="card-cta">View →</span>
+          </div>
+          <div class="pt-5">
+            <h3 class="text-sm font-medium group-hover:text-lime transition">Apple AirPods Pro 2nd Generation with Ma</h3>
+            <div class="text-mute text-xs mt-1">New</div>
+            <div class="mt-3 flex items-baseline gap-3">
+              <span class="font-semibold" lang="en-US" translate="no">$120.00</span>
+              <span class="text-mute text-xs line-through" lang="en-US" translate="no">$156.00</span>
+            </div>
+          </div>
+        </a>
+
+        <a href="/pdp.html?id=apple-airpods-pro-2nd-gen-mags" class="card group">
+          <div class="card-media aspect-[4/5]">
+            <img class="img-primary" src="https://i.ebayimg.com/images/g/c-kAAeSwjtdqUggd/s-l1600.jpg" alt="Apple AirPods Pro 2nd Gen MagSafe Case B" loading="lazy">
+            <img class="img-hover" src="https://i.ebayimg.com/images/g/RtoAAeSwn2JqUgf3/s-l1600.jpg" alt="" loading="lazy">
+            <span class="card-cta">View →</span>
+          </div>
+          <div class="pt-5">
+            <h3 class="text-sm font-medium group-hover:text-lime transition">Apple AirPods Pro 2nd Gen MagSafe Case B</h3>
+            <div class="text-mute text-xs mt-1">New</div>
+            <div class="mt-3 flex items-baseline gap-3">
+              <span class="font-semibold" lang="en-US" translate="no">$136.00</span>
+              <span class="text-mute text-xs line-through" lang="en-US" translate="no">$177.00</span>
+            </div>
+          </div>
+        </a>
+
+        <a href="/pdp.html?id=beats-studio-pro-wireless-blue" class="card group">
+          <div class="card-media aspect-[4/5]">
+            <img class="img-primary" src="https://i.ebayimg.com/images/g/EpwAAeSwUXpqjHjQ/s-l1600.jpg" alt="Beats Studio Pro Wireless Bluetooth Nois" loading="lazy">
+            <img class="img-hover" src="https://i.ebayimg.com/images/g/IzsAAeSwsDVqjHjQ/s-l1600.jpg" alt="" loading="lazy">
+            <span class="card-cta">View →</span>
+          </div>
+          <div class="pt-5">
+            <h3 class="text-sm font-medium group-hover:text-lime transition">Beats Studio Pro Wireless Bluetooth Nois</h3>
+            <div class="text-mute text-xs mt-1">Used</div>
+            <div class="mt-3 flex items-baseline gap-3">
+              <span class="font-semibold" lang="en-US" translate="no">$79.99</span>
+              <span class="text-mute text-xs line-through" lang="en-US" translate="no">$349.95</span>
+            </div>
+          </div>
+        </a>
+
+        <a href="/pdp.html?id=usa-beats-studio-3-wireless-bl" class="card group">
+          <div class="card-media aspect-[4/5]">
+            <img class="img-primary" src="https://i.ebayimg.com/images/g/-pQAAOSwxUNoJWWr/s-l1600.jpg" alt="USA - Beats Studio 3 - Wireless Bluetoot" loading="lazy">
+            <img class="img-hover" src="https://i.ebayimg.com/images/g/7GIAAOSwLCRoJWW5/s-l1600.jpg" alt="" loading="lazy">
+            <span class="card-cta">View →</span>
+          </div>
+          <div class="pt-5">
+            <h3 class="text-sm font-medium group-hover:text-lime transition">USA - Beats Studio 3 - Wireless Bluetoot</h3>
+            <div class="text-mute text-xs mt-1">New</div>
+            <div class="mt-3 flex items-baseline gap-3">
+              <span class="font-semibold" lang="en-US" translate="no">$149.99</span>
+              <span class="text-mute text-xs line-through" lang="en-US" translate="no">$349.95</span>
+            </div>
+          </div>
+        </a>
+
+        <a href="/pdp.html?id=beats-by-dr-dre-studio-pro-wir" class="card group">
+          <div class="card-media aspect-[4/5]">
+            <img class="img-primary" src="https://i.ebayimg.com/images/g/qGUAAeSweY5qhdmE/s-l1600.jpg" alt="Beats by Dr. Dre Studio Pro Wireless Hea" loading="lazy">
+            
+            <span class="card-cta">View →</span>
+          </div>
+          <div class="pt-5">
+            <h3 class="text-sm font-medium group-hover:text-lime transition">Beats by Dr. Dre Studio Pro Wireless Hea</h3>
+            <div class="text-mute text-xs mt-1">Open box</div>
+            <div class="mt-3 flex items-baseline gap-3">
+              <span class="font-semibold" lang="en-US" translate="no">$115.00</span>
+              <span class="text-mute text-xs line-through" lang="en-US" translate="no">$150.00</span>
+            </div>
+          </div>
+        </a>
+
+        <a href="/pdp.html?id=beats-studio-pro-x-stussy-limi" class="card group">
+          <div class="card-media aspect-[4/5]">
+            <img class="img-primary" src="https://i.ebayimg.com/images/g/nmYAAeSwfVNqYheG/s-l1600.jpg" alt="Beats Studio Pro x STUSSY Limited Editio" loading="lazy">
+            <img class="img-hover" src="https://i.ebayimg.com/images/g/JrwAAeSwzmFqYhcd/s-l1600.jpg" alt="" loading="lazy">
+            <span class="card-cta">View →</span>
+          </div>
+          <div class="pt-5">
+            <h3 class="text-sm font-medium group-hover:text-lime transition">Beats Studio Pro x STUSSY Limited Editio</h3>
+            <div class="text-mute text-xs mt-1">New</div>
+            <div class="mt-3 flex items-baseline gap-3">
+              <span class="font-semibold" lang="en-US" translate="no">$229.99</span>
+              <span class="text-mute text-xs line-through" lang="en-US" translate="no">$349.95</span>
+            </div>
+          </div>
+        </a>
+
+        <a href="/pdp.html?id=jbl-flip-3-waterproof-wireless" class="card group">
+          <div class="card-media aspect-[4/5]">
+            <img class="img-primary" src="https://i.ebayimg.com/images/g/ySwAAeSwENVqa~sE/s-l1600.jpg" alt="JBL Flip 3 Waterproof Wireless Portable " loading="lazy">
+            <img class="img-hover" src="https://i.ebayimg.com/images/g/IZkAAeSwraVqa~sW/s-l1600.jpg" alt="" loading="lazy">
+            <span class="card-cta">View →</span>
+          </div>
+          <div class="pt-5">
+            <h3 class="text-sm font-medium group-hover:text-lime transition">JBL Flip 3 Waterproof Wireless Portable </h3>
+            <div class="text-mute text-xs mt-1">Used</div>
+            <div class="mt-3 flex items-baseline gap-3">
+              <span class="font-semibold" lang="en-US" translate="no">$29.95</span>
+              <span class="text-mute text-xs line-through" lang="en-US" translate="no">$48.00</span>
+            </div>
+          </div>
+        </a>
+
+        <a href="/pdp.html?id=jbl-flip-7-portable-bluetooth-" class="card group">
+          <div class="card-media aspect-[4/5]">
+            <img class="img-primary" src="https://i.ebayimg.com/images/g/QaUAAeSwv8xqfsGa/s-l1600.jpg" alt="JBL FLIP 7 Portable Bluetooth Speaker IP" loading="lazy">
+            <img class="img-hover" src="https://i.ebayimg.com/images/g/GoMAAeSw5VxqfsGa/s-l1600.jpg" alt="" loading="lazy">
+            <span class="card-cta">View →</span>
+          </div>
+          <div class="pt-5">
+            <h3 class="text-sm font-medium group-hover:text-lime transition">JBL FLIP 7 Portable Bluetooth Speaker IP</h3>
+            <div class="text-mute text-xs mt-1">Used</div>
+            <div class="mt-3 flex items-baseline gap-3">
+              <span class="font-semibold" lang="en-US" translate="no">$76.50</span>
+              <span class="text-mute text-xs line-through" lang="en-US" translate="no">$122.00</span>
+            </div>
+          </div>
+        </a>
+
+        <a href="/pdp.html?id=jbl-flip-2-portable-bluetooth-" class="card group">
+          <div class="card-media aspect-[4/5]">
+            <img class="img-primary" src="https://i.ebayimg.com/images/g/w78AAeSw5eRqbq7M/s-l1600.jpg" alt="JBL Flip 2 Portable Bluetooth Speaker Wi" loading="lazy">
+            <img class="img-hover" src="https://i.ebayimg.com/images/g/~qUAAeSwUFpqbq7M/s-l1600.jpg" alt="" loading="lazy">
+            <span class="card-cta">View →</span>
+          </div>
+          <div class="pt-5">
+            <h3 class="text-sm font-medium group-hover:text-lime transition">JBL Flip 2 Portable Bluetooth Speaker Wi</h3>
+            <div class="text-mute text-xs mt-1">Used</div>
+            <div class="mt-3 flex items-baseline gap-3">
+              <span class="font-semibold" lang="en-US" translate="no">$29.99</span>
+              <span class="text-mute text-xs line-through" lang="en-US" translate="no">$48.00</span>
+            </div>
+          </div>
+        </a>
+
+        <a href="/pdp.html?id=portable-bluetooth-speaker-mou" class="card group">
+          <div class="card-media aspect-[4/5]">
+            <img class="img-primary" src="https://i.ebayimg.com/images/g/X0AAAeSwRqxqHxgt/s-l1600.jpg" alt="Portable Bluetooth Speaker Mount Strap H" loading="lazy">
+            <img class="img-hover" src="https://i.ebayimg.com/images/g/hC4AAeSwqg5qHxgu/s-l1600.jpg" alt="" loading="lazy">
+            <span class="card-cta">View →</span>
+          </div>
+          <div class="pt-5">
+            <h3 class="text-sm font-medium group-hover:text-lime transition">Portable Bluetooth Speaker Mount Strap H</h3>
+            <div class="text-mute text-xs mt-1">New</div>
+            <div class="mt-3 flex items-baseline gap-3">
+              <span class="font-semibold" lang="en-US" translate="no">$18.88</span>
+              <span class="text-mute text-xs line-through" lang="en-US" translate="no">$25.00</span>
+            </div>
+          </div>
+        </a>
+
+        <a href="/pdp.html?id=jbl-flip-4-black-waterproof-po" class="card group">
+          <div class="card-media aspect-[4/5]">
+            <img class="img-primary" src="https://i.ebayimg.com/images/g/obEAAeSwMf5qheuN/s-l1600.jpg" alt="JBL Flip 4 Black Waterproof Portable Blu" loading="lazy">
+            
+            <span class="card-cta">View →</span>
+          </div>
+          <div class="pt-5">
+            <h3 class="text-sm font-medium group-hover:text-lime transition">JBL Flip 4 Black Waterproof Portable Blu</h3>
+            <div class="text-mute text-xs mt-1">New</div>
+            <div class="mt-3 flex items-baseline gap-3">
+              <span class="font-semibold" lang="en-US" translate="no">$134.09</span>
+              <span class="text-mute text-xs line-through" lang="en-US" translate="no">$174.00</span>
+            </div>
+          </div>
+        </a>
+
+        <a href="/pdp.html?id=portable-speaker-mount-strap-h" class="card group">
+          <div class="card-media aspect-[4/5]">
+            <img class="img-primary" src="https://i.ebayimg.com/images/g/EmsAAeSwgCRqct7I/s-l1600.jpg" alt="Portable Speaker Mount Strap Holder - Co" loading="lazy">
+            <img class="img-hover" src="https://i.ebayimg.com/images/g/aYYAAeSwW3hqct7J/s-l1600.jpg" alt="" loading="lazy">
+            <span class="card-cta">View →</span>
+          </div>
+          <div class="pt-5">
+            <h3 class="text-sm font-medium group-hover:text-lime transition">Portable Speaker Mount Strap Holder - Co</h3>
+            <div class="text-mute text-xs mt-1">New</div>
+            <div class="mt-3 flex items-baseline gap-3">
+              <span class="font-semibold" lang="en-US" translate="no">$21.99</span>
+              <span class="text-mute text-xs line-through" lang="en-US" translate="no">$29.00</span>
+            </div>
+          </div>
+        </a>
+
+        <a href="/pdp.html?id=anker-nano-portable-battery-po" class="card group">
+          <div class="card-media aspect-[4/5]">
+            <img class="img-primary" src="https://i.ebayimg.com/images/g/6oAAAeSwww5pG0Lu/s-l1600.jpg" alt="Anker Nano Portable Battery Power Bank 3" loading="lazy">
+            <img class="img-hover" src="https://i.ebayimg.com/images/g/NycAAeSwbWRpG0Lv/s-l1600.jpg" alt="" loading="lazy">
+            <span class="card-cta">View →</span>
+          </div>
+          <div class="pt-5">
+            <h3 class="text-sm font-medium group-hover:text-lime transition">Anker Nano Portable Battery Power Bank 3</h3>
+            <div class="text-mute text-xs mt-1">New</div>
+            <div class="mt-3 flex items-baseline gap-3">
+              <span class="font-semibold" lang="en-US" translate="no">$39.95</span>
+              <span class="text-mute text-xs line-through" lang="en-US" translate="no">$52.00</span>
+            </div>
+          </div>
+        </a>
+
+        <a href="/pdp.html?id=anker-20000mah-portable-batter" class="card group">
+          <div class="card-media aspect-[4/5]">
+            <img class="img-primary" src="https://i.ebayimg.com/images/g/qpcAAeSwPO5pzaSN/s-l1600.jpg" alt="Anker 20000mAh Portable Battery Charger " loading="lazy">
+            <img class="img-hover" src="https://i.ebayimg.com/images/g/lewAAeSwnuZpzaSN/s-l1600.jpg" alt="" loading="lazy">
+            <span class="card-cta">View →</span>
+          </div>
+          <div class="pt-5">
+            <h3 class="text-sm font-medium group-hover:text-lime transition">Anker 20000mAh Portable Battery Charger </h3>
+            <div class="text-mute text-xs mt-1">New</div>
+            <div class="mt-3 flex items-baseline gap-3">
+              <span class="font-semibold" lang="en-US" translate="no">$27.95</span>
+              <span class="text-mute text-xs line-through" lang="en-US" translate="no">$36.00</span>
+            </div>
+          </div>
+        </a>
+
+        <a href="/pdp.html?id=anker-20-000-mah-15w-2-port-po" class="card group">
+          <div class="card-media aspect-[4/5]">
+            <img class="img-primary" src="https://i.ebayimg.com/images/g/8OAAAOSwAuVoTwDr/s-l1600.jpg" alt="Anker 20,000 mAh 15W 2-Port Portable Cha" loading="lazy">
+            
+            <span class="card-cta">View →</span>
+          </div>
+          <div class="pt-5">
+            <h3 class="text-sm font-medium group-hover:text-lime transition">Anker 20,000 mAh 15W 2-Port Portable Cha</h3>
+            <div class="text-mute text-xs mt-1">New</div>
+            <div class="mt-3 flex items-baseline gap-3">
+              <span class="font-semibold" lang="en-US" translate="no">$33.98</span>
+              <span class="text-mute text-xs line-through" lang="en-US" translate="no">$44.00</span>
+            </div>
+          </div>
+        </a>
+
+        <a href="/pdp.html?id=anker-20000mah-portable-power-" class="card group">
+          <div class="card-media aspect-[4/5]">
+            <img class="img-primary" src="https://i.ebayimg.com/images/g/J7IAAeSwcLppQDd9/s-l1600.jpg" alt="Anker 20000mAh Portable Power Bank Fast " loading="lazy">
+            <img class="img-hover" src="https://i.ebayimg.com/images/g/FNoAAeSwlpFpQDd9/s-l1600.jpg" alt="" loading="lazy">
+            <span class="card-cta">View →</span>
+          </div>
+          <div class="pt-5">
+            <h3 class="text-sm font-medium group-hover:text-lime transition">Anker 20000mAh Portable Power Bank Fast </h3>
+            <div class="text-mute text-xs mt-1">New</div>
+            <div class="mt-3 flex items-baseline gap-3">
+              <span class="font-semibold" lang="en-US" translate="no">$125.00</span>
+              <span class="text-mute text-xs line-through" lang="en-US" translate="no">$163.00</span>
+            </div>
+          </div>
+        </a>
+
+        <a href="/pdp.html?id=anker-nano-power-bank-20k-30w-" class="card group">
+          <div class="card-media aspect-[4/5]">
+            <img class="img-primary" src="https://i.ebayimg.com/images/g/iL8AAeSwEeNp4S-4/s-l1600.jpg" alt="Anker Nano Power Bank 20K-30W Fast Charg" loading="lazy">
+            <img class="img-hover" src="https://i.ebayimg.com/images/g/VHEAAeSwLFVp4S-6/s-l1600.jpg" alt="" loading="lazy">
+            <span class="card-cta">View →</span>
+          </div>
+          <div class="pt-5">
+            <h3 class="text-sm font-medium group-hover:text-lime transition">Anker Nano Power Bank 20K-30W Fast Charg</h3>
+            <div class="text-mute text-xs mt-1">New</div>
+            <div class="mt-3 flex items-baseline gap-3">
+              <span class="font-semibold" lang="en-US" translate="no">$42.99</span>
+              <span class="text-mute text-xs line-through" lang="en-US" translate="no">$56.00</span>
+            </div>
+          </div>
+        </a>
+
+        <a href="/pdp.html?id=mifi-certified-anker-zolo-2000" class="card group">
+          <div class="card-media aspect-[4/5]">
+            <img class="img-primary" src="https://i.ebayimg.com/images/g/gQUAAeSw7zhqiyAC/s-l1600.jpg" alt="Mifi Certified Anker Zolo 20000mAh Power" loading="lazy">
+            <img class="img-hover" src="https://i.ebayimg.com/images/g/xaAAAeSwW6dqix~l/s-l1600.jpg" alt="" loading="lazy">
+            <span class="card-cta">View →</span>
+          </div>
+          <div class="pt-5">
+            <h3 class="text-sm font-medium group-hover:text-lime transition">Mifi Certified Anker Zolo 20000mAh Power</h3>
+            <div class="text-mute text-xs mt-1">New</div>
+            <div class="mt-3 flex items-baseline gap-3">
+              <span class="font-semibold" lang="en-US" translate="no">$38.99</span>
+              <span class="text-mute text-xs line-through" lang="en-US" translate="no">$51.00</span>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="hairline-t">
+    <div class="max-w-7xl mx-auto px-6 lg:px-10 pt-24 pb-12 grid sm:grid-cols-3 gap-12">
+      <div>
+        <img loading="lazy" src="/brand/logo-dark.svg" alt="BudgetThrills" class="h-7 w-auto mb-6">
+        <p class="text-mute text-sm leading-relaxed max-w-xs">Trendy products. Budget prices. Real thrills.</p>
+      </div>
+      <div>
+                                <div class="eyebrow mb-5">Shop</div>
+        <ul class="space-y-3 text-sm">
+          <li><a href="/gaming.html" class="hover:text-lime transition">Gaming</a></li>
+          <li><a href="/collection.html" class="hover:text-lime transition">Drip</a></li>
+          <li><a href="/phones.html" class="hover:text-lime transition">Phones</a></li>
+          <li><a href="/tech.html" class="text-lime">Tech</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="eyebrow mb-5">Brand</div>
+        <ul class="space-y-3 text-sm">
+          <li><a href="/story.html" class="hover:text-lime transition">Story</a></li>
+          <li><a href="/help.html" class="hover:text-lime transition">Help &amp; Returns</a></li>
+          <li><a href="/contact.html" class="hover:text-lime transition">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="hairline-t">
+      <div class="max-w-7xl mx-auto px-6 lg:px-10 py-6 flex justify-between text-[11px] tracking-[0.18em] uppercase text-mute">
+        <div>© 2026 BudgetThrills</div>
+        <div class="flex gap-8"><a href="/privacy.html" class="hover:text-ink">Privacy</a><a href="/terms.html" class="hover:text-ink">Terms</a></div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/scripts/products.js?v=27"></script>
+  <script src="/scripts/main.js?v=27" defer></script>
+  <script src="/scripts/cart.js?v=27" defer></script>
+  <script type="module" src="/scripts/auth.js?v=27"></script>
+  <script>
+    // Live interactive filter & sort for Tech products
+    document.addEventListener('DOMContentLoaded', () => {
+      const grid = document.querySelector('[data-catalog-category="Tech"]');
+      const pills = document.querySelectorAll('[data-tech-filter]');
+      const countEl = document.getElementById('tech-count');
+      const sortSelect = document.getElementById('tech-sort');
+      if (!grid) return;
+
+      const cards = Array.from(grid.querySelectorAll('.card'));
+      if (countEl) countEl.textContent = cards.length;
+
+      let currentFilter = 'all';
+
+      function applyFilterAndSort() {
+        let visible = cards.slice();
+
+        // 1. Filter
+        if (currentFilter === 'macbook') {
+          visible = visible.filter(c => {
+            const txt = c.textContent.toLowerCase();
+            return txt.includes('macbook') || txt.includes('apple mac');
+          });
+        } else if (currentFilter === 'airpods') {
+          visible = visible.filter(c => {
+            const txt = c.textContent.toLowerCase();
+            return txt.includes('airpods') || txt.includes('headphone') || txt.includes('earbuds') || txt.includes('beats') || txt.includes('wh-1000');
+          });
+        } else if (currentFilter === 'speakers') {
+          visible = visible.filter(c => {
+            const txt = c.textContent.toLowerCase();
+            return txt.includes('speaker') || txt.includes('jbl') || txt.includes('bluetooth speaker');
+          });
+        } else if (currentFilter === 'power') {
+          visible = visible.filter(c => {
+            const txt = c.textContent.toLowerCase();
+            return txt.includes('power') || txt.includes('anker') || txt.includes('charger') || txt.includes('bank');
+          });
+        } else if (currentFilter === 'sale') {
+          visible = visible.filter(c => c.querySelector('.line-through'));
+        }
+
+        // 2. Sort
+        const sortVal = sortSelect?.value || 'trending';
+        if (sortVal === 'price-asc') {
+          visible.sort((a, b) => getPrice(a) - getPrice(b));
+        } else if (sortVal === 'price-desc') {
+          visible.sort((a, b) => getPrice(b) - getPrice(a));
+        } else if (sortVal === 'discount') {
+          visible.sort((a, b) => getDiscount(b) - getDiscount(a));
+        }
+
+        // Render
+        cards.forEach(c => c.style.display = 'none');
+        visible.forEach(c => {
+          c.style.display = '';
+          grid.appendChild(c);
+        });
+      }
+
+      function getPrice(el) {
+        const span = el.querySelector('.font-semibold');
+        if (!span) return 0;
+        return parseFloat(span.textContent.replace(/[^0-9.]/g, '')) || 0;
+      }
+
+      function getDiscount(el) {
+        const orig = el.querySelector('.line-through');
+        const curr = el.querySelector('.font-semibold');
+        if (!orig || !curr) return 0;
+        const o = parseFloat(orig.textContent.replace(/[^0-9.]/g, '')) || 1;
+        const c = parseFloat(curr.textContent.replace(/[^0-9.]/g, '')) || 1;
+        return ((o - c) / o) * 100;
+      }
+
+      pills.forEach(p => {
+        p.addEventListener('click', () => {
+          pills.forEach(x => x.classList.remove('active'));
+          p.classList.add('active');
+          currentFilter = p.dataset.techFilter;
+          applyFilterAndSort();
+        });
+      });
+
+      sortSelect?.addEventListener('change', applyFilterAndSort);
+    });
+  </script>
+</body>
+</html>

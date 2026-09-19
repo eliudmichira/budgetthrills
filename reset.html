@@ -1,0 +1,82 @@
+﻿<!doctype html>
+<html lang="en" class="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' blob: https://cdn.tailwindcss.com https://www.gstatic.com https://apis.google.com https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https://images.unsplash.com https://i.ebayimg.com https://lh3.googleusercontent.com https://*.googleusercontent.com; connect-src 'self' https://*.firebaseio.com https://*.googleapis.com https://firestore.googleapis.com https://www.gstatic.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com; frame-src 'self' https://*.firebaseapp.com https://accounts.google.com https://apis.google.com;">
+<title>New password — BudgetThrills</title>
+<meta name="theme-color" content="#0A0A0A">
+<link rel="icon" type="image/svg+xml" href="/favicons/favicon.svg">
+<link rel="stylesheet" href="/styles/fonts.css">
+<link rel="stylesheet" href="/styles/app.css?v=4">
+<link rel="stylesheet" href="/styles/main.css?v=4">
+<link rel="stylesheet" href="/styles/auth.css">
+<script>(function(){try{var t=localStorage.getItem('bt-theme')||'dark';document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<style>
+  .meter { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; margin-top: 10px; }
+  .meter span { height: 3px; background: var(--bt-border); border-radius: 2px; }
+  .meter[data-score="1"] span:nth-child(-n+1), .meter[data-score="2"] span:nth-child(-n+2), .meter[data-score="3"] span:nth-child(-n+3), .meter[data-score="4"] span:nth-child(-n+4) { background: var(--bt-lime); }
+</style>
+</head>
+<body data-page="reset">
+
+  <div class="auth-shell">
+    <div class="auth-art">
+      <div class="art-eyebrow">BudgetThrills · Recovery</div>
+      <a href="/signin.html" class="art-link">← Back to sign in</a>
+      <div class="art-h">New<br>password<span class="lime">.</span></div>
+    </div>
+
+    <div class="auth-pane">
+      <div class="auth-top">
+        <a href="/" class="flex items-center"><img loading="lazy" src="/brand/logo-dark.svg" alt="BudgetThrills" class="h-7 w-auto"></a>
+        <button data-theme-toggle class="theme-toggle" aria-label="Toggle theme"><svg class="icon-moon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg><svg class="icon-sun" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg></button>
+      </div>
+
+      <div class="auth-body">
+        <div id="reset-step">
+          <div class="eyebrow mb-4">Reset password</div>
+          <h1 class="display text-[48px] sm:text-[64px] leading-[0.95] mb-3 lg:hidden">Pick a new<br>one<span class="text-lime">.</span></h1>
+          <p class="text-mute mb-10">Make it strong. You'll be signed in on this device after reset.</p>
+
+          <form data-reset-form>
+            <div class="auth-field">
+              <label>New password</label>
+              <input id="pw" type="password" autocomplete="new-password" required minlength="8">
+              <div class="meter" data-score="0"><span></span><span></span><span></span><span></span></div>
+              <span class="hint">8+ characters · mix letters, numbers, symbols.</span>
+            </div>
+            <div class="auth-field"><label>Confirm new password</label><input id="pw2" type="password" autocomplete="new-password" required minlength="8"></div>
+
+            <div id="mismatch" class="text-orange text-xs mb-6 hidden">Passwords don't match.</div>
+
+            <button type="submit" class="btn-lime btn-block">Reset &amp; sign in <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 5l7 7-7 7"/></svg></button>
+          </form>
+        </div>
+
+        <div id="reset-done" class="hidden">
+          <div class="display text-[80px] sm:text-[120px] text-lime leading-none">✓</div>
+          <h2 class="display text-[36px] sm:text-[48px] mt-6">All set<span class="text-lime">.</span></h2>
+          <p class="text-mute mt-4 mb-10">Your password is updated. You're signed in.</p>
+          <a href="/account.html" class="btn-lime">Go to your account <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+        </div>
+      </div>
+
+      <div class="auth-foot">
+        <a href="/help.html" class="hover:text-ink">Help</a>
+        <div class="flex gap-6"><a href="/privacy.html" class="hover:text-ink">Privacy</a><a href="/terms.html" class="hover:text-ink">Terms</a></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/scripts/main.js?v=4" defer></script>
+  <script>
+    const pw = document.getElementById('pw'), pw2 = document.getElementById('pw2');
+    const meter = document.querySelector('.meter');
+    function score(s){let n=0;if(s.length>=8)n++;if(/[A-Z]/.test(s)&&/[a-z]/.test(s))n++;if(/\d/.test(s))n++;if(/[^A-Za-z0-9]/.test(s))n++;return n;}
+    pw?.addEventListener('input',()=>meter.setAttribute('data-score',score(pw.value)));
+    // Submit handling is wired by auth.js (uses Firebase oobCode from email link).
+  </script>
+  <script type="module" src="/scripts/auth.js"></script>
+</body>
+</html>

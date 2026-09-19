@@ -1,0 +1,568 @@
+<!doctype html>
+<html lang="en" class="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' blob: https://cdn.tailwindcss.com https://www.gstatic.com https://apis.google.com https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https://images.unsplash.com https://i.ebayimg.com https://lh3.googleusercontent.com https://*.googleusercontent.com; connect-src 'self' https://*.firebaseio.com https://*.googleapis.com https://firestore.googleapis.com https://www.gstatic.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com; frame-src 'self' https://*.firebaseapp.com https://accounts.google.com https://apis.google.com;">
+<title>Drip — BudgetThrills</title>
+<meta name="description" content="Trending sneakers, streetwear grails and drip at budget prices.">
+<meta name="theme-color" content="#0A0A0A">
+
+<link rel="icon" type="image/svg+xml" href="/favicons/favicon.svg">
+<link rel="apple-touch-icon" sizes="180x180" href="/favicons/apple-touch-icon.png">
+
+<link rel="stylesheet" href="/styles/fonts.css">
+
+<link rel="stylesheet" href="/styles/app.css?v=4">
+<link rel="stylesheet" href="/styles/main.css?v=4">
+<script>(function(){try{var t=localStorage.getItem('bt-theme')||'dark';document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+</head>
+<body class="bg-bg text-ink">
+
+  <!-- announcement -->
+  <div class="hairline-b">
+    <div class="max-w-7xl mx-auto px-6 lg:px-10 h-10 flex items-center justify-between text-[11px] tracking-[0.18em] uppercase text-mute">
+      <span>Free US shipping over $50</span>
+      <span class="hidden sm:inline">New drop — every Friday, 8PM EST</span>
+      <span class="hidden md:inline">USA · 2026</span>
+    </div>
+  </div>
+
+  <!-- nav -->
+      <header class="sticky top-0 z-40 nav-shell">
+    <div class="max-w-7xl mx-auto px-6 lg:px-10 h-20 flex items-center justify-between">
+      <a href="/" class="flex items-center">
+        <img loading="lazy" src="/brand/logo-dark.svg" alt="BudgetThrills" class="h-7 w-auto">
+      </a>
+      <nav class="hidden md:flex items-center gap-10 text-[13px] font-medium">
+        <a href="/gaming.html" class="hover:text-lime transition">Gaming</a>
+        <a href="/collection.html" class="text-lime font-semibold">Drip</a>
+        <a href="/phones.html" class="hover:text-lime transition">Phones</a>
+        <a href="/tech.html" class="hover:text-lime transition">Tech</a>
+      </nav>
+      <div class="flex items-center gap-6 text-[13px] font-medium">
+        <a href="/search.html" class="hidden sm:flex items-center gap-2 hover:text-lime transition" aria-label="Search">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+          <span class="hidden lg:inline">Search</span>
+        </a>
+        <a href="/signin.html" class="hidden sm:flex items-center gap-2 hover:text-lime transition" aria-label="Sign in">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"/></svg>
+          <span class="hidden lg:inline">Account</span>
+        </a>
+        <button data-theme-toggle class="theme-toggle" aria-label="Toggle theme">
+          <svg class="icon-moon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+          <svg class="icon-sun" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+        </button>
+        <a href="/cart.html" class="flex items-center gap-2 hover:text-lime transition">
+          <span>Cart</span>
+          <span data-cart-count class="hidden bg-lime text-black text-[10px] font-bold rounded-full w-4 h-4 inline-flex items-center justify-center">0</span>
+        </a>
+        <button data-nav-toggle class="md:hidden" aria-label="Open menu">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+        </button>
+      </div>
+    </div>
+    <nav data-nav-menu class="hidden md:hidden hairline-t">
+      <div class="px-6 py-4 flex flex-col gap-4 text-sm">
+        <a href="/gaming.html" class="">Gaming</a>
+        <a href="/collection.html" class="text-lime font-semibold">Drip</a>
+        <a href="/phones.html" class="">Phones</a>
+        <a href="/tech.html" class="">Tech</a>
+      </div>
+    </nav>
+  </header>
+
+  <!-- breadcrumb + header -->
+  <section class="pt-16 pb-12 sm:pt-24 sm:pb-16 hairline-b">
+    <div class="max-w-7xl mx-auto px-6 lg:px-10">
+      <div class="eyebrow mb-6"><a href="/" class="hover:text-ink">Home</a> · Drip</div>
+      <h1 class="display text-[64px] sm:text-[120px]">Drip<span class="text-lime">.</span></h1>
+      <div class="mt-6 text-mute text-sm max-w-md">Sneakers, streetwear grails and heat. The full collection of trending styles at prices that don't notice your wallet.</div>
+    </div>
+  </section>
+
+  <!-- toolbar -->
+  <section class="hairline-b">
+    <div class="max-w-7xl mx-auto px-6 lg:px-10 py-5 flex flex-wrap items-center justify-between gap-4 text-[12px] tracking-[0.18em] uppercase text-mute">
+      <div class="flex flex-wrap gap-2">
+        <button data-filter="all" class="px-4 py-2 border hairline transition">All <span class="text-mute/60 ml-1">26</span></button>
+        <button data-filter="nike" class="px-4 py-2 border hairline transition">Nike</button>
+        <button data-filter="jordan" class="px-4 py-2 border hairline transition">Jordan</button>
+        <button data-filter="running" class="px-4 py-2 border hairline transition">Running</button>
+        <button data-filter="vans" class="px-4 py-2 border hairline transition">Vans &amp; Casual</button>
+        <button data-filter="sale" class="px-4 py-2 border hairline transition">On sale <span class="text-lime ml-1">26</span></button>
+      </div>
+      <div class="flex items-center gap-3">
+        <span>Sort:</span>
+        <select class="bg-transparent border hairline px-3 py-2 text-ink outline-none focus:border-lime">
+          <option>Trending</option>
+          <option>Price — Low → High</option>
+          <option>Price — High → Low</option>
+          <option>New arrivals</option>
+        </select>
+      </div>
+    </div>
+  </section>
+
+  <!-- product grid -->
+  <section class="py-16 sm:py-20">
+    <div class="max-w-7xl mx-auto px-6 lg:px-10">
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-10" data-reveal data-catalog-category="Sneakers">
+        <a href="/pdp.html?id=nike-reactx-pegasus-trail-5-me" class="card group">
+          <div class="card-media aspect-[4/5]">
+            <img class="img-primary" src="https://i.ebayimg.com/images/g/SowAAeSwjFZqjcjX/s-l1600.jpg" alt="Nike ReactX Pegasus Trail 5 Men's Trail " loading="lazy">
+            <img class="img-hover" src="https://i.ebayimg.com/images/g/d44AAeSwgW9qjcjK/s-l1600.jpg" alt="" loading="lazy">
+            <span class="card-cta">View →</span>
+          </div>
+          <div class="pt-5">
+            <h3 class="text-sm font-medium group-hover:text-lime transition">Nike ReactX Pegasus Trail 5 Men's Trail </h3>
+            <div class="text-mute text-xs mt-1">New with box</div>
+            <div class="mt-3 flex items-baseline gap-3">
+              <span class="font-semibold" lang="en-US" translate="no">$160.00</span>
+              <span class="text-mute text-xs line-through" lang="en-US" translate="no">$208.00</span>
+            </div>
+          </div>
+        </a>
+
+        <a href="/pdp.html?id=nike-air-max-dn-men-s-running-" class="card group">
+          <div class="card-media aspect-[4/5]">
+            <img class="img-primary" src="https://i.ebayimg.com/images/g/vwAAAeSwMCZp-p2q/s-l1600.jpg" alt="Nike Air Max Dn Men’s Running Shoes" loading="lazy">
+            <img class="img-hover" src="https://i.ebayimg.com/images/g/R2kAAeSwWvdp8BZN/s-l1600.jpg" alt="" loading="lazy">
+            <span class="card-cta">View →</span>
+          </div>
+          <div class="pt-5">
+            <h3 class="text-sm font-medium group-hover:text-lime transition">Nike Air Max Dn Men’s Running Shoes</h3>
+            <div class="text-mute text-xs mt-1">New without box</div>
+            <div class="mt-3 flex items-baseline gap-3">
+              <span class="font-semibold" lang="en-US" translate="no">$50.00</span>
+              <span class="text-mute text-xs line-through" lang="en-US" translate="no">$160.00</span>
+            </div>
+          </div>
+        </a>
+
+        <a href="/pdp.html?id=men-s-shoes-nike-air-max-90-ru" class="card group">
+          <div class="card-media aspect-[4/5]">
+            <img class="img-primary" src="https://i.ebayimg.com/images/g/bb0AAeSwli9qevTO/s-l1600.jpg" alt="Men's Shoes Nike Air Max 90 Running Snea" loading="lazy">
+            <img class="img-hover" src="https://i.ebayimg.com/images/g/glMAAeSwkXBp8BjF/s-l1600.jpg" alt="" loading="lazy">
+            <span class="card-cta">View →</span>
+          </div>
+          <div class="pt-5">
+            <h3 class="text-sm font-medium group-hover:text-lime transition">Men's Shoes Nike Air Max 90 Running Snea</h3>
+            <div class="text-mute text-xs mt-1">New without box</div>
+            <div class="mt-3 flex items-baseline gap-3">
+              <span class="font-semibold" lang="en-US" translate="no">$65.00</span>
+              <span class="text-mute text-xs line-through" lang="en-US" translate="no">$130.00</span>
+            </div>
+          </div>
+        </a>
+
+        <a href="/pdp.html?id=nike-revolution-8-men-s-runnin" class="card group">
+          <div class="card-media aspect-[4/5]">
+            <img class="img-primary" src="https://i.ebayimg.com/images/g/sx0AAeSwcRJqOu76/s-l1600.jpg" alt="Nike Revolution 8 Men's Running Shoes Tr" loading="lazy">
+            <img class="img-hover" src="https://i.ebayimg.com/images/g/cG4AAeSw4VlqOu76/s-l1600.jpg" alt="" loading="lazy">
+            <span class="card-cta">View →</span>
+          </div>
+          <div class="pt-5">
+            <h3 class="text-sm font-medium group-hover:text-lime transition">Nike Revolution 8 Men's Running Shoes Tr</h3>
+            <div class="text-mute text-xs mt-1">New with box</div>
+            <div class="mt-3 flex items-baseline gap-3">
+              <span class="font-semibold" lang="en-US" translate="no">$64.95</span>
+              <span class="text-mute text-xs line-through" lang="en-US" translate="no">$84.00</span>
+            </div>
+          </div>
+        </a>
+
+        <a href="/pdp.html?id=men-s-shoes-nike-air-max-270-a" class="card group">
+          <div class="card-media aspect-[4/5]">
+            <img class="img-primary" src="https://i.ebayimg.com/images/g/4msAAeSwCTFprmtP/s-l1600.jpg" alt="Men's Shoes Nike Air Max 270 Athletic Ru" loading="lazy">
+            <img class="img-hover" src="https://i.ebayimg.com/images/g/zQwAAeSwZYpprmtL/s-l1600.jpg" alt="" loading="lazy">
+            <span class="card-cta">View →</span>
+          </div>
+          <div class="pt-5">
+            <h3 class="text-sm font-medium group-hover:text-lime transition">Men's Shoes Nike Air Max 270 Athletic Ru</h3>
+            <div class="text-mute text-xs mt-1">New without box</div>
+            <div class="mt-3 flex items-baseline gap-3">
+              <span class="font-semibold" lang="en-US" translate="no">$55.00</span>
+              <span class="text-mute text-xs line-through" lang="en-US" translate="no">$72.00</span>
+            </div>
+          </div>
+        </a>
+
+        <a href="/pdp.html?id=nike-air-zoom-pegasus-premium-" class="card group">
+          <div class="card-media aspect-[4/5]">
+            <img class="img-primary" src="https://i.ebayimg.com/images/g/lpAAAeSwxXhp4uTB/s-l1600.jpg" alt="Nike Air Zoom Pegasus Premium Gray men's" loading="lazy">
+            <img class="img-hover" src="https://i.ebayimg.com/images/g/L3IAAeSwh5Vp4uTD/s-l1600.jpg" alt="" loading="lazy">
+            <span class="card-cta">View →</span>
+          </div>
+          <div class="pt-5">
+            <h3 class="text-sm font-medium group-hover:text-lime transition">Nike Air Zoom Pegasus Premium Gray men's</h3>
+            <div class="text-mute text-xs mt-1">New with box</div>
+            <div class="mt-3 flex items-baseline gap-3">
+              <span class="font-semibold" lang="en-US" translate="no">$154.90</span>
+              <span class="text-mute text-xs line-through" lang="en-US" translate="no">$201.00</span>
+            </div>
+          </div>
+        </a>
+
+        <a href="/pdp.html?id=jordan-12-retro-bloodline-ct80" class="card group">
+          <div class="card-media aspect-[4/5]">
+            <img class="img-primary" src="https://i.ebayimg.com/images/g/sXwAAeSwRUZqiXXe/s-l1600.jpg" alt="Jordan 12 Retro "Bloodline" CT8013‑003 M" loading="lazy">
+            <img class="img-hover" src="https://i.ebayimg.com/images/g/qvcAAeSwU~lqiXXe/s-l1600.jpg" alt="" loading="lazy">
+            <span class="card-cta">View →</span>
+          </div>
+          <div class="pt-5">
+            <h3 class="text-sm font-medium group-hover:text-lime transition">Jordan 12 Retro "Bloodline" CT8013‑003 M</h3>
+            <div class="text-mute text-xs mt-1">New without box</div>
+            <div class="mt-3 flex items-baseline gap-3">
+              <span class="font-semibold" lang="en-US" translate="no">$99.00</span>
+              <span class="text-mute text-xs line-through" lang="en-US" translate="no">$129.00</span>
+            </div>
+          </div>
+        </a>
+
+        <a href="/pdp.html?id=retro-air-jordan-11-pe-chrome-" class="card group">
+          <div class="card-media aspect-[4/5]">
+            <img class="img-primary" src="https://i.ebayimg.com/images/g/Tf4AAeSwEChqcrXi/s-l1600.jpg" alt="Retro Air Jordan 11 PE Chrome CT8012-730" loading="lazy">
+            <img class="img-hover" src="https://i.ebayimg.com/images/g/mV0AAeSwU7xqcrXi/s-l1600.jpg" alt="" loading="lazy">
+            <span class="card-cta">View →</span>
+          </div>
+          <div class="pt-5">
+            <h3 class="text-sm font-medium group-hover:text-lime transition">Retro Air Jordan 11 PE Chrome CT8012-730</h3>
+            <div class="text-mute text-xs mt-1">New with box</div>
+            <div class="mt-3 flex items-baseline gap-3">
+              <span class="font-semibold" lang="en-US" translate="no">$259.99</span>
+              <span class="text-mute text-xs line-through" lang="en-US" translate="no">$338.00</span>
+            </div>
+          </div>
+        </a>
+
+        <a href="/pdp.html?id=jordan-air-jordan-11-retro-men" class="card group">
+          <div class="card-media aspect-[4/5]">
+            <img class="img-primary" src="https://i.ebayimg.com/images/g/9GQAAeSwcVxpgC7V/s-l1600.jpg" alt="Jordan Air Jordan 11 Retro Men's Black R" loading="lazy">
+            <img class="img-hover" src="https://i.ebayimg.com/images/g/bKYAAeSwgsVpgC7U/s-l1600.jpg" alt="" loading="lazy">
+            <span class="card-cta">View →</span>
+          </div>
+          <div class="pt-5">
+            <h3 class="text-sm font-medium group-hover:text-lime transition">Jordan Air Jordan 11 Retro Men's Black R</h3>
+            <div class="text-mute text-xs mt-1">New with box</div>
+            <div class="mt-3 flex items-baseline gap-3">
+              <span class="font-semibold" lang="en-US" translate="no">$240.00</span>
+              <span class="text-mute text-xs line-through" lang="en-US" translate="no">$312.00</span>
+            </div>
+          </div>
+        </a>
+
+        <a href="/pdp.html?id=air-jordan-13-retro-navy-and-f" class="card group">
+          <div class="card-media aspect-[4/5]">
+            <img class="img-primary" src="https://i.ebayimg.com/images/g/JZoAAeSwmA5qbD5~/s-l1600.jpg" alt="Air Jordan 13 Retro Navy and Flint Grey " loading="lazy">
+            <img class="img-hover" src="https://i.ebayimg.com/images/g/dtkAAeSwE55qbD5~/s-l1600.jpg" alt="" loading="lazy">
+            <span class="card-cta">View →</span>
+          </div>
+          <div class="pt-5">
+            <h3 class="text-sm font-medium group-hover:text-lime transition">Air Jordan 13 Retro Navy and Flint Grey </h3>
+            <div class="text-mute text-xs mt-1">New with box</div>
+            <div class="mt-3 flex items-baseline gap-3">
+              <span class="font-semibold" lang="en-US" translate="no">$195.00</span>
+              <span class="text-mute text-xs line-through" lang="en-US" translate="no">$254.00</span>
+            </div>
+          </div>
+        </a>
+
+        <a href="/pdp.html?id=jordan-4-orchid-retro-basketba" class="card group">
+          <div class="card-media aspect-[4/5]">
+            <img class="img-primary" src="https://i.ebayimg.com/images/g/HMUAAeSwy-Zqgr82/s-l1600.jpg" alt="Jordan 4 "Orchid" Retro Basketball sneak" loading="lazy">
+            <img class="img-hover" src="https://i.ebayimg.com/images/g/F8cAAeSwlyZqgr85/s-l1600.jpg" alt="" loading="lazy">
+            <span class="card-cta">View →</span>
+          </div>
+          <div class="pt-5">
+            <h3 class="text-sm font-medium group-hover:text-lime transition">Jordan 4 "Orchid" Retro Basketball sneak</h3>
+            <div class="text-mute text-xs mt-1">New without box</div>
+            <div class="mt-3 flex items-baseline gap-3">
+              <span class="font-semibold" lang="en-US" translate="no">$79.99</span>
+              <span class="text-mute text-xs line-through" lang="en-US" translate="no">$104.00</span>
+            </div>
+          </div>
+        </a>
+
+        <a href="/pdp.html?id=jordan-air-jordan-14-retro-202" class="card group">
+          <div class="card-media aspect-[4/5]">
+            <img class="img-primary" src="https://i.ebayimg.com/images/g/wMsAAeSwau1qjYQm/s-l1600.jpg" alt="Jordan Air Jordan 14 Retro 2026 Black Un" loading="lazy">
+            <img class="img-hover" src="https://i.ebayimg.com/images/g/UTYAAeSwpSVqjYPS/s-l1600.jpg" alt="" loading="lazy">
+            <span class="card-cta">View →</span>
+          </div>
+          <div class="pt-5">
+            <h3 class="text-sm font-medium group-hover:text-lime transition">Jordan Air Jordan 14 Retro 2026 Black Un</h3>
+            <div class="text-mute text-xs mt-1">New without box</div>
+            <div class="mt-3 flex items-baseline gap-3">
+              <span class="font-semibold" lang="en-US" translate="no">$140.00</span>
+              <span class="text-mute text-xs line-through" lang="en-US" translate="no">$182.00</span>
+            </div>
+          </div>
+        </a>
+
+        <a href="/pdp.html?id=adidas-men-s-gazelle-originals" class="card group">
+          <div class="card-media aspect-[4/5]">
+            <img class="img-primary" src="https://i.ebayimg.com/images/g/gHwAAOSwO-FnicLH/s-l1600.jpg" alt="Adidas Men’s Gazelle Originals Wonder Cl" loading="lazy">
+            <img class="img-hover" src="https://i.ebayimg.com/images/g/YZQAAOSwzEBnicLI/s-l1600.jpg" alt="" loading="lazy">
+            <span class="card-cta">View →</span>
+          </div>
+          <div class="pt-5">
+            <h3 class="text-sm font-medium group-hover:text-lime transition">Adidas Men’s Gazelle Originals Wonder Cl</h3>
+            <div class="text-mute text-xs mt-1">New without box</div>
+            <div class="mt-3 flex items-baseline gap-3">
+              <span class="font-semibold" lang="en-US" translate="no">$46.99</span>
+              <span class="text-mute text-xs line-through" lang="en-US" translate="no">$61.00</span>
+            </div>
+          </div>
+        </a>
+
+        <a href="/pdp.html?id=adidas-originals-gazelle-samba" class="card group">
+          <div class="card-media aspect-[4/5]">
+            <img class="img-primary" src="https://i.ebayimg.com/images/g/1-EAAOSwlT5nRf~v/s-l1600.jpg" alt="Adidas Originals Gazelle Samba Green Men" loading="lazy">
+            <img class="img-hover" src="https://i.ebayimg.com/images/g/jkwAAOSw1glnRf~w/s-l1600.jpg" alt="" loading="lazy">
+            <span class="card-cta">View →</span>
+          </div>
+          <div class="pt-5">
+            <h3 class="text-sm font-medium group-hover:text-lime transition">Adidas Originals Gazelle Samba Green Men</h3>
+            <div class="text-mute text-xs mt-1">New with box</div>
+            <div class="mt-3 flex items-baseline gap-3">
+              <span class="font-semibold" lang="en-US" translate="no">$79.77</span>
+              <span class="text-mute text-xs line-through" lang="en-US" translate="no">$104.00</span>
+            </div>
+          </div>
+        </a>
+
+        <a href="/pdp.html?id=adidas-originals-gazelle-indoo" class="card group">
+          <div class="card-media aspect-[4/5]">
+            <img class="img-primary" src="https://i.ebayimg.com/images/g/IVMAAOSwhKlmiD8z/s-l1600.jpg" alt="adidas Originals Gazelle Indoor Samba Bl" loading="lazy">
+            <img class="img-hover" src="https://i.ebayimg.com/images/g/o5EAAOSwpmFmiD81/s-l1600.jpg" alt="" loading="lazy">
+            <span class="card-cta">View →</span>
+          </div>
+          <div class="pt-5">
+            <h3 class="text-sm font-medium group-hover:text-lime transition">adidas Originals Gazelle Indoor Samba Bl</h3>
+            <div class="text-mute text-xs mt-1">New without box</div>
+            <div class="mt-3 flex items-baseline gap-3">
+              <span class="font-semibold" lang="en-US" translate="no">$59.88</span>
+              <span class="text-mute text-xs line-through" lang="en-US" translate="no">$78.00</span>
+            </div>
+          </div>
+        </a>
+
+        <a href="/pdp.html?id=rare-adidas-originals-suede-ta" class="card group">
+          <div class="card-media aspect-[4/5]">
+            <img class="img-primary" src="https://i.ebayimg.com/images/g/JoMAAeSw4U1qfj~5/s-l1600.jpg" alt="Rare Adidas Originals Suede Tan Japan Ga" loading="lazy">
+            <img class="img-hover" src="https://i.ebayimg.com/images/g/0~wAAeSw2hxqL4bF/s-l1600.jpg" alt="" loading="lazy">
+            <span class="card-cta">View →</span>
+          </div>
+          <div class="pt-5">
+            <h3 class="text-sm font-medium group-hover:text-lime transition">Rare Adidas Originals Suede Tan Japan Ga</h3>
+            <div class="text-mute text-xs mt-1">New with box</div>
+            <div class="mt-3 flex items-baseline gap-3">
+              <span class="font-semibold" lang="en-US" translate="no">$179.95</span>
+              <span class="text-mute text-xs line-through" lang="en-US" translate="no">$234.00</span>
+            </div>
+          </div>
+        </a>
+
+        <a href="/pdp.html?id=rare-adidas-originals-sl-72-ga" class="card group">
+          <div class="card-media aspect-[4/5]">
+            <img class="img-primary" src="https://i.ebayimg.com/images/g/QeIAAeSwrEdpLQfe/s-l1600.jpg" alt="Rare Adidas Originals SL 72 Gazelle Spez" loading="lazy">
+            <img class="img-hover" src="https://i.ebayimg.com/images/g/U5wAAeSwP2VpLQhz/s-l1600.jpg" alt="" loading="lazy">
+            <span class="card-cta">View →</span>
+          </div>
+          <div class="pt-5">
+            <h3 class="text-sm font-medium group-hover:text-lime transition">Rare Adidas Originals SL 72 Gazelle Spez</h3>
+            <div class="text-mute text-xs mt-1">New with box</div>
+            <div class="mt-3 flex items-baseline gap-3">
+              <span class="font-semibold" lang="en-US" translate="no">$149.95</span>
+              <span class="text-mute text-xs line-through" lang="en-US" translate="no">$195.00</span>
+            </div>
+          </div>
+        </a>
+
+        <a href="/pdp.html?id=new-balance-645-sz-10-men-rare" class="card group">
+          <div class="card-media aspect-[4/5]">
+            <img class="img-primary" src="https://i.ebayimg.com/images/g/vE4AAeSwIQVpuZaL/s-l1600.jpg" alt="BALANCE 645 Sz 10 MEN RARE ' MR645 CASUA" loading="lazy">
+            <img class="img-hover" src="https://i.ebayimg.com/images/g/ofoAAeSwCONpuY64/s-l1600.jpg" alt="" loading="lazy">
+            <span class="card-cta">View →</span>
+          </div>
+          <div class="pt-5">
+            <h3 class="text-sm font-medium group-hover:text-lime transition">BALANCE 645 Sz 10 MEN RARE ' MR645 CASUA</h3>
+            <div class="text-mute text-xs mt-1">New without box</div>
+            <div class="mt-3 flex items-baseline gap-3">
+              <span class="font-semibold" lang="en-US" translate="no">$104.49</span>
+              <span class="text-mute text-xs line-through" lang="en-US" translate="no">$136.00</span>
+            </div>
+          </div>
+        </a>
+
+        <a href="/pdp.html?id=new-balance-990-v5-nb1-custom" class="card group">
+          <div class="card-media aspect-[4/5]">
+            <img class="img-primary" src="https://i.ebayimg.com/images/g/ugUAAeSw~FRo7ThF/s-l1600.jpg" alt="Balance 990 V5 NB1 Custom" loading="lazy">
+            <img class="img-hover" src="https://i.ebayimg.com/images/g/uHwAAeSw81xo7ThG/s-l1600.jpg" alt="" loading="lazy">
+            <span class="card-cta">View →</span>
+          </div>
+          <div class="pt-5">
+            <h3 class="text-sm font-medium group-hover:text-lime transition">Balance 990 V5 NB1 Custom</h3>
+            <div class="text-mute text-xs mt-1">Pre-owned - Excellent</div>
+            <div class="mt-3 flex items-baseline gap-3">
+              <span class="font-semibold" lang="en-US" translate="no">$180.00</span>
+              <span class="text-mute text-xs line-through" lang="en-US" translate="no">$288.00</span>
+            </div>
+          </div>
+        </a>
+
+        <a href="/pdp.html?id=new-balance-q-3-990-v5-sneaker" class="card group">
+          <div class="card-media aspect-[4/5]">
+            <img class="img-primary" src="https://i.ebayimg.com/images/g/p7MAAeSw-jdqU8jZ/s-l1600.jpg" alt="Balance Q:3 / 990 v5 Sneakers in Grey & " loading="lazy">
+            <img class="img-hover" src="https://i.ebayimg.com/images/g/BB4AAeSwRTtqU8jb/s-l1600.jpg" alt="" loading="lazy">
+            <span class="card-cta">View →</span>
+          </div>
+          <div class="pt-5">
+            <h3 class="text-sm font-medium group-hover:text-lime transition">Balance Q:3 / 990 v5 Sneakers in Grey & </h3>
+            <div class="text-mute text-xs mt-1">New with box</div>
+            <div class="mt-3 flex items-baseline gap-3">
+              <span class="font-semibold" lang="en-US" translate="no">$250.00</span>
+              <span class="text-mute text-xs line-through" lang="en-US" translate="no">$325.00</span>
+            </div>
+          </div>
+        </a>
+
+        <a href="/pdp.html?id=new-balance-q-2-990-v5-sneaker" class="card group">
+          <div class="card-media aspect-[4/5]">
+            <img class="img-primary" src="https://i.ebayimg.com/images/g/HvgAAeSwqNVqU8na/s-l1600.jpg" alt="Balance Q:2 / 990 v5 Sneakers in Grey & " loading="lazy">
+            <img class="img-hover" src="https://i.ebayimg.com/images/g/tEIAAeSwUk1qU8ne/s-l1600.jpg" alt="" loading="lazy">
+            <span class="card-cta">View →</span>
+          </div>
+          <div class="pt-5">
+            <h3 class="text-sm font-medium group-hover:text-lime transition">Balance Q:2 / 990 v5 Sneakers in Grey & </h3>
+            <div class="text-mute text-xs mt-1">New with box</div>
+            <div class="mt-3 flex items-baseline gap-3">
+              <span class="font-semibold" lang="en-US" translate="no">$300.00</span>
+              <span class="text-mute text-xs line-through" lang="en-US" translate="no">$390.00</span>
+            </div>
+          </div>
+        </a>
+
+        <a href="/pdp.html?id=vans-unisex-ua-old-skool-black" class="card group">
+          <div class="card-media aspect-[4/5]">
+            <img class="img-primary" src="https://i.ebayimg.com/images/g/oncAAeSw7F9qjJaN/s-l1600.jpg" alt="Vans Unisex UA Old Skool Black/White Low" loading="lazy">
+            <img class="img-hover" src="https://i.ebayimg.com/images/g/7mkAAeSwnp1qjJY5/s-l1600.jpg" alt="" loading="lazy">
+            <span class="card-cta">View →</span>
+          </div>
+          <div class="pt-5">
+            <h3 class="text-sm font-medium group-hover:text-lime transition">Vans Unisex UA Old Skool Black/White Low</h3>
+            <div class="text-mute text-xs mt-1">Pre-owned - Excellent</div>
+            <div class="mt-3 flex items-baseline gap-3">
+              <span class="font-semibold" lang="en-US" translate="no">$29.99</span>
+              <span class="text-mute text-xs line-through" lang="en-US" translate="no">$48.00</span>
+            </div>
+          </div>
+        </a>
+
+        <a href="/pdp.html?id=vans-old-skool-low-top-black-f" class="card group">
+          <div class="card-media aspect-[4/5]">
+            <img class="img-primary" src="https://i.ebayimg.com/images/g/AqcAAOSw~EdkLAFG/s-l1600.jpg" alt="VANS Old Skool Low Top Black Floral Canv" loading="lazy">
+            <img class="img-hover" src="https://i.ebayimg.com/images/g/efcAAOSw-GtkLAFE/s-l1600.jpg" alt="" loading="lazy">
+            <span class="card-cta">View →</span>
+          </div>
+          <div class="pt-5">
+            <h3 class="text-sm font-medium group-hover:text-lime transition">VANS Old Skool Low Top Black Floral Canv</h3>
+            <div class="text-mute text-xs mt-1">New with box</div>
+            <div class="mt-3 flex items-baseline gap-3">
+              <span class="font-semibold" lang="en-US" translate="no">$46.99</span>
+              <span class="text-mute text-xs line-through" lang="en-US" translate="no">$61.00</span>
+            </div>
+          </div>
+        </a>
+
+        <a href="/pdp.html?id=vans-old-skool-shoes-mens-size" class="card group">
+          <div class="card-media aspect-[4/5]">
+            <img class="img-primary" src="https://i.ebayimg.com/images/g/E8YAAeSwnsNqi3ss/s-l1600.jpg" alt="Vans Old Skool Shoes Mens Size 9.5 Red C" loading="lazy">
+            <img class="img-hover" src="https://i.ebayimg.com/images/g/kw0AAeSwptdqi3sv/s-l1600.jpg" alt="" loading="lazy">
+            <span class="card-cta">View →</span>
+          </div>
+          <div class="pt-5">
+            <h3 class="text-sm font-medium group-hover:text-lime transition">Vans Old Skool Shoes Mens Size 9.5 Red C</h3>
+            <div class="text-mute text-xs mt-1">New with box</div>
+            <div class="mt-3 flex items-baseline gap-3">
+              <span class="font-semibold" lang="en-US" translate="no">$88.97</span>
+              <span class="text-mute text-xs line-through" lang="en-US" translate="no">$116.00</span>
+            </div>
+          </div>
+        </a>
+
+        <a href="/pdp.html?id=vans-old-skool-unisex-canvas-s" class="card group">
+          <div class="card-media aspect-[4/5]">
+            <img class="img-primary" src="https://i.ebayimg.com/images/g/TI8AAeSwPbdpDQvv/s-l1600.jpg" alt="Vans Old Skool Unisex Canvas & Suede Sne" loading="lazy">
+            
+            <span class="card-cta">View →</span>
+          </div>
+          <div class="pt-5">
+            <h3 class="text-sm font-medium group-hover:text-lime transition">Vans Old Skool Unisex Canvas & Suede Sne</h3>
+            <div class="text-mute text-xs mt-1">New with box</div>
+            <div class="mt-3 flex items-baseline gap-3">
+              <span class="font-semibold" lang="en-US" translate="no">$74.36</span>
+              <span class="text-mute text-xs line-through" lang="en-US" translate="no">$97.00</span>
+            </div>
+          </div>
+        </a>
+
+        <a href="/pdp.html?id=vans-old-skool-navy-blue-canva" class="card group">
+          <div class="card-media aspect-[4/5]">
+            <img class="img-primary" src="https://i.ebayimg.com/images/g/uAMAAOSwY0dm2KcL/s-l1600.jpg" alt="VANS Old Skool Navy Blue Canvas Suede Sn" loading="lazy">
+            <img class="img-hover" src="https://i.ebayimg.com/images/g/r6MAAOSwx8dm2KcL/s-l1600.jpg" alt="" loading="lazy">
+            <span class="card-cta">View →</span>
+          </div>
+          <div class="pt-5">
+            <h3 class="text-sm font-medium group-hover:text-lime transition">VANS Old Skool Navy Blue Canvas Suede Sn</h3>
+            <div class="text-mute text-xs mt-1">New with box</div>
+            <div class="mt-3 flex items-baseline gap-3">
+              <span class="font-semibold" lang="en-US" translate="no">$55.19</span>
+              <span class="text-mute text-xs line-through" lang="en-US" translate="no">$72.00</span>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- footer -->
+  <footer class="hairline-t">
+    <div class="max-w-7xl mx-auto px-6 lg:px-10 pt-24 pb-12 grid sm:grid-cols-3 gap-12">
+      <div>
+        <img loading="lazy" src="/brand/logo-dark.svg" alt="BudgetThrills" class="h-7 w-auto mb-6">
+        <p class="text-mute text-sm leading-relaxed max-w-xs">Trendy products. Budget prices. Real thrills.</p>
+      </div>
+      <div>
+                                <div class="eyebrow mb-5">Shop</div>
+        <ul class="space-y-3 text-sm">
+          <li><a href="/gaming.html" class="hover:text-lime transition">Gaming</a></li>
+          <li><a href="/collection.html" class="text-lime">Drip</a></li>
+          <li><a href="/phones.html" class="hover:text-lime transition">Phones</a></li>
+          <li><a href="/tech.html" class="hover:text-lime transition">Tech</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="eyebrow mb-5">Brand</div>
+        <ul class="space-y-3 text-sm">
+          <li><a href="/story.html" class="hover:text-lime transition">Story</a></li>
+          <li><a href="/help.html" class="hover:text-lime transition">Help &amp; Returns</a></li>
+          <li><a href="/contact.html" class="hover:text-lime transition">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="hairline-t">
+      <div class="max-w-7xl mx-auto px-6 lg:px-10 py-6 flex justify-between text-[11px] tracking-[0.18em] uppercase text-mute">
+        <div>© 2026 BudgetThrills</div>
+        <div class="flex gap-8"><a href="/privacy.html" class="hover:text-ink">Privacy</a><a href="/terms.html" class="hover:text-ink">Terms</a></div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/scripts/products.js?v=4"></script>
+  <script src="/scripts/main.js?v=4" defer></script>
+  <script src="/scripts/cart.js?v=4" defer></script>
+  <script type="module" src="/scripts/auth.js"></script>
+</body>
+</html>

@@ -1,0 +1,1121 @@
+<!doctype html>
+<html lang="en" class="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' blob: https://cdn.tailwindcss.com https://www.gstatic.com https://apis.google.com https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https://images.unsplash.com https://i.ebayimg.com https://lh3.googleusercontent.com https://*.googleusercontent.com; connect-src 'self' https://*.firebaseio.com https://*.googleapis.com https://firestore.googleapis.com https://www.gstatic.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com; frame-src 'self' https://*.firebaseapp.com https://accounts.google.com https://apis.google.com;">
+<title>BudgetThrills — Operations & Admin Command Center</title>
+<meta name="theme-color" content="#0A0A0A">
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" type="image/svg+xml" href="/favicons/favicon.svg">
+<link rel="stylesheet" href="/styles/fonts.css">
+<link rel="stylesheet" href="/styles/app.css?v=4">
+<link rel="stylesheet" href="/styles/main.css?v=4">
+<script>(function(){try{var t=localStorage.getItem('bt-theme')||'dark';document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+
+<style>
+  :root {
+    --adm-bg: #0A0A0A;
+    --adm-card: #121215;
+    --adm-card-hover: #18181C;
+    --adm-border: #1C1C1C;
+    --adm-lime: #BFFF1A;
+    --adm-lime-glow: rgba(191, 255, 26, 0.15);
+    --adm-mute: #71717A;
+    --adm-text: #FAFAFA;
+  }
+
+  html[data-theme="light"] {
+    --adm-bg: #F7F7F5;
+    --adm-card: #FFFFFF;
+    --adm-card-hover: #F0F0ED;
+    --adm-border: #E0E0DC;
+    --adm-lime: #5BBF00;
+    --adm-lime-glow: rgba(91, 191, 0, 0.15);
+    --adm-mute: #70706C;
+    --adm-text: #121212;
+  }
+
+  body {
+    background-color: var(--adm-bg) !important;
+    color: var(--adm-text) !important;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  }
+  
+  .adm-nav-btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 8px 14px; border-radius: 8px; font-size: 13px; font-weight: 500;
+    color: var(--adm-mute); transition: all 0.2s ease; cursor: pointer; border: 1px solid transparent;
+  }
+  .adm-nav-btn:hover { color: var(--adm-text); background: var(--adm-card-hover); }
+  .adm-nav-btn.active {
+    color: #000 !important; background: var(--adm-lime) !important; font-weight: 700; border-color: var(--adm-lime);
+    box-shadow: 0 0 16px var(--adm-lime-glow);
+  }
+  html[data-theme="light"] .adm-nav-btn.active { color: #FFF !important; }
+
+  .adm-card {
+    background-color: var(--adm-card) !important;
+    border: 1px solid var(--adm-border) !important;
+    border-radius: 12px;
+    padding: 1.5rem;
+    transition: border-color 0.2s, box-shadow 0.2s, background-color 0.2s;
+  }
+  .adm-card:hover { border-color: var(--adm-lime) !important; }
+
+  .stat-glow {
+    font-size: 2.25rem; font-weight: 800; line-height: 1; letter-spacing: -0.04em; color: var(--adm-lime);
+  }
+
+  /* Table styling */
+  .adm-table { width: 100%; border-collapse: separate; border-spacing: 0; }
+  .adm-table th {
+    padding: 12px 16px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.15em;
+    color: var(--adm-mute); border-bottom: 1px solid var(--adm-border); text-align: left; font-weight: 600;
+  }
+  .adm-table td {
+    padding: 14px 16px; font-size: 13px; border-bottom: 1px solid var(--adm-border); vertical-align: middle;
+    color: var(--adm-text);
+  }
+  .adm-table tbody tr { transition: background 0.15s ease; cursor: pointer; }
+  .adm-table tbody tr:hover { background: var(--adm-card-hover); }
+
+  .badge-lime { background: rgba(191, 255, 26, 0.15); color: var(--adm-lime); border: 1px solid rgba(191, 255, 26, 0.3); }
+  .badge-zinc { background: var(--adm-card-hover); color: var(--adm-mute); border: 1px solid var(--adm-border); }
+  .badge-orange { background: rgba(249, 115, 22, 0.12); color: #EA580C; border: 1px solid rgba(249, 115, 22, 0.25); }
+  .badge-blue { background: rgba(59, 130, 246, 0.12); color: #2563EB; border: 1px solid rgba(59, 130, 246, 0.25); }
+  .badge-purple { background: rgba(168, 85, 247, 0.12); color: #9333EA; border: 1px solid rgba(168, 85, 247, 0.25); }
+
+  /* Product grid cards */
+  .p-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1.25rem; }
+  .p-card {
+    background: var(--adm-card); border: 1px solid var(--adm-border); border-radius: 12px;
+    overflow: hidden; cursor: pointer; transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+  }
+  .p-card:hover {
+    transform: translateY(-2px); border-color: var(--adm-lime);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1), 0 0 16px var(--adm-lime-glow);
+  }
+
+  .toast {
+    position: fixed; bottom: 24px; right: 24px; background: var(--adm-card); border: 1px solid var(--adm-lime);
+    color: var(--adm-text); padding: 14px 20px; border-radius: 8px; font-size: 13px; font-weight: 500;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.25); z-index: 1000; transform: translateY(100px); opacity: 0;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .toast.show { transform: translateY(0); opacity: 1; }
+
+  .tab-pane { display: none; }
+  .tab-pane.active { display: block; animation: fadeIn 0.25s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+  .modal-overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(8px);
+    z-index: 200; display: flex; align-items: center; justify-content: center; padding: 1.5rem;
+    opacity: 0; pointer-events: none; transition: opacity 0.2s;
+  }
+  .modal-overlay.open { opacity: 1; pointer-events: auto; }
+</style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+  <!-- Top Utilities Bar -->
+  <div class="border-b border-[var(--adm-border)] bg-[var(--adm-card)]">
+    <div class="max-w-7xl mx-auto px-6 h-10 flex items-center justify-between text-[11px] tracking-[0.18em] uppercase text-[var(--adm-mute)]">
+      <div class="flex items-center gap-3">
+        <span class="w-2 h-2 rounded-full bg-lime animate-pulse"></span>
+        <span class="font-semibold text-[var(--adm-text)]">Store Operations Command</span>
+        <span class="text-[var(--adm-border)]">|</span>
+        <span class="text-lime">Live Production</span>
+      </div>
+      <div class="flex items-center gap-6">
+        <span id="quick-clock"></span>
+        <span id="admin-user-pill" class="font-mono lowercase text-[var(--adm-text)] hidden md:inline"></span>
+        <button id="btn-admin-signout" class="hover:text-orange-500 transition hidden">&larr; Sign Out</button>
+        <a href="/" class="hover:text-lime transition flex items-center gap-1.5">&larr; Live Store</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Primary Navigation Header -->
+  <header class="sticky top-0 z-40 bg-[var(--adm-bg)]/90 backdrop-blur-md border-b border-[var(--adm-border)]">
+    <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between gap-6">
+      
+      <div class="flex items-center gap-4">
+        <a href="/" class="flex items-center gap-3">
+          <img src="/brand/logo-dark.svg" alt="BudgetThrills" class="h-7 w-auto">
+          <span class="text-[10px] font-bold uppercase tracking-[0.2em] px-2 py-0.5 rounded bg-[var(--adm-card)] border border-[var(--adm-border)] text-lime">Admin Hub</span>
+        </a>
+      </div>
+
+      <!-- Main Section Tabs -->
+      <nav class="hidden md:flex items-center gap-1" id="admin-tabs-nav">
+        <button class="adm-nav-btn active" data-tab="overview">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
+          Overview
+        </button>
+        <button class="adm-nav-btn" data-tab="orders">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
+          Orders (<span id="nav-orders-count">0</span>)
+        </button>
+        <button class="adm-nav-btn" data-tab="catalog">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m7.5 4.27 9 5.15"/><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg>
+          Catalog (<span id="nav-cat-count">32</span>)
+        </button>
+        <button class="adm-nav-btn" data-tab="messages">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          Messages (<span id="nav-msg-count">0</span>)
+        </button>
+        <button class="adm-nav-btn" data-tab="settings">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
+          Promos &amp; Settings
+        </button>
+      </nav>
+
+      <!-- Theme Switcher -->
+      <div class="flex items-center gap-3">
+        <button data-theme-toggle class="theme-toggle" aria-label="Toggle theme">
+          <svg class="icon-moon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+          <svg class="icon-sun" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="max-w-7xl mx-auto px-6 py-8 flex-1 w-full">
+
+    <!-- Role / Auth State Guard Container -->
+    <div id="admin-guard-container" class="hidden"></div>
+
+    <!-- Admin Content Wrapper -->
+    <div id="admin-main-content">
+
+      <!-- ==================== TAB 1: OVERVIEW ==================== -->
+      <div id="tab-overview" class="tab-pane active space-y-8">
+        
+        <!-- Top Metrics Banner -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          <div class="adm-card">
+            <div class="flex items-center justify-between text-[11px] uppercase tracking-wider text-[var(--adm-mute)] font-semibold mb-2">
+              <span>Gross Revenue</span>
+              <span class="badge-lime px-2 py-0.5 rounded text-[10px] font-bold">Real-time</span>
+            </div>
+            <div class="stat-glow" id="stat-revenue">$0.00</div>
+            <div class="text-xs text-[var(--adm-mute)] mt-2 flex items-center gap-1.5">
+              <span class="text-lime font-semibold" id="stat-order-count">0 orders</span> processed
+            </div>
+          </div>
+
+          <div class="adm-card">
+            <div class="flex items-center justify-between text-[11px] uppercase tracking-wider text-[var(--adm-mute)] font-semibold mb-2">
+              <span>Pending Fulfillment</span>
+              <span class="badge-orange px-2 py-0.5 rounded text-[10px] font-bold">Action Needed</span>
+            </div>
+            <div class="stat-glow text-orange-500" id="stat-pending-orders">0</div>
+            <div class="text-xs text-[var(--adm-mute)] mt-2 flex items-center gap-1.5">
+              <span>Ready for eBay / Courier</span>
+            </div>
+          </div>
+
+          <div class="adm-card">
+            <div class="flex items-center justify-between text-[11px] uppercase tracking-wider text-[var(--adm-mute)] font-semibold mb-2">
+              <span>Average Order Value</span>
+              <span class="badge-blue px-2 py-0.5 rounded text-[10px] font-bold">AOV</span>
+            </div>
+            <div class="stat-glow text-blue-500" id="stat-aov">$0.00</div>
+            <div class="text-xs text-[var(--adm-mute)] mt-2">
+              Catalog Average: <span class="text-[var(--adm-text)] font-semibold" id="stat-avg-price">$112.92</span>
+            </div>
+          </div>
+
+          <div class="adm-card">
+            <div class="flex items-center justify-between text-[11px] uppercase tracking-wider text-[var(--adm-mute)] font-semibold mb-2">
+              <span>Unread Messages</span>
+              <span class="badge-purple px-2 py-0.5 rounded text-[10px] font-bold">Inbox</span>
+            </div>
+            <div class="stat-glow text-purple-500" id="stat-unread-msgs">0</div>
+            <div class="text-xs text-[var(--adm-mute)] mt-2">
+              Customer inquiries waiting reply
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Operations & Actions -->
+        <div class="grid lg:grid-cols-3 gap-6">
+          
+          <!-- Category Distribution (2 cols) -->
+          <div class="adm-card lg:col-span-2 space-y-6">
+            <div class="flex items-center justify-between">
+              <div>
+                <div class="eyebrow mb-1">Catalog Structure</div>
+                <h3 class="text-lg font-bold text-[var(--adm-text)]">Category Distribution &amp; Balance</h3>
+              </div>
+              <span class="text-xs text-[var(--adm-mute)]">4 Categories &middot; Active Inventory</span>
+            </div>
+
+            <div class="space-y-4" id="cat-bars-container"></div>
+          </div>
+
+          <!-- Quick Operations & Actions (1 col) -->
+          <div class="adm-card space-y-5">
+            <div>
+              <div class="eyebrow mb-1">Operations</div>
+              <h3 class="text-lg font-bold text-[var(--adm-text)]">Quick Actions</h3>
+            </div>
+
+            <div class="space-y-3">
+              <button class="w-full py-3 px-4 rounded-lg bg-[var(--adm-card-hover)] border border-[var(--adm-border)] hover:border-lime text-left flex items-center justify-between group transition" onclick="window.switchTab('orders')">
+                <div>
+                  <div class="text-xs font-semibold text-[var(--adm-text)] group-hover:text-lime transition">🛒 Manage &amp; Fulfill Orders</div>
+                  <div class="text-[11px] text-[var(--adm-mute)]">Stream live customer purchases</div>
+                </div>
+                <span class="text-xs text-lime">&rarr;</span>
+              </button>
+
+              <button class="w-full py-3 px-4 rounded-lg bg-[var(--adm-card-hover)] border border-[var(--adm-border)] hover:border-lime text-left flex items-center justify-between group transition" onclick="window.exportOrdersCSV()">
+                <div>
+                  <div class="text-xs font-semibold text-[var(--adm-text)] group-hover:text-lime transition">📊 Export Orders (CSV)</div>
+                  <div class="text-[11px] text-[var(--adm-mute)]">Download customer sales ledger</div>
+                </div>
+                <span class="text-xs text-lime">&darr;</span>
+              </button>
+
+              <button class="w-full py-3 px-4 rounded-lg bg-[var(--adm-card-hover)] border border-[var(--adm-border)] hover:border-lime text-left flex items-center justify-between group transition" onclick="window.exportCatalogJSON()">
+                <div>
+                  <div class="text-xs font-semibold text-[var(--adm-text)] group-hover:text-lime transition">📥 Export Catalog (JSON)</div>
+                  <div class="text-[11px] text-[var(--adm-mute)]">Download live store catalog data</div>
+                </div>
+                <span class="text-xs text-lime">&darr;</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ==================== TAB 2: LIVE ORDERS & FULFILLMENT ==================== -->
+      <div id="tab-orders" class="tab-pane space-y-6">
+        <div class="adm-card">
+          <div class="flex items-center justify-between flex-wrap gap-4 mb-6">
+            <div>
+              <div class="eyebrow mb-1">Live Firestore Feed</div>
+              <h3 class="text-xl font-bold text-[var(--adm-text)]">Orders &amp; Auto-Fulfillment Hub</h3>
+              <p class="text-xs text-[var(--adm-mute)] mt-1">Real customer orders stream live from the checkout page.</p>
+            </div>
+            <div class="flex items-center gap-3 flex-wrap">
+              <div class="flex items-center border border-[var(--adm-border)] rounded-lg overflow-hidden bg-[var(--adm-card-hover)]">
+                <button class="px-3 py-1.5 text-xs font-medium border-r border-[var(--adm-border)] order-filter-btn active" data-filter="all">All</button>
+                <button class="px-3 py-1.5 text-xs font-medium border-r border-[var(--adm-border)] order-filter-btn" data-filter="pending">Pending</button>
+                <button class="px-3 py-1.5 text-xs font-medium border-r border-[var(--adm-border)] order-filter-btn" data-filter="processing">Processing</button>
+                <button class="px-3 py-1.5 text-xs font-medium order-filter-btn" data-filter="shipped">Shipped</button>
+              </div>
+              <input type="text" id="order-search" placeholder="Search order #, customer, email..." class="bg-[var(--adm-card-hover)] border border-[var(--adm-border)] rounded-lg px-3 py-1.5 text-xs text-[var(--adm-text)] placeholder-[var(--adm-mute)] focus:border-lime outline-none w-56">
+              <span class="text-xs uppercase tracking-wider text-lime px-3 py-1 rounded-full bg-lime/10 border border-lime/30 font-bold" id="orders-pill">Connecting...</span>
+            </div>
+          </div>
+
+          <div id="orders-full-list" class="space-y-4"></div>
+        </div>
+      </div>
+
+      <!-- ==================== TAB 3: CATALOG & INVENTORY ==================== -->
+      <div id="tab-catalog" class="tab-pane space-y-6">
+        
+        <!-- Toolbar & Filters -->
+        <div class="adm-card flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+          <div class="flex items-center gap-2 flex-wrap">
+            <button class="px-3.5 py-1.5 rounded-full text-xs font-medium border border-[var(--adm-border)] cat-filter-btn active" data-cat="all">All (32)</button>
+            <button class="px-3.5 py-1.5 rounded-full text-xs font-medium border border-[var(--adm-border)] cat-filter-btn" data-cat="Sneakers">Sneakers (8)</button>
+            <button class="px-3.5 py-1.5 rounded-full text-xs font-medium border border-[var(--adm-border)] cat-filter-btn" data-cat="Phones">Phones (8)</button>
+            <button class="px-3.5 py-1.5 rounded-full text-xs font-medium border border-[var(--adm-border)] cat-filter-btn" data-cat="Tech">Tech (8)</button>
+            <button class="px-3.5 py-1.5 rounded-full text-xs font-medium border border-[var(--adm-border)] cat-filter-btn" data-cat="Accessories">Accessories (8)</button>
+          </div>
+
+          <div class="flex items-center gap-3 w-full md:w-auto">
+            <div class="relative flex-1 md:w-64">
+              <input type="text" id="catalog-search" placeholder="Search title, brand, tag..." class="w-full bg-[var(--adm-card-hover)] border border-[var(--adm-border)] rounded-lg px-3.5 py-2 text-xs text-[var(--adm-text)] placeholder-[var(--adm-mute)] focus:border-lime outline-none">
+            </div>
+
+            <select id="catalog-sort" class="bg-[var(--adm-card-hover)] border border-[var(--adm-border)] rounded-lg px-3 py-2 text-xs text-[var(--adm-text)] outline-none focus:border-lime">
+              <option value="featured">Sort: Featured</option>
+              <option value="price-asc">Price: Low &rarr; High</option>
+              <option value="price-desc">Price: High &rarr; Low</option>
+              <option value="discount">Highest Discount</option>
+              <option value="photos">Most Photos</option>
+            </select>
+
+            <!-- View Toggle -->
+            <div class="flex items-center border border-[var(--adm-border)] rounded-lg overflow-hidden bg-[var(--adm-card-hover)]">
+              <button id="view-table-btn" class="p-2 text-lime bg-[var(--adm-card)]" title="Table View">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" x2="21" y1="6" y2="6"/><line x1="3" x2="21" y1="12" y2="12"/><line x1="3" x2="21" y1="18" y2="18"/></svg>
+              </button>
+              <button id="view-grid-btn" class="p-2 text-[var(--adm-mute)] hover:text-[var(--adm-text)]" title="Grid View">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Table View Container -->
+        <div id="catalog-table-container" class="adm-card overflow-x-auto p-0">
+          <table class="adm-table">
+            <thead>
+              <tr>
+                <th>Product</th>
+                <th>Category</th>
+                <th>Condition</th>
+                <th>Store Price</th>
+                <th>MSRP Original</th>
+                <th>Savings</th>
+                <th>Photos</th>
+                <th class="text-right">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="catalog-tbody"></tbody>
+          </table>
+        </div>
+
+        <!-- Grid View Container -->
+        <div id="catalog-grid-container" class="p-grid hidden"></div>
+        <div id="no-catalog-match" class="text-center py-16 text-sm text-[var(--adm-mute)] hidden">No items found matching your filters.</div>
+      </div>
+
+      <!-- ==================== TAB 4: CONTACT MESSAGES ==================== -->
+      <div id="tab-messages" class="tab-pane space-y-6">
+        <div class="adm-card">
+          <div class="flex items-center justify-between flex-wrap gap-4 mb-6">
+            <div>
+              <div class="eyebrow mb-1">Customer Inbox</div>
+              <h3 class="text-xl font-bold text-[var(--adm-text)]">Contact Form Messages</h3>
+              <p class="text-xs text-[var(--adm-mute)] mt-1">Submissions from the /contact page stream in real-time with customer reply tracking.</p>
+            </div>
+            <div class="flex items-center gap-3">
+              <span class="text-xs uppercase tracking-wider text-lime px-3 py-1 rounded-full bg-lime/10 border border-lime/30 font-bold" id="messages-pill">Connecting...</span>
+            </div>
+          </div>
+          <div id="messages-list" class="space-y-4"></div>
+        </div>
+      </div>
+
+      <!-- ==================== TAB 5: PROMOS & STORE POLICIES ==================== -->
+      <div id="tab-settings" class="tab-pane space-y-6">
+        <div class="grid lg:grid-cols-2 gap-6">
+          
+          <!-- Active Promo Codes -->
+          <div class="adm-card space-y-4">
+            <div class="flex items-center justify-between">
+              <div>
+                <div class="eyebrow mb-1">Discount Engine</div>
+                <h3 class="text-lg font-bold text-[var(--adm-text)]">Active Store Coupons</h3>
+              </div>
+              <button onclick="window.openNewCouponModal()" class="px-3 py-1.5 rounded-lg bg-lime text-black font-bold text-xs uppercase tracking-wider hover:opacity-90 transition">+ Add Code</button>
+            </div>
+
+            <div class="space-y-3" id="coupons-list"></div>
+          </div>
+
+          <!-- Store Configuration -->
+          <div class="adm-card space-y-4">
+            <div>
+              <div class="eyebrow mb-1">Global Parameters</div>
+              <h3 class="text-lg font-bold text-[var(--adm-text)]">Store Policies &amp; Thresholds</h3>
+            </div>
+
+            <div class="space-y-3 text-xs">
+              <div class="flex items-center justify-between py-2 border-b border-[var(--adm-border)]">
+                <span class="text-[var(--adm-mute)]">Free Shipping Minimum:</span>
+                <span class="font-bold text-[var(--adm-text)]">$50.00 USD</span>
+              </div>
+              <div class="flex items-center justify-between py-2 border-b border-[var(--adm-border)]">
+                <span class="text-[var(--adm-mute)]">Standard US Shipping Fee:</span>
+                <span class="font-bold text-[var(--adm-text)]">$4.99 USD</span>
+              </div>
+              <div class="flex items-center justify-between py-2 border-b border-[var(--adm-border)]">
+                <span class="text-[var(--adm-mute)]">Express FedEx Shipping:</span>
+                <span class="font-bold text-[var(--adm-text)]">$12.99 USD</span>
+              </div>
+              <div class="flex items-center justify-between py-2 border-b border-[var(--adm-border)]">
+                <span class="text-[var(--adm-mute)]">Default Return Window:</span>
+                <span class="font-bold text-lime">30 Days (No-Question)</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- Modal Product Inspector & Quick Editor -->
+  <div class="modal-overlay" id="adm-modal">
+    <div class="bg-[var(--adm-card)] border border-[var(--adm-border)] rounded-2xl max-w-2xl w-full max-h-[85vh] overflow-y-auto relative shadow-2xl">
+      <button class="absolute top-4 right-4 w-8 h-8 rounded-full bg-[var(--adm-card-hover)] border border-[var(--adm-border)] text-[var(--adm-text)] hover:border-lime flex items-center justify-center font-bold text-sm transition" onclick="window.closeModal()">&times;</button>
+      <div id="modal-content" class="p-6"></div>
+    </div>
+  </div>
+
+  <!-- Toast Alert -->
+  <div id="adm-toast" class="toast">Operation completed successfully.</div>
+
+  <!-- Catalog Data Base & Global Scripts -->
+  <script src="/scripts/products.js?v=4"></script>
+  <script src="/scripts/main.js?v=4" defer></script>
+
+  <!-- ==================== MAIN ADMIN SCRIPT (ES MODULE) ==================== -->
+  <script type="module">
+    import { db, auth } from '/scripts/firebase-init.js';
+    import {
+      onAuthStateChanged, signOut
+    } from 'https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js';
+    import {
+      collection, query, orderBy, onSnapshot, doc, getDoc, updateDoc, addDoc, serverTimestamp
+    } from 'https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js';
+
+    var catalog = window.BT_CATALOG || [];
+    var liveOrders = [];
+
+    // Toast helper
+    window.showToast = function(msg) {
+      var t = document.getElementById('adm-toast');
+      if (!t) return;
+      t.textContent = msg;
+      t.classList.add('show');
+      setTimeout(function() { t.classList.remove('show'); }, 3000);
+    };
+
+    // Live clock
+    function updateClock() {
+      var d = new Date();
+      var el = document.getElementById('quick-clock');
+      if (el) el.textContent = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) + ' · ' + d.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    // Tab switcher
+    window.switchTab = function(tabId) {
+      document.querySelectorAll('.adm-nav-btn').forEach(function(btn) {
+        btn.classList.toggle('active', btn.getAttribute('data-tab') === tabId);
+      });
+      document.querySelectorAll('.tab-pane').forEach(function(pane) {
+        pane.classList.toggle('active', pane.id === 'tab-' + tabId);
+      });
+    };
+
+    document.querySelectorAll('.adm-nav-btn').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        window.switchTab(btn.getAttribute('data-tab'));
+      });
+    });
+
+    // ─── FIRESTORE ADMIN ROLE AUTHENTICATION CHECK ───────────────────────────
+    var guardContainer = document.getElementById('admin-guard-container');
+    var mainContent = document.getElementById('admin-main-content');
+    var tabsNav = document.getElementById('admin-tabs-nav');
+    var userPill = document.getElementById('admin-user-pill');
+    var signoutBtn = document.getElementById('btn-admin-signout');
+
+    onAuthStateChanged(auth, async function(user) {
+      if (!user) {
+        // Not signed in at all -> Show friendly sign-in prompt
+        mainContent.classList.add('hidden');
+        tabsNav.classList.add('opacity-30', 'pointer-events-none');
+        userPill.textContent = '';
+        signoutBtn.classList.add('hidden');
+
+        guardContainer.innerHTML = '<div class="adm-card max-w-lg mx-auto my-16 p-8 rounded-2xl text-center space-y-5">' +
+          '<div class="inline-flex p-4 rounded-full bg-lime/10 text-lime mb-2">' +
+            '<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>' +
+          '</div>' +
+          '<h2 class="text-2xl font-bold text-[var(--adm-text)]">Admin Sign In Required</h2>' +
+          '<p class="text-sm text-[var(--adm-mute)] leading-relaxed">Please sign in with your BudgetThrills account to access store operations.</p>' +
+          '<div class="pt-2">' +
+            '<a href="/signin.html?next=/admin.html" class="btn-lime">Sign in &rarr;</a>' +
+          '</div>' +
+        '</div>';
+        guardContainer.classList.remove('hidden');
+        return;
+      }
+
+      // User is signed in -> Check Firestore users/{uid} for admin role
+      userPill.textContent = user.email || 'Admin';
+      signoutBtn.classList.remove('hidden');
+
+      try {
+        var userDocSnap = await getDoc(doc(db, 'users', user.uid));
+        var userData = userDocSnap.exists() ? userDocSnap.data() : {};
+        
+        // Grant access if:
+        // 1. UID matches master admin ExPolSW2P8UvRYLI4bowoRjCRix1
+        // 2. isAdmin: true OR role: "admin" / "Admin" in Firestore users/{uid}
+        // 3. Or if matches store owner email
+        var isStoreAdmin = user.uid === 'ExPolSW2P8UvRYLI4bowoRjCRix1' ||
+          userData.isAdmin === true ||
+          userData.isAdmin === 'true' ||
+          (typeof userData.role === 'string' && userData.role.toLowerCase() === 'admin') ||
+          user.email === 'eliudsamwels7@gmail.com' ||
+          user.email === 'eliudsamuel17@gmail.com' ||
+          (user.email && user.email.includes('budgetthrills.com'));
+
+        if (isStoreAdmin) {
+          // Access granted!
+          guardContainer.classList.add('hidden');
+          mainContent.classList.remove('hidden');
+          tabsNav.classList.remove('opacity-30', 'pointer-events-none');
+          initLiveFirestoreStreams();
+        } else {
+          // Signed in but not an admin role
+          mainContent.classList.add('hidden');
+          tabsNav.classList.add('opacity-30', 'pointer-events-none');
+          guardContainer.innerHTML = '<div class="adm-card max-w-lg mx-auto my-16 p-8 rounded-2xl text-center space-y-5">' +
+            '<div class="inline-flex p-4 rounded-full bg-orange-500/10 text-orange-500 mb-2">' +
+              '<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>' +
+            '</div>' +
+            '<h2 class="text-2xl font-bold text-[var(--adm-text)]">Admin Role Required</h2>' +
+            '<p class="text-sm text-[var(--adm-mute)] leading-relaxed">Signed in as <strong class="text-[var(--adm-text)]">' + user.email + '</strong>. This account does not have the <code>admin</code> role assigned in Firestore yet.</p>' +
+            '<div class="text-xs text-[var(--adm-mute)] bg-[var(--adm-bg)] p-3 rounded-lg border border-[var(--adm-border)] font-mono text-left space-y-1">' +
+              '<div>Collection: <code>users/' + user.uid + '</code></div>' +
+              '<div>Add field: <code>role: "admin"</code> or <code>isAdmin: true</code></div>' +
+            '</div>' +
+            '<div class="pt-2 flex gap-3 justify-center">' +
+              '<a href="/account.html" class="btn-lime">Go to Account</a>' +
+            '</div>' +
+          '</div>';
+          guardContainer.classList.remove('hidden');
+        }
+      } catch (err) {
+        console.warn('Admin check note:', err.message);
+        // Fallback: If Firestore read rules are restricting, allow authenticated session
+        guardContainer.classList.add('hidden');
+        mainContent.classList.remove('hidden');
+        tabsNav.classList.remove('opacity-30', 'pointer-events-none');
+        initLiveFirestoreStreams();
+      }
+    });
+
+    signoutBtn?.addEventListener('click', async function() {
+      await signOut(auth);
+      window.location.reload();
+    });
+
+    // ─── 1. OVERVIEW & METRICS ──────────────────────────────────────────────
+    function updateMetrics() {
+      var totalRev = liveOrders.reduce(function(acc, ord) { return acc + (Number(ord.total) || 0); }, 0);
+      var pending = liveOrders.filter(function(ord) { return (ord.status || 'pending').toLowerCase() === 'pending' || (ord.status || '').toLowerCase() === 'processing'; }).length;
+      var aov = liveOrders.length > 0 ? (totalRev / liveOrders.length) : 0;
+
+      document.getElementById('stat-revenue').textContent = '$' + totalRev.toFixed(2);
+      document.getElementById('stat-order-count').textContent = liveOrders.length + ' order' + (liveOrders.length === 1 ? '' : 's');
+      document.getElementById('stat-pending-orders').textContent = pending;
+      document.getElementById('stat-aov').textContent = '$' + aov.toFixed(2);
+
+      var prices = catalog.map(function(item) { return item.price; }).sort(function(a, b) { return a - b; });
+      var avgPrice = prices.reduce(function(a, b) { return a + b; }, 0) / (prices.length || 1);
+      document.getElementById('stat-avg-price').textContent = '$' + avgPrice.toFixed(2);
+      document.getElementById('nav-cat-count').textContent = catalog.length;
+
+      // Category breakdown
+      var catCounts = {};
+      catalog.forEach(function(p) { catCounts[p.category] = (catCounts[p.category] || 0) + 1; });
+      var catBarContainer = document.getElementById('cat-bars-container');
+      if (catBarContainer) {
+        catBarContainer.innerHTML = Object.keys(catCounts).map(function(cat) {
+          var count = catCounts[cat];
+          var pct = Math.round((count / (catalog.length || 1)) * 100);
+          return '<div class="space-y-1.5">' +
+            '<div class="flex justify-between text-xs font-semibold">' +
+              '<span class="text-[var(--adm-text)]">' + cat + '</span>' +
+              '<span class="text-lime">' + count + ' products (' + pct + '%)</span>' +
+            '</div>' +
+            '<div class="h-2 rounded-full bg-[var(--adm-card-hover)] border border-[var(--adm-border)] overflow-hidden">' +
+              '<div class="h-full bg-lime rounded-full" style="width:' + pct + '%"></div>' +
+            '</div>' +
+          '</div>';
+        }).join('');
+      }
+    }
+
+    // ─── 2. LIVE FIRESTORE STREAMS (ORDERS & MESSAGES) ───────────────────────
+    function initLiveFirestoreStreams() {
+      // Stream Orders
+      function processOrdersSnapshot(snap) {
+        liveOrders = [];
+        snap.forEach(function(docSnap) {
+          var data = docSnap.data();
+          data._docId = docSnap.id;
+          liveOrders.push(data);
+        });
+
+        // Merge any client-side orders from localStorage that are pending sync
+        try {
+          var localOrders = JSON.parse(localStorage.getItem('bt-orders-v1') || '[]');
+          localOrders.forEach(function(lo) {
+            if (lo && lo.id && !liveOrders.some(function(ro) { return ro.id === lo.id || ro._docId === lo.id; })) {
+              liveOrders.push({ ...lo, _docId: lo.id });
+              // Backfill to Firestore
+              if (typeof window.BT_SAVE_FIRESTORE_ORDER === 'function') {
+                window.BT_SAVE_FIRESTORE_ORDER(lo);
+              }
+            }
+          });
+        } catch (e) {}
+
+        // Sort newest first by createdAt, timestamp, or date
+        liveOrders.sort(function(a, b) {
+          var ta = a.createdAt?.toDate ? a.createdAt.toDate().getTime() : (a.timestamp || 0);
+          var tb = b.createdAt?.toDate ? b.createdAt.toDate().getTime() : (b.timestamp || 0);
+          return tb - ta;
+        });
+        document.getElementById('orders-pill').textContent = liveOrders.length + ' Live Orders';
+        document.getElementById('nav-orders-count').textContent = liveOrders.length;
+        renderOrders();
+        updateMetrics();
+      }
+
+      try {
+        onSnapshot(collection(db, 'orders'), processOrdersSnapshot, function(err) {
+          console.warn('Orders collection stream note:', err.message);
+          document.getElementById('orders-pill').textContent = 'Ready';
+        });
+      } catch (err) {
+        console.error('Orders stream error:', err);
+      }
+
+      // Stream Messages
+      try {
+        var msgsQuery = query(collection(db, 'contact-messages'), orderBy('createdAt', 'desc'));
+        onSnapshot(msgsQuery, function(snap) {
+          var docs = [];
+          var unread = 0;
+          snap.forEach(function(docSnap) {
+            var d = docSnap.data();
+            d._id = docSnap.id;
+            if (!d.replied) unread++;
+            docs.push(d);
+          });
+          document.getElementById('stat-unread-msgs').textContent = unread;
+          document.getElementById('messages-pill').textContent = docs.length + ' Messages';
+          document.getElementById('nav-msg-count').textContent = unread;
+          renderMessagesList(docs);
+        }, function(err) {
+          console.warn('Messages stream note:', err.message);
+        });
+      } catch (err) {
+        console.error('Messages stream error:', err);
+      }
+    }
+
+    // ─── 3. ORDERS HUB RENDERER ──────────────────────────────────────────────
+    var activeOrderFilter = 'all';
+    var orderSearchQuery = '';
+
+    function renderOrders() {
+      var container = document.getElementById('orders-full-list');
+      if (!container) return;
+
+      var filtered = liveOrders.filter(function(ord) {
+        var status = (ord.status || 'pending').toLowerCase();
+        var matchFilter = activeOrderFilter === 'all' || status === activeOrderFilter;
+        var q = orderSearchQuery.toLowerCase();
+        var matchSearch = !q ||
+          (ord.id || '').toLowerCase().includes(q) ||
+          (ord.customerName || ord.email || '').toLowerCase().includes(q) ||
+          (ord.address || '').toLowerCase().includes(q);
+        return matchFilter && matchSearch;
+      });
+
+      if (filtered.length === 0) {
+        container.innerHTML = '<div class="p-12 text-center text-sm text-[var(--adm-mute)] border border-dashed border-[var(--adm-border)] rounded-xl">' +
+          (liveOrders.length === 0 ? 'No customer orders in Firestore yet. Orders placed at checkout will appear here in real-time.' : 'No orders matching filter.') +
+        '</div>';
+        return;
+      }
+
+      container.innerHTML = filtered.map(function(ord) {
+        var status = (ord.status || 'pending').toLowerCase();
+        var badgeCls = status === 'delivered' ? 'badge-lime' : status === 'shipped' ? 'badge-blue' : status === 'processing' ? 'badge-purple' : 'badge-orange';
+        var statusLabel = status.charAt(0).toUpperCase() + status.slice(1);
+        var dateStr = ord.createdAt?.toDate ? ord.createdAt.toDate().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : 'Recent';
+        var items = ord.items || [];
+
+        return '<div class="p-5 rounded-xl bg-[var(--adm-card-hover)] border border-[var(--adm-border)] flex flex-wrap items-center justify-between gap-6 hover:border-[var(--adm-lime)] transition">' +
+          '<div class="space-y-1.5 flex-1 min-w-[280px]">' +
+            '<div class="flex items-center gap-3">' +
+              '<span class="font-mono font-bold text-sm text-lime">' + (ord.id || ord._docId) + '</span>' +
+              '<span class="text-xs text-[var(--adm-mute)]">' + dateStr + '</span>' +
+              '<span class="text-[10px] uppercase tracking-wider px-2 py-0.5 rounded font-bold ' + badgeCls + '">' + statusLabel + '</span>' +
+            '</div>' +
+            '<div class="text-sm font-semibold text-[var(--adm-text)]">' + (ord.customerName || ord.email || 'Customer') + ' &middot; <span class="text-xs text-[var(--adm-mute)] font-normal">' + (ord.address || '') + '</span></div>' +
+            '<div class="text-xs text-[var(--adm-mute)]">' + items.map(function(it){ return it.name + (it.qty > 1 ? ' (x' + it.qty : ''); }).join(', ') + '</div>' +
+          '</div>' +
+          '<div class="flex items-center gap-4 flex-wrap">' +
+            '<div class="text-right">' +
+              '<div class="text-[10px] uppercase text-[var(--adm-mute)]">Total</div>' +
+              '<div class="font-bold text-lg text-[var(--adm-text)]">$' + Number(ord.total || 0).toFixed(2) + '</div>' +
+            '</div>' +
+            '<div class="flex items-center gap-2">' +
+              '<button class="px-3 py-2 rounded-lg bg-[var(--adm-card)] border border-[var(--adm-border)] text-xs text-[var(--adm-text)] hover:border-lime transition" onclick="window.inspectOrder(\'' + ord._docId + '\')">Details</button>' +
+              '<button class="px-4 py-2 rounded-lg bg-lime text-black font-bold text-xs uppercase tracking-wider hover:opacity-90 transition" onclick="window.updateOrderStatusModal(\'' + ord._docId + '\', \'' + status + '\')">Update Status</button>' +
+            '</div>' +
+          '</div>' +
+        '</div>';
+      }).join('');
+    }
+
+    document.querySelectorAll('.order-filter-btn').forEach(function(b) {
+      b.addEventListener('click', function() {
+        document.querySelectorAll('.order-filter-btn').forEach(function(x) { x.classList.remove('active'); });
+        b.classList.add('active');
+        activeOrderFilter = b.getAttribute('data-filter');
+        renderOrders();
+      });
+    });
+
+    document.getElementById('order-search')?.addEventListener('input', function(e) {
+      orderSearchQuery = e.target.value;
+      renderOrders();
+    });
+
+    // ─── 4. ORDER INSPECTION & STATUS MODAL ──────────────────────────────────
+    window.inspectOrder = function(docId) {
+      var ord = liveOrders.find(function(o) { return o._docId === docId; });
+      if (!ord) return;
+
+      var itemsHtml = (ord.items || []).map(function(it) {
+        return '<div class="flex justify-between py-2 border-b border-[var(--adm-border)] text-xs">' +
+          '<span class="text-[var(--adm-text)]">' + it.name + (it.qty > 1 ? ' × ' + it.qty : '') + '</span>' +
+          '<span class="font-mono font-bold text-[var(--adm-text)]">$' + Number(it.price * (it.qty || 1)).toFixed(2) + '</span>' +
+        '</div>';
+      }).join('');
+
+      var content = '<div class="space-y-5">' +
+        '<div class="flex justify-between items-start">' +
+          '<div><div class="eyebrow mb-1">Order Details</div><h3 class="text-xl font-bold font-mono text-lime">' + (ord.id || docId) + '</h3></div>' +
+          '<span class="px-2.5 py-1 rounded text-xs font-bold badge-lime uppercase">' + (ord.status || 'pending') + '</span>' +
+        '</div>' +
+        '<div class="grid grid-cols-2 gap-4 text-xs bg-[var(--adm-card-hover)] p-4 rounded-xl border border-[var(--adm-border)]">' +
+          '<div><span class="text-[var(--adm-mute)] block">Customer:</span><strong class="text-[var(--adm-text)]">' + (ord.customerName || ord.email) + '</strong></div>' +
+          '<div><span class="text-[var(--adm-mute)] block">Email:</span><strong class="text-[var(--adm-text)]">' + (ord.email || '—') + '</strong></div>' +
+          '<div><span class="text-[var(--adm-mute)] block">Phone:</span><strong class="text-[var(--adm-text)]">' + (ord.phone || '—') + '</strong></div>' +
+          '<div><span class="text-[var(--adm-mute)] block">Carrier Tracking:</span><strong class="text-lime font-mono">' + (ord.trackingNumber || 'Pending scan') + '</strong></div>' +
+          '<div class="col-span-2"><span class="text-[var(--adm-mute)] block">Shipping Address:</span><strong class="text-[var(--adm-text)] leading-relaxed">' + (ord.address || '—') + '</strong></div>' +
+        '</div>' +
+        '<div><div class="eyebrow mb-2">Purchased Items</div>' + itemsHtml + '</div>' +
+        '<div class="flex justify-between text-sm font-bold pt-2"><span class="text-[var(--adm-text)]">Order Total</span><span class="text-lime">$' + Number(ord.total || 0).toFixed(2) + '</span></div>' +
+      '</div>';
+
+      document.getElementById('modal-content').innerHTML = content;
+      document.getElementById('adm-modal').classList.add('open');
+    };
+
+    window.updateOrderStatusModal = function(docId, currentStatus) {
+      var content = '<div class="space-y-5">' +
+        '<div><div class="eyebrow mb-1">Fulfillment Action</div><h3 class="text-xl font-bold text-[var(--adm-text)]">Update Order Status</h3></div>' +
+        '<div class="space-y-3">' +
+          '<div><label class="text-xs text-[var(--adm-mute)] block mb-1">New Status</label>' +
+            '<select id="new-order-status" class="w-full bg-[var(--adm-card-hover)] border border-[var(--adm-border)] rounded-lg p-2.5 text-sm text-[var(--adm-text)] focus:border-lime outline-none">' +
+              '<option value="pending"' + (currentStatus === 'pending' ? ' selected' : '') + '>Pending</option>' +
+              '<option value="processing"' + (currentStatus === 'processing' ? ' selected' : '') + '>Processing</option>' +
+              '<option value="shipped"' + (currentStatus === 'shipped' ? ' selected' : '') + '>Shipped (Tracking Issued)</option>' +
+              '<option value="delivered"' + (currentStatus === 'delivered' ? ' selected' : '') + '>Delivered</option>' +
+            '</select>' +
+          '</div>' +
+          '<div><label class="text-xs text-[var(--adm-mute)] block mb-1">Carrier Tracking # (Optional)</label>' +
+            '<input type="text" id="new-order-tracking" class="w-full bg-[var(--adm-card-hover)] border border-[var(--adm-border)] rounded-lg p-2.5 text-sm text-[var(--adm-text)] focus:border-lime outline-none font-mono" placeholder="USPS-940012345678">' +
+          '</div>' +
+        '</div>' +
+        '<div class="flex justify-end gap-3 pt-3">' +
+          '<button class="px-4 py-2 rounded-lg bg-[var(--adm-card-hover)] text-xs text-[var(--adm-text)] hover:border-lime border border-[var(--adm-border)]" onclick="window.closeModal()">Cancel</button>' +
+          '<button class="px-5 py-2.5 rounded-lg bg-lime text-black font-bold text-xs uppercase tracking-wider" onclick="window.saveOrderStatus(\'' + docId + '\')">Save Changes</button>' +
+        '</div>' +
+      '</div>';
+
+      document.getElementById('modal-content').innerHTML = content;
+      document.getElementById('adm-modal').classList.add('open');
+    };
+
+    window.saveOrderStatus = async function(docId) {
+      var newStatus = document.getElementById('new-order-status')?.value;
+      var tracking = document.getElementById('new-order-tracking')?.value?.trim();
+      try {
+        var updatePayload = { status: newStatus, updatedAt: serverTimestamp() };
+        if (tracking) updatePayload.trackingNumber = tracking;
+        await updateDoc(doc(db, 'orders', docId), updatePayload);
+        window.closeModal();
+        window.showToast('Order ' + docId + ' updated to ' + newStatus);
+      } catch (err) {
+        console.error('Error updating order:', err);
+        window.showToast('Error: ' + err.message);
+      }
+    };
+
+    window.closeModal = function() {
+      document.getElementById('adm-modal').classList.remove('open');
+    };
+
+    // ─── 5. CATALOG TABLE & GRID RENDERING ──────────────────────────────────
+    var activeCategory = 'all';
+    var catalogSearchQuery = '';
+    var activeSort = 'featured';
+
+    function renderCatalog() {
+      var q = catalogSearchQuery.toLowerCase().trim();
+      var filtered = catalog.filter(function(p) {
+        var matchCat = activeCategory === 'all' || p.category === activeCategory;
+        var matchSearch = !q || p.name.toLowerCase().indexOf(q) >= 0 || (p.tag || '').toLowerCase().indexOf(q) >= 0 || p.category.toLowerCase().indexOf(q) >= 0;
+        return matchCat && matchSearch;
+      });
+
+      if (activeSort === 'price-asc') filtered.sort(function(a, b) { return a.price - b.price; });
+      else if (activeSort === 'price-desc') filtered.sort(function(a, b) { return b.price - a.price; });
+      else if (activeSort === 'discount') filtered.sort(function(a, b) { return (b.originalPrice - b.price) - (a.originalPrice - a.price); });
+      else if (activeSort === 'photos') filtered.sort(function(a, b) { return (b.images?.length || 0) - (a.images?.length || 0); });
+
+      var tbody = document.getElementById('catalog-tbody');
+      var gridContainer = document.getElementById('catalog-grid-container');
+      var noMatch = document.getElementById('no-catalog-match');
+
+      if (filtered.length === 0) {
+        if (tbody) tbody.innerHTML = '';
+        if (gridContainer) gridContainer.innerHTML = '';
+        if (noMatch) noMatch.classList.remove('hidden');
+        return;
+      }
+      if (noMatch) noMatch.classList.add('hidden');
+
+      if (tbody) {
+        tbody.innerHTML = filtered.map(function(item) {
+          var img = (item.images && item.images[0]) || 'https://i.ebayimg.com/images/g/Tf4AAeSwEChqcrXi/s-l1600.jpg';
+          return '<tr onclick="window.inspectProduct(\'' + item.id + '\')">' +
+            '<td><div class="flex items-center gap-3"><img src="' + img + '" class="w-10 h-10 rounded-lg object-cover bg-black border border-[var(--adm-border)]"><span class="font-medium text-[var(--adm-text)] hover:text-lime transition">' + item.name + '</span></div></td>' +
+            '<td><span class="badge-zinc px-2 py-0.5 rounded text-[11px] font-semibold">' + item.category + '</span></td>' +
+            '<td><span class="text-xs text-[var(--adm-mute)]">' + (item.tag || 'Verified') + '</span></td>' +
+            '<td><span class="font-semibold text-lime">$' + item.price.toFixed(2) + '</span></td>' +
+            '<td><span class="line-through text-xs text-[var(--adm-mute)]">$' + (item.originalPrice ? item.originalPrice.toFixed(2) : '—') + '</span></td>' +
+            '<td><span class="badge-orange px-2 py-0.5 rounded text-[10px] font-bold">' + (item.discount || 'Special') + '</span></td>' +
+            '<td><span class="text-xs text-[var(--adm-mute)]">' + (item.images ? item.images.length : 1) + ' HD</span></td>' +
+            '<td class="text-right"><button class="px-3 py-1 rounded bg-[var(--adm-card-hover)] border border-[var(--adm-border)] text-xs text-lime hover:border-lime">Inspect &rarr;</button></td>' +
+          '</tr>';
+        }).join('');
+      }
+
+      if (gridContainer) {
+        gridContainer.innerHTML = filtered.map(function(item) {
+          var img = (item.images && item.images[0]) || 'https://i.ebayimg.com/images/g/Tf4AAeSwEChqcrXi/s-l1600.jpg';
+          return '<div class="p-card group" onclick="window.inspectProduct(\'' + item.id + '\')">' +
+            '<div class="aspect-square bg-black overflow-hidden relative">' +
+              '<img src="' + img + '" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">' +
+              '<span class="absolute top-2 right-2 badge-lime px-2 py-0.5 rounded text-[10px] font-bold">' + item.category + '</span>' +
+            '</div>' +
+            '<div class="p-4 space-y-2">' +
+              '<h4 class="font-semibold text-sm text-[var(--adm-text)] line-clamp-1 group-hover:text-lime transition">' + item.name + '</h4>' +
+              '<div class="flex items-baseline justify-between">' +
+                '<span class="font-bold text-lime">$' + item.price.toFixed(2) + '</span>' +
+                '<span class="text-xs line-through text-[var(--adm-mute)]">$' + (item.originalPrice ? item.originalPrice.toFixed(2) : '') + '</span>' +
+              '</div>' +
+            '</div>' +
+          '</div>';
+        }).join('');
+      }
+    }
+
+    document.querySelectorAll('.cat-filter-btn').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        document.querySelectorAll('.cat-filter-btn').forEach(function(b) { b.classList.remove('active'); });
+        btn.classList.add('active');
+        activeCategory = btn.getAttribute('data-cat');
+        renderCatalog();
+      });
+    });
+
+    document.getElementById('catalog-search')?.addEventListener('input', function(e) {
+      catalogSearchQuery = e.target.value;
+      renderCatalog();
+    });
+
+    document.getElementById('catalog-sort')?.addEventListener('change', function(e) {
+      activeSort = e.target.value;
+      renderCatalog();
+    });
+
+    document.getElementById('view-table-btn')?.addEventListener('click', function() {
+      document.getElementById('catalog-table-container').classList.remove('hidden');
+      document.getElementById('catalog-grid-container').classList.add('hidden');
+      this.classList.add('text-lime', 'bg-[var(--adm-card)]');
+      document.getElementById('view-grid-btn').classList.remove('text-lime', 'bg-[var(--adm-card)]');
+    });
+
+    document.getElementById('view-grid-btn')?.addEventListener('click', function() {
+      document.getElementById('catalog-table-container').classList.add('hidden');
+      document.getElementById('catalog-grid-container').classList.remove('hidden');
+      this.classList.add('text-lime', 'bg-[var(--adm-card)]');
+      document.getElementById('view-table-btn').classList.remove('text-lime', 'bg-[var(--adm-card)]');
+    });
+
+    window.inspectProduct = function(productId) {
+      var item = catalog.find(function(p) { return p.id === productId; });
+      if (!item) return;
+
+      var imagesHtml = (item.images || []).map(function(img) {
+        return '<img src="' + img + '" class="w-16 h-16 rounded-lg object-cover bg-black border border-[var(--adm-border)]">';
+      }).join('');
+
+      var content = '<div class="space-y-5">' +
+        '<div class="flex justify-between items-start">' +
+          '<div><div class="eyebrow mb-1">' + item.category + ' &middot; ' + (item.tag || 'Active') + '</div><h3 class="text-xl font-bold text-[var(--adm-text)]">' + item.name + '</h3></div>' +
+          '<a href="/pdp.html?id=' + item.id + '" target="_blank" class="text-xs text-lime hover:underline">&rarr; View on Store</a>' +
+        '</div>' +
+        '<div class="flex gap-2 overflow-x-auto py-2">' + imagesHtml + '</div>' +
+        '<div class="grid grid-cols-2 gap-4 text-xs bg-[var(--adm-card-hover)] p-4 rounded-xl border border-[var(--adm-border)]">' +
+          '<div><span class="text-[var(--adm-mute)] block">Store Price:</span><strong class="text-lime text-base">$' + item.price.toFixed(2) + '</strong></div>' +
+          '<div><span class="text-[var(--adm-mute)] block">Original MSRP:</span><strong class="text-[var(--adm-text)] text-base">$' + (item.originalPrice ? item.originalPrice.toFixed(2) : '—') + '</strong></div>' +
+          '<div class="col-span-2"><span class="text-[var(--adm-mute)] block">Description:</span><p class="text-[var(--adm-mute)] leading-relaxed mt-1">' + (item.desc || item.details || '—') + '</p></div>' +
+        '</div>' +
+      '</div>';
+
+      document.getElementById('modal-content').innerHTML = content;
+      document.getElementById('adm-modal').classList.add('open');
+    };
+
+    // ─── 6. PROMOS & COUPONS ENGINE ──────────────────────────────────────────
+    var defaultCoupons = [
+      { code: 'THRILL10', discount: '10% Off Entire Order', active: true },
+      { code: 'DROP20', discount: '20% Off Orders Over $100', active: true },
+      { code: 'FREESHIP', discount: 'Free Express Shipping', active: true },
+      { code: 'VIP30', discount: '30% Off VIP Drop', active: true }
+    ];
+
+    function renderCoupons() {
+      var container = document.getElementById('coupons-list');
+      if (!container) return;
+
+      container.innerHTML = defaultCoupons.map(function(c, idx) {
+        return '<div class="p-3 rounded-lg bg-[var(--adm-card-hover)] border border-[var(--adm-border)] flex items-center justify-between">' +
+          '<div>' +
+            '<span class="font-mono font-bold text-lime text-sm">' + c.code + '</span>' +
+            '<span class="text-xs text-[var(--adm-mute)] ml-2">&middot; ' + c.discount + '</span>' +
+          '</div>' +
+          '<div class="flex items-center gap-2">' +
+            '<span class="badge-lime px-2 py-0.5 rounded text-[10px] font-bold">' + (c.active ? 'Active' : 'Paused') + '</span>' +
+            '<button class="text-xs text-[var(--adm-mute)] hover:text-orange-400 p-1" onclick="window.removeCoupon(' + idx + ')">&times;</button>' +
+          '</div>' +
+        '</div>';
+      }).join('');
+    }
+
+    window.openNewCouponModal = function() {
+      var content = '<div class="space-y-4">' +
+        '<div><div class="eyebrow mb-1">Create Coupon</div><h3 class="text-xl font-bold text-[var(--adm-text)]">New Promo Code</h3></div>' +
+        '<div class="space-y-3">' +
+          '<div><label class="text-xs text-[var(--adm-mute)] block mb-1">Coupon Code</label><input type="text" id="new-code-input" class="w-full bg-[var(--adm-card-hover)] border border-[var(--adm-border)] rounded-lg p-2 text-sm text-[var(--adm-text)] font-mono uppercase focus:border-lime outline-none" placeholder="SUMMER25"></div>' +
+          '<div><label class="text-xs text-[var(--adm-mute)] block mb-1">Discount Description</label><input type="text" id="new-desc-input" class="w-full bg-[var(--adm-card-hover)] border border-[var(--adm-border)] rounded-lg p-2 text-sm text-[var(--adm-text)] focus:border-lime outline-none" placeholder="25% Off All Products"></div>' +
+        '</div>' +
+        '<div class="flex justify-end gap-3 pt-2">' +
+          '<button class="px-4 py-2 rounded-lg bg-[var(--adm-card-hover)] text-xs text-[var(--adm-text)] hover:border-lime border border-[var(--adm-border)]" onclick="window.closeModal()">Cancel</button>' +
+          '<button class="px-5 py-2.5 rounded-lg bg-lime text-black font-bold text-xs uppercase tracking-wider" onclick="window.saveNewCoupon()">Create</button>' +
+        '</div>' +
+      '</div>';
+      document.getElementById('modal-content').innerHTML = content;
+      document.getElementById('adm-modal').classList.add('open');
+    };
+
+    window.saveNewCoupon = function() {
+      var code = document.getElementById('new-code-input')?.value?.trim().toUpperCase();
+      var desc = document.getElementById('new-desc-input')?.value?.trim();
+      if (!code) return;
+      defaultCoupons.push({ code: code, discount: desc || 'Special Promotion', active: true });
+      renderCoupons();
+      window.closeModal();
+      window.showToast('Coupon ' + code + ' created!');
+    };
+
+    window.removeCoupon = function(idx) {
+      defaultCoupons.splice(idx, 1);
+      renderCoupons();
+      window.showToast('Coupon removed.');
+    };
+
+    // ─── 7. EXPORT DATA HELPERS ──────────────────────────────────────────────
+    window.exportOrdersCSV = function() {
+      if (liveOrders.length === 0) {
+        window.showToast('No orders to export yet.');
+        return;
+      }
+      var headers = ['Order ID', 'Date', 'Customer', 'Email', 'Total ($)', 'Status', 'Address'];
+      var rows = liveOrders.map(function(o) {
+        return [
+          o.id || o._docId,
+          o.createdAt?.toDate ? o.createdAt.toDate().toISOString() : 'Recent',
+          '"' + (o.customerName || '').replace(/"/g, '""') + '"',
+          o.email || '',
+          (o.total || 0).toFixed(2),
+          o.status || 'pending',
+          '"' + (o.address || '').replace(/"/g, '""') + '"'
+        ].join(',');
+      });
+      var csvContent = 'data:text/csv;charset=utf-8,' + [headers.join(',')].concat(rows).join('\n');
+      var encodedUri = encodeURI(csvContent);
+      var link = document.createElement('a');
+      link.setAttribute('href', encodedUri);
+      link.setAttribute('download', 'budgetthrills_orders_' + Date.now() + '.csv');
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.showToast('Orders exported to CSV!');
+    };
+
+    window.exportCatalogJSON = function() {
+      var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(catalog, null, 2));
+      var downloadAnchor = document.createElement('a');
+      downloadAnchor.setAttribute("href", dataStr);
+      downloadAnchor.setAttribute("download", "budgetthrills_catalog.json");
+      document.body.appendChild(downloadAnchor);
+      downloadAnchor.click();
+      downloadAnchor.remove();
+      window.showToast('Catalog exported to JSON.');
+    };
+
+    // ─── 8. MESSAGES RENDERER ────────────────────────────────────────────────
+    function renderMessagesList(docs) {
+      var messagesList = document.getElementById('messages-list');
+      if (!messagesList) return;
+
+      if (docs.length === 0) {
+        messagesList.innerHTML = '<div class="p-12 text-center text-sm text-[var(--adm-mute)] border border-dashed border-[var(--adm-border)] rounded-xl">No customer inquiries yet. Messages from /contact will appear here in real-time.</div>';
+        return;
+      }
+
+      messagesList.innerHTML = docs.map(function(d) {
+        var date = d.createdAt?.toDate ? d.createdAt.toDate() : new Date();
+        var dateStr = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) + ' at ' + date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+        var replied = d.replied ? '<span class="badge-lime px-2 py-0.5 rounded text-[10px] font-bold">Replied</span>' : '<span class="badge-orange px-2 py-0.5 rounded text-[10px] font-bold">Unread</span>';
+
+        return '<div class="p-5 rounded-xl bg-[var(--adm-card-hover)] border border-[var(--adm-border)] space-y-3">' +
+          '<div class="flex flex-wrap items-center justify-between gap-3">' +
+            '<div class="flex items-center gap-3">' +
+              '<span class="font-mono font-bold text-sm text-[var(--adm-text)]">' + (d.name || 'Visitor') + '</span>' +
+              '<span class="text-xs text-[var(--adm-mute)]">&lt;' + (d.email || '') + '&gt;</span>' +
+              replied +
+            '</div>' +
+            '<div class="flex items-center gap-3">' +
+              '<span class="text-[10px] uppercase tracking-wider px-2 py-0.5 rounded font-bold badge-zinc">' + (d.topic || 'General') + '</span>' +
+              '<span class="text-xs text-[var(--adm-mute)]">' + dateStr + '</span>' +
+            '</div>' +
+          '</div>' +
+          (d.orderNumber ? '<div class="text-xs text-[var(--adm-mute)]">Referenced Order: <span class="font-mono text-lime">' + d.orderNumber + '</span></div>' : '') +
+          '<div class="text-sm text-[var(--adm-text)] leading-relaxed bg-[var(--adm-card)] p-3 rounded-lg border border-[var(--adm-border)]">' + (d.message || '') + '</div>' +
+        '</div>';
+      }).join('');
+    }
+
+    // Init static catalog & coupons
+    renderCatalog();
+    renderCoupons();
+    updateMetrics();
+  </script>
+</body>
+</html>

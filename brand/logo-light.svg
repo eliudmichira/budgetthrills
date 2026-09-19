@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 400" role="img" aria-label="budget THRILLS">
+  <!-- Background: transparent so it inherits whatever light canvas sits behind it -->
+
+  <!-- "budget" — thin, near-black -->
+  <text x="170" y="232"
+        font-family="'Inter','Helvetica Neue',Arial,sans-serif"
+        font-weight="300"
+        font-size="120"
+        letter-spacing="-2"
+        fill="#1A1A1A">budget</text>
+
+  <!-- slash separator -->
+  <text x="615" y="232"
+        font-family="'Inter','Helvetica Neue',Arial,sans-serif"
+        font-weight="300"
+        font-size="120"
+        fill="#C8C8C8">/</text>
+
+  <!-- "THRILLS" — heavy, lime green still reads on white when used at heavy weight -->
+  <text x="690" y="240"
+        font-family="'Arial Black','Inter','Helvetica Neue',Arial,sans-serif"
+        font-weight="900"
+        font-size="170"
+        letter-spacing="-4"
+        fill="#5BBF00">THRILLS</text>
+
+  <!-- accent underline -->
+  <rect x="690" y="260" width="690" height="4" fill="#5BBF00" opacity="0.5"/>
+</svg>

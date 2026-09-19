@@ -1,0 +1,42 @@
+{
+  "timestamp": "2026-08-25T17:47:43.625Z",
+  "products": 95,
+  "prevProducts": 32,
+  "countDiff": 63,
+  "totalImages": 685,
+  "avgPrice": 145.53,
+  "categories": {
+    "Sneakers": 26,
+    "Phones": 23,
+    "Tech": 23,
+    "Accessories": 23
+  },
+  "prevCategories": {
+    "Sneakers": 8,
+    "Phones": 8,
+    "Tech": 8,
+    "Accessories": 8
+  },
+  "queries": [
+    "Nike running shoes sneakers men",
+    "Jordan retro basketball sneakers",
+    "Adidas Originals Samba Gazelle sneakers",
+    "New Balance 574 990 lifestyle running shoes",
+    "Vans Old Skool canvas sneakers low top",
+    "Apple iPhone 14 128GB unlocked",
+    "Apple iPhone 13 128GB unlocked refurbished",
+    "Samsung Galaxy S23 S22 5G unlocked smartphone",
+    "Google Pixel 8 7 128GB unlocked",
+    "OnePlus 11 10 Pro 5G unlocked phone",
+    "Sony WH-1000XM4 wireless noise cancelling headphones",
+    "Apple AirPods Pro 2nd Gen wireless earbuds",
+    "Beats Studio Pro wireless bluetooth headphones",
+    "JBL Flip Charge Bluetooth speaker portable waterproof",
+    "Anker portable power bank fast charge 20000mAh",
+    "Seiko 5 Automatic mens watch stainless steel",
+    "Citizen Eco-Drive titanium mens watch",
+    "Ray-Ban Wayfarer Aviator polarized sunglasses",
+    "Oakley Holbrook Frogskins sunglasses polarized",
+    "Leather minimalist RFID wallet card holder"
+  ]
+}

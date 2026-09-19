@@ -1,0 +1,22 @@
+{
+  "name": "budgetthrills",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Trendy products. Budget prices. Real thrills.",
+  "scripts": {
+    "start": "node server.js",
+    "build:css": "tailwindcss -i ./styles/tailwind.css -o ./styles/app.css --minify",
+    "watch:css": "tailwindcss -i ./styles/tailwind.css -o ./styles/app.css --watch",
+    "sync": "node scripts/sync-ebay.js",
+    "fulfill": "node scripts/fulfill-order.js",
+    "inject": "node scripts/inject-static-catalog.js"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.4.17"
+  },
+  "dependencies": {
+    "express": "^5.2.1",
+    "firebase": "^12.18.0",
+    "firebase-admin": "^12.0.0"
+  }
+}

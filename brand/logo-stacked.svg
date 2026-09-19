@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 600" role="img" aria-label="BUDGET THRILLS">
+  <defs>
+    <filter id="limeGlow2" x="-20%" y="-50%" width="140%" height="200%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="8" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <rect width="1000" height="600" fill="#0A0A0A"/>
+
+  <!-- BUDGET — small caps, tracked out, sits above -->
+  <text x="500" y="220"
+        text-anchor="middle"
+        font-family="'Inter','Helvetica Neue',Arial,sans-serif"
+        font-weight="500"
+        font-size="60"
+        letter-spacing="18"
+        fill="#E8E8E8">BUDGET</text>
+
+  <!-- THRILLS — massive, neon lime, glow -->
+  <text x="500" y="400"
+        text-anchor="middle"
+        font-family="'Arial Black','Inter','Helvetica Neue',Arial,sans-serif"
+        font-weight="900"
+        font-size="200"
+        letter-spacing="-6"
+        fill="#A8FF00"
+        filter="url(#limeGlow2)">THRILLS</text>
+
+  <!-- orange underscore accent under THRILLS -->
+  <rect x="430" y="470" width="140" height="10" rx="2" fill="#FF6B2C"/>
+</svg>

@@ -1,0 +1,128 @@
+﻿<!doctype html>
+<html lang="en" class="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' blob: https://cdn.tailwindcss.com https://www.gstatic.com https://apis.google.com https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https://images.unsplash.com https://i.ebayimg.com https://lh3.googleusercontent.com https://*.googleusercontent.com; connect-src 'self' https://*.firebaseio.com https://*.googleapis.com https://firestore.googleapis.com https://www.gstatic.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com; frame-src 'self' https://*.firebaseapp.com https://accounts.google.com https://apis.google.com;">
+<title>Help &amp; Returns — BudgetThrills</title>
+<meta name="theme-color" content="#0A0A0A">
+<link rel="icon" type="image/svg+xml" href="/favicons/favicon.svg">
+<link rel="apple-touch-icon" sizes="180x180" href="/favicons/apple-touch-icon.png">
+<link rel="stylesheet" href="/styles/fonts.css">
+<link rel="stylesheet" href="/styles/app.css?v=4">
+<link rel="stylesheet" href="/styles/main.css?v=4">
+<script>(function(){try{var t=localStorage.getItem('bt-theme')||'dark';document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<style>
+  details { border-bottom: 1px solid var(--bt-border); padding: 28px 0; }
+  details > summary { list-style: none; cursor: pointer; display:flex; justify-content:space-between; align-items:center; font-size:18px; font-weight:500; }
+  details > summary::-webkit-details-marker { display: none; }
+  details > summary::after { content:"+"; font-size: 28px; line-height: 1; color: var(--bt-text-mute); transition: transform .2s; }
+  details[open] > summary::after { content:"−"; }
+  details > div { padding-top: 16px; color: var(--bt-text-mute); line-height: 1.7; max-width: 64ch; }
+</style>
+</head>
+<body class="bg-bg text-ink">
+
+  <div class="hairline-b"><div class="max-w-7xl mx-auto px-6 lg:px-10 h-10 flex items-center justify-between text-[11px] tracking-[0.18em] uppercase text-mute"><span>Free US shipping over $50</span><span class="hidden md:inline">USA · 2026</span></div></div>
+
+      <header class="sticky top-0 z-40 nav-shell">
+    <div class="max-w-7xl mx-auto px-6 lg:px-10 h-20 flex items-center justify-between">
+      <a href="/" class="flex items-center">
+        <img loading="lazy" src="/brand/logo-dark.svg" alt="BudgetThrills" class="h-7 w-auto">
+      </a>
+      <nav class="hidden md:flex items-center gap-10 text-[13px] font-medium">
+        <a href="/gaming.html" class="hover:text-lime transition">Gaming</a>
+        <a href="/collection.html" class="hover:text-lime transition">Drip</a>
+        <a href="/phones.html" class="hover:text-lime transition">Phones</a>
+        <a href="/tech.html" class="hover:text-lime transition">Tech</a>
+      </nav>
+      <div class="flex items-center gap-6 text-[13px] font-medium">
+        <a href="/search.html" class="hidden sm:flex items-center gap-2 hover:text-lime transition" aria-label="Search">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+          <span class="hidden lg:inline">Search</span>
+        </a>
+        <a href="/signin.html" class="hidden sm:flex items-center gap-2 hover:text-lime transition" aria-label="Sign in">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"/></svg>
+          <span class="hidden lg:inline">Account</span>
+        </a>
+        <button data-theme-toggle class="theme-toggle" aria-label="Toggle theme">
+          <svg class="icon-moon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+          <svg class="icon-sun" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+        </button>
+        <a href="/cart.html" class="flex items-center gap-2 hover:text-lime transition">
+          <span>Cart</span>
+          <span data-cart-count class="hidden bg-lime text-black text-[10px] font-bold rounded-full w-4 h-4 inline-flex items-center justify-center">0</span>
+        </a>
+        <button data-nav-toggle class="md:hidden" aria-label="Open menu">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+        </button>
+      </div>
+    </div>
+    <nav data-nav-menu class="hidden md:hidden hairline-t">
+      <div class="px-6 py-4 flex flex-col gap-4 text-sm">
+        <a href="/gaming.html" class="">Gaming</a>
+        <a href="/collection.html" class="">Drip</a>
+        <a href="/phones.html" class="">Phones</a>
+        <a href="/tech.html" class="">Tech</a>
+      </div>
+    </nav>
+  </header>
+
+  <section class="pt-16 pb-12 sm:pt-24 sm:pb-16 hairline-b">
+    <div class="max-w-7xl mx-auto px-6 lg:px-10">
+      <div class="eyebrow mb-6"><a href="/" class="hover:text-ink">Home</a> · Help</div>
+      <h1 class="display text-[56px] sm:text-[120px]">Help<span class="text-lime">.</span></h1>
+      <p class="mt-6 text-mute max-w-md">Everything about shipping, returns, sizing, and warranty. Still stuck? <a href="/contact.html" class="text-ink hover:text-lime">Talk to us →</a></p>
+    </div>
+  </section>
+
+  <section class="py-20 sm:py-28">
+    <div class="max-w-3xl mx-auto px-6 lg:px-10">
+
+      <div class="eyebrow mb-8">Shipping</div>
+      <details open><summary>How long does delivery take?</summary><div>Continental US: 3-5 business days via USPS or FedEx. Express 1-2 days available at checkout.</div></details>
+      <details><summary>How much does shipping cost?</summary><div>Free standard US shipping on all orders over $50. Flat-rate $4.99 for orders under $50. Express shipping is $12.99.</div></details>
+      <details><summary>Can I track my order?</summary><div>Yes. You can track anytime via our <a href="/track.html" class="text-ink hover:text-lime">Track Order page</a> using your Order ID and email.</div></details>
+
+      <div class="eyebrow mt-16 mb-8">Returns</div>
+      <details><summary>What's your return policy?</summary><div>30 days from delivery in original condition. Refunds to your original payment method within 3-5 business days of receiving the return.</div></details>
+      <details><summary>Who pays return shipping?</summary><div>We provide prepaid return labels if the item is damaged, defective, or incorrect.</div></details>
+      <details><summary>Can I exchange for a different size?</summary><div>Yes, we offer fast exchanges on all footwear and accessories.</div></details>
+
+      <div class="eyebrow mt-16 mb-8">Sizing &amp; Fit</div>
+      <details><summary>Do your sneakers run true to size?</summary><div>All sneakers run true to standard US sizes. For between sizes or wide feet, we recommend sizing up a half size.</div></details>
+      <details><summary>Is there a size guide?</summary><div>Yes — see our complete conversion chart at our <a href="/size-guide.html" class="text-ink hover:text-lime">Size guide</a>.</div></details>
+
+      <div class="eyebrow mt-16 mb-8">Warranty &amp; Authenticity</div>
+      <details><summary>Are your phones and tech authentic?</summary><div>100% authentic and verified. All refurbished and new devices pass rigorous inspection and include our 30-day guarantee.</div></details>
+      <details><summary>What if my product is defective?</summary><div>Contact us within 30 days with your order ID and we will immediately process a replacement or full refund.</div></details>
+
+      <div class="eyebrow mt-16 mb-8">Payments</div>
+      <details><summary>What payment methods do you accept?</summary><div>Visa, Mastercard, American Express, Discover, Apple Pay, Google Pay, and PayPal.</div></details>
+      <details><summary>Is checkout secure?</summary><div>All transactions are encrypted with 256-bit SSL security and processed securely via Stripe and PayPal.</div></details>
+
+      <div class="mt-20 hairline-t pt-12">
+        <div class="eyebrow mb-4">Still need help?</div>
+        <div class="flex flex-wrap gap-4"><a href="/contact.html" class="btn-lime">Contact us</a><a href="https://wa.me/18005550199" class="btn-ghost">WhatsApp</a></div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="hairline-t">
+    <div class="max-w-7xl mx-auto px-6 lg:px-10 pt-24 pb-12 grid sm:grid-cols-3 gap-12">
+      <div><img loading="lazy" src="/brand/logo-dark.svg" alt="BudgetThrills" class="h-7 w-auto mb-6"><p class="text-mute text-sm leading-relaxed max-w-xs">Trendy products. Budget prices. Real thrills.</p></div>
+      <div>                        <div class="eyebrow mb-5">Shop</div>
+        <ul class="space-y-3 text-sm">
+          <li><a href="/gaming.html" class="hover:text-lime transition">Gaming</a></li>
+          <li><a href="/collection.html" class="hover:text-lime transition">Drip</a></li>
+          <li><a href="/phones.html" class="hover:text-lime transition">Phones</a></li>
+          <li><a href="/tech.html" class="hover:text-lime transition">Tech</a></li>
+        </ul></div>
+      <div><div class="eyebrow mb-5">Brand</div><ul class="space-y-3 text-sm"><li><a href="/story.html" class="hover:text-lime transition">Story</a></li><li><a href="/help.html" class="hover:text-lime transition">Help &amp; Returns</a></li><li><a href="/contact.html" class="hover:text-lime transition">Contact</a></li></ul></div>
+    </div>
+    <div class="hairline-t"><div class="max-w-7xl mx-auto px-6 lg:px-10 py-6 flex justify-between text-[11px] tracking-[0.18em] uppercase text-mute"><div>© 2026 BudgetThrills</div><div class="flex gap-8"><a href="/privacy.html" class="hover:text-ink">Privacy</a><a href="/terms.html" class="hover:text-ink">Terms</a></div></div></div>
+  </footer>
+  <script src="/scripts/main.js?v=4" defer></script>
+  <script type="module" src="/scripts/auth.js"></script>
+</body>
+</html>

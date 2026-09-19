@@ -1,0 +1,656 @@
+<!doctype html>
+<html lang="en" class="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' blob: https://cdn.tailwindcss.com https://www.gstatic.com https://apis.google.com https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https://images.unsplash.com https://i.ebayimg.com https://lh3.googleusercontent.com https://*.googleusercontent.com; connect-src 'self' https://*.firebaseio.com https://*.googleapis.com https://firestore.googleapis.com https://www.gstatic.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com; frame-src 'self' https://*.firebaseapp.com https://accounts.google.com https://apis.google.com;">
+<title>BudgetThrills — Shoes, Phones & Tech.</title>
+<meta name="description" content="Trendy products. Budget prices. Real thrills.">
+<meta name="theme-color" content="#0A0A0A">
+
+<meta property="og:title" content="BudgetThrills">
+<meta property="og:description" content="Trendy products. Budget prices. Real thrills.">
+<meta property="og:image" content="/brand/cover-1920x1080.png">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="icon" type="image/svg+xml" href="/favicons/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicons/favicon-32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/favicons/apple-touch-icon.png">
+<link rel="alternate icon" href="/favicons/favicon.ico">
+
+<link rel="stylesheet" href="/styles/fonts.css">
+
+<link rel="stylesheet" href="/styles/app.css?v=4">
+<link rel="stylesheet" href="/styles/main.css?v=4">
+<script>(function(){try{var t=localStorage.getItem('bt-theme')||'dark';document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+</head>
+
+<!--
+  Swap to your own product photography by replacing each src URL.
+  Hero / collection-hero / deal-hero are the three "make or break" shots.
+-->
+
+<body class="bg-bg text-ink">
+
+  <!-- ============ 0. ANNOUNCEMENT ============ -->
+  <div class="hairline-b">
+    <div class="max-w-7xl mx-auto px-6 lg:px-10 h-10 flex items-center justify-between text-[11px] tracking-[0.18em] uppercase text-mute">
+      <span>Free US shipping over $50</span>
+      <span class="hidden sm:inline">New drop — every Friday, 8PM EST</span>
+      <span class="hidden md:inline">USA · 2026</span>
+    </div>
+  </div>
+
+  <!-- ============ 1. NAV ============ -->
+      <header class="sticky top-0 z-40 nav-shell">
+    <div class="max-w-7xl mx-auto px-6 lg:px-10 h-20 flex items-center justify-between">
+      <a href="/" class="flex items-center">
+        <img loading="lazy" src="/brand/logo-dark.svg" alt="BudgetThrills" class="h-7 w-auto">
+      </a>
+      <nav class="hidden md:flex items-center gap-10 text-[13px] font-medium">
+        <a href="/gaming.html" class="hover:text-lime transition">Gaming</a>
+        <a href="/collection.html" class="hover:text-lime transition">Drip</a>
+        <a href="/phones.html" class="hover:text-lime transition">Phones</a>
+        <a href="/tech.html" class="hover:text-lime transition">Tech</a>
+      </nav>
+      <div class="flex items-center gap-6 text-[13px] font-medium">
+        <a href="/search.html" class="hidden sm:flex items-center gap-2 hover:text-lime transition" aria-label="Search">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+          <span class="hidden lg:inline">Search</span>
+        </a>
+        <a href="/signin.html" class="hidden sm:flex items-center gap-2 hover:text-lime transition" aria-label="Sign in">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"/></svg>
+          <span class="hidden lg:inline">Account</span>
+        </a>
+        <button data-theme-toggle class="theme-toggle" aria-label="Toggle theme">
+          <svg class="icon-moon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+          <svg class="icon-sun" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+        </button>
+        <a href="/cart.html" class="flex items-center gap-2 hover:text-lime transition">
+          <span>Cart</span>
+          <span data-cart-count class="hidden bg-lime text-black text-[10px] font-bold rounded-full w-4 h-4 inline-flex items-center justify-center">0</span>
+        </a>
+        <button data-nav-toggle class="md:hidden" aria-label="Open menu">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+        </button>
+      </div>
+    </div>
+    <nav data-nav-menu class="hidden md:hidden hairline-t">
+      <div class="px-6 py-4 flex flex-col gap-4 text-sm">
+        <a href="/gaming.html" class="">Gaming</a>
+        <a href="/collection.html" class="">Drip</a>
+        <a href="/phones.html" class="">Phones</a>
+        <a href="/tech.html" class="">Tech</a>
+      </div>
+    </nav>
+  </header>
+
+  <!-- ============ 2. HERO: ONE DROP. ONE NIGHT. ============ -->
+  <section class="hairline-b py-16 sm:py-24 lg:py-32" id="deals">
+    <div class="max-w-7xl mx-auto px-6 lg:px-10 grid lg:grid-cols-12 gap-16 items-center">
+
+      <!-- Left column: Countdown and Headline -->
+      <div class="lg:col-span-5" data-reveal>
+        <div class="flex items-center justify-between mb-4">
+          <div class="eyebrow" id="drop-eyebrow">Ends Tonight</div>
+          <div class="flex items-center gap-2 text-xs">
+            <span id="drop-step-indicator" class="text-mute font-mono text-[11px]">Drop 1 of 7</span>
+            <button id="drop-prev-btn" class="w-6 h-6 border hairline rounded flex items-center justify-center text-mute hover:text-lime hover:border-lime transition" title="Previous Drop" aria-label="Previous Drop">←</button>
+            <button id="drop-next-btn" class="w-6 h-6 border hairline rounded flex items-center justify-center text-mute hover:text-lime hover:border-lime transition" title="Next Drop" aria-label="Next Drop">→</button>
+          </div>
+        </div>
+
+        <h1 class="display text-[52px] sm:text-[88px] leading-[0.9]">
+          One drop.<br>One night<span class="text-lime">.</span>
+        </h1>
+
+        <div class="cd-wrap mt-10">
+          <svg class="cd-ring" viewBox="0 0 260 260" aria-hidden="true">
+            <circle class="cd-ring-bg" cx="130" cy="130" r="120" />
+            <circle id="cd-ring" class="cd-ring-fg" cx="130" cy="130" r="120" />
+          </svg>
+          <div class="cd">
+            <span id="cd-h" class="cd-num">00</span>
+            <span class="cd-sep">:</span>
+            <span id="cd-m" class="cd-num">00</span>
+            <span class="cd-sep">:</span>
+            <span id="cd-s" class="cd-num">00</span>
+          </div>
+        </div>
+        <div class="mt-3 flex gap-12 text-mute text-[11px] tracking-[0.2em] uppercase">
+          <span>Hours</span><span>Minutes</span><span>Seconds</span>
+        </div>
+
+        <div class="mt-4 flex items-center gap-2 text-xs text-mute">
+          <span class="inline-block w-2 h-2 rounded-full bg-lime animate-pulse"></span>
+          <span id="drop-next-preview" class="text-[12px]">Auto-cycles next eBay hardware drop on countdown</span>
+        </div>
+
+        <div class="mt-10 flex flex-wrap items-center gap-4">
+          <a id="drop-cta-link" href="/pdp.html?id=sony-playstation-5-ps5-slim-disc" class="btn-lime">
+            <span id="drop-cta-text">Cop the deal</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+          </a>
+          <a href="#trending" class="btn-ghost">Shop all trending</a>
+        </div>
+      </div>
+
+      <!-- Right column: Full-size Hero Product Card -->
+      <div class="lg:col-span-7" data-reveal>
+        <a id="drop-media-link" href="/pdp.html?id=sony-playstation-5-ps5-slim-disc" class="block group">
+          <div class="card-media aspect-[4/3]">
+            <img id="drop-img" loading="eager" class="img-primary" src="https://i.ebayimg.com/images/g/~XsAAeSw9P9qoaia/s-l1600.jpg" alt="Sony PlayStation 5 Slim">
+            <span id="drop-badge-pill" class="card-cta">View Deal →</span>
+          </div>
+          <div class="mt-6 grid sm:grid-cols-2 gap-6 items-end" id="drop-details">
+            <div>
+              <div class="text-mute text-xs uppercase tracking-[0.18em]" id="drop-tag">Tonight · Flagship Console</div>
+              <h3 class="display text-[36px] sm:text-[44px] mt-2 leading-[0.9]" id="drop-title">Sony PlayStation 5 Slim<span class="text-lime">.</span></h3>
+              <p class="text-mute text-sm mt-3 max-w-xs" id="drop-desc">1TB Disc Edition with Tempest 3D Audio, ultra-fast SSD and Ray Tracing.</p>
+            </div>
+            <div class="sm:text-right">
+              <div class="text-mute text-xs uppercase tracking-[0.18em]" id="drop-was">Was $499.00</div>
+              <div class="display text-[56px] mt-1 leading-none" id="drop-price">$429<span class="text-mute text-xl align-top">.00</span></div>
+            </div>
+          </div>
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============ 3. THE 4 PILLARS ============ -->
+  <section class="hairline-b">
+    <div class="max-w-7xl mx-auto px-6 lg:px-10">
+      <div class="eyebrow py-8">Categories</div>
+      <div class="hairline-t grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4" data-reveal>
+        <a href="/gaming.html" class="group block py-12 md:py-16 md:pr-8 md:border-r hairline">
+          <div class="text-mute text-xs">01</div>
+          <div class="display text-[40px] sm:text-[54px] mt-3 group-hover:text-lime transition">Gaming</div>
+          <div class="text-mute text-sm mt-2">Consoles, Rigs &amp; Gear · 13 items</div>
+        </a>
+        <a href="/collection.html" class="group block py-12 md:py-16 md:px-8 md:border-r hairline">
+          <div class="text-mute text-xs">02</div>
+          <div class="display text-[40px] sm:text-[54px] mt-3 group-hover:text-lime transition">Drip</div>
+          <div class="text-mute text-sm mt-2">Sneakers &amp; Streetwear · 26 styles</div>
+        </a>
+        <a href="/phones.html" class="group block py-12 md:py-16 md:px-8 md:border-r hairline">
+          <div class="text-mute text-xs">03</div>
+          <div class="display text-[40px] sm:text-[54px] mt-3 group-hover:text-lime transition">Phones</div>
+          <div class="text-mute text-sm mt-2">iPhones &amp; Flagships · 24 models</div>
+        </a>
+        <a href="/tech.html" class="group block py-12 md:py-16 md:pl-8">
+          <div class="text-mute text-xs">04</div>
+          <div class="display text-[40px] sm:text-[54px] mt-3 group-hover:text-lime transition">Tech</div>
+          <div class="text-mute text-sm mt-2">MacBooks, Audio &amp; Power · 27 items</div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 4. TRENDING ============ -->
+  <section id="trending" class="py-20 sm:py-32 lg:py-44">
+    <div class="max-w-7xl mx-auto px-6 lg:px-10">
+
+      <div class="flex items-end justify-between gap-6 mb-16" data-reveal>
+        <div>
+          <div class="eyebrow mb-4">Currently</div>
+          <h2 class="display text-[52px] sm:text-[88px]">Trending<span class="text-lime">.</span></h2>
+        </div>
+        <a href="/trending.html" class="link-mute text-[13px] tracking-wider uppercase font-medium hidden sm:inline">View all 95 →</a>
+      </div>
+
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-10" data-reveal data-catalog-featured>
+        <a href="/pdp.html?id=nike-reactx-pegasus-trail-5-me" class="card group">
+          <div class="card-media aspect-[4/5]">
+            <img class="img-primary" src="https://i.ebayimg.com/images/g/SowAAeSwjFZqjcjX/s-l1600.jpg" alt="Nike ReactX Pegasus Trail 5 Men's Trail " loading="lazy">
+            <img class="img-hover" src="https://i.ebayimg.com/images/g/d44AAeSwgW9qjcjK/s-l1600.jpg" alt="" loading="lazy">
+            <span class="card-cta">View →</span>
+          </div>
+          <div class="pt-5">
+            <h3 class="text-sm font-medium group-hover:text-lime transition">Nike ReactX Pegasus Trail 5 Men's Trail </h3>
+            <div class="text-mute text-xs mt-1">New with box</div>
+            <div class="mt-3 flex items-baseline gap-3">
+              <span class="text-lg font-semibold" lang="en-US" translate="no">$160.00</span>
+              <span class="text-mute text-xs line-through" lang="en-US" translate="no">$208.00</span>
+            </div>
+          </div>
+        </a>
+
+        <a href="/pdp.html?id=apple-iphone-16-pro-128gb-unlock" class="card group">
+          <div class="card-media aspect-[4/5]">
+            <img class="img-primary" src="https://i.ebayimg.com/images/g/m6EAAeSwSwVoi5ya/s-l1600.jpg" alt="Apple iPhone 16 Pro 128GB Unlocked Excellent Con" loading="lazy">
+            
+            <span class="card-cta">View →</span>
+          </div>
+          <div class="pt-5">
+            <h3 class="text-sm font-medium group-hover:text-lime transition">Apple iPhone 16 Pro 128GB Unlocked Excellent Con</h3>
+            <div class="text-mute text-xs mt-1">Excellent - Refurbished</div>
+            <div class="mt-3 flex items-baseline gap-3">
+              <span class="text-lg font-semibold" lang="en-US" translate="no">$719.00</span>
+              <span class="text-mute text-xs line-through" lang="en-US" translate="no">$799.00</span>
+            </div>
+          </div>
+        </a>
+
+        <a href="/pdp.html?id=apple-macbook-air-2022-a2681-13i" class="card group">
+          <div class="card-media aspect-[4/5]">
+            <img class="img-primary" src="https://i.ebayimg.com/images/g/wFkAAeSwPdNqiJyU/s-l1600.jpg" alt="Apple MacBook Air 2022 A2681 13in M2 8 Core GPU " loading="lazy">
+            <img class="img-hover" src="https://i.ebayimg.com/images/g/7OgAAeSw9IdqiJyW/s-l1600.jpg" alt="" loading="lazy">
+            <span class="card-cta">View →</span>
+          </div>
+          <div class="pt-5">
+            <h3 class="text-sm font-medium group-hover:text-lime transition">Apple MacBook Air 2022 A2681 13in M2 8 Core GPU </h3>
+            <div class="text-mute text-xs mt-1">Very Good - Refurbished</div>
+            <div class="mt-3 flex items-baseline gap-3">
+              <span class="text-lg font-semibold" lang="en-US" translate="no">$889.00</span>
+              <span class="text-mute text-xs line-through" lang="en-US" translate="no">$999.00</span>
+            </div>
+          </div>
+        </a>
+
+        <a href="/pdp.html?id=needoh-snow-ball-stress-relief-s" class="card group">
+          <div class="card-media aspect-[4/5]">
+            <img class="img-primary" src="https://i.ebayimg.com/images/g/IkEAAeSw1INqnGCX/s-l1600.jpg" alt="NeeDoh Snow Ball Stress Relief Squishy Sensory F" loading="lazy">
+            <img class="img-hover" src="https://i.ebayimg.com/images/g/5SsAAeSwR8JqnGCs/s-l1600.jpg" alt="" loading="lazy">
+            <span class="card-cta">View →</span>
+          </div>
+          <div class="pt-5">
+            <h3 class="text-sm font-medium group-hover:text-lime transition">NeeDoh Snow Ball Stress Relief Squishy Sensory F</h3>
+            <div class="text-mute text-xs mt-1">New</div>
+            <div class="mt-3 flex items-baseline gap-3">
+              <span class="text-lg font-semibold" lang="en-US" translate="no">$9.99</span>
+              <span class="text-mute text-xs line-through" lang="en-US" translate="no">$16.00</span>
+            </div>
+          </div>
+        </a>
+
+        <a href="/pdp.html?id=nike-air-max-dn-men-s-running-" class="card group">
+          <div class="card-media aspect-[4/5]">
+            <img class="img-primary" src="https://i.ebayimg.com/images/g/vwAAAeSwMCZp-p2q/s-l1600.jpg" alt="Nike Air Max Dn Men’s Running Shoes" loading="lazy">
+            <img class="img-hover" src="https://i.ebayimg.com/images/g/R2kAAeSwWvdp8BZN/s-l1600.jpg" alt="" loading="lazy">
+            <span class="card-cta">View →</span>
+          </div>
+          <div class="pt-5">
+            <h3 class="text-sm font-medium group-hover:text-lime transition">Nike Air Max Dn Men’s Running Shoes</h3>
+            <div class="text-mute text-xs mt-1">New without box</div>
+            <div class="mt-3 flex items-baseline gap-3">
+              <span class="text-lg font-semibold" lang="en-US" translate="no">$50.00</span>
+              <span class="text-mute text-xs line-through" lang="en-US" translate="no">$160.00</span>
+            </div>
+          </div>
+        </a>
+
+        <a href="/pdp.html?id=apple-iphone-14-128gb-unlocked" class="card group">
+          <div class="card-media aspect-[4/5]">
+            <img class="img-primary" src="https://i.ebayimg.com/images/g/7lIAAOSwy4dkW9k4/s-l1600.jpg" alt="Apple iPhone 14 128GB Unlocked - Very Go" loading="lazy">
+            <img class="img-hover" src="https://i.ebayimg.com/images/g/a2EAAOSwijVkW9k4/s-l1600.jpg" alt="" loading="lazy">
+            <span class="card-cta">View →</span>
+          </div>
+          <div class="pt-5">
+            <h3 class="text-sm font-medium group-hover:text-lime transition">Apple iPhone 14 128GB Unlocked - Very Go</h3>
+            <div class="text-mute text-xs mt-1">Very Good - Refurbished</div>
+            <div class="mt-3 flex items-baseline gap-3">
+              <span class="text-lg font-semibold" lang="en-US" translate="no">$288.95</span>
+              <span class="text-mute text-xs line-through" lang="en-US" translate="no">$433.00</span>
+            </div>
+          </div>
+        </a>
+
+        <a href="/pdp.html?id=no-ship-apple-macbook-air-13-inc" class="card group">
+          <div class="card-media aspect-[4/5]">
+            <img class="img-primary" src="https://i.ebayimg.com/images/g/HFYAAeSwS3BqjSw6/s-l1600.jpg" alt="(NO Ship) Apple MacBook Air 13 Inch M2 Chip 8GB " loading="lazy">
+            <img class="img-hover" src="https://i.ebayimg.com/images/g/zJwAAeSwvEZqjSw7/s-l1600.jpg" alt="" loading="lazy">
+            <span class="card-cta">View →</span>
+          </div>
+          <div class="pt-5">
+            <h3 class="text-sm font-medium group-hover:text-lime transition">(NO Ship) Apple MacBook Air 13 Inch M2 Chip 8GB </h3>
+            <div class="text-mute text-xs mt-1">Used</div>
+            <div class="mt-3 flex items-baseline gap-3">
+              <span class="text-lg font-semibold" lang="en-US" translate="no">$889.00</span>
+              <span class="text-mute text-xs line-through" lang="en-US" translate="no">$999.00</span>
+            </div>
+          </div>
+        </a>
+
+        <a href="/pdp.html?id=needoh-snow-ball-crunch-squishy-" class="card group">
+          <div class="card-media aspect-[4/5]">
+            <img class="img-primary" src="https://i.ebayimg.com/images/g/76oAAeSwezVqn79t/s-l1600.jpg" alt="NeeDoh Snow Ball Crunch Squishy Stress Ball – So" loading="lazy">
+            <img class="img-hover" src="https://i.ebayimg.com/images/g/8dYAAeSwBX5qn792/s-l1600.jpg" alt="" loading="lazy">
+            <span class="card-cta">View →</span>
+          </div>
+          <div class="pt-5">
+            <h3 class="text-sm font-medium group-hover:text-lime transition">NeeDoh Snow Ball Crunch Squishy Stress Ball – So</h3>
+            <div class="text-mute text-xs mt-1">New</div>
+            <div class="mt-3 flex items-baseline gap-3">
+              <span class="text-lg font-semibold" lang="en-US" translate="no">$9.99</span>
+              <span class="text-mute text-xs line-through" lang="en-US" translate="no">$16.00</span>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+
+
+  <!-- ============ 6. UNDER $50 BUDGET STEALS SHOWCASE ============ -->
+  <section class="hairline-t py-20 sm:py-32 lg:py-40" id="steals">
+    <div class="max-w-7xl mx-auto px-6 lg:px-10">
+      <div class="flex flex-wrap items-end justify-between gap-8 mb-16" data-reveal>
+        <div>
+          <div class="eyebrow mb-4">Curated Value · Under $50</div>
+          <h2 class="display text-[52px] sm:text-[88px] leading-[0.9]">
+            High-End Finds<span class="text-lime">.</span><br>
+            Budget Tags<span class="text-lime">.</span>
+          </h2>
+          <p class="mt-6 text-mute text-base sm:text-lg max-w-xl leading-relaxed">
+            Direct overstock liquidations, price drops, and verified essentials selected for maximum thrift value.
+          </p>
+        </div>
+        <a href="/trending.html" class="link-mute text-[13px] tracking-wider uppercase font-medium self-end">Explore all deals →</a>
+      </div>
+
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-10" data-reveal>
+        
+        <!-- Steal 1: Nike Air Max Dn -->
+        <a href="/pdp.html?id=nike-air-max-dn-men-s-running-" class="card group">
+          <div class="card-media aspect-[4/5] relative">
+            <span class="absolute top-3 left-3 z-10 text-[10px] tracking-[0.18em] uppercase font-bold px-2.5 py-1 rounded bg-lime text-black">Save 69%</span>
+            <img class="img-primary" src="https://i.ebayimg.com/images/g/vwAAAeSwMCZp-p2q/s-l1600.jpg" alt="Nike Air Max Dn" loading="lazy">
+            <span class="card-cta">View Deal →</span>
+          </div>
+          <div class="pt-5">
+            <h3 class="text-sm font-medium group-hover:text-lime transition">Nike Air Max Dn Men’s Running</h3>
+            <div class="text-mute text-xs mt-1">Sneakers · New with box</div>
+            <div class="mt-3 flex items-baseline gap-3">
+              <span class="text-lg font-semibold" lang="en-US" translate="no">$50.00</span>
+              <span class="text-mute text-xs line-through" lang="en-US" translate="no">$160.00</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- Steal 2: Vans Old Skool -->
+        <a href="/pdp.html?id=vans-unisex-ua-old-skool-black" class="card group">
+          <div class="card-media aspect-[4/5] relative">
+            <span class="absolute top-3 left-3 z-10 text-[10px] tracking-[0.18em] uppercase font-bold px-2.5 py-1 rounded bg-lime text-black">Save 38%</span>
+            <img class="img-primary" src="https://i.ebayimg.com/images/g/oncAAeSw7F9qjJaN/s-l1600.jpg" alt="Vans Old Skool" loading="lazy">
+            <span class="card-cta">View Deal →</span>
+          </div>
+          <div class="pt-5">
+            <h3 class="text-sm font-medium group-hover:text-lime transition">Vans Old Skool Low-Top Canvas</h3>
+            <div class="text-mute text-xs mt-1">Sneakers · Streetwear</div>
+            <div class="mt-3 flex items-baseline gap-3">
+              <span class="text-lg font-semibold" lang="en-US" translate="no">$29.99</span>
+              <span class="text-mute text-xs line-through" lang="en-US" translate="no">$48.00</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- Steal 3: Ray-Ban Polarized Wayfarer -->
+        <a href="/pdp.html?id=ray-ban-rb214of-polarized-wayf" class="card group">
+          <div class="card-media aspect-[4/5] relative">
+            <span class="absolute top-3 left-3 z-10 text-[10px] tracking-[0.18em] uppercase font-bold px-2.5 py-1 rounded bg-lime text-black">Save 29%</span>
+            <img class="img-primary" src="https://i.ebayimg.com/images/g/-FUAAeSwSHBqiixJ/s-l1600.jpg" alt="Ray-Ban Polarized Wayfarer" loading="lazy">
+            <span class="card-cta">View Deal →</span>
+          </div>
+          <div class="pt-5">
+            <h3 class="text-sm font-medium group-hover:text-lime transition">Ray-Ban Polarized Wayfarer</h3>
+            <div class="text-mute text-xs mt-1">Accessories · Eyewear</div>
+            <div class="mt-3 flex items-baseline gap-3">
+              <span class="text-lg font-semibold" lang="en-US" translate="no">$50.00</span>
+              <span class="text-mute text-xs line-through" lang="en-US" translate="no">$70.00</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- Steal 4: Anker Nano Fast Charger -->
+        <a href="/pdp.html?id=anker-nano-portable-battery-po" class="card group">
+          <div class="card-media aspect-[4/5] relative">
+            <span class="absolute top-3 left-3 z-10 text-[10px] tracking-[0.18em] uppercase font-bold px-2.5 py-1 rounded bg-lime text-black">Save 23%</span>
+            <img class="img-primary" src="https://i.ebayimg.com/images/g/6oAAAeSwww5pG0Lu/s-l1600.jpg" alt="Anker Nano Power Bank" loading="lazy">
+            <span class="card-cta">View Deal →</span>
+          </div>
+          <div class="pt-5">
+            <h3 class="text-sm font-medium group-hover:text-lime transition">Anker Nano Portable Fast Charger</h3>
+            <div class="text-mute text-xs mt-1">Tech · Fast Charging</div>
+            <div class="mt-3 flex items-baseline gap-3">
+              <span class="text-lg font-semibold" lang="en-US" translate="no">$39.95</span>
+              <span class="text-mute text-xs line-through" lang="en-US" translate="no">$52.00</span>
+            </div>
+          </div>
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 4-PILLAR TRUST & BUYER GUARANTEE HUB ============ -->
+  <section class="hairline-t py-24 sm:py-32" id="guarantee">
+    <div class="max-w-7xl mx-auto px-6 lg:px-10">
+      
+      <div class="grid lg:grid-cols-12 gap-10 items-end mb-20" data-reveal>
+        <div class="lg:col-span-7">
+          <div class="eyebrow mb-4">Buyer Protection</div>
+          <h2 class="display text-[48px] sm:text-[80px] leading-[0.92]">
+            The Standard<span class="text-lime">.</span>
+          </h2>
+        </div>
+        <div class="lg:col-span-5">
+          <p class="text-mute text-base sm:text-lg leading-relaxed">
+            Direct pricing without retail markups, backed by strict inspection and full consumer guarantees on every order.
+          </p>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 hairline-t hairline-b divide-y md:divide-y-0 md:divide-x divide-[var(--bt-border)]" data-reveal>
+        
+        <!-- Pillar 01 -->
+        <div class="py-10 md:py-12 md:pr-8 lg:pr-10 group">
+          <div class="flex items-center justify-between mb-8">
+            <span class="font-mono text-xs text-mute group-hover:text-lime transition">01 / INSPECTION</span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="text-mute group-hover:text-lime transition">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+              <path d="m9 12 2 2 4-4"/>
+            </svg>
+          </div>
+          <h3 class="text-lg font-semibold text-ink group-hover:text-lime transition mb-3">Verified Authentic</h3>
+          <p class="text-mute text-sm leading-relaxed">
+            Multi-point hardware and material inspection ensures 100% genuine products with precise condition grading.
+          </p>
+        </div>
+
+        <!-- Pillar 02 -->
+        <div class="py-10 md:py-12 md:px-8 lg:px-10 group">
+          <div class="flex items-center justify-between mb-8">
+            <span class="font-mono text-xs text-mute group-hover:text-lime transition">02 / LOGISTICS</span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="text-mute group-hover:text-lime transition">
+              <rect x="1" y="3" width="15" height="13"/>
+              <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/>
+              <circle cx="5.5" cy="18.5" r="2.5"/>
+              <circle cx="18.5" cy="18.5" r="2.5"/>
+            </svg>
+          </div>
+          <h3 class="text-lg font-semibold text-ink group-hover:text-lime transition mb-3">Fast US Tracked</h3>
+          <p class="text-mute text-sm leading-relaxed">
+            Dispatched within 24 hours. Full doorstep tracking via USPS and FedEx. Free nationwide delivery over $50.
+          </p>
+        </div>
+
+        <!-- Pillar 03 -->
+        <div class="py-10 md:py-12 md:px-8 lg:px-10 group">
+          <div class="flex items-center justify-between mb-8">
+            <span class="font-mono text-xs text-mute group-hover:text-lime transition">03 / RETURNS</span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="text-mute group-hover:text-lime transition">
+              <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/>
+              <path d="M21 3v5h-5"/>
+              <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/>
+              <path d="M8 16H3v5"/>
+            </svg>
+          </div>
+          <h3 class="text-lg font-semibold text-ink group-hover:text-lime transition mb-3">30-Day Guarantee</h3>
+          <p class="text-mute text-sm leading-relaxed">
+            Hassle-free 30-day money-back guarantee with straightforward refunds and complimentary size exchanges.
+          </p>
+        </div>
+
+        <!-- Pillar 04 -->
+        <div class="py-10 md:py-12 md:pl-8 lg:pl-10 group">
+          <div class="flex items-center justify-between mb-8">
+            <span class="font-mono text-xs text-mute group-hover:text-lime transition">04 / PAYMENT</span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="text-mute group-hover:text-lime transition">
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+              <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+            </svg>
+          </div>
+          <h3 class="text-lg font-semibold text-ink group-hover:text-lime transition mb-3">Encrypted Checkout</h3>
+          <p class="text-mute text-sm leading-relaxed">
+            256-bit SSL encrypted payments processed securely via Stripe &amp; PayPal. Seamless 1-tap Apple Pay &amp; Google Pay.
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 7. UGC ============ -->
+  <section class="hairline-t py-20 sm:py-32 lg:py-44">
+    <div class="max-w-7xl mx-auto px-6 lg:px-10">
+      <div class="flex items-end justify-between mb-16 gap-6" data-reveal>
+        <div>
+          <div class="eyebrow mb-4">#BudgetThrills</div>
+          <h2 class="display text-[52px] sm:text-[88px] leading-[0.9]">In the<br>wild<span class="text-lime">.</span></h2>
+        </div>
+        <a href="https://instagram.com/budgetthrills" class="link-mute text-[13px] tracking-wider uppercase font-medium hidden sm:inline">Tag us →</a>
+      </div>
+
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6" data-reveal>
+
+        <!-- 1. Sneakers -->
+        <div class="group relative aspect-[3/4] sm:aspect-[4/5] rounded-lg overflow-hidden bg-bgElev border border-white/5">
+          <img src="https://i.ebayimg.com/images/g/Tf4AAeSwEChqcrXi/s-l1600.jpg" alt="Jordan 11 PE Chrome Sneakers" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
+          <div class="absolute top-3 left-3 flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-black/60 backdrop-blur-md text-[11px] font-medium text-white/90">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" class="text-lime"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+            @marcus.fits
+          </div>
+          <a href="/pdp.html?id=nike-air-max-dn-men-s-running-" class="absolute inset-x-3 bottom-3 p-3 rounded-lg bg-black/85 backdrop-blur-md border border-white/10 flex items-center justify-between opacity-95 group-hover:opacity-100 transition">
+            <div>
+              <span class="text-[10px] tracking-[0.2em] uppercase font-bold text-lime block">Sneakers</span>
+              <span class="text-xs font-semibold text-white">Nike Air Max Dn · $50.00</span>
+            </div>
+            <span class="text-xs text-lime font-bold">Shop →</span>
+          </a>
+        </div>
+
+        <!-- 2. Phones -->
+        <div class="group relative aspect-[3/4] sm:aspect-[4/5] rounded-lg overflow-hidden bg-bgElev border border-white/5">
+          <img src="https://i.ebayimg.com/images/g/7lIAAOSwy4dkW9k4/s-l1600.jpg" alt="Apple iPhone 14 128GB Unlocked" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
+          <div class="absolute top-3 left-3 flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-black/60 backdrop-blur-md text-[11px] font-medium text-white/90">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" class="text-lime"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+            @sarah.desk
+          </div>
+          <a href="/pdp.html?id=apple-iphone-14-128gb-unlocked" class="absolute inset-x-3 bottom-3 p-3 rounded-lg bg-black/85 backdrop-blur-md border border-white/10 flex items-center justify-between opacity-95 group-hover:opacity-100 transition">
+            <div>
+              <span class="text-[10px] tracking-[0.2em] uppercase font-bold text-lime block">Phones</span>
+              <span class="text-xs font-semibold text-white">iPhone 14 128GB · $288.95</span>
+            </div>
+            <span class="text-xs text-lime font-bold">Shop →</span>
+          </a>
+        </div>
+
+        <!-- 3. Audio & Tech -->
+        <div class="group relative aspect-[3/4] sm:aspect-[4/5] rounded-lg overflow-hidden bg-bgElev border border-white/5">
+          <img src="https://i.ebayimg.com/images/g/dtEAAeSwc8FqjH-N/s-l1600.jpg" alt="Sony WH-1000XM4 Wireless Headphones" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
+          <div class="absolute top-3 left-3 flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-black/60 backdrop-blur-md text-[11px] font-medium text-white/90">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" class="text-lime"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+            @jordan.sound
+          </div>
+          <a href="/pdp.html?id=sony-wh-1000xm4-wireless-noise" class="absolute inset-x-3 bottom-3 p-3 rounded-lg bg-black/85 backdrop-blur-md border border-white/10 flex items-center justify-between opacity-95 group-hover:opacity-100 transition">
+            <div>
+              <span class="text-[10px] tracking-[0.2em] uppercase font-bold text-lime block">Tech</span>
+              <span class="text-xs font-semibold text-white">Sony WH-1000XM4 · $90.99</span>
+            </div>
+            <span class="text-xs text-lime font-bold">Shop →</span>
+          </a>
+        </div>
+
+        <!-- 4. Accessories & Watches -->
+        <div class="group relative aspect-[3/4] sm:aspect-[4/5] rounded-lg overflow-hidden bg-bgElev border border-white/5">
+          <img src="https://i.ebayimg.com/images/g/RyYAAeSweY5qheTe/s-l1600.jpg" alt="Seiko 5 Automatic Watch" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
+          <div class="absolute top-3 left-3 flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-black/60 backdrop-blur-md text-[11px] font-medium text-white/90">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" class="text-lime"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+            @daily.curation
+          </div>
+          <a href="/pdp.html?id=seiko-5-automatic-silver-dial-" class="absolute inset-x-3 bottom-3 p-3 rounded-lg bg-black/85 backdrop-blur-md border border-white/10 flex items-center justify-between opacity-95 group-hover:opacity-100 transition">
+            <div>
+              <span class="text-[10px] tracking-[0.2em] uppercase font-bold text-lime block">Accessories</span>
+              <span class="text-xs font-semibold text-white">Seiko 5 Automatic · $198.19</span>
+            </div>
+            <span class="text-xs text-lime font-bold">Shop →</span>
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 8. NEWSLETTER ============ -->
+  <section class="hairline-t py-32 sm:py-48">
+    <div class="max-w-4xl mx-auto px-6 lg:px-10 text-center" data-reveal>
+      <div class="eyebrow mb-6">VIP Drop List</div>
+      <h2 class="display text-[44px] sm:text-[80px] leading-[0.9]">
+        Get the drop<br>before the crowd<span class="text-lime">.</span>
+      </h2>
+      <form data-newsletter class="mt-14 max-w-lg mx-auto flex border-b hairline pb-3 gap-4">
+        <input type="email" required placeholder="you@get.thrilled"
+               class="flex-1 bg-transparent text-base placeholder:text-mute outline-none py-2">
+        <button class="text-[13px] font-bold uppercase tracking-[0.1em] hover:text-lime transition">Join →</button>
+      </form>
+      <p data-nl-out class="mt-4 text-xs text-lime min-h-[1em]"></p>
+    </div>
+  </section>
+
+  <!-- ============ 9. FOOTER ============ -->
+  <footer class="hairline-t">
+    <div class="max-w-7xl mx-auto px-6 lg:px-10 pt-24 pb-12 grid sm:grid-cols-3 gap-12">
+      <div>
+        <img loading="lazy" src="/brand/logo-dark.svg" alt="BudgetThrills" class="h-7 w-auto mb-6">
+        <p class="text-mute text-sm leading-relaxed max-w-xs">Trendy products. Budget prices. Real thrills.</p>
+      </div>
+      <div>
+                                <div class="eyebrow mb-5">Shop</div>
+        <ul class="space-y-3 text-sm">
+          <li><a href="/gaming.html" class="hover:text-lime transition">Gaming</a></li>
+          <li><a href="/collection.html" class="hover:text-lime transition">Drip</a></li>
+          <li><a href="/phones.html" class="hover:text-lime transition">Phones</a></li>
+          <li><a href="/tech.html" class="hover:text-lime transition">Tech</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="eyebrow mb-5">Brand</div>
+        <ul class="space-y-3 text-sm">
+          <li><a href="/story.html" class="hover:text-lime transition">Story</a></li>
+          <li><a href="/help.html" class="hover:text-lime transition">Help &amp; Returns</a></li>
+          <li><a href="/contact.html" class="hover:text-lime transition">Contact</a></li>
+          <li><a href="/contact.html" class="hover:text-lime transition">Affiliates</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="hairline-t">
+      <div class="max-w-7xl mx-auto px-6 lg:px-10 py-6 flex flex-col sm:flex-row justify-between items-center gap-3 text-[11px] tracking-[0.18em] uppercase text-mute">
+        <div>© 2026 BudgetThrills</div>
+        <div class="flex gap-8">
+          <a href="/privacy.html" class="hover:text-ink">Privacy</a><a href="/terms.html" class="hover:text-ink">Terms</a><a href="/help.html" class="hover:text-ink">Refund Policy</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/scripts/products.js?v=4"></script>
+  <script src="/scripts/drop-data.js?v=4"></script>
+  <script src="/scripts/main.js?v=4" defer></script>
+  <script src="/scripts/cart.js?v=4" defer></script>
+  <script type="module" src="/scripts/auth.js"></script>
+</body>
+</html>

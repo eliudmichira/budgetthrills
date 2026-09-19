@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="en" class="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' blob: https://cdn.tailwindcss.com https://www.gstatic.com https://apis.google.com https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https://images.unsplash.com https://i.ebayimg.com https://lh3.googleusercontent.com https://*.googleusercontent.com; connect-src 'self' https://*.firebaseio.com https://*.googleapis.com https://firestore.googleapis.com https://www.gstatic.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com; frame-src 'self' https://*.firebaseapp.com https://accounts.google.com https://apis.google.com;">
+<title>Account — BudgetThrills</title>
+<meta name="theme-color" content="#0A0A0A">
+<link rel="icon" type="image/svg+xml" href="/favicons/favicon.svg">
+<link rel="stylesheet" href="/styles/fonts.css">
+<link rel="stylesheet" href="/styles/app.css?v=4">
+<link rel="stylesheet" href="/styles/main.css?v=4">
+<script>(function(){try{var t=localStorage.getItem('bt-theme')||'dark';document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<style>
+  .tab-link { padding: 14px 0; display: block; font-size: 14px; color: var(--bt-text-mute); border-left: 2px solid transparent; padding-left: 16px; transition: color .2s, border-color .2s; }
+  .tab-link:hover { color: var(--bt-text); }
+  .tab-link.active { color: var(--bt-text); border-left-color: var(--bt-lime); }
+  .panel { display: none; }
+  .panel.active { display: block; }
+  .order-row { display: grid; grid-template-columns: 88px 1fr auto; gap: 20px; align-items: center; }
+  @media (min-width: 640px) { .order-row { grid-template-columns: 120px 2fr 1fr auto; gap: 28px; } }
+  .badge { display:inline-flex; padding: 4px 10px; font-size: 10px; letter-spacing: .2em; text-transform: uppercase; border: 1px solid var(--bt-border); }
+  .badge.lime { color: #000; background: var(--bt-lime); border-color: var(--bt-lime); }
+  .acc-field { display:block; margin-bottom: 20px; }
+  .acc-field label { display:block; font-size:11px; letter-spacing:.2em; text-transform:uppercase; color:var(--bt-text-mute); margin-bottom:8px; }
+  .acc-field input, .acc-field select { width:100%; background:transparent; border:0; border-bottom:1px solid var(--bt-border); padding:12px 0; color:var(--bt-text); font-size:15px; outline:none; transition:border-color .2s; }
+  .acc-field input:focus, .acc-field select:focus { border-bottom-color: var(--bt-lime); }
+  .empty-state { text-align:center; padding: 60px 20px; color: var(--bt-text-mute); }
+  .empty-state .empty-icon { font-size: 48px; margin-bottom: 16px; opacity: .4; }
+  .empty-state p { font-size: 14px; margin-bottom: 24px; }
+  .skeleton { background: var(--bt-border); border-radius: 2px; animation: pulse 1.5s ease-in-out infinite; }
+  @keyframes pulse { 0%,100%{opacity:.5} 50%{opacity:1} }
+</style>
+</head>
+<body data-page="account">
+
+  <div class="hairline-b"><div class="max-w-7xl mx-auto px-6 lg:px-10 h-10 flex items-center justify-between text-[11px] tracking-[0.18em] uppercase text-mute"><span data-user-email>Loading…</span><span class="hidden md:inline">BudgetThrills · 2026</span></div></div>
+
+      <header class="sticky top-0 z-40 nav-shell">
+    <div class="max-w-7xl mx-auto px-6 lg:px-10 h-20 flex items-center justify-between">
+      <a href="/" class="flex items-center">
+        <img loading="lazy" src="/brand/logo-dark.svg" alt="BudgetThrills" class="h-7 w-auto">
+      </a>
+      <nav class="hidden md:flex items-center gap-10 text-[13px] font-medium">
+        <a href="/gaming.html" class="hover:text-lime transition">Gaming</a>
+        <a href="/collection.html" class="hover:text-lime transition">Drip</a>
+        <a href="/phones.html" class="hover:text-lime transition">Phones</a>
+        <a href="/tech.html" class="hover:text-lime transition">Tech</a>
+      </nav>
+      <div class="flex items-center gap-6 text-[13px] font-medium">
+        <a href="/search.html" class="hidden sm:flex items-center gap-2 hover:text-lime transition" aria-label="Search">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+          <span class="hidden lg:inline">Search</span>
+        </a>
+        <a href="/signin.html" class="hidden sm:flex items-center gap-2 hover:text-lime transition" aria-label="Sign in">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"/></svg>
+          <span class="hidden lg:inline">Account</span>
+        </a>
+        <button data-theme-toggle class="theme-toggle" aria-label="Toggle theme">
+          <svg class="icon-moon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+          <svg class="icon-sun" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+        </button>
+        <a href="/cart.html" class="flex items-center gap-2 hover:text-lime transition">
+          <span>Cart</span>
+          <span data-cart-count class="hidden bg-lime text-black text-[10px] font-bold rounded-full w-4 h-4 inline-flex items-center justify-center">0</span>
+        </a>
+        <button data-nav-toggle class="md:hidden" aria-label="Open menu">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+        </button>
+      </div>
+    </div>
+    <nav data-nav-menu class="hidden md:hidden hairline-t">
+      <div class="px-6 py-4 flex flex-col gap-4 text-sm">
+        <a href="/gaming.html" class="">Gaming</a>
+        <a href="/collection.html" class="">Drip</a>
+        <a href="/phones.html" class="">Phones</a>
+        <a href="/tech.html" class="">Tech</a>
+      </div>
+    </nav>
+  </header>
+
+  <section class="pt-16 pb-12 sm:pt-24 sm:pb-16 hairline-b">
+    <div class="max-w-7xl mx-auto px-6 lg:px-10">
+      <div class="eyebrow mb-6"><a href="/" class="hover:text-ink">Home</a> · Account</div>
+      <h1 class="display text-[56px] sm:text-[100px]" data-greeting>Hey<span class="text-lime">.</span></h1>
+      <p class="mt-4 text-mute text-sm" data-user-meta></p>
+    </div>
+  </section>
+
+  <section class="py-16 sm:py-20">
+    <div class="max-w-7xl mx-auto px-6 lg:px-10 grid lg:grid-cols-12 gap-12">
+
+      <aside class="lg:col-span-3 hairline-b lg:hairline-b-0 pb-6 lg:pb-0">
+        <div class="eyebrow mb-3 pl-4">Account</div>
+        <nav>
+          <button class="tab-link active" data-tab="orders">Orders</button>
+          <button class="tab-link" data-tab="addresses">Addresses</button>
+          <button class="tab-link" data-tab="profile">Profile</button>
+          <button class="tab-link" data-tab="prefs">Preferences</button>
+        </nav>
+        <div class="mt-10 pl-4">
+          <button type="button" data-signout-btn class="text-[11px] tracking-[0.2em] uppercase text-mute hover:text-orange transition text-left cursor-pointer bg-transparent border-0 p-0">Sign out →</button>
+        </div>
+      </aside>
+
+      <main class="lg:col-span-9">
+
+        <!-- Orders -->
+        <div class="panel active" data-panel="orders">
+          <div class="flex items-end justify-between mb-10">
+            <div><div class="eyebrow mb-3">Orders</div><h2 class="display text-3xl sm:text-4xl" data-orders-heading>Your orders<span class="text-lime">.</span></h2></div>
+            <a href="/help.html" class="text-xs tracking-[0.2em] uppercase text-mute hover:text-ink">Return policy →</a>
+          </div>
+
+          <div class="hairline-t" data-orders-list>
+            <!-- Loading skeleton -->
+            <div data-orders-loading class="py-6 space-y-4">
+              <div class="skeleton h-4 w-3/4"></div>
+              <div class="skeleton h-4 w-1/2"></div>
+              <div class="skeleton h-4 w-2/3"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Addresses -->
+        <div class="panel" data-panel="addresses">
+          <div class="flex items-end justify-between mb-10">
+            <div><div class="eyebrow mb-3">Addresses</div><h2 class="display text-3xl sm:text-4xl" data-addresses-heading>Saved addresses<span class="text-lime">.</span></h2></div>
+            <button type="button" id="add-address-btn" class="btn-lime text-sm">+ Add address</button>
+          </div>
+
+          <!-- Add / Edit address form (hidden by default) -->
+          <div id="address-form-wrap" style="display:none;" class="hairline-t hairline-b py-8 mb-10">
+            <div class="eyebrow mb-6" id="address-form-title">New address</div>
+            <form id="address-form" class="max-w-xl">
+              <input type="hidden" id="addr-doc-id">
+              <div class="grid grid-cols-2 gap-x-6">
+                <div class="acc-field"><label>First name</label><input type="text" id="addr-first" autocomplete="given-name" required></div>
+                <div class="acc-field"><label>Last name</label><input type="text" id="addr-last" autocomplete="family-name" required></div>
+              </div>
+              <div class="acc-field"><label>Address line 1</label><input type="text" id="addr-line1" autocomplete="address-line1" required></div>
+              <div class="acc-field"><label>Address line 2 (optional)</label><input type="text" id="addr-line2" autocomplete="address-line2"></div>
+              <div class="grid grid-cols-2 gap-x-6">
+                <div class="acc-field"><label>City</label><input type="text" id="addr-city" autocomplete="address-level2" required></div>
+                <div class="acc-field"><label>Postcode / ZIP</label><input type="text" id="addr-zip" autocomplete="postal-code" required></div>
+              </div>
+              <div class="acc-field"><label>Country</label>
+                <select id="addr-country" autocomplete="country-name">
+                  <option>Kenya</option><option>United States</option><option>United Kingdom</option>
+                  <option>Canada</option><option>Australia</option><option>Germany</option>
+                  <option>France</option><option>Nigeria</option><option>South Africa</option><option>Other</option>
+                </select>
+              </div>
+              <div class="acc-field"><label>Phone</label><input type="tel" id="addr-phone" autocomplete="tel"></div>
+              <label class="flex items-center gap-3 mb-8 cursor-pointer text-sm">
+                <input type="checkbox" id="addr-default" class="accent-lime w-4 h-4">
+                <span>Set as default address</span>
+              </label>
+              <div class="flex gap-4 flex-wrap">
+                <button type="submit" class="btn-lime" id="addr-save-btn">Save address</button>
+                <button type="button" id="addr-cancel-btn" class="btn-ghost">Cancel</button>
+              </div>
+              <div id="addr-form-error" class="text-orange text-sm mt-4" style="display:none;"></div>
+            </form>
+          </div>
+
+          <!-- Address cards -->
+          <div id="addresses-list">
+            <div class="skeleton h-4 w-2/3 mb-4"></div>
+            <div class="skeleton h-4 w-1/2 mb-4"></div>
+          </div>
+        </div>
+
+
+        <!-- Profile -->
+        <div class="panel" data-panel="profile">
+          <div class="eyebrow mb-3">Profile</div>
+          <h2 class="display text-3xl sm:text-4xl mb-10">Your details<span class="text-lime">.</span></h2>
+          <form class="max-w-xl">
+            <div class="grid grid-cols-2 gap-x-6">
+              <div class="acc-field"><label>First name</label><input type="text" autocomplete="given-name"></div>
+              <div class="acc-field"><label>Last name</label><input type="text" autocomplete="family-name"></div>
+            </div>
+            <div class="acc-field"><label>Email</label><input type="email" autocomplete="email" readonly style="opacity:.6;cursor:default"></div>
+            <div class="acc-field"><label>Phone</label><input type="tel" autocomplete="tel"></div>
+            <button type="button" class="btn-lime mt-6">Save changes</button>
+          </form>
+        </div>
+
+        <!-- Preferences -->
+        <div class="panel" data-panel="prefs">
+          <div class="eyebrow mb-3">Preferences</div>
+          <h2 class="display text-3xl sm:text-4xl mb-10">How we reach you<span class="text-lime">.</span></h2>
+          <div class="max-w-xl space-y-6">
+            <label class="flex items-start justify-between gap-6 py-5 hairline-b">
+              <div><div class="font-medium">Drop alerts</div><div class="text-mute text-sm mt-1">New drops, every Friday at 8PM EST.</div></div>
+              <input type="checkbox" checked class="mt-1 accent-lime w-5 h-5" data-pref="dropAlerts">
+            </label>
+            <label class="flex items-start justify-between gap-6 py-5 hairline-b">
+              <div><div class="font-medium">Restocks</div><div class="text-mute text-sm mt-1">When something on your wishlist is back.</div></div>
+              <input type="checkbox" checked class="mt-1 accent-lime w-5 h-5" data-pref="restocks">
+            </label>
+            <label class="flex items-start justify-between gap-6 py-5 hairline-b">
+              <div><div class="font-medium">Member-only sales</div><div class="text-mute text-sm mt-1">Occasional, never spammy. ~1 per month.</div></div>
+              <input type="checkbox" class="mt-1 accent-lime w-5 h-5" data-pref="memberSales">
+            </label>
+            <label class="flex items-start justify-between gap-6 py-5 hairline-b">
+              <div><div class="font-medium">SMS updates</div><div class="text-mute text-sm mt-1">Order shipped, out for delivery. Required for transactional.</div></div>
+              <input type="checkbox" checked disabled class="mt-1 accent-lime w-5 h-5 opacity-60">
+            </label>
+            <button type="button" class="btn-lime mt-6" id="save-prefs-btn">Save preferences</button>
+          </div>
+        </div>
+
+      </main>
+    </div>
+  </section>
+
+  <footer class="hairline-t">
+    <div class="max-w-7xl mx-auto px-6 lg:px-10 pt-24 pb-12 grid sm:grid-cols-3 gap-12">
+      <div><img loading="lazy" src="/brand/logo-dark.svg" alt="BudgetThrills" class="h-7 w-auto mb-6"><p class="text-mute text-sm leading-relaxed max-w-xs">Trendy products. Budget prices. Real thrills.</p></div>
+      <div>                        <div class="eyebrow mb-5">Shop</div>
+        <ul class="space-y-3 text-sm">
+          <li><a href="/gaming.html" class="hover:text-lime transition">Gaming</a></li>
+          <li><a href="/collection.html" class="hover:text-lime transition">Drip</a></li>
+          <li><a href="/phones.html" class="hover:text-lime transition">Phones</a></li>
+          <li><a href="/tech.html" class="hover:text-lime transition">Tech</a></li>
+        </ul></div>
+      <div><div class="eyebrow mb-5">Brand</div><ul class="space-y-3 text-sm"><li><a href="/story.html" class="hover:text-lime transition">Story</a></li><li><a href="/help.html" class="hover:text-lime transition">Help &amp; Returns</a></li><li><a href="/contact.html" class="hover:text-lime transition">Contact</a></li></ul></div>
+    </div>
+    <div class="hairline-t"><div class="max-w-7xl mx-auto px-6 lg:px-10 py-6 flex justify-between text-[11px] tracking-[0.18em] uppercase text-mute"><div>&copy; 2026 BudgetThrills</div><div class="flex gap-8"><a href="/privacy.html" class="hover:text-ink">Privacy</a><a href="/terms.html" class="hover:text-ink">Terms</a></div></div></div>
+  </footer>
+  <script src="/scripts/main.js?v=25" defer></script>
+  <script src="/scripts/cart.js?v=25" defer></script>
+  <script>
+    function activateTab(tabName) {
+      if (!tabName) return;
+      const targetBtn = document.querySelector(`[data-tab="${tabName}"]`);
+      const targetPanel = document.querySelector(`[data-panel="${tabName}"]`);
+      if (!targetBtn || !targetPanel) return;
+      document.querySelectorAll('[data-tab]').forEach(x => x.classList.remove('active'));
+      document.querySelectorAll('[data-panel]').forEach(p => p.classList.remove('active'));
+      targetBtn.classList.add('active');
+      targetPanel.classList.add('active');
+    }
+
+    document.querySelectorAll('[data-tab]').forEach(b => {
+      b.addEventListener('click', () => {
+        activateTab(b.dataset.tab);
+        try { history.replaceState(null, '', '#' + b.dataset.tab); } catch(_) {}
+      });
+    });
+
+    // Check hash or URL query param on page load
+    const initialTab = (location.hash || '').replace('#', '') || (new URLSearchParams(location.search).get('tab'));
+    if (initialTab) {
+      activateTab(initialTab);
+    }
+    window.addEventListener('hashchange', () => {
+      const h = (location.hash || '').replace('#', '');
+      if (h) activateTab(h);
+    });
+  </script>
+  <script type="module" src="/scripts/auth.js?v=27"></script>
+</body>
+</html>

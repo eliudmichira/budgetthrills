@@ -1,0 +1,178 @@
+﻿<!doctype html>
+<html lang="en" class="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' blob: https://cdn.tailwindcss.com https://www.gstatic.com https://apis.google.com https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https://images.unsplash.com https://i.ebayimg.com https://lh3.googleusercontent.com https://*.googleusercontent.com; connect-src 'self' https://*.firebaseio.com https://*.googleapis.com https://firestore.googleapis.com https://www.gstatic.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com; frame-src 'self' https://*.firebaseapp.com https://accounts.google.com https://apis.google.com;">
+<title>Drops archive — BudgetThrills</title>
+<meta name="theme-color" content="#0A0A0A">
+<link rel="icon" type="image/svg+xml" href="/favicons/favicon.svg">
+
+<link rel="stylesheet" href="/styles/fonts.css">
+<link rel="stylesheet" href="/styles/app.css?v=4">
+<link rel="stylesheet" href="/styles/main.css?v=4">
+<script>(function(){try{var t=localStorage.getItem('bt-theme')||'dark';document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<style>
+  .drop-row { display: grid; grid-template-columns: 1fr; gap: 0; align-items: stretch; }
+  @media (min-width: 768px) { .drop-row { grid-template-columns: 320px 1fr; } }
+  @media (min-width: 1024px) { .drop-row { grid-template-columns: 420px 1fr 220px; } }
+  .drop-img { aspect-ratio: 4/5; overflow: hidden; }
+  .drop-img img { width:100%; height:100%; object-fit: cover; transition: transform .6s ease; }
+  .drop-row:hover .drop-img img { transform: scale(1.04); }
+  .drop-row.sold-out .drop-img img { filter: grayscale(1); opacity: .55; }
+</style>
+</head>
+<body class="bg-bg text-ink">
+
+  <div class="hairline-b"><div class="max-w-7xl mx-auto px-6 lg:px-10 h-10 flex items-center justify-between text-[11px] tracking-[0.18em] uppercase text-mute"><span>Free US shipping over $50</span><span class="hidden md:inline">USA · 2026</span></div></div>
+
+      <header class="sticky top-0 z-40 nav-shell">
+    <div class="max-w-7xl mx-auto px-6 lg:px-10 h-20 flex items-center justify-between">
+      <a href="/" class="flex items-center">
+        <img loading="lazy" src="/brand/logo-dark.svg" alt="BudgetThrills" class="h-7 w-auto">
+      </a>
+      <nav class="hidden md:flex items-center gap-10 text-[13px] font-medium">
+        <a href="/gaming.html" class="hover:text-lime transition">Gaming</a>
+        <a href="/collection.html" class="hover:text-lime transition">Drip</a>
+        <a href="/phones.html" class="hover:text-lime transition">Phones</a>
+        <a href="/tech.html" class="hover:text-lime transition">Tech</a>
+      </nav>
+      <div class="flex items-center gap-6 text-[13px] font-medium">
+        <a href="/search.html" class="hidden sm:flex items-center gap-2 hover:text-lime transition" aria-label="Search">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+          <span class="hidden lg:inline">Search</span>
+        </a>
+        <a href="/signin.html" class="hidden sm:flex items-center gap-2 hover:text-lime transition" aria-label="Sign in">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"/></svg>
+          <span class="hidden lg:inline">Account</span>
+        </a>
+        <button data-theme-toggle class="theme-toggle" aria-label="Toggle theme">
+          <svg class="icon-moon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+          <svg class="icon-sun" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+        </button>
+        <a href="/cart.html" class="flex items-center gap-2 hover:text-lime transition">
+          <span>Cart</span>
+          <span data-cart-count class="hidden bg-lime text-black text-[10px] font-bold rounded-full w-4 h-4 inline-flex items-center justify-center">0</span>
+        </a>
+        <button data-nav-toggle class="md:hidden" aria-label="Open menu">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+        </button>
+      </div>
+    </div>
+    <nav data-nav-menu class="hidden md:hidden hairline-t">
+      <div class="px-6 py-4 flex flex-col gap-4 text-sm">
+        <a href="/gaming.html" class="">Gaming</a>
+        <a href="/collection.html" class="">Drip</a>
+        <a href="/phones.html" class="">Phones</a>
+        <a href="/tech.html" class="">Tech</a>
+      </div>
+    </nav>
+  </header>
+
+  <section class="pt-16 pb-12 sm:pt-24 sm:pb-16 hairline-b">
+    <div class="max-w-7xl mx-auto px-6 lg:px-10">
+      <div class="eyebrow mb-6"><a href="/" class="hover:text-ink">Home</a> · Drops</div>
+      <h1 class="display text-[64px] sm:text-[140px] leading-[0.9]">47 drops<span class="text-lime">.</span><br>Every Friday<span class="text-lime">.</span></h1>
+      <p class="mt-10 text-mute text-lg max-w-xl leading-relaxed">A new edit lands every Friday at 8PM EST. Some sell out in hours, some restock once, some never again. Here's the archive.</p>
+      <div class="mt-10 flex flex-wrap gap-3 text-[12px] tracking-[0.18em] uppercase text-mute">
+        <button class="px-4 py-2 border hairline hover:border-ink hover:text-ink transition">All <span class="text-mute/60 ml-1">47</span></button>
+        <button class="px-4 py-2 border hairline hover:border-ink hover:text-ink transition">2026</button>
+        <button class="px-4 py-2 border hairline hover:border-ink hover:text-ink transition">2025</button>
+        <button class="px-4 py-2 border hairline hover:border-ink hover:text-ink transition">Sold out</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-8 sm:py-12">
+    <div class="max-w-7xl mx-auto px-6 lg:px-10 hairline-t">
+
+      <!-- Drop 04 (live) -->
+      <a href="/lookbook.html" class="drop-row hairline-b py-8 group block">
+        <div class="drop-img"><img loading="lazy" src="https://i.ebayimg.com/images/g/Tf4AAeSwEChqcrXi/s-l1600.jpg" alt=""></div>
+        <div class="px-0 md:px-10 py-6 md:py-2 self-center">
+          <div class="flex items-center gap-3 mb-4"><div class="eyebrow !text-lime">Drop 04 · Live</div></div>
+          <h2 class="display text-[36px] sm:text-[56px] leading-[0.95] group-hover:text-lime transition">The Neon<span class="text-lime">.</span></h2>
+          <p class="text-mute text-sm mt-4 max-w-lg">Lime is the message. Sneakers, eyewear, and a few audio drops. Shot on the streets of New York.</p>
+          <div class="text-mute text-xs mt-5 font-mono">Released 30 May 2026 · 12 styles · 7 in stock</div>
+        </div>
+        <div class="hidden lg:flex flex-col justify-center items-end pr-2 text-right">
+          <span class="display text-6xl text-lime leading-none">04</span>
+          <span class="text-[11px] tracking-[0.18em] uppercase text-mute mt-3">View →</span>
+        </div>
+      </a>
+
+      <!-- Drop 03 -->
+      <a href="/lookbook.html" class="drop-row hairline-b py-8 group block sold-out">
+        <div class="drop-img"><img loading="lazy" src="https://i.ebayimg.com/images/g/7lIAAOSwy4dkW9k4/s-l1600.jpg" alt=""></div>
+        <div class="px-0 md:px-10 py-6 md:py-2 self-center">
+          <div class="flex items-center gap-3 mb-4"><div class="eyebrow">Drop 03 · Sold out</div></div>
+          <h2 class="display text-[36px] sm:text-[56px] leading-[0.95] group-hover:text-lime transition">Off-Hours<span class="text-lime">.</span></h2>
+          <p class="text-mute text-sm mt-4 max-w-lg">Hi-tops, sling bags, smartwatches. Built for the 6PM-to-2AM window.</p>
+          <div class="text-mute text-xs mt-5 font-mono">Released 23 May 2026 · 14 styles · Sold out in 4 days</div>
+        </div>
+        <div class="hidden lg:flex flex-col justify-center items-end pr-2 text-right">
+          <span class="display text-6xl text-mute leading-none">03</span>
+          <span class="text-[11px] tracking-[0.18em] uppercase text-mute mt-3">Archive →</span>
+        </div>
+      </a>
+
+      <!-- Drop 02 -->
+      <a href="/lookbook.html" class="drop-row hairline-b py-8 group block sold-out">
+        <div class="drop-img"><img loading="lazy" src="https://i.ebayimg.com/images/g/EpwAAeSwUXpqjHjQ/s-l1600.jpg" alt=""></div>
+        <div class="px-0 md:px-10 py-6 md:py-2 self-center">
+          <div class="flex items-center gap-3 mb-4"><div class="eyebrow">Drop 02 · Sold out</div></div>
+          <h2 class="display text-[36px] sm:text-[56px] leading-[0.95] group-hover:text-lime transition">Court Side<span class="text-lime">.</span></h2>
+          <p class="text-mute text-sm mt-4 max-w-lg">Retro court sneakers, classic eyewear, vintage-leaning tech. Quiet pieces, loud value.</p>
+          <div class="text-mute text-xs mt-5 font-mono">Released 16 May 2026 · 10 styles · Sold out in 2 days</div>
+        </div>
+        <div class="hidden lg:flex flex-col justify-center items-end pr-2 text-right">
+          <span class="display text-6xl text-mute leading-none">02</span>
+          <span class="text-[11px] tracking-[0.18em] uppercase text-mute mt-3">Archive →</span>
+        </div>
+      </a>
+
+      <!-- Drop 01 -->
+      <a href="/lookbook.html" class="drop-row hairline-b py-8 group block sold-out">
+        <div class="drop-img"><img loading="lazy" src="https://i.ebayimg.com/images/g/RyYAAeSweY5qheTe/s-l1600.jpg" alt=""></div>
+        <div class="px-0 md:px-10 py-6 md:py-2 self-center">
+          <div class="flex items-center gap-3 mb-4"><div class="eyebrow">Drop 01 · Founding</div></div>
+          <h2 class="display text-[36px] sm:text-[56px] leading-[0.95] group-hover:text-lime transition">Day One<span class="text-lime">.</span></h2>
+          <p class="text-mute text-sm mt-4 max-w-lg">The first drop. Three sneakers, two phones, the cap that started the cap thing.</p>
+          <div class="text-mute text-xs mt-5 font-mono">Released 09 May 2026 · 6 styles · Founding members only</div>
+        </div>
+        <div class="hidden lg:flex flex-col justify-center items-end pr-2 text-right">
+          <span class="display text-6xl text-mute leading-none">01</span>
+          <span class="text-[11px] tracking-[0.18em] uppercase text-mute mt-3">Archive →</span>
+        </div>
+      </a>
+
+      <div class="py-16 text-center"><button class="px-5 py-3 border hairline text-[12px] tracking-[0.18em] uppercase hover:border-ink">Show drops from 2025 <span class="text-mute ml-2">+ 43</span></button></div>
+    </div>
+  </section>
+
+  <!-- Get notified -->
+  <section class="py-32 hairline-t">
+    <div class="max-w-7xl mx-auto px-6 lg:px-10 grid sm:grid-cols-2 gap-10 items-end">
+      <div><div class="eyebrow mb-5">Stay early</div><h2 class="display text-[40px] sm:text-[64px] leading-[0.95]">Members get the link 30 min early<span class="text-lime">.</span></h2></div>
+      <a href="/signup.html" class="btn-lime self-end">Join the list <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+    </div>
+  </section>
+
+  <footer class="hairline-t">
+    <div class="max-w-7xl mx-auto px-6 lg:px-10 pt-24 pb-12 grid sm:grid-cols-3 gap-12">
+      <div><img loading="lazy" src="/brand/logo-dark.svg" alt="BudgetThrills" class="h-7 w-auto mb-6"><p class="text-mute text-sm leading-relaxed max-w-xs">Trendy products. Budget prices. Real thrills.</p></div>
+      <div>                        <div class="eyebrow mb-5">Shop</div>
+        <ul class="space-y-3 text-sm">
+          <li><a href="/gaming.html" class="hover:text-lime transition">Gaming</a></li>
+          <li><a href="/collection.html" class="hover:text-lime transition">Drip</a></li>
+          <li><a href="/phones.html" class="hover:text-lime transition">Phones</a></li>
+          <li><a href="/tech.html" class="hover:text-lime transition">Tech</a></li>
+        </ul></div>
+      <div><div class="eyebrow mb-5">Brand</div><ul class="space-y-3 text-sm"><li><a href="/story.html" class="hover:text-lime transition">Story</a></li><li><a href="/help.html" class="hover:text-lime transition">Help &amp; Returns</a></li><li><a href="/contact.html" class="hover:text-lime transition">Contact</a></li></ul></div>
+    </div>
+    <div class="hairline-t"><div class="max-w-7xl mx-auto px-6 lg:px-10 py-6 flex justify-between text-[11px] tracking-[0.18em] uppercase text-mute"><div>© 2026 BudgetThrills</div><div class="flex gap-8"><a href="/privacy.html" class="hover:text-ink">Privacy</a><a href="/terms.html" class="hover:text-ink">Terms</a></div></div></div>
+  </footer>
+  <script src="/scripts/main.js?v=4" defer></script>
+  <script type="module" src="/scripts/auth.js"></script>
+</body>
+</html>

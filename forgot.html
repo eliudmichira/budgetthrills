@@ -1,0 +1,70 @@
+﻿<!doctype html>
+<html lang="en" class="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' blob: https://cdn.tailwindcss.com https://www.gstatic.com https://apis.google.com https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https://images.unsplash.com https://i.ebayimg.com https://lh3.googleusercontent.com https://*.googleusercontent.com; connect-src 'self' https://*.firebaseio.com https://*.googleapis.com https://firestore.googleapis.com https://www.gstatic.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com; frame-src 'self' https://*.firebaseapp.com https://accounts.google.com https://apis.google.com;">
+<title>Forgot password — BudgetThrills</title>
+<meta name="theme-color" content="#0A0A0A">
+<link rel="icon" type="image/svg+xml" href="/favicons/favicon.svg">
+<link rel="stylesheet" href="/styles/fonts.css">
+<link rel="stylesheet" href="/styles/app.css?v=4">
+<link rel="stylesheet" href="/styles/main.css?v=4">
+<link rel="stylesheet" href="/styles/auth.css">
+<script>(function(){try{var t=localStorage.getItem('bt-theme')||'dark';document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+</head>
+<body data-page="forgot">
+
+  <div class="auth-shell">
+    <div class="auth-art">
+      <div class="art-eyebrow">BudgetThrills · Recovery</div>
+      <a href="/signin.html" class="art-link">← Back to sign in</a>
+      <div class="art-h">Reset<br>password<span class="lime">.</span></div>
+    </div>
+
+    <div class="auth-pane">
+      <div class="auth-top">
+        <a href="/" class="flex items-center"><img loading="lazy" src="/brand/logo-dark.svg" alt="BudgetThrills" class="h-7 w-auto"></a>
+        <button data-theme-toggle class="theme-toggle" aria-label="Toggle theme"><svg class="icon-moon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg><svg class="icon-sun" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg></button>
+      </div>
+
+      <div class="auth-body">
+        <div id="step1">
+          <div class="eyebrow mb-4">Forgot password</div>
+          <h1 class="display text-[48px] sm:text-[64px] leading-[0.95] mb-3 lg:hidden">Reset it<span class="text-lime">.</span></h1>
+          <p class="text-mute mb-10">Enter the email tied to your account. We'll send you a reset link.</p>
+
+          <form data-forgot-form>
+            <div class="auth-field"><label>Email</label><input type="email" autocomplete="email" required></div>
+            <button type="submit" class="btn-lime btn-block">Send reset link <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 5l7 7-7 7"/></svg></button>
+          </form>
+
+          <p class="text-sm text-mute mt-10">Remembered it? <a href="/signin.html" class="text-ink hover:text-lime">Sign in →</a></p>
+        </div>
+
+        <div id="step2" class="hidden">
+          <div class="eyebrow mb-4">Check your inbox</div>
+          <h2 class="text-3xl font-semibold mb-3">Enter the code</h2>
+          <p class="text-mute mb-10">We sent a 6-digit code to <span id="sent-to" class="text-ink"></span>. It expires in 10 minutes.</p>
+
+          <form data-otp-form>
+            <div class="otp-grid mb-2" data-otp>
+              <input maxlength="1" inputmode="numeric"><input maxlength="1" inputmode="numeric"><input maxlength="1" inputmode="numeric"><input maxlength="1" inputmode="numeric"><input maxlength="1" inputmode="numeric"><input maxlength="1" inputmode="numeric">
+            </div>
+            <div class="text-xs text-mute mt-3 mb-8">Didn't get it? <button type="button" class="text-ink hover:text-lime underline underline-offset-4">Resend</button> · or <button type="button" class="text-ink hover:text-lime underline underline-offset-4">Use SMS instead</button></div>
+            <button type="submit" class="btn-lime btn-block">Verify code <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 5l7 7-7 7"/></svg></button>
+          </form>
+        </div>
+      </div>
+
+      <div class="auth-foot">
+        <a href="/help.html" class="hover:text-ink">Help</a>
+        <div class="flex gap-6"><a href="/privacy.html" class="hover:text-ink">Privacy</a><a href="/terms.html" class="hover:text-ink">Terms</a></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/scripts/main.js?v=4" defer></script>
+  <script type="module" src="/scripts/auth.js"></script>
+</body>
+</html>
