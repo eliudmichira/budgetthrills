@@ -100,14 +100,17 @@
 
   <script src="/scripts/main.js?v=4" defer></script>
   <script src="/scripts/products.js?v=4"></script>
+  <script type="module" src="/scripts/catalog-live.js?v=1"></script>
   <script>
-    const CATALOG = (window.BT_CATALOG || []).map(i => ({
+    const buildIndex = () => (window.BT_CATALOG || []).map(i => ({
       n: i.name,
       c: i.category,
       p: i.price,
       u: '/pdp.html?id=' + i.id,
       img: i.images ? i.images[0] : ''
     }));
+    let CATALOG = buildIndex();
+    window.addEventListener('bt:catalog-updated', () => { CATALOG = buildIndex(); if (typeof $q !== 'undefined' && $q) $q.dispatchEvent(new Event('input')); });
     const $q = document.getElementById('q');
     const $res = document.getElementById('results');
     const $empty = document.getElementById('empty');
