@@ -67,6 +67,12 @@ service cloud.firestore {
       allow write: if isAdmin();
     }
 
+    // Outgoing email log written by Cloud Functions; admins read it in the dashboard
+    match /email-log/{entryId} {
+      allow read: if isAdmin();
+      allow write: if false;
+    }
+
     // Compiled storefront catalog (one document, one read per visitor)
     match /catalog/{docId} {
       allow read: if true;

@@ -595,6 +595,33 @@
               </div>
             </div>
             <div class="card" style="margin-top:16px">
+              <div class="card-h"><h2>Email</h2><span id="email-state"></span></div>
+              <div class="card-b">
+                <div id="email-config" class="faint" style="font-size:13px">Checking configuration…</div>
+                <div style="display:flex;gap:8px;margin-top:12px"><button class="btn primary sm" id="email-send-test">Send test email to me</button><button class="btn sm" id="email-recheck">Re-check</button></div>
+                <div id="email-result" style="margin-top:10px;font-size:13px"></div>
+                <details style="margin-top:12px"><summary class="faint" style="cursor:pointer;font-size:12px">How to set up SendGrid without a domain</summary>
+                  <ol class="faint" style="font-size:12.5px;line-height:1.6;margin:8px 0 0;padding-left:18px">
+                    <li>Create a free account at sendgrid.com.</li>
+                    <li>Settings → Sender Authentication → <b>Single Sender Verification</b>. Verify the address you will send from (your Gmail is fine until you own a domain).</li>
+                    <li>Settings → API Keys → Create key with <b>Mail Send</b> access.</li>
+                    <li>In <span class="kbd">functions/.env</span> set <span class="kbd">SENDGRID_API_KEY</span> and <span class="kbd">SENDGRID_FROM_EMAIL</span> (the verified address), then <span class="kbd">firebase deploy --only functions</span>.</li>
+                    <li>Press "Send test email to me" above.</li>
+                  </ol>
+                </details>
+              </div>
+              <div class="card-h" style="border-top:1px solid var(--a-border)"><h2>Recent emails</h2></div>
+              <div class="list" id="email-log"><div class="empty">No emails sent yet.</div></div>
+            </div>
+            <div class="card" style="margin-top:16px">
+              <div class="card-h"><h2>Search engines</h2><a class="btn sm" href="/sitemap.xml" target="_blank" rel="noopener">Open sitemap</a></div>
+              <div class="list" style="font-size:13px">
+                <div class="li"><div class="t">Sitemap<small id="seo-sitemap">Checking…</small></div></div>
+                <div class="li"><div class="t">Submit it once in Google Search Console<small>search.google.com/search-console → Sitemaps → enter <span class="kbd">sitemap.xml</span>. It refreshes itself from the live catalog every 6 hours.</small></div></div>
+                <div class="li"><div class="t">Product pages carry structured data<small>Title, description, image, price and condition as schema.org Product, so listings qualify for rich results.</small></div></div>
+              </div>
+            </div>
+            <div class="card" style="margin-top:16px">
               <div class="card-h"><h2>Keyboard shortcuts</h2></div>
               <div class="list" style="font-size:13px">
                 <div class="li"><div class="t">Go to Overview / Orders / Catalog / Messages</div><span class="kbd">1</span> <span class="kbd">2</span> <span class="kbd">3</span> <span class="kbd">4</span></div>
@@ -624,7 +651,7 @@
 import { db, auth } from '/scripts/firebase-init.js';
 import { onAuthStateChanged, signOut, getIdToken } from 'https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js';
 import {
-  collection, query, orderBy, onSnapshot, doc, getDoc, getDocs, setDoc, updateDoc, addDoc, deleteDoc,
+  collection, query, orderBy, limit, onSnapshot, doc, getDoc, getDocs, setDoc, updateDoc, addDoc, deleteDoc,
   serverTimestamp, arrayUnion, writeBatch, increment
 } from 'https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js';
 
@@ -722,6 +749,7 @@ function go(page) {
   $('#page-title').textContent = TITLES[page][0]; $('#page-sub').textContent = TITLES[page][1];
   if (location.hash !== '#' + page) history.replaceState(null, '', '#' + page);
   window.scrollTo({ top: 0 });
+  window.dispatchEvent(new CustomEvent('bt:page', { detail: page }));
 }
 $('#mobile-nav').innerHTML = $('#nav').innerHTML;
 document.addEventListener('click', (e) => {
@@ -792,6 +820,7 @@ onAuthStateChanged(auth, async (user) => {
   $('#signout-btn').classList.remove('hidden');
   startStreams();
   go(location.hash.slice(1) || 'overview');
+  window.dispatchEvent(new CustomEvent('bt:admin-ready'));
 });
 $('#signout-btn').addEventListener('click', () => signOut(auth).then(() => location.reload()));
 
@@ -824,6 +853,10 @@ function startStreams() {
   S.unsub.push(onSnapshot(doc(db, 'settings', 'sync'), (snap) => {
     S.sync = snap.exists() ? snap.data() : null; renderSync();
   }, (err) => showRulesBanner('settings/sync', err)));
+
+  S.unsub.push(onSnapshot(query(collection(db, 'email-log'), orderBy('at', 'desc'), limit(12)), (snap) => {
+    renderEmailLog(snap.docs.map(d => d.data()));
+  }, (err) => console.warn('email-log', err.message)));
 
   S.unsub.push(onSnapshot(doc(db, 'settings', 'store'), (snap) => {
     S.settings = snap.exists() ? snap.data() : null; renderSettings();
@@ -1300,9 +1333,9 @@ $('#sy-save-cats').addEventListener('click', async () => {
   const cats = syncCatsDraft.filter(c => c.name).map(c => ({ name: c.name, weight: Number(c.weight) || 0, url: c.url || '/trending.html', keywords: c.keywords || [] }));
   try { await setDoc(doc(db, 'settings', 'sync'), { categories: cats, updatedAt: serverTimestamp(), updatedBy: S.user.email }, { merge: true }); toast('Categories saved'); } catch (err) { toast('Save failed: ' + err.message, true); }
 });
-async function adminFetch(url) {
+async function adminFetch(url, body) {
   const token = await getIdToken(S.user, true);
-  const res = await fetch(url, { method: 'POST', headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' }, body: '{}' });
+  const res = await fetch(url, { method: 'POST', headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' }, body: JSON.stringify(body || {}) });
   const data = await res.json().catch(() => ({}));
   if (!res.ok) throw new Error(data.error || ('HTTP ' + res.status));
   return data;
@@ -1423,6 +1456,39 @@ $('#settings-form').addEventListener('submit', async (e) => {
   const data = { freeShippingMin: +$('#s-freemin').value || 0, standardShipping: +$('#s-std').value || 0, expressShipping: +$('#s-exp').value || 0, returnDays: +$('#s-ret').value || 0, supportEmail: $('#s-support').value.trim(), notice: $('#s-notice').value.trim(), updatedAt: serverTimestamp(), updatedBy: S.user.email };
   try { await setDoc(doc(db, 'settings', 'store'), data, { merge: true }); toast('Settings saved'); } catch (err) { toast('Save failed: ' + err.message, true); }
 });
+/* ============================== email + seo ============================== */
+function renderEmailLog(entries) {
+  const el = $('#email-log'); if (!el) return;
+  el.innerHTML = entries.length ? entries.map(e => `<div class="li" style="padding:8px 18px"><span class="st ${e.status === 'sent' ? 'good' : e.status === 'failed' ? 'bad' : 'warn'}" style="flex:none">${esc(e.status)}</span><div class="t"><div class="truncate">${esc(e.subject || e.kind)}</div><small class="truncate">${esc(e.kind)} · ${esc(e.to)}${e.error ? ' · ' + esc(e.error) : ''}</small></div><span class="faint" style="flex:none">${rel(toDate(e.at))}</span></div>`).join('') : '<div class="empty">No emails sent yet.</div>';
+}
+async function checkEmailConfig() {
+  const box = $('#email-config'), state = $('#email-state');
+  try {
+    const r = await adminFetch('/api/email-test', { check: true });
+    state.innerHTML = r.configured ? '<span class="st good">Configured</span>' : '<span class="st warn">Not configured</span>';
+    box.innerHTML = r.configured ? `Sending as <b style="color:var(--a-text)">${esc(r.fromName)} &lt;${esc(r.from)}&gt;</b>${r.supportEmail && r.supportEmail !== r.from ? ` · replies to ${esc(r.supportEmail)}` : ''}${r.adminEmail ? ` · alerts to ${esc(r.adminEmail)}` : ''}` : `<ul style="margin:0;padding-left:18px">${(r.problems || []).map(x => `<li>${esc(x)}</li>`).join('')}</ul>`;
+  } catch (err) {
+    state.innerHTML = '<span class="st neutral">Unknown</span>';
+    box.textContent = 'Could not reach the email function: ' + err.message + '. Deploy functions first.';
+  }
+}
+$('#email-recheck').addEventListener('click', checkEmailConfig);
+$('#email-send-test').addEventListener('click', async () => {
+  const btn = $('#email-send-test'), out = $('#email-result'); btn.disabled = true; out.textContent = 'Sending…';
+  try { const r = await adminFetch('/api/email-test'); out.innerHTML = `<span class="st good">Sent</span> Check ${esc(r.sentTo)} (and the spam folder the first time).`; }
+  catch (err) { out.innerHTML = `<span class="st bad">Failed</span> ${esc(err.message)}`; }
+  btn.disabled = false;
+});
+async function checkSitemap() {
+  const el = $('#seo-sitemap'); if (!el) return;
+  try { const res = await fetch('/sitemap.xml', { cache: 'no-store' }); const txt = await res.text(); const urls = (txt.match(/<url>/g) || []).length, prods = (txt.match(/pdp\.html/g) || []).length; el.textContent = res.ok && urls ? `${urls} URLs · ${prods} product pages · served live` : 'Not available yet. Deploy functions and hosting.'; }
+  catch (e) { el.textContent = 'Could not fetch sitemap: ' + e.message; }
+}
+let settingsChecked = false;
+function checkSettingsPage() { if (S.page === 'settings' && S.user && !settingsChecked) { settingsChecked = true; checkEmailConfig(); checkSitemap(); } }
+window.addEventListener('bt:page', checkSettingsPage);
+window.addEventListener('bt:admin-ready', checkSettingsPage);
+
 renderSettings();
 renderCatalogChips();
 renderSync();

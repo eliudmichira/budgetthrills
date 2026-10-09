@@ -9,7 +9,8 @@
     "watch:css": "tailwindcss -i ./styles/tailwind.css -o ./styles/app.css --watch",
     "sync": "node scripts/sync-ebay.js",
     "fulfill": "node scripts/fulfill-order.js",
-    "inject": "node scripts/inject-static-catalog.js"
+    "inject": "node scripts/inject-static-catalog.js",
+    "sitemap:static": "node scripts/build-static-catalog.js"
   },
   "devDependencies": {
     "tailwindcss": "^3.4.17"

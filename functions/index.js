@@ -12,11 +12,44 @@ const crypto = require("crypto");
 const sgMail = require("@sendgrid/mail");
 initializeApp();
 const db = getFirestore("default");
-// Configure SendGrid API key from environment variable
-// Set with: firebase functions:config:set sendgrid.key="SG.xxx"
-const SENDGRID_KEY = process.env.SENDGRID_API_KEY || "";
-const FROM_EMAIL = "hello@budgetthrills.com";
-const FROM_NAME = "BudgetThrills";
+// ─── Email (SendGrid) ─────────────────────────────────────────────────────────
+// All values come from functions/.env. Without a domain, verify a single sender
+// address in SendGrid (Settings > Sender Authentication > Single Sender) and use
+// that address as SENDGRID_FROM_EMAIL. Every send is recorded in email-log/.
+const SENDGRID_KEY  = process.env.SENDGRID_API_KEY || "";
+const FROM_EMAIL    = process.env.SENDGRID_FROM_EMAIL || "";
+const FROM_NAME     = process.env.SENDGRID_FROM_NAME || "BudgetThrills";
+const SUPPORT_EMAIL = process.env.SUPPORT_EMAIL || FROM_EMAIL;
+const MAIL_READY    = !!(SENDGRID_KEY && FROM_EMAIL);
+const mailFrom = (name) => ({ email: FROM_EMAIL, name: name || FROM_NAME });
+function mailConfigProblems() {
+  const p = [];
+  if (!SENDGRID_KEY) p.push("SENDGRID_API_KEY is not set");
+  else if (!/^SG\./.test(SENDGRID_KEY)) p.push("SENDGRID_API_KEY does not look like a SendGrid key (should start with SG.)");
+  if (!FROM_EMAIL) p.push("SENDGRID_FROM_EMAIL is not set (must be a verified sender in SendGrid)");
+  return p;
+}
+/** Sends through SendGrid and records the outcome. Throws on failure so callers' sent-flags stay unset. */
+async function sendMail(kind, msg) {
+  const entry = { kind, to: Array.isArray(msg.to) ? msg.to.join(", ") : String(msg.to || ""), subject: msg.subject || "", at: new Date(), status: "sent" };
+  const record = () => db.collection("email-log").add(entry).catch((e) => console.warn("email-log write failed:", e.message));
+  if (!MAIL_READY) {
+    entry.status = "skipped"; entry.error = mailConfigProblems().join("; ");
+    console.warn(`Email (${kind}) skipped: ${entry.error}`); await record();
+    throw new Error(entry.error);
+  }
+  try {
+    sgMail.setApiKey(SENDGRID_KEY);
+    const payload = { ...msg, from: msg.from || mailFrom(), replyTo: msg.replyTo || SUPPORT_EMAIL || undefined };
+    await sgMail.send(payload);
+    await record();
+  } catch (err) {
+    const detail = err.response?.body?.errors?.map((e) => e.message).join("; ") || err.message;
+    entry.status = "failed"; entry.error = detail;
+    console.error(`Email (${kind}) to ${entry.to} failed: ${detail}`); await record();
+    throw new Error(detail);
+  }
+}
 
 /**
  * Firestore trigger: when a new document is written to
@@ -77,7 +110,7 @@ exports.sendReplyEmail = onDocumentCreated(
 
     const emailText = `Hey ${original.name || "there"},\n\n${reply.body}\n\n---\nRe: ${original.topic || "General question"}${original.orderNumber ? " · Order " + original.orderNumber : ""}\nYour message: "${(original.message || "").substring(0, 120)}"\n\nBudgetThrills · budgetthrills.com`;
 
-    if (!SENDGRID_KEY) {
+    if (!MAIL_READY) {
       console.warn("SENDGRID_API_KEY not set. Saving reply but not sending email.");
       // Still mark reply as sent (no email provider configured)
       await db
@@ -96,19 +129,17 @@ exports.sendReplyEmail = onDocumentCreated(
       return;
     }
 
-    sgMail.setApiKey(SENDGRID_KEY);
-
     const msg = {
       to: reply.toEmail,
-      from: { email: FROM_EMAIL, name: FROM_NAME },
+      from: mailFrom(),
       subject: subject,
       text: emailText,
       html: emailHtml,
-      replyTo: { email: FROM_EMAIL, name: FROM_NAME },
+      replyTo: SUPPORT_EMAIL,
     };
 
     try {
-      await sgMail.send(msg);
+      await sendMail("reply", msg);
       console.log(`Reply email sent to ${reply.toEmail} for message ${msgId}`);
 
       // Mark reply as sent
@@ -154,13 +185,11 @@ exports.onOrderPaid = onDocumentWritten(
 
   const order = after;
 
-  if (!SENDGRID_KEY) {
+  if (!MAIL_READY) {
     console.warn("SENDGRID_API_KEY not set — skipping confirmation email for", orderId);
     return null;
   }
   if (!order.email) { console.warn("Order", orderId, "has no email"); return null; }
-
-  sgMail.setApiKey(SENDGRID_KEY);
 
   const items    = order.items || [];
   const total    = items.reduce((s, it) => s + (it.price || 0) * (it.qty || 1), 0);
@@ -189,10 +218,10 @@ exports.onOrderPaid = onDocumentWritten(
 </div></body></html>`;
 
   try {
-    await sgMail.send({
+    await sendMail("order-confirmation", {
       to:      order.email,
-      from:    { email: FROM_EMAIL, name: FROM_NAME },
-      replyTo: "support@budgetthrills.com",
+      from: mailFrom(),
+      replyTo: SUPPORT_EMAIL,
       subject: `Your order ${order.id || orderId} is confirmed \u2713`,
       html,
       text: `Order ${order.id || orderId} confirmed!\n\nTotal: $${total.toFixed(2)}\nShipping to: ${order.address || "\u2014"}\n\nTrack: https://budgetthrills.web.app/track.html\nHelp: support@budgetthrills.com`
@@ -211,19 +240,17 @@ exports.onContactMessage = onDocumentCreated(
   async (event) => {
   const msg = event.data.data();
 
-  if (!SENDGRID_KEY) {
+  if (!MAIL_READY) {
     console.warn("SENDGRID_API_KEY not set \u2014 skipping admin alert");
     return null;
   }
-
-  sgMail.setApiKey(SENDGRID_KEY);
-  const adminEmail = process.env.ADMIN_EMAIL || "hello@budgetthrills.com";
+  const adminEmail = process.env.ADMIN_EMAIL || FROM_EMAIL;
 
   try {
-    await sgMail.send({
+    await sendMail("contact-alert", {
       to:      adminEmail,
-      from:    { email: FROM_EMAIL, name: "BudgetThrills Notifications" },
-      replyTo: msg.email || "no-reply@budgetthrills.com",
+      from: mailFrom("BudgetThrills Notifications"),
+      replyTo: msg.email || SUPPORT_EMAIL,
       subject: `[Contact] ${msg.topic || "General"} \u2014 ${msg.name || msg.email}`,
       text: [
         "New contact form submission",
@@ -528,16 +555,15 @@ exports.onOrderFulfilment = onDocumentWritten({ document: "orders/{orderId}", da
   }
 
   if (after.status === "shipped" && after.trackingNumber && !after.shippedEmailSent && after.email) {
-    if (!SENDGRID_KEY) { console.warn("SENDGRID_API_KEY not set — skipping shipping email for", orderId); }
+    if (!MAIL_READY) { console.warn("SENDGRID_API_KEY not set — skipping shipping email for", orderId); }
     else {
-      sgMail.setApiKey(SENDGRID_KEY);
       const carrier = after.carrier || "Carrier", tn = after.trackingNumber;
       const links = { USPS: `https://tools.usps.com/go/TrackConfirmAction?tLabels=${encodeURIComponent(tn)}`, UPS: `https://www.ups.com/track?tracknum=${encodeURIComponent(tn)}`, FedEx: `https://www.fedex.com/fedextrack/?trknbr=${encodeURIComponent(tn)}`, DHL: `https://www.dhl.com/us-en/home/tracking.html?tracking-id=${encodeURIComponent(tn)}` };
       const trackUrl = links[carrier] || "https://budgetthrills.web.app/track.html";
       const items = (after.items || []).map((it) => `<li>${it.name}${it.qty > 1 ? " × " + it.qty : ""}</li>`).join("");
       try {
-        await sgMail.send({
-          to: after.email, from: { email: FROM_EMAIL, name: FROM_NAME }, replyTo: "support@budgetthrills.com",
+        await sendMail("order-shipped", {
+          to: after.email, from: mailFrom(), replyTo: SUPPORT_EMAIL,
           subject: `Your order ${after.id || orderId} has shipped`,
           html: `<div style="font-family:Inter,system-ui,sans-serif;max-width:560px;margin:0 auto;padding:32px 24px;background:#0A0A0A;color:#F2F2F2"><div style="color:#BFFF1A;font-size:22px;font-weight:900;margin-bottom:24px">BudgetThrills</div><h1 style="font-size:28px;margin:0 0 8px">On its way<span style="color:#BFFF1A">.</span></h1><p style="color:#A1A1AA">Order <strong style="color:#F2F2F2">${after.id || orderId}</strong> shipped with ${carrier}.</p><p style="margin:20px 0"><a href="${trackUrl}" style="background:#BFFF1A;color:#000;padding:12px 20px;border-radius:4px;text-decoration:none;font-weight:700">Track ${tn}</a></p><ul style="color:#D4D4D8;padding-left:18px">${items}</ul><p style="color:#6E6E6E;font-size:13px;margin-top:24px">Shipping to: ${after.address || ""}<br>Questions? Reply to this email.</p></div>`,
           text: `Order ${after.id || orderId} has shipped with ${carrier}. Tracking: ${tn}\n${trackUrl}`
@@ -550,6 +576,61 @@ exports.onOrderFulfilment = onDocumentWritten({ document: "orders/{orderId}", da
   if (Object.keys(patch).length) await ref.set(patch, { merge: true });
   return null;
 });
+
+/** POST /api/email-test — admin only. {check:true} reports configuration; otherwise sends a test email to the admin. */
+exports.emailTest = onRequest({ cors: true }, async (req, res) => {
+  if (req.method !== "POST") return res.status(405).json({ error: "Method not allowed." });
+  const admin = await requireAdmin(req);
+  if (!admin) return res.status(403).json({ error: "Admin sign-in required." });
+  const problems = mailConfigProblems();
+  const status = { configured: problems.length === 0, problems, from: FROM_EMAIL || null, fromName: FROM_NAME, supportEmail: SUPPORT_EMAIL || null, adminEmail: process.env.ADMIN_EMAIL || null };
+  if (req.body?.check) return res.json(status);
+  const to = admin.email;
+  if (!to) return res.status(400).json({ ...status, error: "Your admin account has no email address." });
+  try {
+    await sendMail("test", { to, subject: "BudgetThrills test email", text: `This is a test from the BudgetThrills admin. Sent by ${to} at ${new Date().toISOString()}.`,
+      html: `<div style="font-family:Inter,system-ui,sans-serif;padding:24px"><h2 style="margin:0 0 8px">Email is working<span style="color:#BFFF1A">.</span></h2><p>Sent from <b>${FROM_EMAIL}</b> via SendGrid by ${to}.</p><p style="color:#666;font-size:12px">Order confirmations, shipping notices and contact replies will use this sender.</p></div>` });
+    return res.json({ ...status, ok: true, sentTo: to });
+  } catch (err) {
+    return res.status(502).json({ ...status, ok: false, error: err.message });
+  }
+});
+
+// ─── Sitemap ──────────────────────────────────────────────────────────────────
+const SITE_PAGES = [
+  ["/", "daily", "1.0"], ["/trending.html", "daily", "0.9"], ["/collection.html", "daily", "0.8"], ["/phones.html", "daily", "0.8"],
+  ["/tech.html", "daily", "0.8"], ["/accessories.html", "daily", "0.8"], ["/gaming.html", "daily", "0.8"], ["/drops.html", "weekly", "0.6"],
+  ["/lookbook.html", "monthly", "0.4"], ["/story.html", "monthly", "0.4"], ["/help.html", "monthly", "0.5"], ["/contact.html", "monthly", "0.4"],
+  ["/size-guide.html", "monthly", "0.3"], ["/track.html", "monthly", "0.3"]
+];
+const xmlEsc = (v) => String(v ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&apos;" }[c]));
+function buildSitemapXml(products, base) {
+  const now = new Date().toISOString().slice(0, 10);
+  const pages = SITE_PAGES.map(([path, freq, pri]) => `  <url><loc>${xmlEsc(base + path)}</loc><lastmod>${now}</lastmod><changefreq>${freq}</changefreq><priority>${pri}</priority></url>`);
+  const items = (products || []).filter((p) => p && p.id).map((p) => {
+    const lastmod = p.updatedAt ? new Date(p.updatedAt).toISOString().slice(0, 10) : (p.firstSeenAt ? new Date(p.firstSeenAt).toISOString().slice(0, 10) : now);
+    const img = Array.isArray(p.images) && p.images[0] ? `<image:image><image:loc>${xmlEsc(p.images[0])}</image:loc><image:title>${xmlEsc(p.name)}</image:title></image:image>` : "";
+    return `  <url><loc>${xmlEsc(`${base}/pdp.html?id=${encodeURIComponent(p.id)}`)}</loc><lastmod>${lastmod}</lastmod><changefreq>daily</changefreq><priority>0.6</priority>${img}</url>`;
+  });
+  return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">\n${pages.concat(items).join("\n")}\n</urlset>\n`;
+}
+let staticCatalogCache = null;
+function staticCatalog() {
+  if (staticCatalogCache) return staticCatalogCache;
+  try { staticCatalogCache = require("./static-catalog.json"); } catch (e) { staticCatalogCache = []; }
+  return staticCatalogCache;
+}
+/** GET /sitemap.xml — every live product plus the site pages; cached at the CDN for 6 hours. */
+exports.sitemap = onRequest({ cors: false }, async (req, res) => {
+  const base = (PUBLIC_BASE_URL || `https://${req.hostname || "budgetthrills.web.app"}`).replace(/\/$/, "");
+  let products = [];
+  try { const snap = await db.collection("catalog").doc("live").get(); products = snap.exists ? (snap.data().products || []) : []; } catch (e) { console.warn("sitemap: catalog read failed", e.message); }
+  if (!products.length) products = staticCatalog();
+  res.set("Content-Type", "application/xml; charset=utf-8");
+  res.set("Cache-Control", "public, max-age=3600, s-maxage=21600");
+  return res.status(200).send(buildSitemapXml(products, base));
+});
+exports._buildSitemapXml = buildSitemapXml;
 
 /** POST /api/track-order — guest order lookup by order number + email (no public Firestore read) */
 exports.trackOrder = onRequest({ cors: true }, async (req, res) => {

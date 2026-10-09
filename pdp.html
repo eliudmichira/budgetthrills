@@ -6,6 +6,16 @@
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' blob: https://cdn.tailwindcss.com https://www.gstatic.com https://apis.google.com https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https://images.unsplash.com https://i.ebayimg.com https://lh3.googleusercontent.com https://*.googleusercontent.com; connect-src 'self' https://*.firebaseio.com https://*.googleapis.com https://firestore.googleapis.com https://www.gstatic.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com; frame-src 'self' https://*.firebaseapp.com https://accounts.google.com https://apis.google.com;">
 <title>Nike Quest 5 PRM — BudgetThrills</title>
 <meta name="theme-color" content="#0A0A0A">
+<meta name="description" id="meta-desc" content="Shop below-retail finds from top-rated US sellers with tracked delivery and 30-day returns.">
+<link rel="canonical" id="meta-canonical" href="https://budgetthrills.web.app/pdp.html">
+<meta property="og:type" content="product">
+<meta property="og:site_name" content="BudgetThrills">
+<meta property="og:title" id="og-title" content="BudgetThrills">
+<meta property="og:description" id="og-desc" content="Below-retail finds from top-rated US sellers.">
+<meta property="og:image" id="og-image" content="https://budgetthrills.web.app/brand/cover-1920x1080.png">
+<meta property="og:url" id="og-url" content="https://budgetthrills.web.app/pdp.html">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json" id="ld-product">{}</script>
 
 <link rel="icon" type="image/svg+xml" href="/favicons/favicon.svg">
 <link rel="apple-touch-icon" sizes="180x180" href="/favicons/apple-touch-icon.png">
@@ -339,6 +349,20 @@
 
     // Title
     document.title = p.name + ' — BudgetThrills';
+    // SEO: description, canonical, Open Graph and schema.org Product for this listing
+    try {
+      const origin = location.origin.startsWith('http') ? location.origin : 'https://budgetthrills.web.app';
+      const url = origin + '/pdp.html?id=' + encodeURIComponent(p.id);
+      const descText = ((p.desc || '') + ' ' + (p.details || '')).replace(/\s+/g, ' ').trim().slice(0, 155);
+      const set = (sel, attr, val) => { const el = document.querySelector(sel); if (el && val) el.setAttribute(attr, val); };
+      set('#meta-desc', 'content', descText); set('#meta-canonical', 'href', url);
+      set('#og-title', 'content', p.name + ' — BudgetThrills'); set('#og-desc', 'content', descText); set('#og-image', 'content', p.images && p.images[0]); set('#og-url', 'content', url);
+      const cond = /refurb/i.test(p.tag || '') ? 'https://schema.org/RefurbishedCondition' : /new/i.test(p.tag || '') ? 'https://schema.org/NewCondition' : 'https://schema.org/UsedCondition';
+      const ld = { '@context': 'https://schema.org', '@type': 'Product', name: p.name, image: (p.images || []).slice(0, 6), description: descText, sku: p.id, category: p.category,
+        ...(p.brand ? { brand: { '@type': 'Brand', name: p.brand } } : {}),
+        offers: { '@type': 'Offer', url, priceCurrency: 'USD', price: Number(p.price).toFixed(2), availability: 'https://schema.org/InStock', itemCondition: cond, shippingDetails: { '@type': 'OfferShippingDetails', shippingDestination: { '@type': 'DefinedRegion', addressCountry: 'US' } }, hasMerchantReturnPolicy: { '@type': 'MerchantReturnPolicy', applicableCountry: 'US', returnPolicyCategory: 'https://schema.org/MerchantReturnFiniteReturnWindow', merchantReturnDays: 30 } } };
+      const ldEl = document.getElementById('ld-product'); if (ldEl) ldEl.textContent = JSON.stringify(ld);
+    } catch (e) { console.warn('SEO meta', e); }
     const h1 = document.querySelector('h1.display');
     if (h1) h1.innerHTML = p.name + '<span class="text-lime">.</span>';
 
