@@ -390,6 +390,42 @@ exports.nowpaymentsWebhook = onRequest({ cors: true }, async (req, res) => {
 });
 
 /** POST /api/create-checkout-session — Stripe Checkout (card, Apple Pay, Google Pay) */
+/**
+ * Builds Stripe line items whose sum equals the order total exactly. A promo discount is
+ * allocated proportionally across the items instead of using the Coupons API, so a
+ * restricted key (rk_live_...) without "Coupons: write" still charges the right amount.
+ * Returns { lineItems, totalCents }.
+ */
+function buildStripeLineItems(order) {
+  const cents = (n) => Math.round((Number(n) || 0) * 100);
+  const items = (order.items || []).map((it) => ({
+    name: String(it.name || "Item").substring(0, 120),
+    image: it.image && /^https?:\/\//.test(it.image) ? [it.image] : [],
+    qty: Math.max(1, Number(it.qty) || 1),
+    unit: cents(it.price)
+  })).filter((it) => it.unit > 0);
+  const shipping = cents(order.shipping);
+  const discount = Math.min(cents(order.discount), items.reduce((s, it) => s + it.unit * it.qty, 0));
+
+  let lineItems;
+  if (discount > 0 && items.length) {
+    // Collapse each line to quantity 1 so the discounted amount is exact to the cent.
+    const subtotal = items.reduce((s, it) => s + it.unit * it.qty, 0);
+    let allocated = 0;
+    lineItems = items.map((it, i) => {
+      const gross = it.unit * it.qty;
+      const share = i === items.length - 1 ? discount - allocated : Math.round(discount * gross / subtotal);
+      allocated += share;
+      return { quantity: 1, price_data: { currency: "usd", unit_amount: gross - share, product_data: { name: it.qty > 1 ? `${it.name} × ${it.qty}` : it.name, images: it.image, description: order.promoCode ? `Includes ${order.promoCode} discount` : "Includes discount" } } };
+    }).filter((li) => li.price_data.unit_amount > 0);
+  } else {
+    lineItems = items.map((it) => ({ quantity: it.qty, price_data: { currency: "usd", unit_amount: it.unit, product_data: { name: it.name, images: it.image } } }));
+  }
+  if (shipping > 0) lineItems.push({ quantity: 1, price_data: { currency: "usd", unit_amount: shipping, product_data: { name: "Shipping" } } });
+  const totalCents = lineItems.reduce((s, li) => s + li.price_data.unit_amount * li.quantity, 0);
+  return { lineItems, totalCents };
+}
+
 exports.createCheckoutSession = onRequest({ cors: true }, async (req, res) => {
   if (req.method !== "POST") return res.status(405).json({ error: "Method not allowed. Use POST." });
   if (!STRIPE_SECRET_KEY) return res.status(503).json({ error: "Card payments are not configured yet (STRIPE_SECRET_KEY missing). Please pay with crypto." });
@@ -401,36 +437,23 @@ exports.createCheckoutSession = onRequest({ cors: true }, async (req, res) => {
   const origin = siteOrigin(req);
   try {
     const stripe = require("stripe")(STRIPE_SECRET_KEY);
-    const items = (order.items || []).map((it) => ({
-      quantity: Math.max(1, Number(it.qty) || 1),
-      price_data: {
-        currency: "usd",
-        unit_amount: Math.round((Number(it.price) || 0) * 100),
-        product_data: { name: String(it.name || "Item").substring(0, 120), images: it.image && /^https?:\/\//.test(it.image) ? [it.image] : [] }
-      }
-    }));
-    if (Number(order.shipping) > 0) {
-      items.push({ quantity: 1, price_data: { currency: "usd", unit_amount: Math.round(Number(order.shipping) * 100), product_data: { name: "Shipping" } } });
+    const { lineItems, totalCents } = buildStripeLineItems(order);
+    const expected = Math.round(Number(order.total) * 100);
+    if (!lineItems.length) return res.status(400).json({ error: "Order has no payable items." });
+    if (Math.abs(totalCents - expected) > 1) {
+      console.error(`Order ${orderId}: line items total ${totalCents} but order total is ${expected}`);
+      return res.status(400).json({ error: "Order totals do not add up. Please rebuild your cart and try again." });
     }
-    const sessionParams = {
+    const session = await stripe.checkout.sessions.create({
       mode: "payment",
-      line_items: items,
+      line_items: lineItems,
       client_reference_id: String(orderId),
       customer_email: customerEmail || order.email || undefined,
-      metadata: { orderId: String(orderId) },
+      metadata: { orderId: String(orderId), promoCode: order.promoCode || "" },
       success_url: `${origin}/order-confirmation.html?id=${encodeURIComponent(orderId)}&status=paid`,
       cancel_url: `${origin}/checkout.html?status=cancelled`
-    };
-    if (Number(order.discount) > 0) {
-      try {
-        const coupon = await stripe.coupons.create({ amount_off: Math.round(Number(order.discount) * 100), currency: "usd", duration: "once", name: order.promoCode || "Discount" });
-        sessionParams.discounts = [{ coupon: coupon.id }];
-      } catch (couponErr) {
-        console.warn("Could not create Stripe coupon, continuing without discount object:", couponErr.message);
-      }
-    }
-    const session = await stripe.checkout.sessions.create(sessionParams);
-    await markOrder(orderId, { paymentProvider: "stripe", stripeSessionId: session.id });
+    });
+    await markOrder(orderId, { paymentProvider: "stripe", stripeSessionId: session.id, stripeAmount: totalCents / 100 });
     return res.status(200).json({ checkout_url: session.url, session_id: session.id });
   } catch (err) {
     console.error("Stripe session creation failed:", err);
@@ -455,7 +478,11 @@ exports.stripeWebhook = onRequest({ cors: false }, async (req, res) => {
     const orderId = obj.metadata?.orderId || obj.client_reference_id;
     if (event.type === "checkout.session.completed" && orderId) {
       if (obj.payment_status === "paid") {
-        await markOrder(orderId, { status: "paid", paymentStatus: "paid", paidAt: new Date().toISOString(), paymentMethod: "Card (Stripe)", stripePaymentIntent: obj.payment_intent || null, amountPaid: (obj.amount_total || 0) / 100 });
+        const snap = await getFirestore().collection("orders").doc(String(orderId)).get();
+        const expected = snap.exists ? Math.round(Number(snap.data().total) * 100) : null;
+        const mismatch = expected !== null && Math.abs((obj.amount_total || 0) - expected) > 1;
+        if (mismatch) console.error(`Order ${orderId}: Stripe charged ${obj.amount_total} but order total is ${expected}`);
+        await markOrder(orderId, { status: "paid", paymentStatus: "paid", paidAt: new Date().toISOString(), paymentMethod: "Card (Stripe)", stripePaymentIntent: obj.payment_intent || null, amountPaid: (obj.amount_total || 0) / 100, ...(mismatch ? { amountMismatch: true, adminNote: "Stripe charge did not match order total; review before shipping." } : {}) });
       }
     } else if (event.type === "checkout.session.async_payment_succeeded" && orderId) {
       await markOrder(orderId, { status: "paid", paymentStatus: "paid", paidAt: new Date().toISOString(), paymentMethod: "Card (Stripe)" });
@@ -534,3 +561,5 @@ exports.publishCatalog = onRequest({ cors: true }, async (req, res) => {
   try { const count = await catalogSync.publishLiveCatalog(db); return res.json({ ok: true, count }); }
   catch (err) { return res.status(500).json({ error: err.message }); }
 });
+
+exports._buildStripeLineItems = buildStripeLineItems;
