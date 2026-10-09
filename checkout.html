@@ -70,8 +70,8 @@
             </div>
 
             <div class="mt-6 space-y-3">
-              <label class="pay-opt active"><input type="radio" name="ship" value="standard" checked><div><div class="text-sm font-medium">Standard US Shipping</div><div class="text-mute text-xs mt-1">3–5 business days · USPS / FedEx · Free over <span data-free-ship-min>$50</span></div></div><div class="ml-auto text-sm font-semibold" data-ship-fee-standard>$4.99</div></label>
-              <label class="pay-opt"><input type="radio" name="ship" value="express"><div><div class="text-sm font-medium">Express US Shipping</div><div class="text-mute text-xs mt-1">1–2 business days · FedEx Priority</div></div><div class="ml-auto text-sm font-semibold" data-ship-fee-express>$12.99</div></label>
+              <label class="pay-opt active"><input type="radio" name="ship" value="standard" checked><div><div class="text-sm font-medium">Standard US Shipping</div><div class="text-mute text-xs mt-1">4–8 business days · USPS / UPS · Free over <span data-free-ship-min>$50</span></div></div><div class="ml-auto text-sm font-semibold" data-ship-fee-standard>$4.99</div></label>
+              <label class="pay-opt"><input type="radio" name="ship" value="express"><div><div class="text-sm font-medium">Expedited US Shipping</div><div class="text-mute text-xs mt-1">2–4 business days · UPS / FedEx</div></div><div class="ml-auto text-sm font-semibold" data-ship-fee-express>$12.99</div></label>
             </div>
           </div>
 
@@ -115,12 +115,11 @@
             <div class="flex justify-between"><span class="text-mute">Subtotal</span><span data-checkout-subtotal>$0.00</span></div>
             <div class="flex justify-between text-lime hidden" data-checkout-discount-row><span class="text-mute">Discount</span><span data-checkout-discount>-$0.00</span></div>
             <div class="flex justify-between"><span class="text-mute">Shipping</span><span class="text-lime" data-checkout-shipping>Free</span></div>
-            <div class="flex justify-between"><span class="text-mute">Taxes</span><span class="text-mute">Included</span></div>
           </div>
           <div class="hairline-t py-6 flex justify-between items-baseline"><span class="font-semibold">Total</span><span class="display text-3xl" data-checkout-total>$0.00</span></div>
 
           <button type="submit" class="btn-lime btn-block mt-2 mb-8" data-pay-button>Pay $0.00 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 5l7 7-7 7"/></svg></button>
-          <div class="text-mute text-[11px] tracking-[0.18em] uppercase text-center pb-6">Secured by Stripe &middot; NOWPayments &middot; 256-bit Encryption</div>
+          <div class="text-mute text-[11px] tracking-[0.18em] uppercase text-center pb-6">Card payments by Stripe &middot; Crypto by NOWPayments &middot; We never see your card number</div>
         </aside>
       </form>
     </div>

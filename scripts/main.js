@@ -73,228 +73,81 @@
     setTimeout(() => revealNodes.forEach(n => n.classList.add('in')), 1200);
   }
 
-  /* ---- Dynamic Drop Rotation Engine & Synchronized Countdown ---- */
+  /* ---- Homepage "new arrivals" showcase (replaces the old countdown drop) ----
+   * Shows real catalog items, newest first when the live catalog is loaded. No timers,
+   * no fake urgency: the item, its real price, and when it was added. */
   const $ = (id) => document.getElementById(id);
-  const pad = (n) => String(n).padStart(2, '0');
-  const CIRCUMFERENCE = 2 * Math.PI * 120; // matches SVG r=120
-  const ring = $('cd-ring');
-  const wrap = document.querySelector('.cd-wrap');
+  const money = (n) => { const v = Number(n) || 0; const [d, c] = v.toFixed(2).split('.'); return `$${Number(d).toLocaleString('en-US')}<span class="text-mute text-xl align-top">.${c}</span>`; };
+  const rel = (ms) => { if (!ms) return ''; const d = Math.floor((Date.now() - ms) / 864e5); return d <= 0 ? 'today' : d === 1 ? 'yesterday' : d < 7 ? d + ' days ago' : d < 30 ? Math.floor(d / 7) + ' week' + (d < 14 ? '' : 's') + ' ago' : 'this season'; };
 
-  // 4-hour synchronized drop cycle (6 drops / day across global timezones)
-  const CYCLE_MS = 4 * 60 * 60 * 1000;
-
-  function getCurrentCycleIndex(poolLength) {
-    if (!poolLength) return 0;
-    return Math.floor(Date.now() / CYCLE_MS) % poolLength;
+  function poolFromCatalog() {
+    const cat = window.BT_CATALOG || [];
+    if (!cat.length) return [];
+    const list = cat.filter(p => p.images && p.images[0]);
+    if (window.BT_CATALOG_LIVE) list.sort((a, b) => (b.featured === true) - (a.featured === true) || (b.firstSeenAt || 0) - (a.firstSeenAt || 0));
+    return list.slice(0, 8).map(p => ({
+      pdpId: p.id, title: p.name, desc: p.desc || '', price: p.price, wasPrice: p.originalPrice || null,
+      image: p.images[0], tag: [p.category, p.tag].filter(Boolean).join(' · '), addedAt: p.firstSeenAt || 0
+    }));
+  }
+  function fallbackPool() {
+    return (window.BT_DROP_POOL || []).map(d => ({ pdpId: d.pdpId, title: d.title, desc: d.desc, price: d.price, wasPrice: null, image: d.image, tag: d.category || '', addedAt: 0 }));
   }
 
-  function getNextTargetTime() {
-    const currentCycle = Math.floor(Date.now() / CYCLE_MS);
-    return (currentCycle + 1) * CYCLE_MS;
-  }
+  let pool = poolFromCatalog();
+  if (!pool.length) pool = fallbackPool();
+  let activeIndex = 0;
+  let autoTimer = null;
 
-  let dropTarget = getNextTargetTime();
-  let totalTime = CYCLE_MS;
-  let activeDropIndex = 0;
-  let isManualPreview = false;
-
-  const pool = (window.BT_DROP_POOL && window.BT_DROP_POOL.length > 0) ? window.BT_DROP_POOL : [
-    {
-      pdpId: "sony-playstation-5-ps5-slim-disc",
-      category: "Gaming Console",
-      tag: "Tonight · Flagship Console",
-      title: "Sony PlayStation 5 Slim",
-      desc: "1TB Disc Edition with Tempest 3D Audio, ultra-fast SSD and Ray Tracing.",
-      price: 429,
-      wasPrice: 499,
-      image: "https://i.ebayimg.com/images/g/~XsAAeSw9P9qoaia/s-l1600.jpg"
-    }
-  ];
-
-  activeDropIndex = getCurrentCycleIndex(pool.length);
-
-  function renderDropItem(index, isTransition = false) {
+  function renderShowcase(index, isTransition = false) {
     const item = pool[index];
     if (!item) return;
-
-    const mediaLink = $('drop-media-link');
-    const ctaLink = $('drop-cta-link');
-    const details = $('drop-details');
-    const img = $('drop-img');
-    const tag = $('drop-tag');
-    const title = $('drop-title');
-    const desc = $('drop-desc');
-    const wasPrice = $('drop-was');
-    const price = $('drop-price');
-    const badge = $('drop-badge-pill');
-    const indicator = $('drop-step-indicator');
-    const nextPreview = $('drop-next-preview');
-    const eyebrow = $('drop-eyebrow');
-
-    const updateDOM = () => {
-      const pdpUrl = `/pdp.html?id=${item.pdpId}`;
-      if (mediaLink) mediaLink.href = pdpUrl;
-      if (ctaLink) ctaLink.href = pdpUrl;
-      if (img) {
-        img.src = item.image;
-        img.alt = item.title;
-      }
-      if (tag) tag.textContent = item.tag || `${item.category} Drop`;
-      if (title) title.innerHTML = `${item.title}<span class="text-lime">.</span>`;
-      if (desc) desc.textContent = item.desc;
-      if (wasPrice) wasPrice.textContent = `Was $${Number(item.wasPrice).toFixed(2)}`;
-      if (price) price.innerHTML = `$${item.price}<span class="text-mute text-xl align-top">.00</span>`;
-      if (badge) badge.textContent = 'View Deal →';
-      if (indicator) indicator.textContent = `Drop ${index + 1} of ${pool.length}`;
-
-      const nextItem = pool[(index + 1) % pool.length];
-      if (nextPreview && nextItem) {
-        nextPreview.textContent = `Next drop: ${nextItem.title} ($${nextItem.price})`;
-      }
-
-      if (eyebrow) {
-        if (isManualPreview && index !== getCurrentCycleIndex(pool.length)) {
-          eyebrow.innerHTML = `<span class="text-lime">Preview</span> · Upcoming Drop`;
-        } else {
-          eyebrow.textContent = `Ends Tonight`;
-        }
-      }
+    const mediaLink = $('drop-media-link'), ctaLink = $('drop-cta-link'), details = $('drop-details');
+    const update = () => {
+      const url = `/pdp.html?id=${encodeURIComponent(item.pdpId)}`;
+      if (mediaLink) mediaLink.href = url;
+      if (ctaLink) ctaLink.href = url;
+      const img = $('drop-img'); if (img) { img.src = item.image; img.alt = item.title; }
+      const tag = $('drop-tag'); if (tag) tag.textContent = item.tag || 'New arrival';
+      const shortTitle = (t) => { t = String(t || '').replace(/[<>]/g, ''); if (t.length <= 42) return t; const cut = t.slice(0, 42); return cut.slice(0, Math.max(20, cut.lastIndexOf(' '))).replace(/[\s,·-]+$/, ''); };
+      const title = $('drop-title'); if (title) { title.innerHTML = `${shortTitle(item.title)}<span class="text-lime">.</span>`; title.title = item.title; }
+      const desc = $('drop-desc'); if (desc) desc.textContent = (item.desc || '').slice(0, 140);
+      const was = $('drop-was');
+      if (was) { if (item.wasPrice && item.wasPrice > item.price) { was.textContent = `Listed at $${Number(item.wasPrice).toFixed(2)}`; was.classList.remove('hidden'); } else { was.classList.add('hidden'); } }
+      const price = $('drop-price'); if (price) price.innerHTML = money(item.price);
+      const indicator = $('drop-step-indicator'); if (indicator) indicator.textContent = `${index + 1} of ${pool.length}`;
+      const eyebrow = $('drop-eyebrow'); if (eyebrow) eyebrow.textContent = item.addedAt ? `Added ${rel(item.addedAt)}` : 'New this week';
     };
-
     if (isTransition && mediaLink) {
       mediaLink.classList.add('opacity-30', 'scale-[0.98]');
       if (details) details.classList.add('opacity-30');
-      setTimeout(() => {
-        updateDOM();
-        mediaLink.classList.remove('opacity-30', 'scale-[0.98]');
-        if (details) details.classList.remove('opacity-30');
-      }, 200);
+      setTimeout(() => { update(); mediaLink.classList.remove('opacity-30', 'scale-[0.98]'); if (details) details.classList.remove('opacity-30'); }, 200);
     } else {
-      updateDOM();
+      update();
     }
   }
 
-  // Initial render
-  renderDropItem(activeDropIndex);
-
-  // Manual Next/Prev Drop Preview navigation
-  $('drop-prev-btn')?.addEventListener('click', (e) => {
-    e.preventDefault();
-    isManualPreview = true;
-    activeDropIndex = (activeDropIndex - 1 + pool.length) % pool.length;
-    renderDropItem(activeDropIndex, true);
-  });
-
-  $('drop-next-btn')?.addEventListener('click', (e) => {
-    e.preventDefault();
-    isManualPreview = true;
-    activeDropIndex = (activeDropIndex + 1) % pool.length;
-    renderDropItem(activeDropIndex, true);
-  });
-
-  // Interpolate colour: lime → orange → red as progress drops
-  function ringColor(progress) {
-    if (progress > 0.25) {
-      const t = 1 - (progress - 0.25) / 0.75;
-      const r = Math.round(191 + (255 - 191) * t);
-      const g = Math.round(255 + (107 - 255) * t);
-      const b = Math.round(26 + (44 - 26) * t);
-      return `rgb(${r},${g},${b})`;
-    } else if (progress > 0.05) {
-      const t = 1 - (progress - 0.05) / 0.20;
-      const r = Math.round(255);
-      const g = Math.round(107 + (60 - 107) * t);
-      const b = Math.round(44 + (60 - 44) * t);
-      return `rgb(${r},${g},${b})`;
-    }
-    return 'rgb(255,60,60)';
+  function renderLiveStats() {
+    const cat = window.BT_CATALOG || [];
+    const count = $('live-count'); if (count) count.textContent = cat.length.toLocaleString('en-US');
+    const upd = $('live-updated');
+    if (upd) { const t = window.BT_CATALOG_LIVE && window.BT_CATALOG_LIVE.updatedAt; upd.textContent = t ? rel(t.getTime()) : 'today'; }
   }
 
-  function tick() {
-    const now = Date.now();
-    let diff = dropTarget - now;
-
-    // Transition triggered when countdown expires
-    if (diff <= 0) {
-      // 1. Advance to next drop target
-      dropTarget = getNextTargetTime();
-      diff = Math.max(0, dropTarget - Date.now());
-
-      // 2. Advance active item in drop pool
-      activeDropIndex = getCurrentCycleIndex(pool.length);
-      isManualPreview = false;
-      renderDropItem(activeDropIndex, true);
-
-      // 3. Ring flash effect
-      if (ring) {
-        ring.style.stroke = '#BFFF1A';
-        ring.style.filter = 'drop-shadow(0 0 16px #BFFF1A)';
-        setTimeout(() => {
-          if (ring) ring.style.filter = '';
-        }, 1200);
-      }
-    }
-
-    const h = Math.floor(diff / 3.6e6);
-    const m = Math.floor((diff % 3.6e6) / 6e4);
-    const s = Math.floor((diff % 6e4) / 1e3);
-    if ($('cd-h')) $('cd-h').textContent = pad(h);
-    if ($('cd-m')) $('cd-m').textContent = pad(m);
-    if ($('cd-s')) $('cd-s').textContent = pad(s);
-
-    if (ring && wrap) {
-      const progress = totalTime > 0 ? Math.min(1, Math.max(0, diff / totalTime)) : 0;
-      ring.style.strokeDashoffset = CIRCUMFERENCE * (1 - progress);
-      ring.style.stroke = ringColor(progress);
-
-      // Urgency classes
-      wrap.classList.toggle('urgent', progress <= 0.25 && progress > 0.05);
-      wrap.classList.toggle('critical', progress <= 0.05);
-    }
+  function startAuto() {
+    clearInterval(autoTimer);
+    if (pool.length < 2) return;
+    autoTimer = setInterval(() => { activeIndex = (activeIndex + 1) % pool.length; renderShowcase(activeIndex, true); }, 8000);
   }
 
-  setInterval(tick, 1000); 
-  tick();
-
-  /* ---- Mobile nav toggle ---- */
-  const navBtn = document.querySelector('[data-nav-toggle]');
-  const navMenu = document.querySelector('[data-nav-menu]');
-  if (navBtn && navMenu) {
-    navBtn.addEventListener('click', () => navMenu.classList.toggle('hidden'));
+  if ($('drop-title')) {
+    renderShowcase(0);
+    renderLiveStats();
+    startAuto();
+    $('drop-prev-btn')?.addEventListener('click', (e) => { e.preventDefault(); activeIndex = (activeIndex - 1 + pool.length) % pool.length; renderShowcase(activeIndex, true); startAuto(); });
+    $('drop-next-btn')?.addEventListener('click', (e) => { e.preventDefault(); activeIndex = (activeIndex + 1) % pool.length; renderShowcase(activeIndex, true); startAuto(); });
+    window.addEventListener('bt:catalog-updated', () => { pool = poolFromCatalog(); if (!pool.length) pool = fallbackPool(); activeIndex = 0; renderShowcase(0); renderLiveStats(); startAuto(); });
   }
-
-  /* ---- Cart count & cart management are handled by scripts/cart.js ---- */
-
-  /* ---- PDP: thumb / swatch / size ---- */
-  document.querySelectorAll('[data-gallery]').forEach(gallery => {
-    const main = gallery.querySelector('[data-gallery-main] img');
-    gallery.querySelectorAll('.thumb').forEach(t => {
-      t.addEventListener('click', () => {
-        gallery.querySelectorAll('.thumb').forEach(x => x.classList.remove('active'));
-        t.classList.add('active');
-        if (main) main.src = t.querySelector('img').src;
-      });
-    });
-  });
-  document.querySelectorAll('[data-swatches]').forEach(group => {
-    group.querySelectorAll('.swatch').forEach(s => {
-      s.addEventListener('click', () => {
-        group.querySelectorAll('.swatch').forEach(x => x.classList.remove('active'));
-        s.classList.add('active');
-        const label = document.querySelector('[data-color-label]');
-        if (label) label.textContent = s.dataset.color || '';
-      });
-    });
-  });
-  document.querySelectorAll('[data-sizes]').forEach(group => {
-    group.querySelectorAll('.size').forEach(b => {
-      b.addEventListener('click', () => {
-        if (b.disabled) return;
-        group.querySelectorAll('.size').forEach(x => x.classList.remove('active'));
-        b.classList.add('active');
-      });
-    });
-  });
 
   /* ---- Qty stepper (static pages only) ---- */
   if (!document.querySelector('[data-cart-lines]')) {

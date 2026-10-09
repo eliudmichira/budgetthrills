@@ -6,10 +6,10 @@ window.BT_CATALOG = [
     "categoryUrl": "/gaming.html",
     "tag": "Used",
     "price": 389,
-    "originalPrice": 449,
-    "discount": "Save 13%",
+    "originalPrice": null,
+    "discount": null,
     "desc": "Nintendo Switch OLED HEG-001 64GB White Joy-Con Handheld Console (CP1128148). In-demand 2026 hardware in Used condition with fast US shipping and BudgetThrills buyer protection.",
-    "details": "Condition: Used. Certified pre-delivery inspection. Includes 30-day returns and authentic serial number tracking.",
+    "details": "Condition: Used. Ships from the US. 30-day returns.",
     "brand": "Nintendo",
     "colors": [
       {
@@ -42,10 +42,10 @@ window.BT_CATALOG = [
     "categoryUrl": "/gaming.html",
     "tag": "New",
     "price": 389,
-    "originalPrice": 449,
-    "discount": "Save 13%",
+    "originalPrice": null,
+    "discount": null,
     "desc": "Nintendo Switch OLED Model 64GB Console Dockable White Joy-Con HDMI 720p. In-demand 2026 hardware in New condition with fast US shipping and BudgetThrills buyer protection.",
-    "details": "Condition: New. Certified pre-delivery inspection. Includes 30-day returns and authentic serial number tracking.",
+    "details": "Condition: New. Ships from the US. 30-day returns.",
     "brand": "Nintendo",
     "colors": [
       {
@@ -71,10 +71,10 @@ window.BT_CATALOG = [
     "categoryUrl": "/gaming.html",
     "tag": "Used",
     "price": 429,
-    "originalPrice": 499,
-    "discount": "Save 14%",
+    "originalPrice": null,
+    "discount": null,
     "desc": "Sony PlayStation 5 PS5 Slim Disc Edition 1TB CFI-2015 White - CONSOLE ONLY. In-demand 2026 hardware in Used condition with fast US shipping and BudgetThrills buyer protection.",
-    "details": "Condition: Used. Certified pre-delivery inspection. Includes 30-day returns and authentic serial number tracking.",
+    "details": "Condition: Used. Ships from the US. 30-day returns.",
     "brand": "Sony",
     "colors": [
       {
@@ -108,10 +108,10 @@ window.BT_CATALOG = [
     "categoryUrl": "/gaming.html",
     "tag": "Good - Refurbished",
     "price": 429,
-    "originalPrice": 499,
-    "discount": "Save 14%",
+    "originalPrice": null,
+    "discount": null,
     "desc": "PlayStation 5 Original 825GB Disc Edition Console Only HDMI Power Good Condition. In-demand 2026 hardware in Good - Refurbished condition with fast US shipping and BudgetThrills buyer protection.",
-    "details": "Condition: Good - Refurbished. Certified pre-delivery inspection. Includes 30-day returns and authentic serial number tracking.",
+    "details": "Condition: Good - Refurbished. Ships from the US. 30-day returns.",
     "brand": "Sony",
     "colors": [
       {
@@ -141,10 +141,10 @@ window.BT_CATALOG = [
     "categoryUrl": "/gaming.html",
     "tag": "New",
     "price": 429,
-    "originalPrice": 499,
-    "discount": "Save 14%",
+    "originalPrice": null,
+    "discount": null,
     "desc": "Microsoft Xbox Series X 1TB Console RRT-00001 Black. In-demand 2026 hardware in New condition with fast US shipping and BudgetThrills buyer protection.",
-    "details": "Condition: New. Certified pre-delivery inspection. Includes 30-day returns and authentic serial number tracking.",
+    "details": "Condition: New. Ships from the US. 30-day returns.",
     "brand": "Microsoft",
     "colors": [
       {
@@ -170,10 +170,10 @@ window.BT_CATALOG = [
     "categoryUrl": "/gaming.html",
     "tag": "Open box",
     "price": 429,
-    "originalPrice": 499,
-    "discount": "Save 14%",
+    "originalPrice": null,
+    "discount": null,
     "desc": "Xbox Series x Disc Edition. In-demand 2026 hardware in Open box condition with fast US shipping and BudgetThrills buyer protection.",
-    "details": "Condition: Open box. Certified pre-delivery inspection. Includes 30-day returns and authentic serial number tracking.",
+    "details": "Condition: Open box. Ships from the US. 30-day returns.",
     "brand": "Microsoft",
     "colors": [
       {
@@ -197,10 +197,10 @@ window.BT_CATALOG = [
     "categoryUrl": "/gaming.html",
     "tag": "Used",
     "price": 1199,
-    "originalPrice": 1399,
-    "discount": "Save 14%",
+    "originalPrice": null,
+    "discount": null,
     "desc": "Gaming Desktop PC Tower Ryzen 7 5800x NVIDIA GeForce RTX 4070 32GB RAM Win 11. In-demand 2026 hardware in Used condition with fast US shipping and BudgetThrills buyer protection.",
-    "details": "Condition: Used. Certified pre-delivery inspection. Includes 30-day returns and authentic serial number tracking.",
+    "details": "Condition: Used. Ships from the US. 30-day returns.",
     "brand": "Custom PC",
     "colors": [
       {
@@ -230,10 +230,10 @@ window.BT_CATALOG = [
     "categoryUrl": "/gaming.html",
     "tag": "New",
     "price": 1199,
-    "originalPrice": 1399,
-    "discount": "Save 14%",
+    "originalPrice": null,
+    "discount": null,
     "desc": "Nvidia RTX Gaming PC RTX 5070 RTX 4060 RTX 4070 SUPER Ryzen 1TB SSD + 32GB RAM. In-demand 2026 hardware in New condition with fast US shipping and BudgetThrills buyer protection.",
-    "details": "Condition: New. Certified pre-delivery inspection. Includes 30-day returns and authentic serial number tracking.",
+    "details": "Condition: New. Ships from the US. 30-day returns.",
     "brand": "Custom PC",
     "colors": [
       {
@@ -265,10 +265,10 @@ window.BT_CATALOG = [
     "categoryUrl": "/gaming.html",
     "tag": "Used",
     "price": 389,
-    "originalPrice": 479,
-    "discount": "Save 19%",
+    "originalPrice": null,
+    "discount": null,
     "desc": "AMD Ryzen 7 9800X3D Desktop Processor 4.7 GHz, 8-Core, 16-Thread AM5 Tested. In-demand 2026 hardware in Used condition with fast US shipping and BudgetThrills buyer protection.",
-    "details": "Condition: Used. Certified pre-delivery inspection. Includes 30-day returns and authentic serial number tracking.",
+    "details": "Condition: Used. Ships from the US. 30-day returns.",
     "brand": "AMD",
     "colors": [
       {
@@ -294,10 +294,10 @@ window.BT_CATALOG = [
     "categoryUrl": "/phones.html",
     "tag": "Excellent - Refurbished",
     "price": 719,
-    "originalPrice": 799,
-    "discount": "Save 10%",
+    "originalPrice": null,
+    "discount": null,
     "desc": "Apple iPhone 16 Pro 128GB Unlocked Excellent Condition. In-demand 2026 hardware in Excellent - Refurbished condition with fast US shipping and BudgetThrills buyer protection.",
-    "details": "Condition: Excellent - Refurbished. Certified pre-delivery inspection. Includes 30-day returns and authentic serial number tracking.",
+    "details": "Condition: Excellent - Refurbished. Ships from the US. 30-day returns.",
     "brand": "Apple",
     "colors": [
       {
@@ -321,10 +321,10 @@ window.BT_CATALOG = [
     "categoryUrl": "/tech.html",
     "tag": "Very Good - Refurbished",
     "price": 889,
-    "originalPrice": 999,
-    "discount": "Save 11%",
+    "originalPrice": null,
+    "discount": null,
     "desc": "Apple MacBook Air 2022 A2681 13in M2 8 Core GPU 8GB RAM 256GB SSD Very Good. In-demand 2026 hardware in Very Good - Refurbished condition with fast US shipping and BudgetThrills buyer protection.",
-    "details": "Condition: Very Good - Refurbished. Certified pre-delivery inspection. Includes 30-day returns and authentic serial number tracking.",
+    "details": "Condition: Very Good - Refurbished. Ships from the US. 30-day returns.",
     "brand": "Apple",
     "colors": [
       {
@@ -352,10 +352,10 @@ window.BT_CATALOG = [
     "categoryUrl": "/tech.html",
     "tag": "Used",
     "price": 889,
-    "originalPrice": 999,
-    "discount": "Save 11%",
+    "originalPrice": null,
+    "discount": null,
     "desc": "(NO Ship) Apple MacBook Air 13 Inch M2 Chip 8GB RAM 256Gb SSD Gray. In-demand 2026 hardware in Used condition with fast US shipping and BudgetThrills buyer protection.",
-    "details": "Condition: Used. Certified pre-delivery inspection. Includes 30-day returns and authentic serial number tracking.",
+    "details": "Condition: Used. Ships from the US. 30-day returns.",
     "brand": "Apple",
     "colors": [
       {
@@ -387,10 +387,10 @@ window.BT_CATALOG = [
     "categoryUrl": "/tech.html",
     "tag": "New",
     "price": 199,
-    "originalPrice": 249,
-    "discount": "Save 20%",
+    "originalPrice": null,
+    "discount": null,
     "desc": "Apple AirPods Pro (2nd Gen) USB-C w/ MagSafe – (Outer Box Imperfections Only. In-demand 2026 hardware in New condition with fast US shipping and BudgetThrills buyer protection.",
-    "details": "Condition: New. Certified pre-delivery inspection. Includes 30-day returns and authentic serial number tracking.",
+    "details": "Condition: New. Ships from the US. 30-day returns.",
     "brand": "Apple",
     "colors": [
       {
@@ -417,10 +417,10 @@ window.BT_CATALOG = [
     "categoryUrl": "/tech.html",
     "tag": "Used",
     "price": 199,
-    "originalPrice": 249,
-    "discount": "Save 20%",
+    "originalPrice": null,
+    "discount": null,
     "desc": "Genuine Apple AirPods Pro (2nd Gen, USB-C) + MagSafe Case – S/M/L Tips+Cable. In-demand 2026 hardware in Used condition with fast US shipping and BudgetThrills buyer protection.",
-    "details": "Condition: Used. Certified pre-delivery inspection. Includes 30-day returns and authentic serial number tracking.",
+    "details": "Condition: Used. Ships from the US. 30-day returns.",
     "brand": "Apple",
     "colors": [
       {
@@ -452,10 +452,10 @@ window.BT_CATALOG = [
     "categoryUrl": "/accessories.html",
     "tag": "New",
     "price": 9.99,
-    "originalPrice": 16,
-    "discount": "Save 38%",
+    "originalPrice": null,
+    "discount": null,
     "desc": "NeeDoh Snow Ball Stress Relief Squishy Sensory Fidget Toy Gift. In-demand 2026 hardware in New condition with fast US shipping and BudgetThrills buyer protection.",
-    "details": "Condition: New. Certified pre-delivery inspection. Includes 30-day returns and authentic serial number tracking.",
+    "details": "Condition: New. Ships from the US. 30-day returns.",
     "brand": "Schylling",
     "colors": [
       {
@@ -485,10 +485,10 @@ window.BT_CATALOG = [
     "categoryUrl": "/accessories.html",
     "tag": "New",
     "price": 9.99,
-    "originalPrice": 16,
-    "discount": "Save 38%",
+    "originalPrice": null,
+    "discount": null,
     "desc": "NeeDoh Snow Ball Crunch Squishy Stress Ball – Soft Sensory Fidget Toy for Squeez. In-demand 2026 hardware in New condition with fast US shipping and BudgetThrills buyer protection.",
-    "details": "Condition: New. Certified pre-delivery inspection. Includes 30-day returns and authentic serial number tracking.",
+    "details": "Condition: New. Ships from the US. 30-day returns.",
     "brand": "Schylling",
     "colors": [
       {
@@ -514,10 +514,10 @@ window.BT_CATALOG = [
     "categoryUrl": "/accessories.html",
     "tag": "New",
     "price": 26,
-    "originalPrice": 35,
-    "discount": "Save 26%",
+    "originalPrice": null,
+    "discount": null,
     "desc": "K-POP DEMON HUNTERS - RUMI 12\" SINGING DOLL \"GOLDEN\" HUNTRIX MATTEL. In-demand 2026 hardware in New condition with fast US shipping and BudgetThrills buyer protection.",
-    "details": "Condition: New. Certified pre-delivery inspection. Includes 30-day returns and authentic serial number tracking.",
+    "details": "Condition: New. Ships from the US. 30-day returns.",
     "brand": "K-Pop Demon Hunters",
     "colors": [
       {
@@ -541,10 +541,10 @@ window.BT_CATALOG = [
     "categoryUrl": "/accessories.html",
     "tag": "New",
     "price": 26,
-    "originalPrice": 35,
-    "discount": "Save 26%",
+    "originalPrice": null,
+    "discount": null,
     "desc": "KPop Demon Hunters Rumi Golden Singing Doll HUNTR/X Movie Figure Sound Effects. In-demand 2026 hardware in New condition with fast US shipping and BudgetThrills buyer protection.",
-    "details": "Condition: New. Certified pre-delivery inspection. Includes 30-day returns and authentic serial number tracking.",
+    "details": "Condition: New. Ships from the US. 30-day returns.",
     "brand": "K-Pop Demon Hunters",
     "colors": [
       {
@@ -572,10 +572,10 @@ window.BT_CATALOG = [
     "categoryUrl": "/gaming.html",
     "tag": "Open box",
     "price": 54,
-    "originalPrice": 74.99,
-    "discount": "Save 28%",
+    "originalPrice": null,
+    "discount": null,
     "desc": "Sony PlayStation 5 DualSense Wireless Controller Gray Camouflage CAMO. In-demand 2026 hardware in Open box condition with fast US shipping and BudgetThrills buyer protection.",
-    "details": "Condition: Open box. Certified pre-delivery inspection. Includes 30-day returns and authentic serial number tracking.",
+    "details": "Condition: Open box. Ships from the US. 30-day returns.",
     "brand": "Sony",
     "colors": [
       {
@@ -601,10 +601,10 @@ window.BT_CATALOG = [
     "categoryUrl": "/gaming.html",
     "tag": "Open box",
     "price": 54,
-    "originalPrice": 74.99,
-    "discount": "Save 28%",
+    "originalPrice": null,
+    "discount": null,
     "desc": "PlayStation 5 DualSense Wireless Controller Midnight Black Open Box. In-demand 2026 hardware in Open box condition with fast US shipping and BudgetThrills buyer protection.",
-    "details": "Condition: Open box. Certified pre-delivery inspection. Includes 30-day returns and authentic serial number tracking.",
+    "details": "Condition: Open box. Ships from the US. 30-day returns.",
     "brand": "Sony",
     "colors": [
       {
@@ -629,10 +629,10 @@ window.BT_CATALOG = [
     "categoryUrl": "/gaming.html",
     "tag": "Used",
     "price": 139,
-    "originalPrice": 179.99,
-    "discount": "Save 23%",
+    "originalPrice": null,
+    "discount": null,
     "desc": "Microsoft Xbox Elite Series 2 Core Wireless Controller White Series X & S. In-demand 2026 hardware in Used condition with fast US shipping and BudgetThrills buyer protection.",
-    "details": "Condition: Used. Certified pre-delivery inspection. Includes 30-day returns and authentic serial number tracking.",
+    "details": "Condition: Used. Ships from the US. 30-day returns.",
     "brand": "Microsoft",
     "colors": [
       {
@@ -659,10 +659,10 @@ window.BT_CATALOG = [
     "categoryUrl": "/gaming.html",
     "tag": "Open box",
     "price": 139,
-    "originalPrice": 179.99,
-    "discount": "Save 23%",
+    "originalPrice": null,
+    "discount": null,
     "desc": "Microsoft Xbox Elite Series 2 Wireless Controller (1797) - Black *BASE SET ONLY. In-demand 2026 hardware in Open box condition with fast US shipping and BudgetThrills buyer protection.",
-    "details": "Condition: Open box. Certified pre-delivery inspection. Includes 30-day returns and authentic serial number tracking.",
+    "details": "Condition: Open box. Ships from the US. 30-day returns.",
     "brand": "Microsoft",
     "colors": [
       {
@@ -689,10 +689,10 @@ window.BT_CATALOG = [
     "categoryUrl": "/collection.html",
     "tag": "New with box",
     "price": 160,
-    "originalPrice": 208,
-    "discount": "Save 23%",
+    "originalPrice": null,
+    "discount": null,
     "desc": "Premium Sneakers item in New with box condition with fast US shipping.",
-    "details": "Item condition: New with box. Certified inspection. Includes 30-day returns and BudgetThrills buyer protection.",
+    "details": "Condition: New with box. Ships from the US. 30-day returns.",
     "brand": null,
     "colors": [
       {
@@ -719,10 +719,10 @@ window.BT_CATALOG = [
     "categoryUrl": "/collection.html",
     "tag": "New without box",
     "price": 50,
-    "originalPrice": 160,
-    "discount": "Save 69%",
+    "originalPrice": null,
+    "discount": null,
     "desc": "Premium Sneakers item in New without box condition with fast US shipping.",
-    "details": "Item condition: New without box. Certified inspection. Includes 30-day returns and BudgetThrills buyer protection.",
+    "details": "Condition: New without box. Ships from the US. 30-day returns.",
     "brand": null,
     "colors": [
       {
@@ -748,10 +748,10 @@ window.BT_CATALOG = [
     "categoryUrl": "/collection.html",
     "tag": "New without box",
     "price": 65,
-    "originalPrice": 130,
-    "discount": "Save 50%",
+    "originalPrice": null,
+    "discount": null,
     "desc": "Premium Sneakers item in New without box condition with fast US shipping.",
-    "details": "Item condition: New without box. Certified inspection. Includes 30-day returns and BudgetThrills buyer protection.",
+    "details": "Condition: New without box. Ships from the US. 30-day returns.",
     "brand": null,
     "colors": [
       {
@@ -782,10 +782,10 @@ window.BT_CATALOG = [
     "categoryUrl": "/collection.html",
     "tag": "New with box",
     "price": 64.95,
-    "originalPrice": 84,
-    "discount": "Save 23%",
+    "originalPrice": null,
+    "discount": null,
     "desc": "Premium Sneakers item in New with box condition with fast US shipping.",
-    "details": "Item condition: New with box. Certified inspection. Includes 30-day returns and BudgetThrills buyer protection.",
+    "details": "Condition: New with box. Ships from the US. 30-day returns.",
     "brand": null,
     "colors": [
       {
@@ -813,10 +813,10 @@ window.BT_CATALOG = [
     "categoryUrl": "/collection.html",
     "tag": "New without box",
     "price": 55,
-    "originalPrice": 72,
-    "discount": "Save 24%",
+    "originalPrice": null,
+    "discount": null,
     "desc": "Premium Sneakers item in New without box condition with fast US shipping.",
-    "details": "Item condition: New without box. Certified inspection. Includes 30-day returns and BudgetThrills buyer protection.",
+    "details": "Condition: New without box. Ships from the US. 30-day returns.",
     "brand": null,
     "colors": [
       {
@@ -842,10 +842,10 @@ window.BT_CATALOG = [
     "categoryUrl": "/collection.html",
     "tag": "New with box",
     "price": 154.9,
-    "originalPrice": 201,
-    "discount": "Save 23%",
+    "originalPrice": null,
+    "discount": null,
     "desc": "Premium Sneakers item in New with box condition with fast US shipping.",
-    "details": "Item condition: New with box. Certified inspection. Includes 30-day returns and BudgetThrills buyer protection.",
+    "details": "Condition: New with box. Ships from the US. 30-day returns.",
     "brand": null,
     "colors": [
       {
@@ -873,10 +873,10 @@ window.BT_CATALOG = [
     "categoryUrl": "/collection.html",
     "tag": "New without box",
     "price": 99,
-    "originalPrice": 129,
-    "discount": "Save 23%",
+    "originalPrice": null,
+    "discount": null,
     "desc": "Premium Sneakers item in New without box condition with fast US shipping.",
-    "details": "Item condition: New without box. Certified inspection. Includes 30-day returns and BudgetThrills buyer protection.",
+    "details": "Condition: New without box. Ships from the US. 30-day returns.",
     "brand": null,
     "colors": [
       {
@@ -907,10 +907,10 @@ window.BT_CATALOG = [
     "categoryUrl": "/collection.html",
     "tag": "New with box",
     "price": 259.99,
-    "originalPrice": 338,
-    "discount": "Save 23%",
+    "originalPrice": null,
+    "discount": null,
     "desc": "Premium Sneakers item in New with box condition with fast US shipping.",
-    "details": "Item condition: New with box. Certified inspection. Includes 30-day returns and BudgetThrills buyer protection.",
+    "details": "Condition: New with box. Ships from the US. 30-day returns.",
     "brand": null,
     "colors": [
       {
@@ -940,10 +940,10 @@ window.BT_CATALOG = [
     "categoryUrl": "/collection.html",
     "tag": "New with box",
     "price": 240,
-    "originalPrice": 312,
-    "discount": "Save 23%",
+    "originalPrice": null,
+    "discount": null,
     "desc": "Premium Sneakers item in New with box condition with fast US shipping.",
-    "details": "Item condition: New with box. Certified inspection. Includes 30-day returns and BudgetThrills buyer protection.",
+    "details": "Condition: New with box. Ships from the US. 30-day returns.",
     "brand": null,
     "colors": [
       {
@@ -970,10 +970,10 @@ window.BT_CATALOG = [
     "categoryUrl": "/collection.html",
     "tag": "New with box",
     "price": 195,
-    "originalPrice": 254,
-    "discount": "Save 23%",
+    "originalPrice": null,
+    "discount": null,
     "desc": "Premium Sneakers item in New with box condition with fast US shipping.",
-    "details": "Item condition: New with box. Certified inspection. Includes 30-day returns and BudgetThrills buyer protection.",
+    "details": "Condition: New with box. Ships from the US. 30-day returns.",
     "brand": null,
     "colors": [
       {
@@ -1003,10 +1003,10 @@ window.BT_CATALOG = [
     "categoryUrl": "/collection.html",
     "tag": "New without box",
     "price": 79.99,
-    "originalPrice": 104,
-    "discount": "Save 23%",
+    "originalPrice": null,
+    "discount": null,
     "desc": "Premium Sneakers item in New without box condition with fast US shipping.",
-    "details": "Item condition: New without box. Certified inspection. Includes 30-day returns and BudgetThrills buyer protection.",
+    "details": "Condition: New without box. Ships from the US. 30-day returns.",
     "brand": null,
     "colors": [
       {
@@ -1036,10 +1036,10 @@ window.BT_CATALOG = [
     "categoryUrl": "/collection.html",
     "tag": "New without box",
     "price": 140,
-    "originalPrice": 182,
-    "discount": "Save 23%",
+    "originalPrice": null,
+    "discount": null,
     "desc": "Premium Sneakers item in New without box condition with fast US shipping.",
-    "details": "Item condition: New without box. Certified inspection. Includes 30-day returns and BudgetThrills buyer protection.",
+    "details": "Condition: New without box. Ships from the US. 30-day returns.",
     "brand": null,
     "colors": [
       {
@@ -1072,10 +1072,10 @@ window.BT_CATALOG = [
     "categoryUrl": "/collection.html",
     "tag": "New without box",
     "price": 46.99,
-    "originalPrice": 61,
-    "discount": "Save 23%",
+    "originalPrice": null,
+    "discount": null,
     "desc": "Premium Sneakers item in New without box condition with fast US shipping.",
-    "details": "Item condition: New without box. Certified inspection. Includes 30-day returns and BudgetThrills buyer protection.",
+    "details": "Condition: New without box. Ships from the US. 30-day returns.",
     "brand": null,
     "colors": [
       {
@@ -1102,10 +1102,10 @@ window.BT_CATALOG = [
     "categoryUrl": "/collection.html",
     "tag": "New with box",
     "price": 79.77,
-    "originalPrice": 104,
-    "discount": "Save 23%",
+    "originalPrice": null,
+    "discount": null,
     "desc": "Premium Sneakers item in New with box condition with fast US shipping.",
-    "details": "Item condition: New with box. Certified inspection. Includes 30-day returns and BudgetThrills buyer protection.",
+    "details": "Condition: New with box. Ships from the US. 30-day returns.",
     "brand": null,
     "colors": [
       {
@@ -1138,10 +1138,10 @@ window.BT_CATALOG = [
     "categoryUrl": "/collection.html",
     "tag": "New without box",
     "price": 59.88,
-    "originalPrice": 78,
-    "discount": "Save 23%",
+    "originalPrice": null,
+    "discount": null,
     "desc": "Premium Sneakers item in New without box condition with fast US shipping.",
-    "details": "Item condition: New without box. Certified inspection. Includes 30-day returns and BudgetThrills buyer protection.",
+    "details": "Condition: New without box. Ships from the US. 30-day returns.",
     "brand": null,
     "colors": [
       {
@@ -1169,10 +1169,10 @@ window.BT_CATALOG = [
     "categoryUrl": "/collection.html",
     "tag": "New with box",
     "price": 179.95,
-    "originalPrice": 234,
-    "discount": "Save 23%",
+    "originalPrice": null,
+    "discount": null,
     "desc": "Premium Sneakers item in New with box condition with fast US shipping.",
-    "details": "Item condition: New with box. Certified inspection. Includes 30-day returns and BudgetThrills buyer protection.",
+    "details": "Condition: New with box. Ships from the US. 30-day returns.",
     "brand": null,
     "colors": [
       {
@@ -1203,10 +1203,10 @@ window.BT_CATALOG = [
     "categoryUrl": "/collection.html",
     "tag": "New with box",
     "price": 149.95,
-    "originalPrice": 195,
-    "discount": "Save 23%",
+    "originalPrice": null,
+    "discount": null,
     "desc": "Premium Sneakers item in New with box condition with fast US shipping.",
-    "details": "Item condition: New with box. Certified inspection. Includes 30-day returns and BudgetThrills buyer protection.",
+    "details": "Condition: New with box. Ships from the US. 30-day returns.",
     "brand": null,
     "colors": [
       {
@@ -1233,10 +1233,10 @@ window.BT_CATALOG = [
     "categoryUrl": "/collection.html",
     "tag": "New without box",
     "price": 104.49,
-    "originalPrice": 136,
-    "discount": "Save 23%",
+    "originalPrice": null,
+    "discount": null,
     "desc": "Premium Sneakers item in New without box condition with fast US shipping.",
-    "details": "Item condition: New without box. Certified inspection. Includes 30-day returns and BudgetThrills buyer protection.",
+    "details": "Condition: New without box. Ships from the US. 30-day returns.",
     "brand": null,
     "colors": [
       {
@@ -1263,10 +1263,10 @@ window.BT_CATALOG = [
     "categoryUrl": "/collection.html",
     "tag": "Pre-owned - Excellent",
     "price": 180,
-    "originalPrice": 288,
-    "discount": "Save 38%",
+    "originalPrice": null,
+    "discount": null,
     "desc": "Premium Sneakers item in Pre-owned - Excellent condition with fast US shipping.",
-    "details": "Item condition: Pre-owned - Excellent. Certified inspection. Includes 30-day returns and BudgetThrills buyer protection.",
+    "details": "Condition: Pre-owned - Excellent. Ships from the US. 30-day returns.",
     "brand": null,
     "colors": [
       {
@@ -1295,10 +1295,10 @@ window.BT_CATALOG = [
     "categoryUrl": "/collection.html",
     "tag": "New with box",
     "price": 250,
-    "originalPrice": 325,
-    "discount": "Save 23%",
+    "originalPrice": null,
+    "discount": null,
     "desc": "Premium Sneakers item in New with box condition with fast US shipping.",
-    "details": "Item condition: New with box. Certified inspection. Includes 30-day returns and BudgetThrills buyer protection.",
+    "details": "Condition: New with box. Ships from the US. 30-day returns.",
     "brand": null,
     "colors": [
       {
@@ -1337,10 +1337,10 @@ window.BT_CATALOG = [
     "categoryUrl": "/collection.html",
     "tag": "New with box",
     "price": 300,
-    "originalPrice": 390,
-    "discount": "Save 23%",
+    "originalPrice": null,
+    "discount": null,
     "desc": "Premium Sneakers item in New with box condition with fast US shipping.",
-    "details": "Item condition: New with box. Certified inspection. Includes 30-day returns and BudgetThrills buyer protection.",
+    "details": "Condition: New with box. Ships from the US. 30-day returns.",
     "brand": null,
     "colors": [
       {
@@ -1375,10 +1375,10 @@ window.BT_CATALOG = [
     "categoryUrl": "/collection.html",
     "tag": "Pre-owned - Excellent",
     "price": 29.99,
-    "originalPrice": 48,
-    "discount": "Save 38%",
+    "originalPrice": null,
+    "discount": null,
     "desc": "Premium Sneakers item in Pre-owned - Excellent condition with fast US shipping.",
-    "details": "Item condition: Pre-owned - Excellent. Certified inspection. Includes 30-day returns and BudgetThrills buyer protection.",
+    "details": "Condition: Pre-owned - Excellent. Ships from the US. 30-day returns.",
     "brand": null,
     "colors": [
       {
@@ -1412,10 +1412,10 @@ window.BT_CATALOG = [
     "categoryUrl": "/collection.html",
     "tag": "New with box",
     "price": 46.99,
-    "originalPrice": 61,
-    "discount": "Save 23%",
+    "originalPrice": null,
+    "discount": null,
     "desc": "Premium Sneakers item in New with box condition with fast US shipping.",
-    "details": "Item condition: New with box. Certified inspection. Includes 30-day returns and BudgetThrills buyer protection.",
+    "details": "Condition: New with box. Ships from the US. 30-day returns.",
     "brand": null,
     "colors": [
       {
@@ -1448,10 +1448,10 @@ window.BT_CATALOG = [
     "categoryUrl": "/collection.html",
     "tag": "New with box",
     "price": 88.97,
-    "originalPrice": 116,
-    "discount": "Save 23%",
+    "originalPrice": null,
+    "discount": null,
     "desc": "Premium Sneakers item in New with box condition with fast US shipping.",
-    "details": "Item condition: New with box. Certified inspection. Includes 30-day returns and BudgetThrills buyer protection.",
+    "details": "Condition: New with box. Ships from the US. 30-day returns.",
     "brand": null,
     "colors": [
       {
@@ -1483,10 +1483,10 @@ window.BT_CATALOG = [
     "categoryUrl": "/collection.html",
     "tag": "New with box",
     "price": 74.36,
-    "originalPrice": 97,
-    "discount": "Save 23%",
+    "originalPrice": null,
+    "discount": null,
     "desc": "Premium Sneakers item in New with box condition with fast US shipping.",
-    "details": "Item condition: New with box. Certified inspection. Includes 30-day returns and BudgetThrills buyer protection.",
+    "details": "Condition: New with box. Ships from the US. 30-day returns.",
     "brand": null,
     "colors": [
       {
@@ -1509,10 +1509,10 @@ window.BT_CATALOG = [
     "categoryUrl": "/collection.html",
     "tag": "New with box",
     "price": 55.19,
-    "originalPrice": 72,
-    "discount": "Save 23%",
+    "originalPrice": null,
+    "discount": null,
     "desc": "Premium Sneakers item in New with box condition with fast US shipping.",
-    "details": "Item condition: New with box. Certified inspection. Includes 30-day returns and BudgetThrills buyer protection.",
+    "details": "Condition: New with box. Ships from the US. 30-day returns.",
     "brand": null,
     "colors": [
       {
@@ -1539,10 +1539,10 @@ window.BT_CATALOG = [
     "categoryUrl": "/phones.html",
     "tag": "Very Good - Refurbished",
     "price": 288.95,
-    "originalPrice": 433,
-    "discount": "Save 33%",
+    "originalPrice": null,
+    "discount": null,
     "desc": "Premium Phones item in Very Good - Refurbished condition with fast US shipping.",
-    "details": "Item condition: Very Good - Refurbished. Certified inspection. Includes 30-day returns and BudgetThrills buyer protection.",
+    "details": "Condition: Very Good - Refurbished. Ships from the US. 30-day returns.",
     "brand": null,
     "colors": [
       {
@@ -1568,10 +1568,10 @@ window.BT_CATALOG = [
     "categoryUrl": "/phones.html",
     "tag": "Used",
     "price": 244,
-    "originalPrice": 390,
-    "discount": "Save 37%",
+    "originalPrice": null,
+    "discount": null,
     "desc": "Premium Phones item in Used condition with fast US shipping.",
-    "details": "Item condition: Used. Certified inspection. Includes 30-day returns and BudgetThrills buyer protection.",
+    "details": "Condition: Used. Ships from the US. 30-day returns.",
     "brand": null,
     "colors": [
       {
@@ -1601,10 +1601,10 @@ window.BT_CATALOG = [
     "categoryUrl": "/phones.html",
     "tag": "Used",
     "price": 334,
-    "originalPrice": 534,
-    "discount": "Save 37%",
+    "originalPrice": null,
+    "discount": null,
     "desc": "Premium Phones item in Used condition with fast US shipping.",
-    "details": "Item condition: Used. Certified inspection. Includes 30-day returns and BudgetThrills buyer protection.",
+    "details": "Condition: Used. Ships from the US. 30-day returns.",
     "brand": null,
     "colors": [
       {
@@ -1634,10 +1634,10 @@ window.BT_CATALOG = [
     "categoryUrl": "/phones.html",
     "tag": "Used",
     "price": 284,
-    "originalPrice": 454,
-    "discount": "Save 37%",
+    "originalPrice": null,
+    "discount": null,
     "desc": "Premium Phones item in Used condition with fast US shipping.",
-    "details": "Item condition: Used. Certified inspection. Includes 30-day returns and BudgetThrills buyer protection.",
+    "details": "Condition: Used. Ships from the US. 30-day returns.",
     "brand": null,
     "colors": [
       {
@@ -1668,10 +1668,10 @@ window.BT_CATALOG = [
     "categoryUrl": "/phones.html",
     "tag": "Used",
     "price": 340,
-    "originalPrice": 544,
-    "discount": "Save 38%",
+    "originalPrice": null,
+    "discount": null,
     "desc": "Premium Phones item in Used condition with fast US shipping.",
-    "details": "Item condition: Used. Certified inspection. Includes 30-day returns and BudgetThrills buyer protection.",
+    "details": "Condition: Used. Ships from the US. 30-day returns.",
     "brand": null,
     "colors": [
       {
@@ -1701,10 +1701,10 @@ window.BT_CATALOG = [
     "categoryUrl": "/phones.html",
     "tag": "Used",
     "price": 228,
-    "originalPrice": 365,
-    "discount": "Save 38%",
+    "originalPrice": null,
+    "discount": null,
     "desc": "Premium Phones item in Used condition with fast US shipping.",
-    "details": "Item condition: Used. Certified inspection. Includes 30-day returns and BudgetThrills buyer protection.",
+    "details": "Condition: Used. Ships from the US. 30-day returns.",
     "brand": null,
     "colors": [
       {
@@ -1734,10 +1734,10 @@ window.BT_CATALOG = [
     "categoryUrl": "/phones.html",
     "tag": "Good - Refurbished",
     "price": 266.65,
-    "originalPrice": 699,
-    "discount": "Save 62%",
+    "originalPrice": null,
+    "discount": null,
     "desc": "Premium Phones item in Good - Refurbished condition with fast US shipping.",
-    "details": "Item condition: Good - Refurbished. Certified inspection. Includes 30-day returns and BudgetThrills buyer protection.",
+    "details": "Condition: Good - Refurbished. Ships from the US. 30-day returns.",
     "brand": null,
     "colors": [
       {
@@ -1761,10 +1761,10 @@ window.BT_CATALOG = [
     "categoryUrl": "/phones.html",
     "tag": "Excellent - Refurbished",
     "price": 289.86,
-    "originalPrice": 699,
-    "discount": "Save 59%",
+    "originalPrice": null,
+    "discount": null,
     "desc": "Premium Phones item in Excellent - Refurbished condition with fast US shipping.",
-    "details": "Item condition: Excellent - Refurbished. Certified inspection. Includes 30-day returns and BudgetThrills buyer protection.",
+    "details": "Condition: Excellent - Refurbished. Ships from the US. 30-day returns.",
     "brand": null,
     "colors": [
       {
@@ -1791,10 +1791,10 @@ window.BT_CATALOG = [
     "categoryUrl": "/phones.html",
     "tag": "Very Good - Refurbished",
     "price": 269.99,
-    "originalPrice": 699,
-    "discount": "Save 61%",
+    "originalPrice": null,
+    "discount": null,
     "desc": "Premium Phones item in Very Good - Refurbished condition with fast US shipping.",
-    "details": "Item condition: Very Good - Refurbished. Certified inspection. Includes 30-day returns and BudgetThrills buyer protection.",
+    "details": "Condition: Very Good - Refurbished. Ships from the US. 30-day returns.",
     "brand": null,
     "colors": [
       {
@@ -1823,10 +1823,10 @@ window.BT_CATALOG = [
     "categoryUrl": "/phones.html",
     "tag": "Very Good - Refurbished",
     "price": 229.95,
-    "originalPrice": 699,
-    "discount": "Save 67%",
+    "originalPrice": null,
+    "discount": null,
     "desc": "Premium Phones item in Very Good - Refurbished condition with fast US shipping.",
-    "details": "Item condition: Very Good - Refurbished. Certified inspection. Includes 30-day returns and BudgetThrills buyer protection.",
+    "details": "Condition: Very Good - Refurbished. Ships from the US. 30-day returns.",
     "brand": null,
     "colors": [
       {
@@ -1849,10 +1849,10 @@ window.BT_CATALOG = [
     "categoryUrl": "/phones.html",
     "tag": "Excellent - Refurbished",
     "price": 270.99,
-    "originalPrice": 699,
-    "discount": "Save 61%",
+    "originalPrice": null,
+    "discount": null,
     "desc": "Premium Phones item in Excellent - Refurbished condition with fast US shipping.",
-    "details": "Item condition: Excellent - Refurbished. Certified inspection. Includes 30-day returns and BudgetThrills buyer protection.",
+    "details": "Condition: Excellent - Refurbished. Ships from the US. 30-day returns.",
     "brand": null,
     "colors": [
       {
@@ -1875,10 +1875,10 @@ window.BT_CATALOG = [
     "categoryUrl": "/phones.html",
     "tag": "Excellent - Refurbished",
     "price": 209,
-    "originalPrice": 699,
-    "discount": "Save 70%",
+    "originalPrice": null,
+    "discount": null,
     "desc": "Premium Phones item in Excellent - Refurbished condition with fast US shipping.",
-    "details": "Item condition: Excellent - Refurbished. Certified inspection. Includes 30-day returns and BudgetThrills buyer protection.",
+    "details": "Condition: Excellent - Refurbished. Ships from the US. 30-day returns.",
     "brand": null,
     "colors": [
       {
@@ -1901,10 +1901,10 @@ window.BT_CATALOG = [
     "categoryUrl": "/phones.html",
     "tag": "New",
     "price": 300,
-    "originalPrice": 390,
-    "discount": "Save 23%",
+    "originalPrice": null,
+    "discount": null,
     "desc": "Premium Phones item in New condition with fast US shipping.",
-    "details": "Item condition: New. Certified inspection. Includes 30-day returns and BudgetThrills buyer protection.",
+    "details": "Condition: New. Ships from the US. 30-day returns.",
     "brand": null,
     "colors": [
       {
@@ -1935,10 +1935,10 @@ window.BT_CATALOG = [
     "categoryUrl": "/phones.html",
     "tag": "New",
     "price": 351.01,
-    "originalPrice": 456,
-    "discount": "Save 23%",
+    "originalPrice": null,
+    "discount": null,
     "desc": "Premium Phones item in New condition with fast US shipping.",
-    "details": "Item condition: New. Certified inspection. Includes 30-day returns and BudgetThrills buyer protection.",
+    "details": "Condition: New. Ships from the US. 30-day returns.",
     "brand": null,
     "colors": [
       {
@@ -1978,10 +1978,10 @@ window.BT_CATALOG = [
     "categoryUrl": "/phones.html",
     "tag": "Good - Refurbished",
     "price": 159.99,
-    "originalPrice": 599,
-    "discount": "Save 73%",
+    "originalPrice": null,
+    "discount": null,
     "desc": "Premium Phones item in Good - Refurbished condition with fast US shipping.",
-    "details": "Item condition: Good - Refurbished. Certified inspection. Includes 30-day returns and BudgetThrills buyer protection.",
+    "details": "Condition: Good - Refurbished. Ships from the US. 30-day returns.",
     "brand": null,
     "colors": [
       {
@@ -2008,10 +2008,10 @@ window.BT_CATALOG = [
     "categoryUrl": "/phones.html",
     "tag": "Good - Refurbished",
     "price": 171.67,
-    "originalPrice": 599,
-    "discount": "Save 71%",
+    "originalPrice": null,
+    "discount": null,
     "desc": "Premium Phones item in Good - Refurbished condition with fast US shipping.",
-    "details": "Item condition: Good - Refurbished. Certified inspection. Includes 30-day returns and BudgetThrills buyer protection.",
+    "details": "Condition: Good - Refurbished. Ships from the US. 30-day returns.",
     "brand": null,
     "colors": [
       {
@@ -2046,10 +2046,10 @@ window.BT_CATALOG = [
     "categoryUrl": "/phones.html",
     "tag": "Used",
     "price": 164.99,
-    "originalPrice": 599,
-    "discount": "Save 72%",
+    "originalPrice": null,
+    "discount": null,
     "desc": "Premium Phones item in Used condition with fast US shipping.",
-    "details": "Item condition: Used. Certified inspection. Includes 30-day returns and BudgetThrills buyer protection.",
+    "details": "Condition: Used. Ships from the US. 30-day returns.",
     "brand": null,
     "colors": [
       {
@@ -2072,10 +2072,10 @@ window.BT_CATALOG = [
     "categoryUrl": "/phones.html",
     "tag": "Good - Refurbished",
     "price": 168.67,
-    "originalPrice": 599,
-    "discount": "Save 72%",
+    "originalPrice": null,
+    "discount": null,
     "desc": "Premium Phones item in Good - Refurbished condition with fast US shipping.",
-    "details": "Item condition: Good - Refurbished. Certified inspection. Includes 30-day returns and BudgetThrills buyer protection.",
+    "details": "Condition: Good - Refurbished. Ships from the US. 30-day returns.",
     "brand": null,
     "colors": [
       {
@@ -2108,10 +2108,10 @@ window.BT_CATALOG = [
     "categoryUrl": "/phones.html",
     "tag": "New",
     "price": 359.99,
-    "originalPrice": 599,
-    "discount": "Save 40%",
+    "originalPrice": null,
+    "discount": null,
     "desc": "Premium Phones item in New condition with fast US shipping.",
-    "details": "Item condition: New. Certified inspection. Includes 30-day returns and BudgetThrills buyer protection.",
+    "details": "Condition: New. Ships from the US. 30-day returns.",
     "brand": null,
     "colors": [
       {
@@ -2134,10 +2134,10 @@ window.BT_CATALOG = [
     "categoryUrl": "/phones.html",
     "tag": "Used",
     "price": 136.89,
-    "originalPrice": 599,
-    "discount": "Save 77%",
+    "originalPrice": null,
+    "discount": null,
     "desc": "Premium Phones item in Used condition with fast US shipping.",
-    "details": "Item condition: Used. Certified inspection. Includes 30-day returns and BudgetThrills buyer protection.",
+    "details": "Condition: Used. Ships from the US. 30-day returns.",
     "brand": null,
     "colors": [
       {
@@ -2161,10 +2161,10 @@ window.BT_CATALOG = [
     "categoryUrl": "/phones.html",
     "tag": "Brand New",
     "price": 353.64,
-    "originalPrice": 460,
-    "discount": "Save 23%",
+    "originalPrice": null,
+    "discount": null,
     "desc": "Premium Phones item in Brand New condition with fast US shipping.",
-    "details": "Item condition: Brand New. Certified inspection. Includes 30-day returns and BudgetThrills buyer protection.",
+    "details": "Condition: Brand New. Ships from the US. 30-day returns.",
     "brand": null,
     "colors": [
       {
@@ -2202,10 +2202,10 @@ window.BT_CATALOG = [
     "categoryUrl": "/phones.html",
     "tag": "New",
     "price": 349,
-    "originalPrice": 454,
-    "discount": "Save 23%",
+    "originalPrice": null,
+    "discount": null,
     "desc": "Premium Phones item in New condition with fast US shipping.",
-    "details": "Item condition: New. Certified inspection. Includes 30-day returns and BudgetThrills buyer protection.",
+    "details": "Condition: New. Ships from the US. 30-day returns.",
     "brand": null,
     "colors": [
       {
@@ -2251,10 +2251,10 @@ window.BT_CATALOG = [
     "categoryUrl": "/phones.html",
     "tag": "New",
     "price": 288,
-    "originalPrice": 374,
-    "discount": "Save 23%",
+    "originalPrice": null,
+    "discount": null,
     "desc": "Premium Phones item in New condition with fast US shipping.",
-    "details": "Item condition: New. Certified inspection. Includes 30-day returns and BudgetThrills buyer protection.",
+    "details": "Condition: New. Ships from the US. 30-day returns.",
     "brand": null,
     "colors": [
       {
@@ -2300,10 +2300,10 @@ window.BT_CATALOG = [
     "categoryUrl": "/tech.html",
     "tag": "Used",
     "price": 90.99,
-    "originalPrice": 146,
-    "discount": "Save 38%",
+    "originalPrice": null,
+    "discount": null,
     "desc": "Premium Tech item in Used condition with fast US shipping.",
-    "details": "Item condition: Used. Certified inspection. Includes 30-day returns and BudgetThrills buyer protection.",
+    "details": "Condition: Used. Ships from the US. 30-day returns.",
     "brand": null,
     "colors": [
       {
@@ -2331,10 +2331,10 @@ window.BT_CATALOG = [
     "categoryUrl": "/tech.html",
     "tag": "Open box",
     "price": 100.1,
-    "originalPrice": 130,
-    "discount": "Save 23%",
+    "originalPrice": null,
+    "discount": null,
     "desc": "Premium Tech item in Open box condition with fast US shipping.",
-    "details": "Item condition: Open box. Certified inspection. Includes 30-day returns and BudgetThrills buyer protection.",
+    "details": "Condition: Open box. Ships from the US. 30-day returns.",
     "brand": null,
     "colors": [
       {
@@ -2365,10 +2365,10 @@ window.BT_CATALOG = [
     "categoryUrl": "/tech.html",
     "tag": "Good - Refurbished",
     "price": 114.99,
-    "originalPrice": 172,
-    "discount": "Save 33%",
+    "originalPrice": null,
+    "discount": null,
     "desc": "Premium Tech item in Good - Refurbished condition with fast US shipping.",
-    "details": "Item condition: Good - Refurbished. Certified inspection. Includes 30-day returns and BudgetThrills buyer protection.",
+    "details": "Condition: Good - Refurbished. Ships from the US. 30-day returns.",
     "brand": null,
     "colors": [
       {
@@ -2394,10 +2394,10 @@ window.BT_CATALOG = [
     "categoryUrl": "/tech.html",
     "tag": "New",
     "price": 189.24,
-    "originalPrice": 246,
-    "discount": "Save 23%",
+    "originalPrice": null,
+    "discount": null,
     "desc": "Premium Tech item in New condition with fast US shipping.",
-    "details": "Item condition: New. Certified inspection. Includes 30-day returns and BudgetThrills buyer protection.",
+    "details": "Condition: New. Ships from the US. 30-day returns.",
     "brand": null,
     "colors": [
       {
@@ -2424,10 +2424,10 @@ window.BT_CATALOG = [
     "categoryUrl": "/tech.html",
     "tag": "Used",
     "price": 79.99,
-    "originalPrice": 128,
-    "discount": "Save 38%",
+    "originalPrice": null,
+    "discount": null,
     "desc": "Premium Tech item in Used condition with fast US shipping.",
-    "details": "Item condition: Used. Certified inspection. Includes 30-day returns and BudgetThrills buyer protection.",
+    "details": "Condition: Used. Ships from the US. 30-day returns.",
     "brand": null,
     "colors": [
       {
@@ -2451,10 +2451,10 @@ window.BT_CATALOG = [
     "categoryUrl": "/tech.html",
     "tag": "New",
     "price": 120,
-    "originalPrice": 156,
-    "discount": "Save 23%",
+    "originalPrice": null,
+    "discount": null,
     "desc": "Premium Tech item in New condition with fast US shipping.",
-    "details": "Item condition: New. Certified inspection. Includes 30-day returns and BudgetThrills buyer protection.",
+    "details": "Condition: New. Ships from the US. 30-day returns.",
     "brand": null,
     "colors": [
       {
@@ -2484,10 +2484,10 @@ window.BT_CATALOG = [
     "categoryUrl": "/tech.html",
     "tag": "New",
     "price": 136,
-    "originalPrice": 177,
-    "discount": "Save 23%",
+    "originalPrice": null,
+    "discount": null,
     "desc": "Premium Tech item in New condition with fast US shipping.",
-    "details": "Item condition: New. Certified inspection. Includes 30-day returns and BudgetThrills buyer protection.",
+    "details": "Condition: New. Ships from the US. 30-day returns.",
     "brand": null,
     "colors": [
       {
@@ -2511,10 +2511,10 @@ window.BT_CATALOG = [
     "categoryUrl": "/tech.html",
     "tag": "Used",
     "price": 79.99,
-    "originalPrice": 349.95,
-    "discount": "Save 77%",
+    "originalPrice": null,
+    "discount": null,
     "desc": "Premium Tech item in Used condition with fast US shipping.",
-    "details": "Item condition: Used. Certified inspection. Includes 30-day returns and BudgetThrills buyer protection.",
+    "details": "Condition: Used. Ships from the US. 30-day returns.",
     "brand": null,
     "colors": [
       {
@@ -2543,10 +2543,10 @@ window.BT_CATALOG = [
     "categoryUrl": "/tech.html",
     "tag": "New",
     "price": 149.99,
-    "originalPrice": 349.95,
-    "discount": "Save 57%",
+    "originalPrice": null,
+    "discount": null,
     "desc": "Premium Tech item in New condition with fast US shipping.",
-    "details": "Item condition: New. Certified inspection. Includes 30-day returns and BudgetThrills buyer protection.",
+    "details": "Condition: New. Ships from the US. 30-day returns.",
     "brand": null,
     "colors": [
       {
@@ -2574,10 +2574,10 @@ window.BT_CATALOG = [
     "categoryUrl": "/tech.html",
     "tag": "Open box",
     "price": 115,
-    "originalPrice": 150,
-    "discount": "Save 23%",
+    "originalPrice": null,
+    "discount": null,
     "desc": "Premium Tech item in Open box condition with fast US shipping.",
-    "details": "Item condition: Open box. Certified inspection. Includes 30-day returns and BudgetThrills buyer protection.",
+    "details": "Condition: Open box. Ships from the US. 30-day returns.",
     "brand": null,
     "colors": [
       {
@@ -2600,10 +2600,10 @@ window.BT_CATALOG = [
     "categoryUrl": "/tech.html",
     "tag": "New",
     "price": 229.99,
-    "originalPrice": 349.95,
-    "discount": "Save 34%",
+    "originalPrice": null,
+    "discount": null,
     "desc": "Premium Tech item in New condition with fast US shipping.",
-    "details": "Item condition: New. Certified inspection. Includes 30-day returns and BudgetThrills buyer protection.",
+    "details": "Condition: New. Ships from the US. 30-day returns.",
     "brand": null,
     "colors": [
       {
@@ -2632,10 +2632,10 @@ window.BT_CATALOG = [
     "categoryUrl": "/tech.html",
     "tag": "Used",
     "price": 29.95,
-    "originalPrice": 48,
-    "discount": "Save 38%",
+    "originalPrice": null,
+    "discount": null,
     "desc": "Premium Tech item in Used condition with fast US shipping.",
-    "details": "Item condition: Used. Certified inspection. Includes 30-day returns and BudgetThrills buyer protection.",
+    "details": "Condition: Used. Ships from the US. 30-day returns.",
     "brand": null,
     "colors": [
       {
@@ -2672,10 +2672,10 @@ window.BT_CATALOG = [
     "categoryUrl": "/tech.html",
     "tag": "Used",
     "price": 76.5,
-    "originalPrice": 122,
-    "discount": "Save 37%",
+    "originalPrice": null,
+    "discount": null,
     "desc": "Premium Tech item in Used condition with fast US shipping.",
-    "details": "Item condition: Used. Certified inspection. Includes 30-day returns and BudgetThrills buyer protection.",
+    "details": "Condition: Used. Ships from the US. 30-day returns.",
     "brand": null,
     "colors": [
       {
@@ -2701,10 +2701,10 @@ window.BT_CATALOG = [
     "categoryUrl": "/tech.html",
     "tag": "Used",
     "price": 29.99,
-    "originalPrice": 48,
-    "discount": "Save 38%",
+    "originalPrice": null,
+    "discount": null,
     "desc": "Premium Tech item in Used condition with fast US shipping.",
-    "details": "Item condition: Used. Certified inspection. Includes 30-day returns and BudgetThrills buyer protection.",
+    "details": "Condition: Used. Ships from the US. 30-day returns.",
     "brand": null,
     "colors": [
       {
@@ -2731,10 +2731,10 @@ window.BT_CATALOG = [
     "categoryUrl": "/tech.html",
     "tag": "New",
     "price": 18.88,
-    "originalPrice": 25,
-    "discount": "Save 24%",
+    "originalPrice": null,
+    "discount": null,
     "desc": "Premium Tech item in New condition with fast US shipping.",
-    "details": "Item condition: New. Certified inspection. Includes 30-day returns and BudgetThrills buyer protection.",
+    "details": "Condition: New. Ships from the US. 30-day returns.",
     "brand": null,
     "colors": [
       {
@@ -2764,10 +2764,10 @@ window.BT_CATALOG = [
     "categoryUrl": "/tech.html",
     "tag": "New",
     "price": 134.09,
-    "originalPrice": 174,
-    "discount": "Save 23%",
+    "originalPrice": null,
+    "discount": null,
     "desc": "Premium Tech item in New condition with fast US shipping.",
-    "details": "Item condition: New. Certified inspection. Includes 30-day returns and BudgetThrills buyer protection.",
+    "details": "Condition: New. Ships from the US. 30-day returns.",
     "brand": null,
     "colors": [
       {
@@ -2790,10 +2790,10 @@ window.BT_CATALOG = [
     "categoryUrl": "/tech.html",
     "tag": "New",
     "price": 21.99,
-    "originalPrice": 29,
-    "discount": "Save 24%",
+    "originalPrice": null,
+    "discount": null,
     "desc": "Premium Tech item in New condition with fast US shipping.",
-    "details": "Item condition: New. Certified inspection. Includes 30-day returns and BudgetThrills buyer protection.",
+    "details": "Condition: New. Ships from the US. 30-day returns.",
     "brand": null,
     "colors": [
       {
@@ -2827,10 +2827,10 @@ window.BT_CATALOG = [
     "categoryUrl": "/tech.html",
     "tag": "New",
     "price": 39.95,
-    "originalPrice": 52,
-    "discount": "Save 23%",
+    "originalPrice": null,
+    "discount": null,
     "desc": "Premium Tech item in New condition with fast US shipping.",
-    "details": "Item condition: New. Certified inspection. Includes 30-day returns and BudgetThrills buyer protection.",
+    "details": "Condition: New. Ships from the US. 30-day returns.",
     "brand": null,
     "colors": [
       {
@@ -2854,10 +2854,10 @@ window.BT_CATALOG = [
     "categoryUrl": "/tech.html",
     "tag": "New",
     "price": 27.95,
-    "originalPrice": 36,
-    "discount": "Save 22%",
+    "originalPrice": null,
+    "discount": null,
     "desc": "Premium Tech item in New condition with fast US shipping.",
-    "details": "Item condition: New. Certified inspection. Includes 30-day returns and BudgetThrills buyer protection.",
+    "details": "Condition: New. Ships from the US. 30-day returns.",
     "brand": null,
     "colors": [
       {
@@ -2882,10 +2882,10 @@ window.BT_CATALOG = [
     "categoryUrl": "/tech.html",
     "tag": "New",
     "price": 33.98,
-    "originalPrice": 44,
-    "discount": "Save 23%",
+    "originalPrice": null,
+    "discount": null,
     "desc": "Premium Tech item in New condition with fast US shipping.",
-    "details": "Item condition: New. Certified inspection. Includes 30-day returns and BudgetThrills buyer protection.",
+    "details": "Condition: New. Ships from the US. 30-day returns.",
     "brand": null,
     "colors": [
       {
@@ -2908,10 +2908,10 @@ window.BT_CATALOG = [
     "categoryUrl": "/tech.html",
     "tag": "New",
     "price": 125,
-    "originalPrice": 163,
-    "discount": "Save 23%",
+    "originalPrice": null,
+    "discount": null,
     "desc": "Premium Tech item in New condition with fast US shipping.",
-    "details": "Item condition: New. Certified inspection. Includes 30-day returns and BudgetThrills buyer protection.",
+    "details": "Condition: New. Ships from the US. 30-day returns.",
     "brand": null,
     "colors": [
       {
@@ -2939,10 +2939,10 @@ window.BT_CATALOG = [
     "categoryUrl": "/tech.html",
     "tag": "New",
     "price": 42.99,
-    "originalPrice": 56,
-    "discount": "Save 23%",
+    "originalPrice": null,
+    "discount": null,
     "desc": "Premium Tech item in New condition with fast US shipping.",
-    "details": "Item condition: New. Certified inspection. Includes 30-day returns and BudgetThrills buyer protection.",
+    "details": "Condition: New. Ships from the US. 30-day returns.",
     "brand": null,
     "colors": [
       {
@@ -2969,10 +2969,10 @@ window.BT_CATALOG = [
     "categoryUrl": "/tech.html",
     "tag": "New",
     "price": 38.99,
-    "originalPrice": 51,
-    "discount": "Save 24%",
+    "originalPrice": null,
+    "discount": null,
     "desc": "Premium Tech item in New condition with fast US shipping.",
-    "details": "Item condition: New. Certified inspection. Includes 30-day returns and BudgetThrills buyer protection.",
+    "details": "Condition: New. Ships from the US. 30-day returns.",
     "brand": null,
     "colors": [
       {
@@ -2998,10 +2998,10 @@ window.BT_CATALOG = [
     "categoryUrl": "/accessories.html",
     "tag": "New with box and papers",
     "price": 209,
-    "originalPrice": 293,
-    "discount": "Save 29%",
+    "originalPrice": null,
+    "discount": null,
     "desc": "Premium Accessories item in New with box and papers condition with fast US shipping.",
-    "details": "Item condition: New with box and papers. Certified inspection. Includes 30-day returns and BudgetThrills buyer protection.",
+    "details": "Condition: New with box and papers. Ships from the US. 30-day returns.",
     "brand": null,
     "colors": [
       {
@@ -3026,10 +3026,10 @@ window.BT_CATALOG = [
     "categoryUrl": "/accessories.html",
     "tag": "New with box and papers",
     "price": 145.95,
-    "originalPrice": 204,
-    "discount": "Save 28%",
+    "originalPrice": null,
+    "discount": null,
     "desc": "Premium Accessories item in New with box and papers condition with fast US shipping.",
-    "details": "Item condition: New with box and papers. Certified inspection. Includes 30-day returns and BudgetThrills buyer protection.",
+    "details": "Condition: New with box and papers. Ships from the US. 30-day returns.",
     "brand": null,
     "colors": [
       {
@@ -3055,10 +3055,10 @@ window.BT_CATALOG = [
     "categoryUrl": "/accessories.html",
     "tag": "Seller refurbished",
     "price": 130,
-    "originalPrice": 195,
-    "discount": "Save 33%",
+    "originalPrice": null,
+    "discount": null,
     "desc": "Premium Accessories item in Seller refurbished condition with fast US shipping.",
-    "details": "Item condition: Seller refurbished. Certified inspection. Includes 30-day returns and BudgetThrills buyer protection.",
+    "details": "Condition: Seller refurbished. Ships from the US. 30-day returns.",
     "brand": null,
     "colors": [
       {
@@ -3086,10 +3086,10 @@ window.BT_CATALOG = [
     "categoryUrl": "/accessories.html",
     "tag": "New with box and papers",
     "price": 198.19,
-    "originalPrice": 277,
-    "discount": "Save 28%",
+    "originalPrice": null,
+    "discount": null,
     "desc": "Premium Accessories item in New with box and papers condition with fast US shipping.",
-    "details": "Item condition: New with box and papers. Certified inspection. Includes 30-day returns and BudgetThrills buyer protection.",
+    "details": "Condition: New with box and papers. Ships from the US. 30-day returns.",
     "brand": null,
     "colors": [
       {
@@ -3114,10 +3114,10 @@ window.BT_CATALOG = [
     "categoryUrl": "/accessories.html",
     "tag": "Pre-owned - Good",
     "price": 105,
-    "originalPrice": 168,
-    "discount": "Save 38%",
+    "originalPrice": null,
+    "discount": null,
     "desc": "Premium Accessories item in Pre-owned - Good condition with fast US shipping.",
-    "details": "Item condition: Pre-owned - Good. Certified inspection. Includes 30-day returns and BudgetThrills buyer protection.",
+    "details": "Condition: Pre-owned - Good. Ships from the US. 30-day returns.",
     "brand": null,
     "colors": [
       {
@@ -3147,10 +3147,10 @@ window.BT_CATALOG = [
     "categoryUrl": "/accessories.html",
     "tag": "Pre-owned - Fair",
     "price": 74.99,
-    "originalPrice": 120,
-    "discount": "Save 38%",
+    "originalPrice": null,
+    "discount": null,
     "desc": "Premium Accessories item in Pre-owned - Fair condition with fast US shipping.",
-    "details": "Item condition: Pre-owned - Fair. Certified inspection. Includes 30-day returns and BudgetThrills buyer protection.",
+    "details": "Condition: Pre-owned - Fair. Ships from the US. 30-day returns.",
     "brand": null,
     "colors": [
       {
@@ -3181,10 +3181,10 @@ window.BT_CATALOG = [
     "categoryUrl": "/accessories.html",
     "tag": "New with box and papers",
     "price": 349.95,
-    "originalPrice": 490,
-    "discount": "Save 29%",
+    "originalPrice": null,
+    "discount": null,
     "desc": "Premium Accessories item in New with box and papers condition with fast US shipping.",
-    "details": "Item condition: New with box and papers. Certified inspection. Includes 30-day returns and BudgetThrills buyer protection.",
+    "details": "Condition: New with box and papers. Ships from the US. 30-day returns.",
     "brand": null,
     "colors": [
       {
@@ -3213,10 +3213,10 @@ window.BT_CATALOG = [
     "categoryUrl": "/accessories.html",
     "tag": "Pre-owned - Good",
     "price": 85,
-    "originalPrice": 136,
-    "discount": "Save 38%",
+    "originalPrice": null,
+    "discount": null,
     "desc": "Premium Accessories item in Pre-owned - Good condition with fast US shipping.",
-    "details": "Item condition: Pre-owned - Good. Certified inspection. Includes 30-day returns and BudgetThrills buyer protection.",
+    "details": "Condition: Pre-owned - Good. Ships from the US. 30-day returns.",
     "brand": null,
     "colors": [
       {
@@ -3243,10 +3243,10 @@ window.BT_CATALOG = [
     "categoryUrl": "/accessories.html",
     "tag": "New without tags",
     "price": 50,
-    "originalPrice": 70,
-    "discount": "Save 29%",
+    "originalPrice": null,
+    "discount": null,
     "desc": "Premium Accessories item in New without tags condition with fast US shipping.",
-    "details": "Item condition: New without tags. Certified inspection. Includes 30-day returns and BudgetThrills buyer protection.",
+    "details": "Condition: New without tags. Ships from the US. 30-day returns.",
     "brand": null,
     "colors": [
       {
@@ -3273,10 +3273,10 @@ window.BT_CATALOG = [
     "categoryUrl": "/accessories.html",
     "tag": "New with tags",
     "price": 62.1,
-    "originalPrice": 87,
-    "discount": "Save 29%",
+    "originalPrice": null,
+    "discount": null,
     "desc": "Premium Accessories item in New with tags condition with fast US shipping.",
-    "details": "Item condition: New with tags. Certified inspection. Includes 30-day returns and BudgetThrills buyer protection.",
+    "details": "Condition: New with tags. Ships from the US. 30-day returns.",
     "brand": null,
     "colors": [
       {
@@ -3306,10 +3306,10 @@ window.BT_CATALOG = [
     "categoryUrl": "/accessories.html",
     "tag": "New with tags",
     "price": 173.95,
-    "originalPrice": 244,
-    "discount": "Save 29%",
+    "originalPrice": null,
+    "discount": null,
     "desc": "Premium Accessories item in New with tags condition with fast US shipping.",
-    "details": "Item condition: New with tags. Certified inspection. Includes 30-day returns and BudgetThrills buyer protection.",
+    "details": "Condition: New with tags. Ships from the US. 30-day returns.",
     "brand": null,
     "colors": [
       {
@@ -3335,10 +3335,10 @@ window.BT_CATALOG = [
     "categoryUrl": "/accessories.html",
     "tag": "New with tags",
     "price": 71.99,
-    "originalPrice": 101,
-    "discount": "Save 29%",
+    "originalPrice": null,
+    "discount": null,
     "desc": "Premium Accessories item in New with tags condition with fast US shipping.",
-    "details": "Item condition: New with tags. Certified inspection. Includes 30-day returns and BudgetThrills buyer protection.",
+    "details": "Condition: New with tags. Ships from the US. 30-day returns.",
     "brand": null,
     "colors": [
       {
@@ -3369,10 +3369,10 @@ window.BT_CATALOG = [
     "categoryUrl": "/accessories.html",
     "tag": "New with tags",
     "price": 64.8,
-    "originalPrice": 91,
-    "discount": "Save 29%",
+    "originalPrice": null,
+    "discount": null,
     "desc": "Premium Accessories item in New with tags condition with fast US shipping.",
-    "details": "Item condition: New with tags. Certified inspection. Includes 30-day returns and BudgetThrills buyer protection.",
+    "details": "Condition: New with tags. Ships from the US. 30-day returns.",
     "brand": null,
     "colors": [
       {
@@ -3403,10 +3403,10 @@ window.BT_CATALOG = [
     "categoryUrl": "/accessories.html",
     "tag": "Pre-owned - Good",
     "price": 239.54,
-    "originalPrice": 383,
-    "discount": "Save 37%",
+    "originalPrice": null,
+    "discount": null,
     "desc": "Premium Accessories item in Pre-owned - Good condition with fast US shipping.",
-    "details": "Item condition: Pre-owned - Good. Certified inspection. Includes 30-day returns and BudgetThrills buyer protection.",
+    "details": "Condition: Pre-owned - Good. Ships from the US. 30-day returns.",
     "brand": null,
     "colors": [
       {
@@ -3434,10 +3434,10 @@ window.BT_CATALOG = [
     "categoryUrl": "/accessories.html",
     "tag": "New with tags",
     "price": 39.89,
-    "originalPrice": 56,
-    "discount": "Save 29%",
+    "originalPrice": null,
+    "discount": null,
     "desc": "Premium Accessories item in New with tags condition with fast US shipping.",
-    "details": "Item condition: New with tags. Certified inspection. Includes 30-day returns and BudgetThrills buyer protection.",
+    "details": "Condition: New with tags. Ships from the US. 30-day returns.",
     "brand": null,
     "colors": [
       {
@@ -3473,10 +3473,10 @@ window.BT_CATALOG = [
     "categoryUrl": "/accessories.html",
     "tag": "New with tags",
     "price": 120,
-    "originalPrice": 168,
-    "discount": "Save 29%",
+    "originalPrice": null,
+    "discount": null,
     "desc": "Premium Accessories item in New with tags condition with fast US shipping.",
-    "details": "Item condition: New with tags. Certified inspection. Includes 30-day returns and BudgetThrills buyer protection.",
+    "details": "Condition: New with tags. Ships from the US. 30-day returns.",
     "brand": null,
     "colors": [
       {
@@ -3502,10 +3502,10 @@ window.BT_CATALOG = [
     "categoryUrl": "/accessories.html",
     "tag": "New with tags",
     "price": 86.99,
-    "originalPrice": 122,
-    "discount": "Save 29%",
+    "originalPrice": null,
+    "discount": null,
     "desc": "Premium Accessories item in New with tags condition with fast US shipping.",
-    "details": "Item condition: New with tags. Certified inspection. Includes 30-day returns and BudgetThrills buyer protection.",
+    "details": "Condition: New with tags. Ships from the US. 30-day returns.",
     "brand": null,
     "colors": [
       {
@@ -3541,10 +3541,10 @@ window.BT_CATALOG = [
     "categoryUrl": "/accessories.html",
     "tag": "New with tags",
     "price": 140,
-    "originalPrice": 196,
-    "discount": "Save 29%",
+    "originalPrice": null,
+    "discount": null,
     "desc": "Premium Accessories item in New with tags condition with fast US shipping.",
-    "details": "Item condition: New with tags. Certified inspection. Includes 30-day returns and BudgetThrills buyer protection.",
+    "details": "Condition: New with tags. Ships from the US. 30-day returns.",
     "brand": null,
     "colors": [
       {
@@ -3573,10 +3573,10 @@ window.BT_CATALOG = [
     "categoryUrl": "/accessories.html",
     "tag": "Pre-owned - Good",
     "price": 80.1,
-    "originalPrice": 128,
-    "discount": "Save 37%",
+    "originalPrice": null,
+    "discount": null,
     "desc": "Premium Accessories item in Pre-owned - Good condition with fast US shipping.",
-    "details": "Item condition: Pre-owned - Good. Certified inspection. Includes 30-day returns and BudgetThrills buyer protection.",
+    "details": "Condition: Pre-owned - Good. Ships from the US. 30-day returns.",
     "brand": null,
     "colors": [
       {
@@ -3608,10 +3608,10 @@ window.BT_CATALOG = [
     "categoryUrl": "/accessories.html",
     "tag": "New with tags",
     "price": 16.28,
-    "originalPrice": 23,
-    "discount": "Save 29%",
+    "originalPrice": null,
+    "discount": null,
     "desc": "Premium Accessories item in New with tags condition with fast US shipping.",
-    "details": "Item condition: New with tags. Certified inspection. Includes 30-day returns and BudgetThrills buyer protection.",
+    "details": "Condition: New with tags. Ships from the US. 30-day returns.",
     "brand": null,
     "colors": [
       {
@@ -3638,10 +3638,10 @@ window.BT_CATALOG = [
     "categoryUrl": "/accessories.html",
     "tag": "New with tags",
     "price": 19.15,
-    "originalPrice": 27,
-    "discount": "Save 29%",
+    "originalPrice": null,
+    "discount": null,
     "desc": "Premium Accessories item in New with tags condition with fast US shipping.",
-    "details": "Item condition: New with tags. Certified inspection. Includes 30-day returns and BudgetThrills buyer protection.",
+    "details": "Condition: New with tags. Ships from the US. 30-day returns.",
     "brand": null,
     "colors": [
       {
@@ -3669,10 +3669,10 @@ window.BT_CATALOG = [
     "categoryUrl": "/accessories.html",
     "tag": "New without tags",
     "price": 26.5,
-    "originalPrice": 37,
-    "discount": "Save 28%",
+    "originalPrice": null,
+    "discount": null,
     "desc": "Premium Accessories item in New without tags condition with fast US shipping.",
-    "details": "Item condition: New without tags. Certified inspection. Includes 30-day returns and BudgetThrills buyer protection.",
+    "details": "Condition: New without tags. Ships from the US. 30-day returns.",
     "brand": null,
     "colors": [
       {
@@ -3700,10 +3700,10 @@ window.BT_CATALOG = [
     "categoryUrl": "/accessories.html",
     "tag": "New with tags",
     "price": 40,
-    "originalPrice": 56,
-    "discount": "Save 29%",
+    "originalPrice": null,
+    "discount": null,
     "desc": "Premium Accessories item in New with tags condition with fast US shipping.",
-    "details": "Item condition: New with tags. Certified inspection. Includes 30-day returns and BudgetThrills buyer protection.",
+    "details": "Condition: New with tags. Ships from the US. 30-day returns.",
     "brand": null,
     "colors": [
       {

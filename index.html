@@ -37,7 +37,7 @@
   <div class="hairline-b">
     <div class="max-w-7xl mx-auto px-6 lg:px-10 h-10 flex items-center justify-between text-[11px] tracking-[0.18em] uppercase text-mute">
       <span>Free US shipping over $50</span>
-      <span class="hidden sm:inline">New drop — every Friday, 8PM EST</span>
+      <span class="hidden sm:inline">New listings added daily</span>
       <span class="hidden md:inline">USA · 2026</span>
     </div>
   </div>
@@ -86,72 +86,59 @@
     </nav>
   </header>
 
-  <!-- ============ 2. HERO: ONE DROP. ONE NIGHT. ============ -->
+  <!-- ============ 2. HERO: NEW ARRIVALS ============ -->
   <section class="hairline-b py-16 sm:py-24 lg:py-32" id="deals">
     <div class="max-w-7xl mx-auto px-6 lg:px-10 grid lg:grid-cols-12 gap-16 items-center">
 
-      <!-- Left column: Countdown and Headline -->
+      <!-- Left column: headline + live stats -->
       <div class="lg:col-span-5" data-reveal>
         <div class="flex items-center justify-between mb-4">
-          <div class="eyebrow" id="drop-eyebrow">Ends Tonight</div>
+          <div class="eyebrow" id="drop-eyebrow">New this week</div>
           <div class="flex items-center gap-2 text-xs">
-            <span id="drop-step-indicator" class="text-mute font-mono text-[11px]">Drop 1 of 7</span>
-            <button id="drop-prev-btn" class="w-6 h-6 border hairline rounded flex items-center justify-center text-mute hover:text-lime hover:border-lime transition" title="Previous Drop" aria-label="Previous Drop">←</button>
-            <button id="drop-next-btn" class="w-6 h-6 border hairline rounded flex items-center justify-center text-mute hover:text-lime hover:border-lime transition" title="Next Drop" aria-label="Next Drop">→</button>
+            <span id="drop-step-indicator" class="text-mute font-mono text-[11px]">1 of 1</span>
+            <button id="drop-prev-btn" class="w-6 h-6 border hairline rounded flex items-center justify-center text-mute hover:text-lime hover:border-lime transition" title="Previous" aria-label="Previous item">←</button>
+            <button id="drop-next-btn" class="w-6 h-6 border hairline rounded flex items-center justify-center text-mute hover:text-lime hover:border-lime transition" title="Next" aria-label="Next item">→</button>
           </div>
         </div>
 
         <h1 class="display text-[52px] sm:text-[88px] leading-[0.9]">
-          One drop.<br>One night<span class="text-lime">.</span>
+          New finds.<br>Every day<span class="text-lime">.</span>
         </h1>
 
-        <div class="cd-wrap mt-10">
-          <svg class="cd-ring" viewBox="0 0 260 260" aria-hidden="true">
-            <circle class="cd-ring-bg" cx="130" cy="130" r="120" />
-            <circle id="cd-ring" class="cd-ring-fg" cx="130" cy="130" r="120" />
-          </svg>
-          <div class="cd">
-            <span id="cd-h" class="cd-num">00</span>
-            <span class="cd-sep">:</span>
-            <span id="cd-m" class="cd-num">00</span>
-            <span class="cd-sep">:</span>
-            <span id="cd-s" class="cd-num">00</span>
-          </div>
-        </div>
-        <div class="mt-3 flex gap-12 text-mute text-[11px] tracking-[0.2em] uppercase">
-          <span>Hours</span><span>Minutes</span><span>Seconds</span>
-        </div>
+        <p class="text-mute text-base sm:text-lg leading-relaxed mt-8 max-w-md">
+          Every listing is sourced from a top-rated US seller, priced below what you'd pay at retail, and covered by 30-day returns. When an item sells, it's gone.
+        </p>
 
-        <div class="mt-4 flex items-center gap-2 text-xs text-mute">
-          <span class="inline-block w-2 h-2 rounded-full bg-lime animate-pulse"></span>
-          <span id="drop-next-preview" class="text-[12px]">Auto-cycles next eBay hardware drop on countdown</span>
+        <div class="mt-8 flex flex-wrap gap-x-10 gap-y-3 text-[11px] tracking-[0.2em] uppercase text-mute">
+          <span><span class="text-ink font-semibold" id="live-count">117</span> live listings</span>
+          <span>Catalog updated <span class="text-ink font-semibold" id="live-updated">today</span></span>
         </div>
 
         <div class="mt-10 flex flex-wrap items-center gap-4">
-          <a id="drop-cta-link" href="/pdp.html?id=sony-playstation-5-ps5-slim-disc" class="btn-lime">
-            <span id="drop-cta-text">Cop the deal</span>
+          <a id="drop-cta-link" href="/trending.html" class="btn-lime">
+            <span id="drop-cta-text">View this item</span>
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
           </a>
           <a href="#trending" class="btn-ghost">Shop all trending</a>
         </div>
       </div>
 
-      <!-- Right column: Full-size Hero Product Card -->
+      <!-- Right column: featured arrival -->
       <div class="lg:col-span-7" data-reveal>
-        <a id="drop-media-link" href="/pdp.html?id=sony-playstation-5-ps5-slim-disc" class="block group">
+        <a id="drop-media-link" href="/trending.html" class="block group">
           <div class="card-media aspect-[4/3]">
-            <img id="drop-img" loading="eager" class="img-primary" src="https://i.ebayimg.com/images/g/~XsAAeSw9P9qoaia/s-l1600.jpg" alt="Sony PlayStation 5 Slim">
-            <span id="drop-badge-pill" class="card-cta">View Deal →</span>
+            <img id="drop-img" loading="eager" class="img-primary" src="https://i.ebayimg.com/images/g/~XsAAeSw9P9qoaia/s-l1600.jpg" alt="">
+            <span id="drop-badge-pill" class="card-cta">View →</span>
           </div>
           <div class="mt-6 grid sm:grid-cols-2 gap-6 items-end" id="drop-details">
             <div>
-              <div class="text-mute text-xs uppercase tracking-[0.18em]" id="drop-tag">Tonight · Flagship Console</div>
-              <h3 class="display text-[36px] sm:text-[44px] mt-2 leading-[0.9]" id="drop-title">Sony PlayStation 5 Slim<span class="text-lime">.</span></h3>
-              <p class="text-mute text-sm mt-3 max-w-xs" id="drop-desc">1TB Disc Edition with Tempest 3D Audio, ultra-fast SSD and Ray Tracing.</p>
+              <div class="text-mute text-xs uppercase tracking-[0.18em]" id="drop-tag">Just added</div>
+              <h3 class="display text-[36px] sm:text-[44px] mt-2 leading-[0.9]" id="drop-title">Loading<span class="text-lime">.</span></h3>
+              <p class="text-mute text-sm mt-3 max-w-xs" id="drop-desc"></p>
             </div>
             <div class="sm:text-right">
-              <div class="text-mute text-xs uppercase tracking-[0.18em]" id="drop-was">Was $499.00</div>
-              <div class="display text-[56px] mt-1 leading-none" id="drop-price">$429<span class="text-mute text-xl align-top">.00</span></div>
+              <div class="text-mute text-xs uppercase tracking-[0.18em] hidden" id="drop-was"></div>
+              <div class="display text-[56px] mt-1 leading-none" id="drop-price"></div>
             </div>
           </div>
         </a>
@@ -213,7 +200,7 @@
             <div class="text-mute text-xs mt-1">New with box</div>
             <div class="mt-3 flex items-baseline gap-3">
               <span class="text-lg font-semibold" lang="en-US" translate="no">$160.00</span>
-              <span class="text-mute text-xs line-through" lang="en-US" translate="no">$208.00</span>
+              
             </div>
           </div>
         </a>
@@ -229,7 +216,7 @@
             <div class="text-mute text-xs mt-1">Excellent - Refurbished</div>
             <div class="mt-3 flex items-baseline gap-3">
               <span class="text-lg font-semibold" lang="en-US" translate="no">$719.00</span>
-              <span class="text-mute text-xs line-through" lang="en-US" translate="no">$799.00</span>
+              
             </div>
           </div>
         </a>
@@ -245,7 +232,7 @@
             <div class="text-mute text-xs mt-1">Very Good - Refurbished</div>
             <div class="mt-3 flex items-baseline gap-3">
               <span class="text-lg font-semibold" lang="en-US" translate="no">$889.00</span>
-              <span class="text-mute text-xs line-through" lang="en-US" translate="no">$999.00</span>
+              
             </div>
           </div>
         </a>
@@ -261,7 +248,7 @@
             <div class="text-mute text-xs mt-1">New</div>
             <div class="mt-3 flex items-baseline gap-3">
               <span class="text-lg font-semibold" lang="en-US" translate="no">$9.99</span>
-              <span class="text-mute text-xs line-through" lang="en-US" translate="no">$16.00</span>
+              
             </div>
           </div>
         </a>
@@ -277,7 +264,7 @@
             <div class="text-mute text-xs mt-1">New without box</div>
             <div class="mt-3 flex items-baseline gap-3">
               <span class="text-lg font-semibold" lang="en-US" translate="no">$50.00</span>
-              <span class="text-mute text-xs line-through" lang="en-US" translate="no">$160.00</span>
+              
             </div>
           </div>
         </a>
@@ -293,7 +280,7 @@
             <div class="text-mute text-xs mt-1">Very Good - Refurbished</div>
             <div class="mt-3 flex items-baseline gap-3">
               <span class="text-lg font-semibold" lang="en-US" translate="no">$288.95</span>
-              <span class="text-mute text-xs line-through" lang="en-US" translate="no">$433.00</span>
+              
             </div>
           </div>
         </a>
@@ -309,7 +296,7 @@
             <div class="text-mute text-xs mt-1">Used</div>
             <div class="mt-3 flex items-baseline gap-3">
               <span class="text-lg font-semibold" lang="en-US" translate="no">$889.00</span>
-              <span class="text-mute text-xs line-through" lang="en-US" translate="no">$999.00</span>
+              
             </div>
           </div>
         </a>
@@ -325,7 +312,7 @@
             <div class="text-mute text-xs mt-1">New</div>
             <div class="mt-3 flex items-baseline gap-3">
               <span class="text-lg font-semibold" lang="en-US" translate="no">$9.99</span>
-              <span class="text-mute text-xs line-through" lang="en-US" translate="no">$16.00</span>
+              
             </div>
           </div>
         </a>
@@ -346,81 +333,14 @@
             Budget Tags<span class="text-lime">.</span>
           </h2>
           <p class="mt-6 text-mute text-base sm:text-lg max-w-xl leading-relaxed">
-            Direct overstock liquidations, price drops, and verified essentials selected for maximum thrift value.
+            Everyday essentials under $50 from the same vetted sellers, picked for value.
           </p>
         </div>
         <a href="/trending.html" class="link-mute text-[13px] tracking-wider uppercase font-medium self-end">Explore all deals →</a>
       </div>
 
-      <div class="grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-10" data-reveal>
-        
-        <!-- Steal 1: Nike Air Max Dn -->
-        <a href="/pdp.html?id=nike-air-max-dn-men-s-running-" class="card group">
-          <div class="card-media aspect-[4/5] relative">
-            <span class="absolute top-3 left-3 z-10 text-[10px] tracking-[0.18em] uppercase font-bold px-2.5 py-1 rounded bg-lime text-black">Save 69%</span>
-            <img class="img-primary" src="https://i.ebayimg.com/images/g/vwAAAeSwMCZp-p2q/s-l1600.jpg" alt="Nike Air Max Dn" loading="lazy">
-            <span class="card-cta">View Deal →</span>
-          </div>
-          <div class="pt-5">
-            <h3 class="text-sm font-medium group-hover:text-lime transition">Nike Air Max Dn Men’s Running</h3>
-            <div class="text-mute text-xs mt-1">Sneakers · New with box</div>
-            <div class="mt-3 flex items-baseline gap-3">
-              <span class="text-lg font-semibold" lang="en-US" translate="no">$50.00</span>
-              <span class="text-mute text-xs line-through" lang="en-US" translate="no">$160.00</span>
-            </div>
-          </div>
-        </a>
-
-        <!-- Steal 2: Vans Old Skool -->
-        <a href="/pdp.html?id=vans-unisex-ua-old-skool-black" class="card group">
-          <div class="card-media aspect-[4/5] relative">
-            <span class="absolute top-3 left-3 z-10 text-[10px] tracking-[0.18em] uppercase font-bold px-2.5 py-1 rounded bg-lime text-black">Save 38%</span>
-            <img class="img-primary" src="https://i.ebayimg.com/images/g/oncAAeSw7F9qjJaN/s-l1600.jpg" alt="Vans Old Skool" loading="lazy">
-            <span class="card-cta">View Deal →</span>
-          </div>
-          <div class="pt-5">
-            <h3 class="text-sm font-medium group-hover:text-lime transition">Vans Old Skool Low-Top Canvas</h3>
-            <div class="text-mute text-xs mt-1">Sneakers · Streetwear</div>
-            <div class="mt-3 flex items-baseline gap-3">
-              <span class="text-lg font-semibold" lang="en-US" translate="no">$29.99</span>
-              <span class="text-mute text-xs line-through" lang="en-US" translate="no">$48.00</span>
-            </div>
-          </div>
-        </a>
-
-        <!-- Steal 3: Ray-Ban Polarized Wayfarer -->
-        <a href="/pdp.html?id=ray-ban-rb214of-polarized-wayf" class="card group">
-          <div class="card-media aspect-[4/5] relative">
-            <span class="absolute top-3 left-3 z-10 text-[10px] tracking-[0.18em] uppercase font-bold px-2.5 py-1 rounded bg-lime text-black">Save 29%</span>
-            <img class="img-primary" src="https://i.ebayimg.com/images/g/-FUAAeSwSHBqiixJ/s-l1600.jpg" alt="Ray-Ban Polarized Wayfarer" loading="lazy">
-            <span class="card-cta">View Deal →</span>
-          </div>
-          <div class="pt-5">
-            <h3 class="text-sm font-medium group-hover:text-lime transition">Ray-Ban Polarized Wayfarer</h3>
-            <div class="text-mute text-xs mt-1">Accessories · Eyewear</div>
-            <div class="mt-3 flex items-baseline gap-3">
-              <span class="text-lg font-semibold" lang="en-US" translate="no">$50.00</span>
-              <span class="text-mute text-xs line-through" lang="en-US" translate="no">$70.00</span>
-            </div>
-          </div>
-        </a>
-
-        <!-- Steal 4: Anker Nano Fast Charger -->
-        <a href="/pdp.html?id=anker-nano-portable-battery-po" class="card group">
-          <div class="card-media aspect-[4/5] relative">
-            <span class="absolute top-3 left-3 z-10 text-[10px] tracking-[0.18em] uppercase font-bold px-2.5 py-1 rounded bg-lime text-black">Save 23%</span>
-            <img class="img-primary" src="https://i.ebayimg.com/images/g/6oAAAeSwww5pG0Lu/s-l1600.jpg" alt="Anker Nano Power Bank" loading="lazy">
-            <span class="card-cta">View Deal →</span>
-          </div>
-          <div class="pt-5">
-            <h3 class="text-sm font-medium group-hover:text-lime transition">Anker Nano Portable Fast Charger</h3>
-            <div class="text-mute text-xs mt-1">Tech · Fast Charging</div>
-            <div class="mt-3 flex items-baseline gap-3">
-              <span class="text-lg font-semibold" lang="en-US" translate="no">$39.95</span>
-              <span class="text-mute text-xs line-through" lang="en-US" translate="no">$52.00</span>
-            </div>
-          </div>
-        </a>
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-10" data-reveal data-catalog-under="50">
+        <!-- rendered from the catalog by cart.js: items priced $50 or under -->
 
       </div>
     </div>
@@ -439,7 +359,7 @@
         </div>
         <div class="lg:col-span-5">
           <p class="text-mute text-base sm:text-lg leading-relaxed">
-            Direct pricing without retail markups, backed by strict inspection and full consumer guarantees on every order.
+            Below-retail pricing on items we source from established US sellers, with tracked delivery and a plain 30-day return policy.
           </p>
         </div>
       </div>
@@ -449,15 +369,15 @@
         <!-- Pillar 01 -->
         <div class="py-10 md:py-12 md:pr-8 lg:pr-10 group">
           <div class="flex items-center justify-between mb-8">
-            <span class="font-mono text-xs text-mute group-hover:text-lime transition">01 / INSPECTION</span>
+            <span class="font-mono text-xs text-mute group-hover:text-lime transition">01 / SOURCING</span>
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="text-mute group-hover:text-lime transition">
               <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
               <path d="m9 12 2 2 4-4"/>
             </svg>
           </div>
-          <h3 class="text-lg font-semibold text-ink group-hover:text-lime transition mb-3">Verified Authentic</h3>
+          <h3 class="text-lg font-semibold text-ink group-hover:text-lime transition mb-3">Vetted sellers only</h3>
           <p class="text-mute text-sm leading-relaxed">
-            Multi-point hardware and material inspection ensures 100% genuine products with precise condition grading.
+            Every item comes from a US seller with 99%+ positive feedback and the condition stated up front: new, open box or certified refurbished. Not as described? Full refund.
           </p>
         </div>
 
@@ -472,9 +392,9 @@
               <circle cx="18.5" cy="18.5" r="2.5"/>
             </svg>
           </div>
-          <h3 class="text-lg font-semibold text-ink group-hover:text-lime transition mb-3">Fast US Tracked</h3>
+          <h3 class="text-lg font-semibold text-ink group-hover:text-lime transition mb-3">Tracked US delivery</h3>
           <p class="text-mute text-sm leading-relaxed">
-            Dispatched within 24 hours. Full doorstep tracking via USPS and FedEx. Free nationwide delivery over $50.
+            Orders ship within 1–2 business days with a tracking number you can follow on our track page. Free standard delivery over $50.
           </p>
         </div>
 
@@ -489,9 +409,9 @@
               <path d="M8 16H3v5"/>
             </svg>
           </div>
-          <h3 class="text-lg font-semibold text-ink group-hover:text-lime transition mb-3">30-Day Guarantee</h3>
+          <h3 class="text-lg font-semibold text-ink group-hover:text-lime transition mb-3">30-day returns</h3>
           <p class="text-mute text-sm leading-relaxed">
-            Hassle-free 30-day money-back guarantee with straightforward refunds and complimentary size exchanges.
+            Return anything within 30 days of delivery in the condition it arrived. We pay return shipping when an item is damaged, defective or not as described.
           </p>
         </div>
 
@@ -504,9 +424,9 @@
               <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
             </svg>
           </div>
-          <h3 class="text-lg font-semibold text-ink group-hover:text-lime transition mb-3">Encrypted Checkout</h3>
+          <h3 class="text-lg font-semibold text-ink group-hover:text-lime transition mb-3">Secure checkout</h3>
           <p class="text-mute text-sm leading-relaxed">
-            256-bit SSL encrypted payments processed securely via Stripe &amp; NOWPayments. Seamless 1-tap Apple Pay &amp; Google Pay.
+            Card, Apple Pay and Google Pay payments are handled by Stripe, crypto by NOWPayments. We never see or store your card number.
           </p>
         </div>
 

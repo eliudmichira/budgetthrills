@@ -499,6 +499,58 @@ exports.stripeWebhook = onRequest({ cors: false }, async (req, res) => {
   return res.sendStatus(200);
 });
 
+/**
+ * Fulfilment side effects when an order document changes:
+ *  - status becomes "shipped" with a tracking number -> shipping email to the customer (SendGrid)
+ *  - tracking number/carrier set on a Stripe-paid order -> attached to the PaymentIntent, which
+ *    Stripe uses as dispute evidence and which lowers "item not received" chargebacks.
+ */
+exports.onOrderFulfilment = onDocumentWritten("orders/{orderId}", async (event) => {
+  const after = event.data.after.exists ? event.data.after.data() : null;
+  const before = event.data.before.exists ? event.data.before.data() : {};
+  const orderId = event.params.orderId;
+  if (!after) return null;
+  const ref = getFirestore().collection("orders").doc(orderId);
+  const patch = {};
+
+  const trackingChanged = after.trackingNumber && (after.trackingNumber !== before.trackingNumber || after.carrier !== before.carrier);
+  if (trackingChanged && after.stripePaymentIntent && STRIPE_SECRET_KEY) {
+    try {
+      const stripe = require("stripe")(STRIPE_SECRET_KEY);
+      await stripe.paymentIntents.update(after.stripePaymentIntent, {
+        shipping: { name: String(after.customerName || "Customer").substring(0, 100), phone: after.phone || undefined, carrier: String(after.carrier || "").substring(0, 50) || undefined, tracking_number: String(after.trackingNumber).substring(0, 100), address: { line1: String(after.address || "n/a").substring(0, 200), country: "US" } }
+      });
+      patch.stripeTrackingSyncedAt = new Date(); patch.stripeTrackingError = FieldValue.delete();
+    } catch (err) {
+      console.warn("Stripe tracking sync failed for", orderId, err.message);
+      patch.stripeTrackingError = err.message;
+    }
+  }
+
+  if (after.status === "shipped" && after.trackingNumber && !after.shippedEmailSent && after.email) {
+    if (!SENDGRID_KEY) { console.warn("SENDGRID_API_KEY not set — skipping shipping email for", orderId); }
+    else {
+      sgMail.setApiKey(SENDGRID_KEY);
+      const carrier = after.carrier || "Carrier", tn = after.trackingNumber;
+      const links = { USPS: `https://tools.usps.com/go/TrackConfirmAction?tLabels=${encodeURIComponent(tn)}`, UPS: `https://www.ups.com/track?tracknum=${encodeURIComponent(tn)}`, FedEx: `https://www.fedex.com/fedextrack/?trknbr=${encodeURIComponent(tn)}`, DHL: `https://www.dhl.com/us-en/home/tracking.html?tracking-id=${encodeURIComponent(tn)}` };
+      const trackUrl = links[carrier] || "https://budgetthrills.web.app/track.html";
+      const items = (after.items || []).map((it) => `<li>${it.name}${it.qty > 1 ? " × " + it.qty : ""}</li>`).join("");
+      try {
+        await sgMail.send({
+          to: after.email, from: { email: FROM_EMAIL, name: FROM_NAME }, replyTo: "support@budgetthrills.com",
+          subject: `Your order ${after.id || orderId} has shipped`,
+          html: `<div style="font-family:Inter,system-ui,sans-serif;max-width:560px;margin:0 auto;padding:32px 24px;background:#0A0A0A;color:#F2F2F2"><div style="color:#BFFF1A;font-size:22px;font-weight:900;margin-bottom:24px">BudgetThrills</div><h1 style="font-size:28px;margin:0 0 8px">On its way<span style="color:#BFFF1A">.</span></h1><p style="color:#A1A1AA">Order <strong style="color:#F2F2F2">${after.id || orderId}</strong> shipped with ${carrier}.</p><p style="margin:20px 0"><a href="${trackUrl}" style="background:#BFFF1A;color:#000;padding:12px 20px;border-radius:4px;text-decoration:none;font-weight:700">Track ${tn}</a></p><ul style="color:#D4D4D8;padding-left:18px">${items}</ul><p style="color:#6E6E6E;font-size:13px;margin-top:24px">Shipping to: ${after.address || ""}<br>Questions? Reply to this email.</p></div>`,
+          text: `Order ${after.id || orderId} has shipped with ${carrier}. Tracking: ${tn}\n${trackUrl}`
+        });
+        patch.shippedEmailSent = true;
+      } catch (err) { console.error("Shipping email failed for", orderId, err.response?.body || err.message); }
+    }
+  }
+
+  if (Object.keys(patch).length) await ref.set(patch, { merge: true });
+  return null;
+});
+
 /** POST /api/track-order — guest order lookup by order number + email (no public Firestore read) */
 exports.trackOrder = onRequest({ cors: true }, async (req, res) => {
   if (req.method !== "POST") return res.status(405).json({ error: "Method not allowed." });
@@ -509,10 +561,12 @@ exports.trackOrder = onRequest({ cors: true }, async (req, res) => {
     const snap = await db.collection("orders").doc(orderId).get();
     if (!snap.exists || String(snap.data().email || "").toLowerCase() !== email) return res.status(404).json({ error: "Order not found." });
     const o = snap.data();
-    const createdAt = o.createdAt && o.createdAt.toDate ? o.createdAt.toDate().toISOString() : (o.createdAt || null);
+    const iso = (v) => (v && v.toDate ? v.toDate().toISOString() : (v ? String(v) : null));
+    const createdAt = iso(o.createdAt);
     return res.status(200).json({ order: {
       id: o.id || orderId, status: o.status, createdAt, carrier: o.carrier || "", trackingNumber: o.trackingNumber || "",
-      address: o.address || "", eta: o.eta || "", total: o.total, shippedAt: o.shippedAt && o.shippedAt.toDate ? o.shippedAt.toDate().toISOString() : (o.shippedAt || null),
+      address: o.address || "", eta: o.eta || "", total: o.total, shippingMethod: o.shippingMethod || "standard",
+      paidAt: iso(o.paidAt), sourcedAt: iso(o.sourcedAt), shippedAt: iso(o.shippedAt), deliveredAt: iso(o.deliveredAt),
       items: (o.items || []).map((it) => ({ name: it.name, qty: it.qty, price: it.price, image: it.image, variant: it.variant }))
     } });
   } catch (err) {

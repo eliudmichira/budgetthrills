@@ -244,6 +244,15 @@
   .sec h3 { font-size: 11.5px; text-transform: uppercase; letter-spacing: .06em; color: var(--a-text-3); font-weight: 600; margin: 0 0 10px; }
   .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
   .form-grp { margin-bottom: 14px; }
+  .fsteps { display: flex; flex-direction: column; gap: 0; }
+  .fstep { display: flex; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--a-border); }
+  .fstep:last-child { border-bottom: 0; }
+  .fstep-n { width: 22px; height: 22px; border-radius: 50%; border: 1px solid var(--a-border-strong); display: grid; place-items: center; font-size: 11px; font-weight: 600; color: var(--a-text-3); flex: none; margin-top: 1px; }
+  .fstep.done .fstep-n { background: var(--a-good-soft); color: var(--a-good); border-color: transparent; }
+  .fstep.current .fstep-n { background: var(--a-accent); color: var(--a-accent-ink); border-color: var(--a-accent); }
+  .fstep-b { flex: 1; min-width: 0; }
+  .fstep-t { font-size: 13px; font-weight: 500; }
+  .fstep:not(.current):not(.done) .fstep-t { color: var(--a-text-3); }
   .timeline { border-left: 2px solid var(--a-border); margin-left: 5px; padding-left: 14px; }
   .timeline .ev { position: relative; padding-bottom: 12px; font-size: 13px; }
   .timeline .ev::before { content: ''; position: absolute; left: -19px; top: 6px; width: 8px; height: 8px; border-radius: 50%; background: var(--a-text-3); }
@@ -400,7 +409,7 @@
           </div>
           <div class="tbl-wrap"><table id="orders-table"><thead><tr>
             <th style="width:36px"><input type="checkbox" class="cb" id="sel-all"></th>
-            <th class="sort" data-sort="id">Order</th><th class="sort" data-sort="date">Date</th><th class="sort" data-sort="customer">Customer</th><th>Items</th><th>Payment</th><th class="r sort" data-sort="total">Total</th><th class="sort" data-sort="status">Status</th><th>Tracking</th>
+            <th class="sort" data-sort="id">Order</th><th class="sort" data-sort="date">Date</th><th class="sort" data-sort="customer">Customer</th><th>Items</th><th>Fulfilment</th><th class="r sort" data-sort="total">Total</th><th class="sort" data-sort="status">Status</th><th>Tracking</th>
           </tr></thead><tbody id="orders-body"></tbody></table></div>
           <div class="pager" id="orders-pager"></div>
         </div>
@@ -652,6 +661,19 @@ const normStatus = (s) => { s = String(s || 'pending').toLowerCase().trim(); ret
 const stHtml = (s) => { const k = normStatus(s), m = STATUS[k]; return `<span class="st ${m.tone}">${m.label}</span>`; };
 const countsRevenue = (o) => !['unpaid', 'closed'].includes(STATUS[normStatus(o.status)].group);
 const needsFulfil = (o) => STATUS[normStatus(o.status)].group === 'open';
+/** Fulfilment stage derived from status + recorded steps. */
+const STAGES = { unpaid: ['Awaiting payment', 'warn'], source: ['To source', 'warn'], ship: ['To ship', 'info'], shipped: ['Shipped', 'good'], delivered: ['Delivered', 'good'], closed: ['Closed', 'neutral'] };
+function stageOf(o) {
+  const g = STATUS[normStatus(o.status)].group;
+  if (g === 'unpaid') return 'unpaid'; if (g === 'closed') return 'closed';
+  if (o.status === 'delivered') return 'delivered'; if (o.status === 'shipped') return 'shipped';
+  return o.ebayOrderId ? 'ship' : 'source';
+}
+const SLA_HOURS = { source: 24, ship: 48 };
+function stageAge(o) { const st = stageOf(o); const from = st === 'ship' ? (toDate(o.sourcedAt) || toDate(o.paidAt) || o._date) : (toDate(o.paidAt) || o._date); return from ? (Date.now() - from.getTime()) / 36e5 : 0; }
+function overdue(o) { const st = stageOf(o); return SLA_HOURS[st] ? stageAge(o) > SLA_HOURS[st] : false; }
+const stageHtml = (o) => { const st = stageOf(o), m = STAGES[st]; const late = overdue(o); return `<span class="st ${late ? 'bad' : m[1]}">${late ? 'Overdue · ' : ''}${m[0]}</span>`; };
+const feeOf = (total) => total * 0.035 + 0.30;
 
 /* ============================== state ============================== */
 const S = {
@@ -830,8 +852,8 @@ function renderOverview() {
   $('#k-rev').textContent = money(sum(cur)); $('#k-rev-d').innerHTML = delta(sum(cur), sum(prev), money);
   $('#k-ord').textContent = cur.length; $('#k-ord-d').innerHTML = delta(cur.length, prev.length, v => v);
   const fulfil = S.orders.filter(needsFulfil);
-  const stale = fulfil.filter(o => o._date && now - o._date.getTime() > 2 * DAY);
-  $('#k-fulfil').textContent = fulfil.length; $('#k-fulfil-d').innerHTML = stale.length ? `<span class="delta down">${stale.length} older than 48h</span>` : `<span class="faint">${money(sum(fulfil))} to ship</span>`;
+  const stale = fulfil.filter(overdue);
+  $('#k-fulfil').textContent = fulfil.length; $('#k-fulfil-d').innerHTML = stale.length ? `<span class="delta down">${stale.length} past the 24h/48h target</span>` : `<span class="faint">${money(sum(fulfil))} to ship</span>`;
   const unread = S.messages.filter(m => !m.replied);
   $('#k-msg').textContent = unread.length; $('#k-msg-d').innerHTML = unread.length ? `<span class="faint">oldest ${rel(unread[unread.length - 1]._date)}</span>` : `<span class="faint">Inbox clear</span>`;
   $('#nc-orders').textContent = fulfil.length || ''; $('#nc-orders').className = 'nav-count' + (fulfil.length ? ' alert' : '');
@@ -843,7 +865,7 @@ function renderOverview() {
 
   // attention
   const attn = [];
-  stale.slice(0, 5).forEach(o => attn.push({ tone: 'warn', t: `Order ${o.id} not shipped · placed ${rel(o._date)}`, s: `${o.customerName || o.email} · ${money(o.total)}`, act: () => openOrder(o._id) }));
+  stale.slice(0, 6).forEach(o => attn.push({ tone: 'bad', t: `Order ${o.id} · ${STAGES[stageOf(o)][0].toLowerCase()} for ${Math.round(stageAge(o))}h`, s: `${o.customerName || o.email} · ${money(o.total)}`, act: () => openOrder(o._id) }));
   S.orders.filter(o => o.status === 'pending_payment' && o._date && now - o._date.getTime() > DAY).slice(0, 3).forEach(o => attn.push({ tone: 'neutral', t: `Order ${o.id} unpaid · placed ${rel(o._date)}`, s: 'Crypto invoice may have expired', act: () => openOrder(o._id) }));
   unread.slice(0, 5).forEach(m => attn.push({ tone: 'info', t: `${m.name || 'Visitor'}: ${m.topic || 'General'}`, s: (m.message || '').slice(0, 80), act: () => { go('messages'); selectMessage(m._id); } }));
   $('#attn-count').textContent = attn.length ? attn.length + ' items' : '';
@@ -936,15 +958,15 @@ $('#bulk-apply').addEventListener('click', async () => {
 });
 $('#export-orders').addEventListener('click', () => {
   const rows = filteredOrders(); if (!rows.length) return toast('No orders match the current filter', true);
-  const head = ['Order ID', 'Date', 'Status', 'Customer', 'Email', 'Phone', 'Address', 'Items', 'Units', 'Subtotal', 'Discount', 'Shipping', 'Total', 'Payment', 'Tracking', 'Carrier'];
-  const lines = rows.map(o => [o.id, o._date ? o._date.toISOString() : '', o.status, o.customerName, o.email, o.phone, o.address, o.items.map(i => `${i.name} x${i.qty || 1}`).join('; '), o._units, o.subtotal ?? '', o.discount ?? '', o.shipping ?? '', o.total.toFixed(2), o.paymentMethod || '', o.trackingNumber || '', o.carrier || ''].map(csvCell).join(','));
+  const head = ['Order ID', 'Date', 'Status', 'Stage', 'Customer', 'Email', 'Phone', 'Address', 'Items', 'Units', 'Subtotal', 'Discount', 'Shipping', 'Total', 'Payment', 'eBay order', 'Cost', 'Profit', 'Tracking', 'Carrier'];
+  const lines = rows.map(o => [o.id, o._date ? o._date.toISOString() : '', o.status, STAGES[stageOf(o)][0], o.customerName, o.email, o.phone, o.address, o.items.map(i => `${i.name} x${i.qty || 1}`).join('; '), o._units, o.subtotal ?? '', o.discount ?? '', o.shipping ?? '', o.total.toFixed(2), o.paymentMethod || '', o.ebayOrderId || '', o.sourcingCost ?? '', o.sourcingCost != null ? (o.total - feeOf(o.total) - o.sourcingCost).toFixed(2) : '', o.trackingNumber || '', o.carrier || ''].map(csvCell).join(','));
   download(`orders-${new Date().toISOString().slice(0, 10)}.csv`, [head.join(',')].concat(lines).join('\n'), 'text/csv'); toast(`Exported ${rows.length} orders`);
 });
 
 function filteredOrders() {
   const now = Date.now();
   let rows = S.orders.filter(o => {
-    if (S.o.status !== 'all') { if (S.o.status === 'open') { if (!needsFulfil(o)) return false; } else if (o.status !== S.o.status) return false; }
+    if (S.o.status !== 'all') { if (S.o.status === 'open') { if (!needsFulfil(o)) return false; } else if (S.o.status === 'late') { if (!overdue(o)) return false; } else if (o.status !== S.o.status) return false; }
     if (S.o.range && (!o._date || now - o._date.getTime() > S.o.range * DAY)) return false;
     if (S.o.q && !o._search.includes(S.o.q)) return false;
     return true;
@@ -954,9 +976,9 @@ function filteredOrders() {
   return rows;
 }
 function renderOrders() {
-  const counts = { all: S.orders.length, open: S.orders.filter(needsFulfil).length };
+  const counts = { all: S.orders.length, open: S.orders.filter(needsFulfil).length, late: S.orders.filter(overdue).length };
   S.orders.forEach(o => counts[o.status] = (counts[o.status] || 0) + 1);
-  const segs = [['all', 'All'], ['open', 'To fulfil'], ['pending_payment', 'Awaiting payment'], ['shipped', 'Shipped'], ['delivered', 'Delivered'], ['cancelled', 'Cancelled']];
+  const segs = [['all', 'All'], ['open', 'To fulfil'], ['late', 'Overdue'], ['pending_payment', 'Awaiting payment'], ['shipped', 'Shipped'], ['delivered', 'Delivered'], ['cancelled', 'Cancelled']];
   $('#order-status-seg').innerHTML = segs.map(([k, l]) => `<button data-st="${k}" class="${S.o.status === k ? 'active' : ''}">${l} <b>${counts[k] || 0}</b></button>`).join('');
   $$('#order-status-seg button').forEach(b => b.onclick = () => { S.o.status = b.dataset.st; S.o.page = 1; renderOrders(); });
   $$('#orders-table th.sort').forEach(th => { th.classList.toggle('sorted', th.dataset.sort === S.o.sort); th.textContent = th.textContent.replace(/ [↑↓]$/, '') + (th.dataset.sort === S.o.sort ? (S.o.dir > 0 ? ' ↑' : ' ↓') : ''); });
@@ -970,7 +992,7 @@ function renderOrders() {
     <td class="faint" title="${esc(fmtDate(o._date, true))}">${fmtDate(o._date)}</td>
     <td><div class="truncate" style="max-width:200px;font-weight:500">${esc(o.customerName || '—')}</div><div class="faint truncate" style="font-size:12px;max-width:200px">${esc(o.email)}</div></td>
     <td class="faint">${o._units} item${o._units === 1 ? '' : 's'}</td>
-    <td class="faint truncate" style="max-width:140px">${esc((o.paymentMethod || '—').replace(/\s*\(.*\)$/, ''))}</td>
+    <td>${stageHtml(o)}</td>
     <td class="r num" style="font-weight:500">${money(o.total)}</td>
     <td>${stHtml(o.status)}</td>
     <td class="mono faint">${o.trackingNumber ? esc(o.trackingNumber) : '—'}</td></tr>`).join('')
@@ -996,25 +1018,74 @@ function openOrder(id) {
     </div>
     <div class="sec"><h3>Customer</h3><dl class="kv"><dt>Name</dt><dd>${esc(o.customerName || '—')}</dd><dt>Email</dt><dd>${o.email ? `<a class="link" href="mailto:${esc(o.email)}">${esc(o.email)}</a>` : '—'}</dd><dt>Phone</dt><dd>${esc(o.phone || '—')}</dd><dt>Ship to</dt><dd>${esc(o.address || '—')} ${o.address ? `<button class="btn sm ghost link" id="copy-addr">Copy</button>` : ''}</dd><dt>Payment</dt><dd>${esc(o.paymentMethod || '—')}${o.paymentStatus ? ` <span class="tag">${esc(o.paymentStatus)}</span>` : ''}</dd>${o.userId ? `<dt>Account</dt><dd class="mono">${esc(o.userId)}</dd>` : ''}</dl></div>
     <div class="sec"><h3>Items · ${o._units}</h3><div class="list">${items}</div></div>
-    <div class="sec"><h3>Update</h3>
-      <div class="form-row"><div class="form-grp"><label>Status</label><select id="f-status">${SETTABLE.map(s => `<option value="${s}" ${o.status === s ? 'selected' : ''}>${STATUS[s].label}</option>`).join('')}${SETTABLE.includes(o.status) ? '' : `<option value="${o.status}" selected>${STATUS[o.status].label}</option>`}</select></div>
-      <div class="form-grp"><label>Carrier</label><select id="f-carrier">${['', 'USPS', 'UPS', 'FedEx', 'DHL', 'Other'].map(c => `<option value="${c}" ${(o.carrier || '') === c ? 'selected' : ''}>${c || 'Not set'}</option>`).join('')}</select></div></div>
-      <div class="form-grp"><label>Tracking number</label><input id="f-tracking" class="mono" value="${esc(o.trackingNumber || '')}" placeholder="9400 1000 0000 0000 0000 00"></div>
-      <div class="form-grp"><label>Internal note (not shown to customer)</label><textarea id="f-note" rows="2" placeholder="Optional">${esc(o.adminNote || '')}</textarea></div>
-    </div>
+    ${fulfilmentHtml(o)}
     <div class="sec"><h3>History</h3><div class="timeline">${timeline.map(e => `<div class="ev">${esc(e.t)}<small>${esc(e.s)}</small></div>`).join('')}</div></div>`;
-  openDrawer(`<span class="mono">${esc(o.id)}</span>`, body, `<button class="btn" id="print-slip">Packing slip</button><a class="btn" href="/track.html?order=${encodeURIComponent(o.id)}" target="_blank" rel="noopener">Customer view</a><span style="flex:1"></span><button class="btn primary" id="save-order">Save changes</button>`);
+  openDrawer(`<span class="mono">${esc(o.id)}</span>`, body, `<button class="btn" id="print-slip">Packing slip</button><a class="btn" href="/track.html?order=${encodeURIComponent(o.id)}" target="_blank" rel="noopener">Customer view</a>`);
   $('#copy-addr')?.addEventListener('click', () => navigator.clipboard.writeText(`${o.customerName}\n${o.address}`).then(() => toast('Address copied')));
   $('#print-slip').addEventListener('click', () => printSlip(o));
-  $('#save-order').addEventListener('click', async () => {
-    const st = $('#f-status').value, tracking = $('#f-tracking').value.trim(), carrier = $('#f-carrier').value, note = $('#f-note').value.trim();
-    const patch = { updatedAt: serverTimestamp(), trackingNumber: tracking, carrier, adminNote: note };
-    if (st !== o.status || tracking !== (o.trackingNumber || '')) { patch.status = st; patch.statusHistory = arrayUnion({ status: st, at: Date.now(), by: S.user.email, tracking: tracking || null }); }
-    if (st === 'shipped' && !o.shippedAt) patch.shippedAt = serverTimestamp();
-    if (st === 'delivered' && !o.deliveredAt) patch.deliveredAt = serverTimestamp();
-    const btn = $('#save-order'); btn.disabled = true; btn.textContent = 'Saving…';
-    try { await updateDoc(doc(db, 'orders', o._id), patch); toast(`Order ${o.id} saved`); closeDrawer(); }
-    catch (err) { toast('Save failed: ' + err.message, true); btn.disabled = false; btn.textContent = 'Save changes'; }
+  bindFulfilment(o);
+}
+
+/* ---- Fulfilment steps inside the order drawer ---- */
+function fulfilmentHtml(o) {
+  const stage = stageOf(o), paid = !['unpaid'].includes(stage), done = (k) => ['source', 'ship', 'shipped', 'delivered'].indexOf(k) < ['source', 'ship', 'shipped', 'delivered'].indexOf(stage);
+  const estCost = o.items.reduce((s, it) => { const cp = CATALOG_MAP.get(it.id); return s + (cp?.landedCost ? cp.landedCost * (it.qty || 1) : 0); }, 0);
+  const itemLinks = o.items.map(it => { const cp = CATALOG_MAP.get(it.id); const url = cp?.ebayUrl || `https://www.ebay.com/sch/i.html?_nkw=${encodeURIComponent(it.name)}&LH_BIN=1&LH_ItemCondition=1000|1500|2000|2010|2020|2030&_sop=15`; return `<div class="li" style="padding:6px 0"><div class="t truncate">${esc(it.name)}${(it.qty || 1) > 1 ? ` <span class="faint">× ${it.qty}</span>` : ''}${it.variant && it.variant !== 'Standard' ? ` <span class="faint">· ${esc(it.variant)}</span>` : ''}</div>${cp?.landedCost ? `<span class="faint num">${money(cp.landedCost)}</span>` : ''}<a class="btn sm" href="${esc(url)}" target="_blank" rel="noopener">${cp?.ebayUrl ? 'Open listing' : 'Find on eBay'}</a></div>`; }).join('');
+  const step = (n, title, state, body) => `<div class="fstep ${state}"><div class="fstep-n">${state === 'done' ? '✓' : n}</div><div class="fstep-b"><div class="fstep-t">${title}</div>${body || ''}</div></div>`;
+  const late = overdue(o);
+  const profit = o.sourcingCost != null ? o.total - feeOf(o.total) - o.sourcingCost : null;
+  return `<div class="sec"><h3>Fulfilment ${late ? '<span class="st bad" style="margin-left:8px">Overdue</span>' : ''}</h3>
+    <div class="fsteps">
+      ${step(1, paid ? `Paid ${o.paidAt ? '· ' + fmtDate(toDate(o.paidAt), true) : ''}` : `Awaiting payment · ${esc(o.paymentMethod || '')}`, paid ? 'done' : 'current', paid ? '' : `<p class="faint" style="margin:4px 0 0;font-size:12px">The payment provider marks this order paid automatically. Do not source until then.</p>`)}
+      ${step(2, 'Source on eBay', stage === 'source' ? 'current' : done('source') || stage === 'ship' ? 'done' : '', stage === 'source' || stage === 'ship' || paid ? `
+        <div class="list" style="margin:6px 0 10px">${itemLinks}</div>
+        <div class="form-row"><div class="form-grp" style="margin:0"><label>eBay order number</label><input id="f-ebay" class="mono" value="${esc(o.ebayOrderId || '')}" placeholder="12-34567-89012"></div>
+        <div class="form-grp" style="margin:0"><label>Total paid on eBay ($)</label><input id="f-cost" type="number" step="0.01" min="0" value="${o.sourcingCost ?? (estCost ? estCost.toFixed(2) : '')}" placeholder="${estCost ? estCost.toFixed(2) : '0.00'}"></div></div>
+        <p class="faint" style="margin:6px 0 0;font-size:12px">Ship it directly to the customer's address. Copy it from the Customer section above.</p>
+        ${stage === 'source' ? `<button class="btn primary sm" id="f-sourced" style="margin-top:10px" ${paid ? '' : 'disabled'}>Mark sourced</button>` : `<div class="faint" style="font-size:12px;margin-top:6px">Sourced ${o.sourcedAt ? fmtDate(toDate(o.sourcedAt), true) : ''}${o.ebayOrderId ? ' · eBay order ' + esc(o.ebayOrderId) : ''}</div>`}` : '')}
+      ${step(3, 'Ship with tracking', stage === 'ship' ? 'current' : ['shipped', 'delivered'].includes(stage) ? 'done' : '', ['ship', 'shipped', 'delivered'].includes(stage) || paid ? `
+        <div class="form-row" style="margin-top:6px"><div class="form-grp" style="margin:0"><label>Carrier</label><select id="f-carrier">${['', 'USPS', 'UPS', 'FedEx', 'DHL', 'Other'].map(c => `<option value="${c}" ${(o.carrier || '') === c ? 'selected' : ''}>${c || 'Select'}</option>`).join('')}</select></div>
+        <div class="form-grp" style="margin:0"><label>Tracking number</label><input id="f-tracking" class="mono" value="${esc(o.trackingNumber || '')}" placeholder="From the eBay order page"></div></div>
+        ${stage === 'ship' || stage === 'source' ? `<button class="btn primary sm" id="f-shipped" style="margin-top:10px" ${stage === 'ship' ? '' : 'disabled'}>Mark shipped</button>` : `<div class="faint" style="font-size:12px;margin-top:6px">Shipped ${o.shippedAt ? fmtDate(toDate(o.shippedAt), true) : ''} · ${esc(o.carrier || '')} ${esc(o.trackingNumber || '')}${o.stripeTrackingSyncedAt ? ' · tracking sent to Stripe' : o.stripeTrackingError ? ' · <span style="color:var(--a-warn)">Stripe sync failed</span>' : ''}${o.shippedEmailSent ? ' · customer emailed' : ''} <button class="btn sm ghost link" id="f-edit-tracking">Edit</button></div>`}` : '')}
+      ${step(4, 'Delivered', stage === 'delivered' ? 'done' : stage === 'shipped' ? 'current' : '', stage === 'shipped' ? `<button class="btn sm" id="f-delivered" style="margin-top:8px">Mark delivered</button>` : stage === 'delivered' ? `<div class="faint" style="font-size:12px">Delivered ${o.deliveredAt ? fmtDate(toDate(o.deliveredAt), true) : ''}</div>` : '')}
+    </div>
+    ${profit !== null ? `<div class="kv" style="margin-top:14px"><dt>Profit</dt><dd class="num" style="${profit < 0 ? 'color:var(--a-bad)' : ''}"><b>${money(profit)}</b> <span class="faint">= ${money(o.total)} − ${money(feeOf(o.total))} fees − ${money(o.sourcingCost)} cost · ${Math.round(profit / o.total * 100)}%</span></dd></div>` : ''}
+    <details style="margin-top:14px"><summary class="faint" style="cursor:pointer;font-size:12px">Other actions: cancel, refund, note</summary>
+      <div class="form-row" style="margin-top:10px"><div class="form-grp"><label>Status</label><select id="f-status">${SETTABLE.map(st => `<option value="${st}" ${o.status === st ? 'selected' : ''}>${STATUS[st].label}</option>`).join('')}${SETTABLE.includes(o.status) ? '' : `<option value="${o.status}" selected>${STATUS[o.status].label}</option>`}</select></div>
+      <div class="form-grp"><label>Internal note</label><input id="f-note" value="${esc(o.adminNote || '')}" placeholder="Not shown to customer"></div></div>
+      <button class="btn sm" id="save-order">Save</button>
+    </details>
+  </div>`;
+}
+function bindFulfilment(o) {
+  const hist = (status, note, extra) => ({ status, at: Date.now(), by: S.user.email, note: note || null, ...(extra || {}) });
+  const save = async (patch, msg, btn) => {
+    if (btn) { btn.disabled = true; btn.textContent = 'Saving…'; }
+    try { await updateDoc(doc(db, 'orders', o._id), { ...patch, updatedAt: serverTimestamp() }); toast(msg); setTimeout(() => { const n = S.orders.find(x => x._id === o._id); if (n && $('#drawer').classList.contains('open')) openOrder(o._id); }, 400); }
+    catch (err) { toast('Save failed: ' + err.message, true); if (btn) btn.disabled = false; }
+  };
+  $('#f-sourced')?.addEventListener('click', (e) => {
+    const ebay = $('#f-ebay').value.trim(), cost = parseFloat($('#f-cost').value);
+    if (!ebay) return toast('Enter the eBay order number first', true);
+    save({ status: 'processing', ebayOrderId: ebay, sourcingCost: cost >= 0 ? Math.round(cost * 100) / 100 : null, sourcedAt: serverTimestamp(), statusHistory: arrayUnion(hist('processing', 'Sourced on eBay · ' + ebay)) }, 'Marked as sourced', e.target);
+  });
+  $('#f-shipped')?.addEventListener('click', (e) => {
+    const carrier = $('#f-carrier').value, tracking = $('#f-tracking').value.trim();
+    if (!tracking || !carrier) return toast('Carrier and tracking number are required', true);
+    const ebay = $('#f-ebay')?.value.trim(), cost = parseFloat($('#f-cost')?.value);
+    save({ status: 'shipped', carrier, trackingNumber: tracking, shippedAt: serverTimestamp(), ...(ebay ? { ebayOrderId: ebay } : {}), ...(cost >= 0 ? { sourcingCost: Math.round(cost * 100) / 100 } : {}), statusHistory: arrayUnion(hist('shipped', null, { tracking })) }, 'Marked as shipped. Customer gets the tracking email.', e.target);
+  });
+  $('#f-delivered')?.addEventListener('click', (e) => save({ status: 'delivered', deliveredAt: serverTimestamp(), statusHistory: arrayUnion(hist('delivered')) }, 'Marked as delivered', e.target));
+  $('#f-edit-tracking')?.addEventListener('click', () => {
+    const carrier = prompt('Carrier (USPS, UPS, FedEx, DHL, Other):', o.carrier || 'USPS'); if (carrier === null) return;
+    const tracking = prompt('Tracking number:', o.trackingNumber || ''); if (tracking === null) return;
+    save({ carrier: carrier.trim(), trackingNumber: tracking.trim(), statusHistory: arrayUnion(hist(o.status, 'Tracking updated', { tracking: tracking.trim() })) }, 'Tracking updated');
+  });
+  $('#save-order')?.addEventListener('click', (e) => {
+    const st = $('#f-status').value, note = $('#f-note').value.trim();
+    const patch = { adminNote: note };
+    if (st !== o.status) { patch.status = st; patch.statusHistory = arrayUnion(hist(st, 'Manual status change')); if (st === 'delivered' && !o.deliveredAt) patch.deliveredAt = serverTimestamp(); }
+    save(patch, 'Order updated', e.target);
   });
 }
 function printSlip(o) {

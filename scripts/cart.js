@@ -751,8 +751,6 @@
     const shipEl = document.querySelector('[data-order-shipping]');
     if (shipEl) shipEl.textContent = (order.shipping === 0 || !order.shipping) ? 'Free' : '$' + Number(order.shipping).toFixed(2);
 
-    const taxEl = document.querySelector('[data-order-tax]');
-    if (taxEl) taxEl.textContent = '$' + (Number(order.subtotal || 0) * 0.08).toFixed(2);
 
     const totalEl = document.querySelector('[data-order-total]');
     if (totalEl) totalEl.textContent = '$' + Number(order.total || 0).toFixed(2);
@@ -1326,6 +1324,28 @@
       // Initial active state
       updateButtonStyles();
       render();
+    }
+
+    // 1b. "Under $N" grid on the homepage: real catalog items, newest first, no invented savings
+    const underGrid = document.querySelector('[data-catalog-under]');
+    if (underGrid) {
+      const cap = Number(underGrid.dataset.catalogUnder) || 50;
+      const picks = catalog.filter(p => p.price <= cap && p.images && p.images[0]).sort((a, b) => (b.firstSeenAt || 0) - (a.firstSeenAt || 0)).slice(0, 4);
+      const underSection = underGrid.closest('section');
+      if (!picks.length) { if (underSection) underSection.classList.add('hidden'); }
+      else { if (underSection) underSection.classList.remove('hidden'); underGrid.innerHTML = picks.map(item => `
+          <a href="/pdp.html?id=${item.id}" class="card group">
+            <div class="card-media aspect-[4/5]">
+              <img class="img-primary" src="${item.images[0]}" alt="${item.name}" loading="lazy">
+              ${item.images[1] ? `<img class="img-hover" src="${item.images[1]}" alt="" loading="lazy">` : ''}
+              <span class="card-cta">View →</span>
+            </div>
+            <div class="pt-5">
+              <h3 class="text-sm font-medium group-hover:text-lime transition">${item.name}</h3>
+              <div class="text-mute text-xs mt-1">${item.category}${item.tag ? ' · ' + item.tag : ''}</div>
+              <div class="mt-3 flex items-baseline gap-3"><span class="text-lg font-semibold" lang="en-US" translate="no">$${item.price.toFixed(2)}</span></div>
+            </div>
+          </a>`).join(''); }
     }
 
     // 2. Wishlist Grid

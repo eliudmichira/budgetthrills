@@ -159,30 +159,35 @@
 
     // Status label → step index (0-based)
     const STATUS_STEP = {
-      'pending':    0,
-      'processing': 1,
-      'shipped':    2,
-      'delivered':  3,
+      'pending_payment': 0, 'partially_paid': 0, 'payment_failed': 0, 'pending': 0,
+      'paid': 1, 'processing': 1,
+      'shipped': 2,
+      'delivered': 3,
+      'cancelled': 0, 'refunded': 0
     };
+    const STATUS_TEXT = { pending_payment: 'Awaiting payment', partially_paid: 'Partially paid', payment_failed: 'Payment failed', pending: 'Received', paid: 'Preparing', processing: 'Preparing', shipped: 'Shipped', delivered: 'Delivered', cancelled: 'Cancelled', refunded: 'Refunded' };
+    const fmt = (v) => { if (!v) return null; const d = v.toDate ? v.toDate() : (v.seconds ? new Date(v.seconds * 1000) : new Date(v)); return isNaN(d) ? null : d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }); };
 
     function renderResult(order) {
-      const step = STATUS_STEP[order.status?.toLowerCase()] ?? 1;
+      const status = (order.status || 'processing').toLowerCase();
+      const step = STATUS_STEP[status] ?? 1;
+      const closed = ['cancelled', 'refunded', 'payment_failed'].includes(status);
 
       // Header
       document.querySelector('[data-track-id]').textContent     = order.id || '';
-      document.querySelector('[data-track-status]').firstChild.textContent = (order.status || 'Processing');
-      document.querySelector('[data-track-eta]').textContent    = order.eta || 'Standard US Shipping (3–5 business days)';
+      document.querySelector('[data-track-status]').firstChild.textContent = STATUS_TEXT[status] || 'Preparing';
+      document.querySelector('[data-track-eta]').textContent    = closed ? '' : (order.shippingMethod === 'express' ? 'Expedited shipping · 2–4 business days' : 'Standard shipping · 4–8 business days');
 
       // Progress bar
       const bars = document.querySelectorAll('[data-track-progress] span');
-      bars.forEach((bar, i) => bar.classList.toggle('done', i <= step));
+      bars.forEach((bar, i) => bar.classList.toggle('done', !closed && i <= step));
 
       // Timeline
       const STEPS = [
-        { label: 'Order placed',                     note: order.createdAt ? new Date(order.createdAt.seconds * 1000).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : 'Confirmed' },
-        { label: 'Payment confirmed & processing',   note: 'Fulfillment Hub' },
-        { label: 'Shipped with tracking',            note: order.trackingNumber ? order.carrier + ' #' + order.trackingNumber : 'Pending carrier scan' },
-        { label: 'Delivered',                        note: step >= 3 ? 'Delivered ✓' : 'Pending' },
+        { label: 'Order placed',                     note: fmt(order.createdAt) || 'Received' },
+        { label: 'Payment confirmed · preparing your shipment', note: closed ? STATUS_TEXT[status] : (step >= 1 ? (fmt(order.paidAt) || 'Confirmed') + ' · ships within 1–2 business days' : 'Waiting for payment') },
+        { label: 'Shipped',                          note: order.trackingNumber ? `${order.carrier || ''} ${order.trackingNumber}`.trim() + (fmt(order.shippedAt) ? ' · ' + fmt(order.shippedAt) : '') : 'Tracking number arrives by email when it ships' },
+        { label: 'Delivered',                        note: step >= 3 ? (fmt(order.deliveredAt) || 'Delivered') : 'Pending' },
       ];
       const timeline = document.querySelector('[data-track-timeline]');
       timeline.innerHTML = STEPS.map((s, i) => {
