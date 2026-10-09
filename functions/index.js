@@ -478,7 +478,7 @@ exports.stripeWebhook = onRequest({ cors: false }, async (req, res) => {
     const orderId = obj.metadata?.orderId || obj.client_reference_id;
     if (event.type === "checkout.session.completed" && orderId) {
       if (obj.payment_status === "paid") {
-        const snap = await getFirestore().collection("orders").doc(String(orderId)).get();
+        const snap = await db.collection("orders").doc(String(orderId)).get();
         const expected = snap.exists ? Math.round(Number(snap.data().total) * 100) : null;
         const mismatch = expected !== null && Math.abs((obj.amount_total || 0) - expected) > 1;
         if (mismatch) console.error(`Order ${orderId}: Stripe charged ${obj.amount_total} but order total is ${expected}`);
@@ -505,12 +505,12 @@ exports.stripeWebhook = onRequest({ cors: false }, async (req, res) => {
  *  - tracking number/carrier set on a Stripe-paid order -> attached to the PaymentIntent, which
  *    Stripe uses as dispute evidence and which lowers "item not received" chargebacks.
  */
-exports.onOrderFulfilment = onDocumentWritten("orders/{orderId}", async (event) => {
+exports.onOrderFulfilment = onDocumentWritten({ document: "orders/{orderId}", database: "default" }, async (event) => {
   const after = event.data.after.exists ? event.data.after.data() : null;
   const before = event.data.before.exists ? event.data.before.data() : {};
   const orderId = event.params.orderId;
   if (!after) return null;
-  const ref = getFirestore().collection("orders").doc(orderId);
+  const ref = db.collection("orders").doc(orderId);
   const patch = {};
 
   const trackingChanged = after.trackingNumber && (after.trackingNumber !== before.trackingNumber || after.carrier !== before.carrier);

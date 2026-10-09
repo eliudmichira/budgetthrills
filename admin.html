@@ -471,7 +471,11 @@
                   </div>
                   <div class="form-row">
                     <div class="form-grp"><label>Catalog size target</label><input id="sy-max" type="number" min="10" max="1000" step="10"></div>
-                    <div class="form-grp"><label>New listings per category per run</label><input id="sy-perrun" type="number" min="0" max="50" step="1"></div>
+                    <div class="form-grp"><label>Max new listings per category per run</label><input id="sy-perrun" type="number" min="0" max="50" step="1"></div>
+                  </div>
+                  <div class="form-row">
+                    <div class="form-grp"><label>Always add at least (per category, per run)</label><input id="sy-minfresh" type="number" min="0" max="20" step="1"></div>
+                    <div class="form-grp"><label>&nbsp;</label><p class="faint" style="font-size:12px;margin:6px 0 0">Keeps the store fresh even when a category is full: the oldest listings rotate out to make room.</p></div>
                   </div>
                   <div class="form-row">
                     <div class="form-grp"><label>Min seller feedback (%)</label><input id="sy-fbpct" type="number" min="90" max="100" step="0.1"></div>
@@ -482,6 +486,8 @@
                     <div class="li"><div class="t">Require free shipping<small>Keeps landed cost predictable</small></div><button type="button" class="switch" id="sy-freeship"></button></div>
                     <div class="li"><div class="t">Require returns accepted<small>So you can honour your own return window</small></div><button type="button" class="switch" id="sy-returns"></button></div>
                     <div class="li"><div class="t">Top Rated sellers only<small>Stricter, fewer results</small></div><button type="button" class="switch" id="sy-toprated"></button></div>
+                    <div class="li"><div class="t">Rotate out oldest listings when over quota<small>Featured items and manual price overrides are never rotated</small></div><button type="button" class="switch" id="sy-rotate"></button></div>
+                    <div class="li"><div class="t">Count imported products.js items against quotas<small>Off: quotas apply to eBay-sourced listings only</small></div><button type="button" class="switch" id="sy-countmanual"></button></div>
                   </div>
                   <button class="btn primary" type="submit">Save rules</button>
                 </form>
@@ -1221,7 +1227,7 @@ function openProduct(id) {
 }
 
 /* ============================== eBay sync ============================== */
-const SYNC_DEFAULTS = { enabled: true, targetMargin: 25, priceCeiling: 200, priceFloor: 40, maxProducts: 160, priceEnding: 99, minSellerFeedbackPct: 99, minSellerFeedbackScore: 100, requireTopRated: false, requireFreeShipping: true, requireReturns: true, newPerCategoryPerRun: 6,
+const SYNC_DEFAULTS = { enabled: true, targetMargin: 25, priceCeiling: 200, priceFloor: 40, maxProducts: 160, priceEnding: 99, minSellerFeedbackPct: 99, minSellerFeedbackScore: 100, requireTopRated: false, requireFreeShipping: true, requireReturns: true, newPerCategoryPerRun: 6, minFreshPerCategory: 3, rotateExcess: true, countManualInQuota: false,
   categories: [
     { name: 'Tech', weight: 0.20, url: '/tech.html', keywords: ['mechanical keyboard', 'wireless gaming mouse', 'usb-c hub', 'portable ssd 1tb', 'webcam 4k'] },
     { name: 'Accessories', weight: 0.15, url: '/accessories.html', keywords: ['seiko automatic watch', 'anker power bank', 'leather wallet rfid', 'ray-ban sunglasses', 'belkin charger'] },
@@ -1241,8 +1247,8 @@ function renderSync() {
   const form = $('#sync-form');
   if (!(document.activeElement && form.contains(document.activeElement))) {
     $('#sy-margin').value = s.targetMargin; $('#sy-ceiling').value = s.priceCeiling; $('#sy-floor').value = s.priceFloor; $('#sy-ending').value = s.priceEnding;
-    $('#sy-max').value = s.maxProducts; $('#sy-perrun').value = s.newPerCategoryPerRun; $('#sy-fbpct').value = s.minSellerFeedbackPct; $('#sy-fbscore').value = s.minSellerFeedbackScore;
-    $('#sy-enabled').classList.toggle('on', s.enabled !== false); $('#sy-freeship').classList.toggle('on', !!s.requireFreeShipping); $('#sy-returns').classList.toggle('on', !!s.requireReturns); $('#sy-toprated').classList.toggle('on', !!s.requireTopRated);
+    $('#sy-max').value = s.maxProducts; $('#sy-perrun').value = s.newPerCategoryPerRun; $('#sy-minfresh').value = s.minFreshPerCategory; $('#sy-fbpct').value = s.minSellerFeedbackPct; $('#sy-fbscore').value = s.minSellerFeedbackScore;
+    $('#sy-enabled').classList.toggle('on', s.enabled !== false); $('#sy-freeship').classList.toggle('on', !!s.requireFreeShipping); $('#sy-returns').classList.toggle('on', !!s.requireReturns); $('#sy-toprated').classList.toggle('on', !!s.requireTopRated); $('#sy-rotate').classList.toggle('on', s.rotateExcess !== false); $('#sy-countmanual').classList.toggle('on', !!s.countManualInQuota);
   }
   $('#sync-saved').textContent = S.sync?.updatedAt ? `Saved ${rel(toDate(S.sync.updatedAt))}` : 'Using defaults (not saved yet)';
   if (!syncCatsDraft) { syncCatsDraft = s.categories.map(c => ({ ...c, keywords: [...(c.keywords || [])] })); renderSyncCats(); }
@@ -1252,11 +1258,11 @@ function renderSync() {
   $('#sy-status').innerHTML = status === 'running' ? '<span class="st info">Running</span>' : status === 'ok' ? '<span class="st good">OK</span>' : status === 'error' ? '<span class="st bad">Failed</span>' : '';
   if (run) {
     const rej = Object.entries(run.discover?.rejected || {}).sort((a, b) => b[1] - a[1]).slice(0, 6).map(([k, v]) => `${esc(k)} ${v}`).join(' · ');
-    const cats = Object.entries(run.discover?.byCategory || {}).map(([k, v]) => `<div class="li" style="padding:6px 0"><div class="t">${esc(k)}</div><span class="faint num">${v.have}/${v.quota} live</span><span class="num" style="width:60px;text-align:right">+${v.added}</span></div>`).join('');
+    const cats = Object.entries(run.discover?.byCategory || {}).map(([k, v]) => `<div class="li" style="padding:6px 0"><div class="t">${esc(k)}</div><span class="faint num">${v.have}/${v.quota} eBay${v.manual ? ` · ${v.manual} manual` : ''}</span><span class="num" style="width:90px;text-align:right">+${v.added}${v.rotated ? ` <span class="faint">−${v.rotated}</span>` : ''}</span></div>`).join('');
     $('#sy-summary').innerHTML = `${run.error ? `<div class="banner bad"><span>⚠</span><span>${esc(run.error)}</span></div>` : ''}${run.skipped ? '<div class="banner warn"><span>ℹ</span><span>Scheduled sync is disabled in the rules.</span></div>' : ''}
       <dl class="kv"><dt>Started</dt><dd>${fmtDate(toDate(run.startedAt), true)} · ${esc(run.trigger)} · ${Math.round((run.durationMs || 0) / 1000)}s</dd>
       ${run.refresh ? `<dt>Re-verified</dt><dd>${run.refresh.checked} listings · ${run.refresh.repriced} repriced · ${run.refresh.retired} retired · ${run.refresh.restored} restored</dd>` : ''}
-      ${run.discover ? `<dt>Discovered</dt><dd>${run.discover.searched} searches · ${run.discover.considered} listings seen · <b>${run.discover.added} added</b></dd><dt>Rejected for</dt><dd class="faint">${rej || '—'}</dd>` : ''}
+      ${run.discover ? `<dt>Discovered</dt><dd>${run.discover.searched} searches · ${run.discover.considered} listings seen · <b>${run.discover.added} added</b>${run.discover.rotated ? ` · ${run.discover.rotated} rotated out` : ''}</dd><dt>Rejected for</dt><dd class="faint">${rej || '—'}</dd>` : ''}
       ${run.published != null ? `<dt>Published</dt><dd>${run.published} products live</dd>` : ''}${run.apiCalls != null ? `<dt>eBay calls</dt><dd>${run.apiCalls} of 5,000 daily</dd>` : ''}</dl>
       ${cats ? `<div class="sec"><h3>Category fill</h3><div class="list">${cats}</div></div>` : ''}
       ${run.log?.length ? `<details style="margin-top:14px"><summary class="faint" style="cursor:pointer;font-size:12px">Log</summary><pre class="mono faint" style="white-space:pre-wrap;font-size:11px;margin:8px 0 0">${esc(run.log.join('\n'))}</pre></details>` : ''}`;
@@ -1284,7 +1290,7 @@ $('#sync-form').addEventListener('submit', async (e) => {
   e.preventDefault();
   const data = {
     targetMargin: Math.min(80, Math.max(5, +$('#sy-margin').value || 25)) / 100, priceCeiling: +$('#sy-ceiling').value || 200, priceFloor: +$('#sy-floor').value || 40, priceEnding: Math.min(99, Math.max(0, +$('#sy-ending').value || 0)),
-    maxProducts: +$('#sy-max').value || 160, newPerCategoryPerRun: +$('#sy-perrun').value || 0, minSellerFeedbackPct: +$('#sy-fbpct').value || 99, minSellerFeedbackScore: +$('#sy-fbscore').value || 0,
+    maxProducts: +$('#sy-max').value || 160, newPerCategoryPerRun: +$('#sy-perrun').value || 0, minFreshPerCategory: Math.max(0, +$('#sy-minfresh').value || 0), rotateExcess: $('#sy-rotate').classList.contains('on'), countManualInQuota: $('#sy-countmanual').classList.contains('on'), minSellerFeedbackPct: +$('#sy-fbpct').value || 99, minSellerFeedbackScore: +$('#sy-fbscore').value || 0,
     enabled: $('#sy-enabled').classList.contains('on'), requireFreeShipping: $('#sy-freeship').classList.contains('on'), requireReturns: $('#sy-returns').classList.contains('on'), requireTopRated: $('#sy-toprated').classList.contains('on'),
     updatedAt: serverTimestamp(), updatedBy: S.user.email
   };
@@ -1304,7 +1310,7 @@ async function adminFetch(url) {
 $('#sy-run').addEventListener('click', async () => {
   const btn = $('#sy-run'); btn.disabled = true; btn.textContent = 'Syncing… this can take a minute';
   $('#sync-banner').innerHTML = '';
-  try { const r = await adminFetch('/api/run-catalog-sync'); toast(`Sync done: ${r.discover?.added ?? 0} added, ${r.refresh?.retired ?? 0} retired, ${r.published ?? 0} live`); }
+  try { const r = await adminFetch('/api/run-catalog-sync'); toast(`Sync done: ${r.discover?.added ?? 0} added, ${r.discover?.rotated ?? 0} rotated out, ${r.refresh?.retired ?? 0} sold out, ${r.published ?? 0} live`); }
   catch (err) { $('#sync-banner').innerHTML = `<div class="banner bad"><span>⚠</span><span><b>Sync failed:</b> ${esc(err.message)}. Check that functions are deployed and EBAY_CLIENT_ID / EBAY_CLIENT_SECRET are set in functions/.env.</span></div>`; }
   btn.disabled = false; btn.textContent = 'Sync now';
 });

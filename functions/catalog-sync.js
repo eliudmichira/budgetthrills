@@ -35,6 +35,9 @@ const DEFAULT_SETTINGS = {
   requireFreeShipping: true,
   requireReturns: true,
   newPerCategoryPerRun: 6,     // cap on new listings added per category each run (keeps the API budget low)
+  minFreshPerCategory: 3,      // always add at least this many fresh listings per category per run, even when full
+  rotateExcess: true,          // when a category is over quota, retire its oldest eBay listings to make room
+  countManualInQuota: false,   // imported products.js / manual items count against the category quota
   // Category weights decide the catalog mix. Keywords are the eBay searches per category.
   categories: [
     { name: "Tech",        weight: 0.20, url: "/tech.html",        keywords: ["mechanical keyboard", "wireless gaming mouse", "usb-c hub", "portable ssd 1tb", "webcam 4k"] },
@@ -234,13 +237,19 @@ async function loadSettings(db) {
   const s = { ...DEFAULT_SETTINGS, ...(snap.exists ? snap.data() : {}) };
   if (!Array.isArray(s.categories) || !s.categories.length) s.categories = DEFAULT_SETTINGS.categories;
   s.targetMargin = Number(s.targetMargin) > 1 ? Number(s.targetMargin) / 100 : Number(s.targetMargin) || 0.25;
+  // Weights are a mix, not absolutes: normalise so 90% or 120% totals still spread maxProducts fully.
+  const totalWeight = s.categories.reduce((n, c) => n + (Number(c.weight) || 0), 0) || 1;
+  s.categories = s.categories.map((c) => ({ ...c, weight: (Number(c.weight) || 0) / totalWeight }));
+  s.minFreshPerCategory = Math.max(0, Number(s.minFreshPerCategory ?? DEFAULT_SETTINGS.minFreshPerCategory) || 0);
+  s.newPerCategoryPerRun = Math.max(s.minFreshPerCategory, Number(s.newPerCategoryPerRun) || 0);
   return s;
 }
 
 /** Refresh price and availability of every eBay-sourced product. Returns counts. */
 async function refreshExisting(db, token, settings, log) {
   const snap = await db.collection("products").where("source", "==", "ebay").get();
-  const docs = snap.docs.filter((d) => d.data().ebayItemId);
+  // Listings the admin blocked or the sync rotated out stay retired; only sold-out/ended ones are rechecked.
+  const docs = snap.docs.filter((d) => d.data().ebayItemId && !["rotated out", "blocked by admin"].includes(d.data().retiredReason));
   const counts = { checked: docs.length, repriced: 0, retired: 0, restored: 0, calls: 0 };
   for (let i = 0; i < docs.length; i += 20) {
     const batch = docs.slice(i, i + 20);
@@ -274,23 +283,32 @@ async function refreshExisting(db, token, settings, log) {
   return counts;
 }
 
-async function discover(db, token, settings, existingIds, log) {
-  const counts = { searched: 0, considered: 0, rejected: {}, added: 0, calls: 0, byCategory: {} };
+async function discover(db, token, settings, existingIds, log, deps = {}) {
+  const call = deps.api || api;
+  const counts = { searched: 0, considered: 0, rejected: {}, added: 0, rotated: 0, calls: 0, byCategory: {} };
   const activeSnap = await db.collection("products").where("active", "==", true).get();
-  const activeByCat = {};
-  activeSnap.forEach((d) => { const c = d.data().category; activeByCat[c] = (activeByCat[c] || 0) + 1; });
+  const activeByCat = {}; // category -> [{ ref, data }]
+  activeSnap.forEach((d) => { const p = d.data(); (activeByCat[p.category] = activeByCat[p.category] || []).push({ ref: d.ref, data: p }); });
   const blocked = new Set(settings.blockedItemIds || []);
+  const toMs = (v) => (v && v.toMillis ? v.toMillis() : (v && v.toDate ? v.toDate().getTime() : (typeof v === "number" ? v : 0)));
 
   for (const cat of settings.categories) {
+    const all = activeByCat[cat.name] || [];
+    const ebayItems = all.filter((x) => x.data.source === "ebay");
+    const counted = settings.countManualInQuota ? all.length : ebayItems.length;
     const quota = Math.round(settings.maxProducts * (Number(cat.weight) || 0));
-    const have = activeByCat[cat.name] || 0;
-    let need = Math.min(settings.newPerCategoryPerRun, quota - have);
-    counts.byCategory[cat.name] = { quota, have, added: 0 };
+    // Fill up to quota, but never add fewer than the freshness floor: a full category
+    // still gets new listings and rotates its oldest ones out below.
+    let need = Math.max(settings.minFreshPerCategory, Math.min(settings.newPerCategoryPerRun, quota - counted));
+    counts.byCategory[cat.name] = { quota, have: counted, manual: all.length - ebayItems.length, added: 0, rotated: 0 };
     if (need <= 0 || !(cat.keywords || []).length) continue;
 
     const candidates = [];
     const priceMax = Math.floor(settings.priceCeiling * (1 - settings.targetMargin - PROCESSING_FEE_PCT));
-    for (const kw of cat.keywords) {
+    // Rotate the starting keyword each run so the same searches don't dominate.
+    const kws = cat.keywords.slice(); const offset = Math.floor(Date.now() / 36e5) % kws.length;
+    const ordered = kws.slice(offset).concat(kws.slice(0, offset));
+    for (const kw of ordered) {
       if (candidates.length >= need * 4) break;
       const filter = [
         "buyingOptions:{FIXED_PRICE}", `conditionIds:{${Object.keys(CONDITIONS).join("|")}}`, "itemLocationCountry:US", "deliveryCountry:US",
@@ -298,8 +316,8 @@ async function discover(db, token, settings, existingIds, log) {
       ];
       if (settings.requireReturns) filter.push("returnsAccepted:true");
       if (settings.requireFreeShipping) filter.push("maxDeliveryCost:0");
-      const path = `/buy/browse/v1/item_summary/search?q=${encodeURIComponent(kw)}&limit=50&filter=${encodeURIComponent(filter.join(","))}`;
-      const { status, json } = await api(token, path);
+      const path = `/buy/browse/v1/item_summary/search?q=${encodeURIComponent(kw)}&limit=50&sort=newlyListed&filter=${encodeURIComponent(filter.join(","))}`;
+      const { status, json } = await call(token, path);
       counts.calls++; counts.searched++;
       if (status !== 200) { log(`search "${kw}" failed (${status}): ${JSON.stringify(json).slice(0, 200)}`); continue; }
       for (const it of json.itemSummaries || []) {
@@ -312,12 +330,13 @@ async function discover(db, token, settings, existingIds, log) {
     }
 
     candidates.sort((a, b) => b.ev.score - a.ev.score);
-    const seenTitles = new Set();
+    const seenTitles = new Set(ebayItems.map((x) => cleanTitle(x.data.name).toLowerCase().slice(0, 40)));
+    let added = 0;
     for (const c of candidates) {
-      if (need <= 0) break;
+      if (added >= need) break;
       const key = cleanTitle(c.it.title).toLowerCase().slice(0, 40);
       if (seenTitles.has(key)) continue;
-      const { status, json: detail } = await api(token, `/buy/browse/v1/item/${encodeURIComponent(c.it.itemId)}`);
+      const { status, json: detail } = await call(token, `/buy/browse/v1/item/${encodeURIComponent(c.it.itemId)}`);
       counts.calls++;
       if (status !== 200) continue;
       if (settings.requireReturns && detail.returnTerms && detail.returnTerms.returnsAccepted === false) continue;
@@ -326,7 +345,23 @@ async function discover(db, token, settings, existingIds, log) {
       const product = buildProduct(c.it, detail, c.ev, cat, settings);
       await db.collection("products").doc(product.id).set(product, { merge: false });
       existingIds.add(c.it.itemId); seenTitles.add(key);
-      need--; counts.added++; counts.byCategory[cat.name].added++;
+      added++; counts.added++; counts.byCategory[cat.name].added++;
+    }
+
+    // Rotation: keep the category at quota by retiring the oldest, lowest-scored eBay listings.
+    // Featured items and anything the admin edited by hand are never rotated out.
+    const over = (counted + added) - quota;
+    if (settings.rotateExcess && quota > 0 && over > 0 && added > 0) {
+      const victims = ebayItems.filter((x) => !x.data.featured && !x.data.priceOverride)
+        .sort((a, b) => toMs(a.data.firstSeenAt) - toMs(b.data.firstSeenAt) || (a.data.score || 0) - (b.data.score || 0))
+        .slice(0, Math.min(over, added));
+      if (victims.length) {
+        const wb = db.batch();
+        victims.forEach((v) => wb.set(v.ref, { active: false, retiredReason: "rotated out", retiredAt: FieldValue.serverTimestamp(), updatedAt: FieldValue.serverTimestamp() }, { merge: true }));
+        await wb.commit();
+        counts.rotated += victims.length; counts.byCategory[cat.name].rotated = victims.length;
+        log(`${cat.name}: rotated out ${victims.length} oldest listing(s) to stay near quota ${quota}`);
+      }
     }
   }
   return counts;
@@ -380,4 +415,4 @@ async function runSync({ trigger = "schedule" } = {}) {
   return summary;
 }
 
-module.exports = { runSync, publishLiveCatalog, evaluate, priceFor, applyEnding, marginAt, DEFAULT_SETTINGS, CONDITIONS };
+module.exports = { runSync, publishLiveCatalog, discover, loadSettings, evaluate, priceFor, applyEnding, marginAt, DEFAULT_SETTINGS, CONDITIONS };
