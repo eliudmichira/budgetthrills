@@ -768,12 +768,15 @@
     const prod = productId ? catalog.find(p => p.id === productId) : null;
 
     if (prod && document.querySelector('[data-gallery]')) {
-      document.title = `${prod.name} — BudgetThrills`;
+      if (typeof window.BT_RENDER_PDP === 'function') {
+        try { window.BT_RENDER_PDP(); } catch (e) { console.warn('BT_RENDER_PDP error:', e); }
+      } else {
+        document.title = `${prod.name} — BudgetThrills`;
 
-      const breadcrumb = document.querySelector('.eyebrow.mb-8');
-      if (breadcrumb) {
-        breadcrumb.innerHTML = `<a href="/" class="hover:text-ink">Home</a> · <a href="${prod.categoryUrl}" class="hover:text-ink">${prod.category}</a> · ${prod.name}`;
-      }
+        const breadcrumb = document.querySelector('.eyebrow.mb-8');
+        if (breadcrumb) {
+          breadcrumb.innerHTML = `<a href="/" class="hover:text-ink">Home</a> · <a href="${prod.categoryUrl}" class="hover:text-ink">${prod.category}</a> · ${prod.name}`;
+        }
 
       const mainImg = document.querySelector('[data-gallery-main] img');
       if (mainImg && prod.images && prod.images[0]) {
@@ -899,6 +902,7 @@
         }
       }
     }
+  }
 
     const addBtn = document.querySelector('[data-add-cart]');
     if (!addBtn || addBtn.dataset.cartBound) return;

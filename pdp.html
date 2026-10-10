@@ -1,4 +1,4 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="en" class="dark">
 <head>
 <meta charset="utf-8">
@@ -77,6 +77,12 @@
     color: rgba(255, 255, 255, 0.95) !important;
     z-index: 50 !important;
     pointer-events: none !important;
+  }
+  .gallery-nav-btn svg { pointer-events: none !important; }
+  .size.active {
+    background: var(--bt-text) !important;
+    color: var(--bt-bg) !important;
+    border-color: var(--bt-text) !important;
   }
 </style>
 <script>(function(){try{var t=localStorage.getItem('bt-theme')||'dark';document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
@@ -375,41 +381,44 @@
     // Price
     const priceBox = document.querySelector('.mt-5.flex.items-baseline');
     if (priceBox) {
-      priceBox.innerHTML = '<span class="text-2xl font-semibold">$' + p.price.toFixed(2) + '</span>' +
-        '<span class="text-mute line-through">$' + p.originalPrice.toFixed(2) + '</span>' +
-        '<span class="text-lime text-xs tracking-[0.2em] uppercase font-semibold">' + p.discount + '</span>';
+      const priceVal = Number(p.price || 0).toFixed(2);
+      const origVal = (p.originalPrice != null && Number(p.originalPrice) > 0) ? Number(p.originalPrice).toFixed(2) : null;
+      priceBox.innerHTML = '<span class="text-2xl font-semibold" lang="en-US" translate="no">$' + priceVal + '</span>' +
+        (origVal ? '<span class="text-mute line-through ml-3" lang="en-US" translate="no">$' + origVal + '</span>' : '') +
+        (p.discount ? '<span class="text-lime text-xs tracking-[0.2em] uppercase font-semibold ml-3">' + p.discount + '</span>' : '');
     }
 
     // Description
     const desc = document.querySelector('p.text-mute.text-sm.mt-4');
-    if (desc) desc.textContent = p.desc;
+    if (desc) desc.textContent = p.desc || '';
 
     // ── Gallery with Interactive Left / Right Navigation ──
     const mainImg = document.querySelector('[data-gallery-main] img');
-    const thumbGrid = document.querySelector('[data-gallery] .grid.grid-cols-5');
+    const thumbGrid = document.querySelector('[data-gallery] [data-gallery-thumbs], [data-gallery] .grid.grid-cols-5');
     const prevBtn = document.querySelector('[data-gallery-prev]');
     const nextBtn = document.querySelector('[data-gallery-next]');
     const counterBadge = document.querySelector('[data-gallery-counter]');
     
-    const galleryImages = (p.images && p.images.length > 0) ? p.images.slice(0, 5) : [
+    const galleryImages = (p.images && p.images.length > 0) ? p.images.slice(0, 8) : [
       'https://i.ebayimg.com/images/g/SowAAeSwjFZqjcjX/s-l1600.jpg'
     ];
     let currentIdx = 0;
 
     function renderGallery(newIdx) {
-      if (galleryImages.length === 0) return;
+      if (!galleryImages || galleryImages.length === 0) return;
       currentIdx = (newIdx + galleryImages.length) % galleryImages.length;
 
       if (mainImg) {
-        mainImg.style.opacity = '0.3';
+        mainImg.style.opacity = '0.4';
         mainImg.src = galleryImages[currentIdx];
-        mainImg.alt = p.name + ' - Photo ' + (currentIdx + 1);
+        mainImg.alt = (p.name || 'Product') + ' - Photo ' + (currentIdx + 1);
         mainImg.onload = () => { mainImg.style.opacity = '1'; };
-        setTimeout(() => { mainImg.style.opacity = '1'; }, 120);
+        setTimeout(() => { if (mainImg) mainImg.style.opacity = '1'; }, 100);
       }
 
       if (counterBadge) {
         counterBadge.textContent = (currentIdx + 1) + ' / ' + galleryImages.length;
+        counterBadge.style.display = galleryImages.length > 1 ? 'block' : 'none';
       }
 
       const thumbs = document.querySelectorAll('[data-gallery] .thumb');
@@ -420,14 +429,14 @@
 
     if (thumbGrid) {
       thumbGrid.innerHTML = galleryImages.map((img, i) =>
-        '<button class="thumb' + (i === 0 ? ' active' : '') + '" data-thumb-idx="' + i + '"><img loading="lazy" src="' + img + '" alt=""></button>'
+        '<button type="button" class="thumb' + (i === 0 ? ' active' : '') + '" data-thumb-idx="' + i + '" aria-label="Photo ' + (i + 1) + '"><img loading="lazy" src="' + img + '" alt=""></button>'
       ).join('');
 
       thumbGrid.querySelectorAll('.thumb').forEach((btn, i) => {
-        btn.addEventListener('click', (e) => {
+        btn.onclick = (e) => {
           e.preventDefault();
           renderGallery(i);
-        });
+        };
       });
     }
 
@@ -438,19 +447,19 @@
     } else {
       if (prevBtn) {
         prevBtn.style.display = 'flex';
-        prevBtn.addEventListener('click', (e) => {
+        prevBtn.onclick = (e) => {
           e.preventDefault();
           e.stopPropagation();
           renderGallery(currentIdx - 1);
-        });
+        };
       }
       if (nextBtn) {
         nextBtn.style.display = 'flex';
-        nextBtn.addEventListener('click', (e) => {
+        nextBtn.onclick = (e) => {
           e.preventDefault();
           e.stopPropagation();
           renderGallery(currentIdx + 1);
-        });
+        };
       }
       if (counterBadge) {
         counterBadge.style.display = 'block';
@@ -461,25 +470,25 @@
     const galleryMainBox = document.querySelector('[data-gallery-main]');
     if (galleryMainBox) {
       let touchStartX = 0;
-      galleryMainBox.addEventListener('touchstart', (e) => {
+      galleryMainBox.ontouchstart = (e) => {
         touchStartX = e.changedTouches[0].screenX;
-      }, { passive: true });
-      galleryMainBox.addEventListener('touchend', (e) => {
+      };
+      galleryMainBox.ontouchend = (e) => {
         const touchEndX = e.changedTouches[0].screenX;
         const diffX = touchEndX - touchStartX;
         if (Math.abs(diffX) > 40) {
-          if (diffX < 0) renderGallery(currentIdx + 1); // Swipe left -> Next
-          else renderGallery(currentIdx - 1);           // Swipe right -> Prev
+          if (diffX < 0) renderGallery(currentIdx + 1);
+          else renderGallery(currentIdx - 1);
         }
-      }, { passive: true });
+      };
     }
 
     // Keyboard Arrow Keys (Left / Right)
-    window.addEventListener('keydown', (e) => {
+    window.onkeydown = (e) => {
       if (['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement?.tagName)) return;
       if (e.key === 'ArrowLeft') renderGallery(currentIdx - 1);
       else if (e.key === 'ArrowRight') renderGallery(currentIdx + 1);
-    });
+    };
 
     renderGallery(0);
 
@@ -489,30 +498,55 @@
     const colorSection = swatchGroup ? swatchGroup.closest('.mt-10') : null;
     if (swatchGroup && p.colors && p.colors.length > 0 && !(p.colors.length === 1 && p.colors[0].name === 'Standard Edition')) {
       swatchGroup.innerHTML = p.colors.map((c, i) =>
-        '<button class="swatch' + (c.active || i === 0 ? ' active' : '') + '" data-color="' + c.name + '"><span style="background:' + c.hex + ';"></span></button>'
+        '<button type="button" class="swatch' + (c.active || i === 0 ? ' active' : '') + '" data-color="' + c.name + '"><span style="background:' + c.hex + ';"></span></button>'
       ).join('');
       if (colorLabel) colorLabel.textContent = p.colors.find(c => c.active)?.name || p.colors[0].name;
+
+      swatchGroup.querySelectorAll('.swatch').forEach(btn => {
+        btn.onclick = () => {
+          swatchGroup.querySelectorAll('.swatch').forEach(s => s.classList.remove('active'));
+          btn.classList.add('active');
+          if (colorLabel) colorLabel.textContent = btn.dataset.color || '';
+        };
+      });
     } else if (colorSection) {
       colorSection.style.display = 'none';
     }
 
-    // ── Size buttons (from catalog) ──
+    // ── Size buttons (from catalog or category defaults) ──
     const sizeGrid = document.querySelector('[data-sizes]');
     const sizeHeading = document.querySelector('[data-size-heading]');
-    if (sizeGrid && p.sizes && p.sizes.length > 0 && !(p.sizes.length === 1 && p.sizes[0] === 'Standard')) {
-      // Determine label based on category
+    let sizes = (p.sizes && p.sizes.length > 0) ? p.sizes : [];
+    if (sizes.length === 0 || (sizes.length === 1 && sizes[0] === 'Standard')) {
+      if (p.category === 'Sneakers') {
+        sizes = ['7', '7.5', '8', '8.5', '9', '9.5', '10', '10.5', '11', '12'];
+      } else if (p.category === 'Phones') {
+        sizes = ['128GB', '256GB', '512GB'];
+      } else if (p.category === 'Tech' || p.category === 'Gaming' || p.category === 'Tools') {
+        sizes = ['Standard', 'Pro Edition'];
+      }
+    }
+
+    if (sizeGrid && sizes.length > 0) {
       let label = 'Option / Size';
       if (p.category === 'Phones') label = 'Storage';
-      else if (p.category === 'Sneakers') label = 'Size (US)';
+      else if (p.category === 'Sneakers') label = 'Size · US';
       else if (p.category === 'Tech') label = 'Option';
       else if (p.category === 'Accessories') label = 'Size';
       if (sizeHeading) sizeHeading.textContent = label;
 
-      const cols = p.sizes.length <= 5 ? 5 : p.sizes.length <= 8 ? 4 : 5;
+      const cols = sizes.length <= 5 ? 5 : sizes.length <= 8 ? 4 : 5;
       sizeGrid.className = 'grid grid-cols-' + cols + ' gap-2';
-      sizeGrid.innerHTML = p.sizes.map((s, i) =>
-        '<button class="size' + (i === 0 ? ' active' : '') + '">' + s + '</button>'
+      sizeGrid.innerHTML = sizes.map((s, i) =>
+        '<button type="button" class="size' + (i === 0 ? ' active' : '') + '">' + s + '</button>'
       ).join('');
+
+      sizeGrid.querySelectorAll('.size').forEach(b => {
+        b.onclick = () => {
+          sizeGrid.querySelectorAll('.size').forEach(x => x.classList.remove('active'));
+          b.classList.add('active');
+        };
+      });
     }
 
     // ── Details section ──

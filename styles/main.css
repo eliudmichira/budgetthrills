@@ -438,9 +438,9 @@ html, body {
 }
 .size:hover { border-color: var(--bt-text); }
 .size.active {
-  background: var(--bt-text);
-  color: #000;
-  border-color: var(--bt-text);
+  background: var(--bt-text) !important;
+  color: var(--bt-bg) !important;
+  border-color: var(--bt-text) !important;
 }
 .size:disabled {
   color: var(--bt-text-mute);
