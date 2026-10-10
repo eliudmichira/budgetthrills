@@ -124,6 +124,7 @@
       });
     }
     saveCart(cart);
+    try { window.dispatchEvent(new CustomEvent('bt:add-to-cart', { detail: { id: item.id, name: item.name, price: parseFloat(item.price) || 0, qty: item.qty || 1, category: item.category || '' } })); } catch (e) {}
     showToast('Added ' + item.name + ' to cart!');
   }
 
