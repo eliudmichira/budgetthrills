@@ -411,7 +411,15 @@ async function runSync({ trigger = "schedule" } = {}) {
   }
   summary.durationMs = Date.now() - started;
   summary.log = logLines.slice(-40);
-  await runRef.set({ lastRunAt: FieldValue.serverTimestamp(), lastRunStatus: summary.ok ? "ok" : "error", lastRun: summary }, { merge: true });
+  const updatePayload = {
+    lastRunAt: FieldValue.serverTimestamp(),
+    lastRunStatus: summary.ok ? "ok" : "error",
+    lastRun: summary
+  };
+  if (summary.ok) {
+    updatePayload["lastRun.error"] = FieldValue.delete();
+  }
+  await runRef.set(updatePayload, { merge: true });
   return summary;
 }
 

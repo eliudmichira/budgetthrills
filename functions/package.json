@@ -1,7 +1,7 @@
 {
   "name": "budgetthrills-functions",
   "description": "BudgetThrills Cloud Functions",
-  "engines": { "node": "20" },
+  "engines": { "node": "22" },
   "main": "index.js",
   "dependencies": {
     "firebase-admin": "^12.0.0",
