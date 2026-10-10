@@ -664,29 +664,60 @@ exports.emailTest = onRequest({ cors: true }, async (req, res) => {
 
 // ─── Newsletter signup (Brevo contact list) ───────────────────────────────────
 const BREVO_LIST_ID = Number(process.env.BREVO_LIST_ID || 2);
-/** POST /api/subscribe {email} — adds the address to the Brevo list used for drop announcements. */
-exports.subscribe = onRequest({ cors: true }, async (req, res) => {
-  if (req.method !== "POST") return res.status(405).json({ error: "Method not allowed." });
-  const email = String(req.body?.email || "").trim().toLowerCase();
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || email.length > 254) return res.status(400).json({ error: "Enter a valid email address." });
+/** Adds one address to the Brevo list. Returns { ok, error }. Never throws. */
+async function brevoAddContact(email) {
   const key = process.env.BREVO_API_KEY;
-  if (!key) return res.status(503).json({ error: "Signups are not configured yet (BREVO_API_KEY missing)." });
+  if (!key) return { ok: false, error: "BREVO_API_KEY missing" };
   try {
     const r = await fetch("https://api.brevo.com/v3/contacts", {
       method: "POST", headers: { "api-key": key, "content-type": "application/json", "accept": "application/json" },
       body: JSON.stringify({ email, listIds: [BREVO_LIST_ID], updateEnabled: true })
     });
-    if (!r.ok && r.status !== 204) {
-      const raw = await r.text().catch(() => "");
-      let detail = raw; try { detail = JSON.parse(raw).message || raw; } catch (e) { /* text */ }
-      if (!/already exist/i.test(detail)) { console.warn("Brevo subscribe failed:", r.status, detail); return res.status(502).json({ error: "Could not save your email right now. Please try again." }); }
-    }
+    if (r.ok || r.status === 204) return { ok: true };
+    const raw = await r.text().catch(() => "");
+    let detail = raw; try { detail = JSON.parse(raw).message || raw; } catch (e) { /* text */ }
+    if (/already exist/i.test(detail)) return { ok: true };
+    return { ok: false, error: `Brevo ${r.status}: ${String(detail).slice(0, 200)}` };
+  } catch (err) { return { ok: false, error: err.message }; }
+}
+
+/**
+ * POST /api/subscribe {email} — the homepage "Get the drop" form.
+ * The address is saved to Firestore first so a Brevo outage (or Brevo's authorised-IP
+ * block, which Cloud Functions cannot satisfy) never loses a lead; Brevo is then
+ * attempted, and anything it rejected is retried by syncPendingSubscribers on each sync.
+ */
+exports.subscribe = onRequest({ cors: true }, async (req, res) => {
+  if (req.method !== "POST") return res.status(405).json({ error: "Method not allowed." });
+  const email = String(req.body?.email || "").trim().toLowerCase();
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || email.length > 254) return res.status(400).json({ error: "Enter a valid email address." });
+  const id = crypto.createHash("sha256").update(email).digest("hex").slice(0, 32);
+  const ref = db.collection("subscribers").doc(id);
+  try {
+    const existing = await ref.get();
+    if (!existing.exists) await ref.set({ email, createdAt: new Date(), source: String(req.body?.source || "homepage").slice(0, 40), brevoSynced: false });
+    const r = await brevoAddContact(email);
+    await ref.set(r.ok ? { brevoSynced: true, brevoSyncedAt: new Date(), brevoError: FieldValue.delete() } : { brevoSynced: false, brevoError: r.error, lastAttemptAt: new Date() }, { merge: true });
+    if (!r.ok) console.warn("Brevo subscribe deferred:", r.error);
     return res.json({ ok: true });
   } catch (err) {
     console.error("subscribe error:", err);
     return res.status(500).json({ error: "Could not save your email right now." });
   }
 });
+
+/** Pushes signups that Brevo rejected earlier. Runs after every catalog sync. */
+async function syncPendingSubscribers() {
+  const snap = await db.collection("subscribers").where("brevoSynced", "==", false).limit(100).get();
+  const out = { pending: snap.size, synced: 0, failed: 0 };
+  for (const d of snap.docs) {
+    const r = await brevoAddContact(d.data().email);
+    await d.ref.set(r.ok ? { brevoSynced: true, brevoSyncedAt: new Date(), brevoError: FieldValue.delete() } : { brevoError: r.error, lastAttemptAt: new Date() }, { merge: true });
+    r.ok ? out.synced++ : out.failed++;
+  }
+  if (out.pending) console.log("subscribers sync:", JSON.stringify(out));
+  return out;
+}
 
 // ─── Sitemap ──────────────────────────────────────────────────────────────────
 const SITE_PAGES = [
@@ -768,6 +799,7 @@ async function requireAdmin(req) {
 /** Scheduled: refresh existing listings and discover new ones. Needs the Blaze plan (Cloud Scheduler). */
 exports.syncEbayCatalog = onSchedule({ schedule: "every 6 hours", timeoutSeconds: 540, memory: "512MiB", region: "us-central1" }, async () => {
   const summary = await catalogSync.runSync({ trigger: "schedule" });
+  summary.subscribers = await syncPendingSubscribers().catch((e) => ({ error: e.message }));
   console.log("catalog sync:", JSON.stringify({ ...summary, log: undefined }));
 });
 
@@ -777,6 +809,7 @@ exports.runCatalogSync = onRequest({ cors: true, timeoutSeconds: 540, memory: "5
   const admin = await requireAdmin(req);
   if (!admin) return res.status(403).json({ error: "Admin sign-in required." });
   const summary = await catalogSync.runSync({ trigger: "manual:" + (admin.email || admin.uid) });
+  summary.subscribers = await syncPendingSubscribers().catch((e) => ({ error: e.message }));
   return res.status(summary.ok ? 200 : 500).json(summary);
 });
 

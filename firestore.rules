@@ -67,6 +67,12 @@ service cloud.firestore {
       allow write: if isAdmin();
     }
 
+    // Newsletter signups written by the subscribe function; admins read them in the dashboard
+    match /subscribers/{subId} {
+      allow read: if isAdmin();
+      allow write: if false;
+    }
+
     // Outgoing email log written by Cloud Functions; admins read it in the dashboard
     match /email-log/{entryId} {
       allow read: if isAdmin();

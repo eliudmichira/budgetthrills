@@ -592,6 +592,7 @@
               <div class="list">
                 <div class="li"><div class="t">Orders in Firestore<small id="d-orders">—</small></div><button class="btn sm" data-go="orders">Open</button></div>
                 <div class="li"><div class="t">Messages<small id="d-msgs">—</small></div><button class="btn sm" data-go="messages">Open</button></div>
+                <div class="li"><div class="t">Newsletter subscribers<small id="d-subs">—</small></div></div>
                 <div class="li"><div class="t">Local pending orders on this device<small id="d-local">—</small></div><button class="btn sm" id="sync-local">Sync</button></div>
               </div>
             </div>
@@ -854,6 +855,11 @@ function startStreams() {
   S.unsub.push(onSnapshot(doc(db, 'settings', 'sync'), (snap) => {
     S.sync = snap.exists() ? snap.data() : null; renderSync();
   }, (err) => showRulesBanner('settings/sync', err)));
+
+  S.unsub.push(onSnapshot(collection(db, 'subscribers'), (snap) => {
+    const pending = snap.docs.filter(d => d.data().brevoSynced === false).length;
+    const el = $('#d-subs'); if (el) el.textContent = `${snap.size} total${pending ? ` · ${pending} waiting for Brevo (retried on every sync)` : ''}`;
+  }, (err) => console.warn('subscribers', err.message)));
 
   S.unsub.push(onSnapshot(query(collection(db, 'email-log'), orderBy('at', 'desc'), limit(12)), (snap) => {
     renderEmailLog(snap.docs.map(d => d.data()));
