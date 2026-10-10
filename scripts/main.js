@@ -212,6 +212,7 @@
         const data = await res.json().catch(() => ({}));
         if (!res.ok) throw new Error(data.error || 'Could not save your email right now.');
         if (out) { out.textContent = "You're on the list. New finds land in your inbox first."; out.classList.remove('text-orange'); }
+        try { window.dispatchEvent(new CustomEvent('bt:subscribed')); } catch (err2) {}
         if (input) input.value = '';
       } catch (err) {
         if (out) { out.textContent = err.message; out.classList.add('text-orange'); }

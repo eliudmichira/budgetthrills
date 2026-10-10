@@ -10,6 +10,8 @@
 
 const https = require("https");
 const { getFirestore, FieldValue } = require("firebase-admin/firestore");
+const { getStorage } = require("firebase-admin/storage");
+const crypto = require("crypto");
 
 const HOST = process.env.EBAY_ENV === "sandbox" ? "api.sandbox.ebay.com" : "api.ebay.com";
 const MARKETPLACE = "EBAY_US";
@@ -38,6 +40,8 @@ const DEFAULT_SETTINGS = {
   minFreshPerCategory: 3,      // always add at least this many fresh listings per category per run, even when full
   rotateExcess: true,          // when a category is over quota, retire its oldest eBay listings to make room
   countManualInQuota: false,   // imported products.js / manual items count against the category quota
+  cacheImages: true,           // copy listing photos into Firebase Storage so they survive the eBay listing ending
+  imageBackfillPerRun: 25,     // existing products whose photos get copied per run
   // Category weights decide the catalog mix. Keywords are the eBay searches per category.
   categories: [
     { name: "Tech",        weight: 0.20, url: "/tech.html",        keywords: ["mechanical keyboard", "wireless gaming mouse", "usb-c hub", "portable ssd 1tb", "webcam 4k"] },
@@ -426,6 +430,7 @@ async function discover(db, token, settings, existingIds, log, deps = {}) {
       const late = titleProblems(detail.title || c.it.title, c.kw, detailBrand);
       if (late.length) { late.forEach((r) => { counts.rejected["title"] = (counts.rejected["title"] || 0) + 1; }); continue; }
       const product = buildProduct(c.it, detail, c.ev, cat, settings, c.kw);
+      if (settings.cacheImages) { product.ebayImages = product.images.slice(); product.images = await cacheImages(product.id, product.images, log); }
       await db.collection("products").doc(product.id).set(product, { merge: false });
       existingIds.add(c.it.itemId); seenTitles.add(key);
       added++; counts.added++; counts.byCategory[cat.name].added++;
@@ -446,6 +451,56 @@ async function discover(db, token, settings, existingIds, log, deps = {}) {
         log(`${cat.name}: rotated out ${victims.length} oldest listing(s) to stay near quota ${quota}`);
       }
     }
+  }
+  return counts;
+}
+
+/* ---------------------------------- images ---------------------------------- */
+// eBay photos disappear when a listing ends. New products get their photos copied into
+// Firebase Storage (public read via storage.rules) and the catalog points at those copies.
+const IMAGE_MAX_BYTES = 4 * 1024 * 1024;
+function storageUrl(bucketName, path, token) {
+  return `https://firebasestorage.googleapis.com/v0/b/${bucketName}/o/${encodeURIComponent(path)}?alt=media&token=${token}`;
+}
+async function cacheImages(productId, urls, log) {
+  const out = [];
+  let bucket;
+  try { bucket = getStorage().bucket(); } catch (e) { log && log("storage unavailable: " + e.message); return urls; }
+  const list = (urls || []).filter((u) => /^https?:\/\//.test(u)).slice(0, 6);
+  for (let i = 0; i < list.length; i++) {
+    const url = list[i];
+    if (url.includes("firebasestorage.googleapis.com")) { out.push(url); continue; }
+    try {
+      const res = await fetch(url, { headers: { "User-Agent": "Mozilla/5.0 (BudgetThrills catalog sync)" } });
+      if (!res.ok) throw new Error("HTTP " + res.status);
+      const type = (res.headers.get("content-type") || "image/jpeg").split(";")[0];
+      if (!/^image\//.test(type)) throw new Error("not an image: " + type);
+      const buf = Buffer.from(await res.arrayBuffer());
+      if (!buf.length || buf.length > IMAGE_MAX_BYTES) throw new Error("bad size " + buf.length);
+      const ext = type.includes("png") ? "png" : type.includes("webp") ? "webp" : "jpg";
+      const path = `products/${productId}/${i + 1}.${ext}`;
+      const token = crypto.randomUUID();
+      await bucket.file(path).save(buf, { resumable: false, metadata: { contentType: type, cacheControl: "public, max-age=31536000, immutable", metadata: { firebaseStorageDownloadTokens: token, source: url } } });
+      out.push(storageUrl(bucket.name, path, token));
+    } catch (err) {
+      log && log(`image ${i + 1} for ${productId} kept on eBay (${err.message})`);
+      out.push(url);
+    }
+  }
+  return out.length ? out : urls;
+}
+
+/** Copies photos for products that still point at eBay, a few per run. */
+async function backfillImages(db, settings, log) {
+  const counts = { products: 0, images: 0 };
+  if (!settings.cacheImages) return counts;
+  const snap = await db.collection("products").where("active", "==", true).get();
+  const todo = snap.docs.filter((d) => { const p = d.data(); return Array.isArray(p.images) && p.images.some((u) => !String(u).includes("firebasestorage.googleapis.com")); }).slice(0, Math.max(0, Number(settings.imageBackfillPerRun) || 0));
+  for (const d of todo) {
+    const p = d.data();
+    const images = await cacheImages(p.id, p.images, log);
+    const copied = images.filter((u) => u.includes("firebasestorage.googleapis.com")).length;
+    if (copied) { await d.ref.set({ images, imagesCachedAt: FieldValue.serverTimestamp() }, { merge: true }); counts.products++; counts.images += copied; }
   }
   return counts;
 }
@@ -513,6 +568,7 @@ async function runSync({ trigger = "schedule" } = {}) {
       (await db.collection("products").where("source", "==", "ebay").select("ebayItemId").get()).forEach((d) => existing.add(d.data().ebayItemId));
       summary.refresh = await refreshExisting(db, token, settings, log);
       summary.rescreen = await rescreen(db, log);
+      summary.images = await backfillImages(db, settings, log);
       summary.discover = await discover(db, token, settings, existing, log);
       summary.published = await publishLiveCatalog(db);
       summary.apiCalls = summary.refresh.calls + summary.discover.calls;
@@ -536,4 +592,4 @@ async function runSync({ trigger = "schedule" } = {}) {
   return summary;
 }
 
-module.exports = { runSync, publishLiveCatalog, discover, loadSettings, rescreen, evaluate, priceFor, applyEnding, marginAt, cleanTitle, cleanTitleInfo, titleProblems, DEFAULT_SETTINGS, CONDITIONS };
+module.exports = { runSync, publishLiveCatalog, discover, loadSettings, rescreen, cacheImages, backfillImages, evaluate, priceFor, applyEnding, marginAt, cleanTitle, cleanTitleInfo, titleProblems, DEFAULT_SETTINGS, CONDITIONS };

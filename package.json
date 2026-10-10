@@ -10,7 +10,9 @@
     "sync": "node scripts/sync-ebay.js",
     "fulfill": "node scripts/fulfill-order.js",
     "inject": "node scripts/inject-static-catalog.js",
-    "sitemap:static": "node scripts/build-static-catalog.js"
+    "sitemap:static": "node scripts/build-static-catalog.js",
+    "test": "node --test tests/*.test.js",
+    "check": "for f in scripts/*.js functions/*.js; do node --check \"$f\" || exit 1; done"
   },
   "devDependencies": {
     "tailwindcss": "^3.4.17"

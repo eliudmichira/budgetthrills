@@ -83,8 +83,10 @@ html, body {
 /* Two-image stack: .card-media-primary is the static shot,
    .card-media-hover is the lifestyle / 2nd-angle shot that fades in on hover. */
 .card { position: relative; display: block; }
+/* product-media-frame: eBay photos arrive on white; a hairline frame makes them read as tiles in both themes */
 .card-media {
   background: var(--bt-bg-elev);
+  box-shadow: inset 0 0 0 1px var(--bt-border);
   position: relative;
   overflow: hidden;
 }
