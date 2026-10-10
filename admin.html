@@ -1264,10 +1264,10 @@ const SYNC_DEFAULTS = { enabled: true, targetMargin: 25, priceCeiling: 200, pric
   categories: [
     { name: 'Tech', weight: 0.20, url: '/tech.html', keywords: ['mechanical keyboard', 'wireless gaming mouse', 'usb-c hub', 'portable ssd 1tb', 'webcam 4k'] },
     { name: 'Accessories', weight: 0.15, url: '/accessories.html', keywords: ['seiko automatic watch', 'anker power bank', 'leather wallet rfid', 'ray-ban sunglasses', 'belkin charger'] },
-    { name: 'Tools', weight: 0.15, url: '/trending.html', keywords: ['dewalt 20v tool only', 'milwaukee m18 tool only', 'makita 18v tool only', 'dewalt battery 5ah'] },
-    { name: 'Home', weight: 0.10, url: '/trending.html', keywords: ['ninja air fryer', 'dyson v8', 'vitamix blender', 'kitchenaid hand mixer', 'instant pot'] },
-    { name: 'Audio', weight: 0.10, url: '/trending.html', keywords: ['focusrite scarlett', 'shure sm58', 'audio-technica turntable', 'jbl flip 6', 'sony wh-1000xm4'] },
-    { name: 'Toys', weight: 0.10, url: '/trending.html', keywords: ['lego retired set', 'hot wheels premium', 'funko pop exclusive', 'nerf elite'] },
+    { name: 'Tools', weight: 0.15, url: '/category.html?c=Tools', keywords: ['dewalt 20v tool only', 'milwaukee m18 tool only', 'makita 18v tool only', 'dewalt battery 5ah'] },
+    { name: 'Home', weight: 0.10, url: '/category.html?c=Home', keywords: ['ninja air fryer', 'dyson v8', 'vitamix blender', 'kitchenaid hand mixer', 'instant pot'] },
+    { name: 'Audio', weight: 0.10, url: '/category.html?c=Audio', keywords: ['focusrite scarlett', 'shure sm58', 'audio-technica turntable', 'jbl flip 6', 'sony wh-1000xm4'] },
+    { name: 'Toys', weight: 0.10, url: '/category.html?c=Toys', keywords: ['lego retired set', 'hot wheels premium', 'funko pop exclusive', 'nerf elite'] },
     { name: 'Gaming', weight: 0.10, url: '/gaming.html', keywords: ['xbox elite controller series 2', 'dualsense edge', 'nintendo switch pro controller', 'logitech g pro'] },
     { name: 'Sneakers', weight: 0.05, url: '/collection.html', keywords: ['nike air max new with box', 'adidas samba new with box', 'new balance 574 new'] },
     { name: 'Phones', weight: 0.05, url: '/phones.html', keywords: ['iphone 13 unlocked refurbished', 'pixel 7 unlocked refurbished'] }
@@ -1296,26 +1296,19 @@ function renderSync() {
     $('#sy-summary').innerHTML = `${(isFailed && run.error) ? `<div class="banner bad"><span>⚠</span><span>${esc(run.error)}</span></div>` : ''}${run.skipped ? '<div class="banner warn"><span>ℹ</span><span>Scheduled sync is disabled in the rules.</span></div>' : ''}
       <dl class="kv"><dt>Started</dt><dd>${fmtDate(toDate(run.startedAt), true)} · ${esc(run.trigger)} · ${Math.round((run.durationMs || 0) / 1000)}s</dd>
       ${run.refresh ? `<dt>Re-verified</dt><dd>${run.refresh.checked} listings · ${run.refresh.repriced} repriced · ${run.refresh.retired} retired · ${run.refresh.restored} restored</dd>` : ''}
+      ${run.rescreen ? `<dt>Screened</dt><dd>${run.rescreen.checked} checked · <b>${run.rescreen.retired} removed</b> as clones, parts or accessories · ${run.rescreen.renamed} titles tidied</dd>` : ''}
       ${run.discover ? `<dt>Discovered</dt><dd>${run.discover.searched} searches · ${run.discover.considered} listings seen · <b>${run.discover.added} added</b>${run.discover.rotated ? ` · ${run.discover.rotated} rotated out` : ''}</dd><dt>Rejected for</dt><dd class="faint">${rej || '—'}</dd>` : ''}
       ${run.published != null ? `<dt>Published</dt><dd>${run.published} products live</dd>` : ''}${run.apiCalls != null ? `<dt>eBay calls</dt><dd>${run.apiCalls} of 5,000 daily</dd>` : ''}</dl>
       ${cats ? `<div class="sec"><h3>Category fill</h3><div class="list">${cats}</div></div>` : ''}
       ${run.log?.length ? `<details style="margin-top:14px"><summary class="faint" style="cursor:pointer;font-size:12px">Log</summary><pre class="mono faint" style="white-space:pre-wrap;font-size:11px;margin:8px 0 0">${esc(run.log.join('\n'))}</pre></details>` : ''}`;
   }
 }
-const SYNC_PAGE_OPTIONS = [
-  { url: '/trending.html', label: 'Trending (/trending.html)' },
-  { url: '/tech.html', label: 'Tech (/tech.html)' },
-  { url: '/accessories.html', label: 'Accessories (/accessories.html)' },
-  { url: '/gaming.html', label: 'Gaming (/gaming.html)' },
-  { url: '/phones.html', label: 'Phones (/phones.html)' },
-  { url: '/collection.html', label: 'Sneakers / Drip (/collection.html)' }
-];
 function renderSyncCats() {
   const total = syncCatsDraft.reduce((n, c) => n + (Number(c.weight) || 0), 0);
   $('#sy-cats').innerHTML = syncCatsDraft.map((c, i) => `<tr>
     <td><input data-i="${i}" data-k="name" value="${esc(c.name)}" style="min-width:110px"></td>
     <td><input data-i="${i}" data-k="weight" type="number" min="0" max="100" step="1" value="${Math.round((Number(c.weight) || 0) * 100)}" style="width:70px;text-align:right"></td>
-    <td><select data-i="${i}" data-k="url" style="min-width:180px">${SYNC_PAGE_OPTIONS.map(p => `<option value="${p.url}" ${c.url === p.url ? 'selected' : ''}>${esc(p.label)}</option>`).join('')}</select></td>
+    <td><input data-i="${i}" data-k="url" value="${esc(c.url || ('/category.html?c=' + encodeURIComponent(c.name)))}" style="min-width:170px" placeholder="/category.html?c=Name"></td>
     <td><input data-i="${i}" data-k="keywords" value="${esc((c.keywords || []).join(', '))}" style="min-width:260px"></td>
     <td class="r"><button class="btn sm ghost danger" data-del="${i}">Remove</button></td></tr>`).join('');
   $('#sy-weight-total').innerHTML = `Mix adds up to <b class="${Math.abs(total - 1) > 0.01 ? '' : 'faint'}" style="${Math.abs(total - 1) > 0.01 ? 'color:var(--a-warn)' : ''}">${Math.round(total * 100)}%</b> · trending.html shows every category`;
@@ -1363,7 +1356,7 @@ async function publishCatalog() {
   try {
     const products = S.products.filter(p => isLive(p) && p.images?.length)
       .sort((a, b) => (b.featured === true) - (a.featured === true) || toMs(b.firstSeenAt) - toMs(a.firstSeenAt))
-      .map(p => ({ id: p.id, name: p.name, category: p.category, categoryUrl: p.categoryUrl || '/trending.html', tag: p.tag || 'New', price: recPrice(p), originalPrice: p.originalPrice || null, discount: p.discount || null,
+      .map(p => ({ id: p.id, name: p.name, category: p.category, categoryUrl: (!p.categoryUrl || p.categoryUrl === '/trending.html') ? ({ Gaming: '/gaming.html', Phones: '/phones.html', Tech: '/tech.html', Accessories: '/accessories.html', Sneakers: '/collection.html' }[p.category] || '/category.html?c=' + encodeURIComponent(p.category)) : p.categoryUrl, tag: p.tag || 'New', price: recPrice(p), originalPrice: p.originalPrice || null, discount: p.discount || null,
         desc: p.desc || '', details: p.details || '', brand: p.brand || '', colors: p.colors || [{ name: 'Standard', hex: '#1C1C1C', active: true }], sizes: p.sizes || ['Standard'], images: (p.images || []).slice(0, 6), featured: !!p.featured, source: p.source || 'manual', firstSeenAt: toMs(p.firstSeenAt), score: p.score || 0 }));
     await setDoc(doc(db, 'catalog', 'live'), { products, count: products.length, updatedAt: serverTimestamp(), publishedBy: S.user.email });
     toast(`Published ${products.length} products to the store`);

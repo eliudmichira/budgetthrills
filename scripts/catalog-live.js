@@ -16,6 +16,8 @@ import { doc, getDoc } from 'https://www.gstatic.com/firebasejs/10.13.0/firebase
     window.BT_CATALOG_STATIC = window.BT_CATALOG || [];
     window.BT_CATALOG = products;
     window.BT_CATALOG_LIVE = { count: products.length, updatedAt: data.updatedAt && data.updatedAt.toDate ? data.updatedAt.toDate() : null };
+    renderNav(products);
+    renderCounts(products);
     renderFeatured(products);
     window.dispatchEvent(new CustomEvent('bt:catalog-updated', { detail: { products } }));
   } catch (err) {
@@ -42,11 +44,38 @@ function card(item) {
   </a>`;
 }
 
-// Homepage featured grid: featured items first, then the newest arrivals.
+// Homepage featured grid: featured items first, then the newest item from each category in turn,
+// so one category cannot take over the whole row.
 function renderFeatured(products) {
   const grid = document.querySelector('[data-catalog-featured]');
   if (!grid) return;
   const count = grid.querySelectorAll('a.card').length || 8;
-  const list = products.slice().sort((a, b) => (b.featured === true) - (a.featured === true) || (b.firstSeenAt || 0) - (a.firstSeenAt || 0)).slice(0, count);
-  if (list.length) grid.innerHTML = list.map(card).join('');
+  const sorted = products.slice().sort((a, b) => (b.firstSeenAt || 0) - (a.firstSeenAt || 0));
+  const picked = sorted.filter(p => p.featured === true).slice(0, count);
+  const byCat = {};
+  sorted.forEach(p => { if (p.featured) return; (byCat[p.category] = byCat[p.category] || []).push(p); });
+  const queues = Object.values(byCat);
+  while (picked.length < count && queues.some(q => q.length)) queues.forEach(q => { if (q.length && picked.length < count) picked.push(q.shift()); });
+  window.BT_SHOWN_IDS = new Set(picked.map(p => p.id));
+  if (picked.length) grid.innerHTML = picked.map(card).join('');
+}
+
+// Navigation follows the catalog: the biggest categories, linking to their pages.
+const CATEGORY_PAGES = { Gaming: '/gaming.html', Phones: '/phones.html', Tech: '/tech.html', Accessories: '/accessories.html', Sneakers: '/collection.html' };
+function categoryUrl(name) { return CATEGORY_PAGES[name] || ('/category.html?c=' + encodeURIComponent(name)); }
+function renderNav(products) {
+  const counts = {};
+  products.forEach(p => { if (p.category) counts[p.category] = (counts[p.category] || 0) + 1; });
+  const cats = Object.keys(counts).sort((a, b) => counts[b] - counts[a]);
+  if (cats.length < 2) return;
+  const here = location.pathname + location.search;
+  const esc = (v) => String(v).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  const link = (c, cls) => { const url = categoryUrl(c); const active = here === url || (url.indexOf('?') < 0 && location.pathname === url); return `<a href="${esc(url)}" class="${active ? 'text-lime font-semibold' : cls}">${esc(c)}</a>`; };
+  const desktop = document.querySelector('[data-catalog-nav]');
+  if (desktop) desktop.innerHTML = cats.slice(0, 6).map(c => link(c, 'hover:text-lime transition')).join('') + (cats.length > 6 ? `<a href="/trending.html" class="hover:text-lime transition">All</a>` : '');
+  const mobile = document.querySelector('[data-catalog-nav-mobile]');
+  if (mobile) mobile.innerHTML = cats.map(c => link(c, '')).join('') + `<a href="/trending.html" class="">All products</a>`;
+}
+function renderCounts(products) {
+  document.querySelectorAll('[data-catalog-count]').forEach(el => { el.textContent = products.length; });
 }

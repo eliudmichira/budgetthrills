@@ -1330,7 +1330,9 @@
     const underGrid = document.querySelector('[data-catalog-under]');
     if (underGrid) {
       const cap = Number(underGrid.dataset.catalogUnder) || 50;
-      const picks = catalog.filter(p => p.price <= cap && p.images && p.images[0]).sort((a, b) => (b.firstSeenAt || 0) - (a.firstSeenAt || 0)).slice(0, 4);
+      const shown = window.BT_SHOWN_IDS || new Set();
+      const pool = catalog.filter(p => p.price <= cap && p.images && p.images[0]).sort((a, b) => (b.firstSeenAt || 0) - (a.firstSeenAt || 0));
+      const picks = pool.filter(p => !shown.has(p.id)).slice(0, 4).concat(pool.filter(p => shown.has(p.id))).slice(0, 4);
       const underSection = underGrid.closest('section');
       if (!picks.length) { if (underSection) underSection.classList.add('hidden'); }
       else { if (underSection) underSection.classList.remove('hidden'); underGrid.innerHTML = picks.map(item => `
