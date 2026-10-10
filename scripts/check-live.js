@@ -5,7 +5,7 @@ function checkUrl(url) {
     https.get(url, (res) => {
       if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
         let loc = res.headers.location;
-        if (!loc.startsWith('http')) loc = 'https://budgetthrills.web.app' + loc;
+        if (!loc.startsWith('http')) loc = 'https://budgetthrills.shop' + loc;
         return resolve(checkUrl(loc));
       }
       let data = '';
@@ -26,10 +26,10 @@ function checkUrl(url) {
 
 async function main() {
   const urls = [
-    'https://budgetthrills.web.app/collection.html',
-    'https://budgetthrills.web.app/tech.html',
-    'https://budgetthrills.web.app/accessories.html',
-    'https://budgetthrills.web.app/gaming.html'
+    'https://budgetthrills.shop/collection.html',
+    'https://budgetthrills.shop/tech.html',
+    'https://budgetthrills.shop/accessories.html',
+    'https://budgetthrills.shop/gaming.html'
   ];
   for (const u of urls) {
     const res = await checkUrl(u);

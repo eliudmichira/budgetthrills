@@ -9,4 +9,4 @@ Disallow: /forgot.html
 Disallow: /reset.html
 Allow: /
 
-Sitemap: https://budgetthrills.web.app/sitemap.xml
+Sitemap: https://budgetthrills.shop/sitemap.xml

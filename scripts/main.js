@@ -2,6 +2,19 @@
 (function () {
   'use strict';
 
+  /* ---- Canonical host ----
+     budgetthrills.shop is the public address. The Firebase default hosts
+     (*.web.app / *.firebaseapp.com) keep serving, but visitors who land
+     there are sent to the custom domain so analytics, SEO and shared links
+     all point at one place. Localhost and the Firebase auth handler are
+     left alone. */
+  (function canonicalHost() {
+    const h = location.hostname;
+    if (h === 'budgetthrills.web.app' || h === 'budgetthrills.firebaseapp.com' || h === 'www.budgetthrills.shop') {
+      location.replace('https://budgetthrills.shop' + location.pathname + location.search + location.hash);
+    }
+  })();
+
   /* ---- Per-letter scroll reveal ----
      For any element with [data-split="chars"|"words"], split its text content
      into wrapped spans, then fire an animation on intersection. */
