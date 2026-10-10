@@ -156,13 +156,13 @@ exports.sendReplyEmail = onDocumentCreated(
         <div style="margin-top: 28px; padding-top: 20px; border-top: 1px solid #27272A;">
           <p style="font-size: 11px; color: #3F3F46; line-height: 1.6;">
             BudgetThrills · Trendy products. Budget prices. Real thrills.
-            <br>Need more help? Reply to this email or visit <a href="https://budgetthrills.web.app/contact.html" style="color: #BFFF1A;">budgetthrills.com/contact</a>
+            <br>Need more help? Reply to this email or visit <a href="https://budgetthrills.shop/contact.html" style="color: #BFFF1A;">budgetthrills.shop/contact</a>
           </p>
         </div>
       </div>
     `;
 
-    const emailText = `Hey ${original.name || "there"},\n\n${reply.body}\n\n---\nRe: ${original.topic || "General question"}${original.orderNumber ? " · Order " + original.orderNumber : ""}\nYour message: "${(original.message || "").substring(0, 120)}"\n\nBudgetThrills · budgetthrills.com`;
+    const emailText = `Hey ${original.name || "there"},\n\n${reply.body}\n\n---\nRe: ${original.topic || "General question"}${original.orderNumber ? " · Order " + original.orderNumber : ""}\nYour message: "${(original.message || "").substring(0, 120)}"\n\nBudgetThrills · budgetthrills.shop`;
 
     if (!MAIL_READY) {
       console.warn("SENDGRID_API_KEY not set. Saving reply but not sending email.");
@@ -268,8 +268,8 @@ exports.onOrderPaid = onDocumentWritten(
     <div style="font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#6E6E6E;margin-bottom:6px">Shipping to</div>
     <div>${order.address || "&mdash;"}</div>
   </div>
-  <p style="color:#6E6E6E;font-size:13px">Track at <a href="https://budgetthrills.web.app/track.html" style="color:#BFFF1A">budgetthrills.web.app/track</a> using your order number + this email.</p>
-  <p style="color:#6E6E6E;font-size:13px">Questions? <a href="mailto:support@budgetthrills.com" style="color:#BFFF1A">support@budgetthrills.com</a></p>
+  <p style="color:#6E6E6E;font-size:13px">Track at <a href="https://budgetthrills.shop/track.html" style="color:#BFFF1A">budgetthrills.shop/track</a> using your order number + this email.</p>
+  <p style="color:#6E6E6E;font-size:13px">Questions? <a href="mailto:support@budgetthrills.shop" style="color:#BFFF1A">support@budgetthrills.shop</a></p>
   <div style="margin-top:32px;padding-top:20px;border-top:1px solid #1C1C1C;font-size:11px;color:#6E6E6E">&copy; 2026 BudgetThrills</div>
 </div></body></html>`;
 
@@ -284,10 +284,10 @@ exports.onOrderPaid = onDocumentWritten(
         orderId: order.id || orderId, customerName: (order.customerName || "").split(" ")[0] || "",
         items: items.map((it) => ({ name: it.name, qty: Number(it.qty) || 1, lineTotal: money((it.price || 0) * (it.qty || 1)) })),
         subtotal: money(order.subtotal ?? total), discount: Number(order.discount) > 0 ? money(order.discount) : "", shipping: Number(order.shipping) > 0 ? money(order.shipping) : "Free",
-        total: money(order.total ?? total), address: order.address || "", trackUrl: `${PUBLIC_BASE_URL || "https://budgetthrills.web.app"}/track.html`
+        total: money(order.total ?? total), address: order.address || "", trackUrl: `${PUBLIC_BASE_URL || "https://budgetthrills.shop"}/track.html`
       },
       html,
-      text: `Order ${order.id || orderId} confirmed!\n\nTotal: $${total.toFixed(2)}\nShipping to: ${order.address || "\u2014"}\n\nTrack: https://budgetthrills.web.app/track.html\nHelp: support@budgetthrills.com`
+      text: `Order ${order.id || orderId} confirmed!\n\nTotal: $${total.toFixed(2)}\nShipping to: ${order.address || "\u2014"}\n\nTrack: https://budgetthrills.shop/track.html\nHelp: support@budgetthrills.shop`
     });
     console.log("✓ Confirmation email sent to", order.email, "for", orderId);
     await db.collection("orders").doc(orderId).set({ confirmationEmailSent: true }, { merge: true });
@@ -358,7 +358,7 @@ function siteOrigin(req) {
   const origin = req.headers.origin || (req.headers.referer ? new URL(req.headers.referer).origin : "");
   if (origin) return origin.replace(/\/$/, "");
   if (PUBLIC_BASE_URL) return PUBLIC_BASE_URL.replace(/\/$/, "");
-  return "https://budgetthrills.web.app";
+  return "https://budgetthrills.shop";
 }
 
 const round2 = (n) => Math.round((Number(n) || 0) * 100) / 100;
@@ -622,7 +622,7 @@ exports.onOrderFulfilment = onDocumentWritten({ document: "orders/{orderId}", da
     else {
       const carrier = after.carrier || "Carrier", tn = after.trackingNumber;
       const links = { USPS: `https://tools.usps.com/go/TrackConfirmAction?tLabels=${encodeURIComponent(tn)}`, UPS: `https://www.ups.com/track?tracknum=${encodeURIComponent(tn)}`, FedEx: `https://www.fedex.com/fedextrack/?trknbr=${encodeURIComponent(tn)}`, DHL: `https://www.dhl.com/us-en/home/tracking.html?tracking-id=${encodeURIComponent(tn)}` };
-      const trackUrl = links[carrier] || "https://budgetthrills.web.app/track.html";
+      const trackUrl = links[carrier] || "https://budgetthrills.shop/track.html";
       const items = (after.items || []).map((it) => `<li>${it.name}${it.qty > 1 ? " × " + it.qty : ""}</li>`).join("");
       try {
         await sendMail("order-shipped", {
@@ -745,7 +745,7 @@ function staticCatalog() {
 }
 /** GET /sitemap.xml — every live product plus the site pages; cached at the CDN for 6 hours. */
 exports.sitemap = onRequest({ cors: false }, async (req, res) => {
-  const base = (PUBLIC_BASE_URL || `https://${req.hostname || "budgetthrills.web.app"}`).replace(/\/$/, "");
+  const base = (PUBLIC_BASE_URL || "https://budgetthrills.shop").replace(/\/$/, "");
   let products = [];
   try { const snap = await db.collection("catalog").doc("live").get(); products = snap.exists ? (snap.data().products || []) : []; } catch (e) { console.warn("sitemap: catalog read failed", e.message); }
   if (!products.length) products = staticCatalog();

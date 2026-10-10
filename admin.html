@@ -1135,7 +1135,7 @@ function bindFulfilment(o) {
   });
 }
 function printSlip(o) {
-  $('#print-area').innerHTML = `<div style="display:flex;justify-content:space-between;align-items:flex-start"><div><div style="font-size:22px;font-weight:800">BudgetThrills</div><div>budgetthrills.com · ${esc(S.settings?.supportEmail || 'support@budgetthrills.com')}</div></div><div style="text-align:right"><div style="font-size:18px;font-weight:700">Packing slip</div><div>Order ${esc(o.id)}</div><div>${fmtDate(o._date, true)}</div></div></div>
+  $('#print-area').innerHTML = `<div style="display:flex;justify-content:space-between;align-items:flex-start"><div><div style="font-size:22px;font-weight:800">BudgetThrills</div><div>budgetthrills.shop · ${esc(S.settings?.supportEmail || 'support@budgetthrills.shop')}</div></div><div style="text-align:right"><div style="font-size:18px;font-weight:700">Packing slip</div><div>Order ${esc(o.id)}</div><div>${fmtDate(o._date, true)}</div></div></div>
     <div style="display:flex;gap:40px;margin:28px 0"><div><b>Ship to</b><br>${esc(o.customerName)}<br>${esc(o.address)}<br>${esc(o.phone || '')}</div><div><b>Contact</b><br>${esc(o.email)}</div></div>
     <table><thead><tr><th>Item</th><th>Variant</th><th style="text-align:right">Qty</th><th style="text-align:right">Price</th></tr></thead><tbody>${o.items.map(i => `<tr><td>${esc(i.name)}</td><td>${esc(i.variant || '')}</td><td style="text-align:right">${i.qty || 1}</td><td style="text-align:right">${money(i.price)}</td></tr>`).join('')}</tbody></table>
     <div style="text-align:right;margin-top:16px"><b>Total ${money(o.total)}</b></div><p style="margin-top:32px;font-size:12px">Returns accepted within ${esc(S.settings?.returnDays ?? 30)} days. Thanks for shopping with us.</p>`;
@@ -1454,7 +1454,7 @@ async function seedCoupons() {
 }
 
 /* ============================== settings ============================== */
-const DEFAULT_SETTINGS = { freeShippingMin: 50, standardShipping: 4.99, expressShipping: 12.99, returnDays: 30, supportEmail: 'support@budgetthrills.com', notice: '' };
+const DEFAULT_SETTINGS = { freeShippingMin: 50, standardShipping: 4.99, expressShipping: 12.99, returnDays: 30, supportEmail: 'support@budgetthrills.shop', notice: '' };
 function renderSettings() {
   const s = { ...DEFAULT_SETTINGS, ...(S.settings || {}) };
   if (document.activeElement && $('#settings-form').contains(document.activeElement)) return;
