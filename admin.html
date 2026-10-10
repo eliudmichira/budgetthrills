@@ -600,13 +600,13 @@
                 <div id="email-config" class="faint" style="font-size:13px">Checking configuration…</div>
                 <div style="display:flex;gap:8px;margin-top:12px"><button class="btn primary sm" id="email-send-test">Send test email to me</button><button class="btn sm" id="email-recheck">Re-check</button></div>
                 <div id="email-result" style="margin-top:10px;font-size:13px"></div>
-                <details style="margin-top:12px"><summary class="faint" style="cursor:pointer;font-size:12px">How to set up SendGrid without a domain</summary>
+                <details style="margin-top:12px"><summary class="faint" style="cursor:pointer;font-size:12px">How to set up email without a domain (Brevo, free, 300 a day)</summary>
                   <ol class="faint" style="font-size:12.5px;line-height:1.6;margin:8px 0 0;padding-left:18px">
-                    <li>Create a free account at sendgrid.com.</li>
-                    <li>Settings → Sender Authentication → <b>Single Sender Verification</b>. Verify the address you will send from (your Gmail is fine until you own a domain).</li>
-                    <li>Settings → API Keys → Create key with <b>Mail Send</b> access.</li>
-                    <li>In <span class="kbd">functions/.env</span> set <span class="kbd">SENDGRID_API_KEY</span> and <span class="kbd">SENDGRID_FROM_EMAIL</span> (the verified address), then <span class="kbd">firebase deploy --only functions</span>.</li>
-                    <li>Press "Send test email to me" above.</li>
+                    <li>Create a free account at brevo.com.</li>
+                    <li>Senders &amp; IPs → Senders → <b>Add a sender</b>. Use the address you will send from (your Gmail is fine) and click the verification link Brevo emails you.</li>
+                    <li>SMTP &amp; API → API Keys → <b>Generate a new API key</b>.</li>
+                    <li>In <span class="kbd">functions/.env</span> set <span class="kbd">BREVO_API_KEY</span> and <span class="kbd">EMAIL_FROM</span> (the verified address), then <span class="kbd">firebase deploy --only functions</span>.</li>
+                    <li>Press "Send test email to me" above. Resend or SendGrid work the same way with their own key.</li>
                   </ol>
                 </details>
               </div>
@@ -1459,14 +1459,14 @@ $('#settings-form').addEventListener('submit', async (e) => {
 /* ============================== email + seo ============================== */
 function renderEmailLog(entries) {
   const el = $('#email-log'); if (!el) return;
-  el.innerHTML = entries.length ? entries.map(e => `<div class="li" style="padding:8px 18px"><span class="st ${e.status === 'sent' ? 'good' : e.status === 'failed' ? 'bad' : 'warn'}" style="flex:none">${esc(e.status)}</span><div class="t"><div class="truncate">${esc(e.subject || e.kind)}</div><small class="truncate">${esc(e.kind)} · ${esc(e.to)}${e.error ? ' · ' + esc(e.error) : ''}</small></div><span class="faint" style="flex:none">${rel(toDate(e.at))}</span></div>`).join('') : '<div class="empty">No emails sent yet.</div>';
+  el.innerHTML = entries.length ? entries.map(e => `<div class="li" style="padding:8px 18px"><span class="st ${e.status === 'sent' ? 'good' : e.status === 'failed' ? 'bad' : 'warn'}" style="flex:none">${esc(e.status)}</span><div class="t"><div class="truncate">${esc(e.subject || e.kind)}</div><small class="truncate">${esc(e.kind)}${e.provider ? ' · ' + esc(e.provider) : ''} · ${esc(e.to)}${e.error ? ' · ' + esc(e.error) : ''}</small></div><span class="faint" style="flex:none">${rel(toDate(e.at))}</span></div>`).join('') : '<div class="empty">No emails sent yet.</div>';
 }
 async function checkEmailConfig() {
   const box = $('#email-config'), state = $('#email-state');
   try {
     const r = await adminFetch('/api/email-test', { check: true });
     state.innerHTML = r.configured ? '<span class="st good">Configured</span>' : '<span class="st warn">Not configured</span>';
-    box.innerHTML = r.configured ? `Sending as <b style="color:var(--a-text)">${esc(r.fromName)} &lt;${esc(r.from)}&gt;</b>${r.supportEmail && r.supportEmail !== r.from ? ` · replies to ${esc(r.supportEmail)}` : ''}${r.adminEmail ? ` · alerts to ${esc(r.adminEmail)}` : ''}` : `<ul style="margin:0;padding-left:18px">${(r.problems || []).map(x => `<li>${esc(x)}</li>`).join('')}</ul>`;
+    box.innerHTML = r.configured ? `${esc(r.provider || '')} · sending as <b style="color:var(--a-text)">${esc(r.fromName)} &lt;${esc(r.from)}&gt;</b>${r.supportEmail && r.supportEmail !== r.from ? ` · replies to ${esc(r.supportEmail)}` : ''}${r.adminEmail ? ` · alerts to ${esc(r.adminEmail)}` : ''}` : `${r.provider ? esc(r.provider) + ' · ' : ''}<ul style="margin:4px 0 0;padding-left:18px">${(r.problems || []).map(x => `<li>${esc(x)}</li>`).join('')}</ul>`;
   } catch (err) {
     state.innerHTML = '<span class="st neutral">Unknown</span>';
     box.textContent = 'Could not reach the email function: ' + err.message + '. Deploy functions first.';
