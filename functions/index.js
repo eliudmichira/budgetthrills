@@ -9,29 +9,80 @@ const catalogSync = require("./catalog-sync");
 const { initializeApp } = require("firebase-admin/app");
 const { getFirestore } = require("firebase-admin/firestore");
 const crypto = require("crypto");
-const sgMail = require("@sendgrid/mail");
 initializeApp();
 const db = getFirestore("default");
-// ─── Email (SendGrid) ─────────────────────────────────────────────────────────
-// All values come from functions/.env. Without a domain, verify a single sender
-// address in SendGrid (Settings > Sender Authentication > Single Sender) and use
-// that address as SENDGRID_FROM_EMAIL. Every send is recorded in email-log/.
-const SENDGRID_KEY  = process.env.SENDGRID_API_KEY || "";
-const FROM_EMAIL    = process.env.SENDGRID_FROM_EMAIL || "";
-const FROM_NAME     = process.env.SENDGRID_FROM_NAME || "BudgetThrills";
-const SUPPORT_EMAIL = process.env.SUPPORT_EMAIL || FROM_EMAIL;
-const MAIL_READY    = !!(SENDGRID_KEY && FROM_EMAIL);
+// ─── Email ────────────────────────────────────────────────────────────────────
+// Provider-agnostic transactional email over plain HTTPS (no SDK). Set ONE API key in
+// functions/.env and the provider is picked automatically, or force it with EMAIL_PROVIDER.
+//   Brevo    (default, 300/day free)  BREVO_API_KEY     verify the sender under Senders & IPs
+//   Resend   (3,000/month free)        RESEND_API_KEY    needs a verified domain for production
+//   SendGrid (60-day trial only)       SENDGRID_API_KEY  single-sender verification
+// EMAIL_FROM must be an address verified with that provider. Every send is logged in email-log/.
+const EMAIL_PROVIDERS = {
+  brevo:    { key: "BREVO_API_KEY",    looks: /^xkeysib-/, label: "Brevo" },
+  resend:   { key: "RESEND_API_KEY",   looks: /^re_/,      label: "Resend" },
+  sendgrid: { key: "SENDGRID_API_KEY", looks: /^SG\./,     label: "SendGrid" }
+};
+const EMAIL_PROVIDER = String(process.env.EMAIL_PROVIDER || Object.keys(EMAIL_PROVIDERS).find((k) => process.env[EMAIL_PROVIDERS[k].key]) || "brevo").toLowerCase();
+const EMAIL_SPEC     = EMAIL_PROVIDERS[EMAIL_PROVIDER];
+const EMAIL_KEY      = EMAIL_SPEC ? (process.env[EMAIL_SPEC.key] || "") : "";
+const FROM_EMAIL     = process.env.EMAIL_FROM || process.env.SENDGRID_FROM_EMAIL || "";
+const FROM_NAME      = process.env.EMAIL_FROM_NAME || process.env.SENDGRID_FROM_NAME || "BudgetThrills";
+const SUPPORT_EMAIL  = process.env.SUPPORT_EMAIL || FROM_EMAIL;
+const MAIL_READY     = !!(EMAIL_SPEC && EMAIL_KEY && FROM_EMAIL);
 const mailFrom = (name) => ({ email: FROM_EMAIL, name: name || FROM_NAME });
+// Brevo transactional templates (editable at app.brevo.com -> Transactional -> Templates).
+// Defaults are the templates created for this account; override per kind with
+// BREVO_TEMPLATE_ORDER_CONFIRMATION / BREVO_TEMPLATE_ORDER_SHIPPED / BREVO_TEMPLATE_REPLY, or set to 0 to use inline HTML.
+const BREVO_TEMPLATES = {
+  "order-confirmation": Number(process.env.BREVO_TEMPLATE_ORDER_CONFIRMATION ?? 1),
+  "order-shipped":      Number(process.env.BREVO_TEMPLATE_ORDER_SHIPPED ?? 2),
+  "reply":              Number(process.env.BREVO_TEMPLATE_REPLY ?? 3)
+};
+const templateFor = (kind) => (EMAIL_PROVIDER === "brevo" && BREVO_TEMPLATES[kind] > 0) ? BREVO_TEMPLATES[kind] : null;
+const money = (n) => "$" + (Number(n) || 0).toFixed(2);
+const htmlEsc = (v) => String(v ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 function mailConfigProblems() {
   const p = [];
-  if (!SENDGRID_KEY) p.push("SENDGRID_API_KEY is not set");
-  else if (!/^SG\./.test(SENDGRID_KEY)) p.push("SENDGRID_API_KEY does not look like a SendGrid key (should start with SG.)");
-  if (!FROM_EMAIL) p.push("SENDGRID_FROM_EMAIL is not set (must be a verified sender in SendGrid)");
+  if (!EMAIL_SPEC) { p.push(`EMAIL_PROVIDER "${EMAIL_PROVIDER}" is not one of brevo, resend, sendgrid`); return p; }
+  if (!EMAIL_KEY) p.push(`${EMAIL_SPEC.key} is not set`);
+  else if (!EMAIL_SPEC.looks.test(EMAIL_KEY)) p.push(`${EMAIL_SPEC.key} does not look like a ${EMAIL_SPEC.label} key`);
+  if (!FROM_EMAIL) p.push(`EMAIL_FROM is not set (must be a sender verified in ${EMAIL_SPEC.label})`);
   return p;
 }
-/** Sends through SendGrid and records the outcome. Throws on failure so callers' sent-flags stay unset. */
+/** Posts one message to the configured provider's REST API. Throws with the provider's error text. */
+async function deliver(msg) {
+  const to = (Array.isArray(msg.to) ? msg.to : [msg.to]).filter(Boolean);
+  const from = msg.from || mailFrom();
+  const replyTo = msg.replyTo || SUPPORT_EMAIL || "";
+  const html = msg.html || `<pre style="font-family:Inter,system-ui,sans-serif;white-space:pre-wrap">${htmlEsc(msg.text)}</pre>`;
+  let url, headers, body;
+  if (EMAIL_PROVIDER === "brevo") {
+    url = "https://api.brevo.com/v3/smtp/email";
+    headers = { "api-key": EMAIL_KEY, "content-type": "application/json", "accept": "application/json" };
+    body = msg.templateId
+      ? { sender: { email: from.email, name: from.name }, to: to.map((email) => ({ email })), templateId: Number(msg.templateId), params: msg.params || {}, ...(replyTo ? { replyTo: { email: replyTo } } : {}) }
+      : { sender: { email: from.email, name: from.name }, to: to.map((email) => ({ email })), subject: msg.subject, htmlContent: html, ...(msg.text ? { textContent: msg.text } : {}), ...(replyTo ? { replyTo: { email: replyTo } } : {}) };
+  } else if (EMAIL_PROVIDER === "resend") {
+    url = "https://api.resend.com/emails";
+    headers = { "Authorization": `Bearer ${EMAIL_KEY}`, "content-type": "application/json" };
+    body = { from: `${from.name} <${from.email}>`, to, subject: msg.subject, html, ...(msg.text ? { text: msg.text } : {}), ...(replyTo ? { reply_to: replyTo } : {}) };
+  } else {
+    url = "https://api.sendgrid.com/v3/mail/send";
+    headers = { "Authorization": `Bearer ${EMAIL_KEY}`, "content-type": "application/json" };
+    body = { personalizations: [{ to: to.map((email) => ({ email })) }], from, subject: msg.subject, ...(replyTo ? { reply_to: { email: replyTo } } : {}), content: [msg.text && { type: "text/plain", value: msg.text }, { type: "text/html", value: html }].filter(Boolean) };
+  }
+  const res = await fetch(url, { method: "POST", headers, body: JSON.stringify(body) });
+  if (!res.ok) {
+    const raw = await res.text().catch(() => "");
+    let detail = raw;
+    try { const j = JSON.parse(raw); detail = j.message || (Array.isArray(j.errors) && j.errors.map((e) => e.message || e).join("; ")) || j.error || raw; } catch (e) { /* plain text */ }
+    throw new Error(`${EMAIL_SPEC.label} ${res.status}: ${String(detail).slice(0, 300)}`);
+  }
+}
+/** Sends and records the outcome in email-log. Throws on failure so callers' sent-flags stay unset. */
 async function sendMail(kind, msg) {
-  const entry = { kind, to: Array.isArray(msg.to) ? msg.to.join(", ") : String(msg.to || ""), subject: msg.subject || "", at: new Date(), status: "sent" };
+  const entry = { kind, provider: EMAIL_PROVIDER, to: Array.isArray(msg.to) ? msg.to.join(", ") : String(msg.to || ""), subject: msg.subject || "", at: new Date(), status: "sent" };
   const record = () => db.collection("email-log").add(entry).catch((e) => console.warn("email-log write failed:", e.message));
   if (!MAIL_READY) {
     entry.status = "skipped"; entry.error = mailConfigProblems().join("; ");
@@ -39,15 +90,18 @@ async function sendMail(kind, msg) {
     throw new Error(entry.error);
   }
   try {
-    sgMail.setApiKey(SENDGRID_KEY);
-    const payload = { ...msg, from: msg.from || mailFrom(), replyTo: msg.replyTo || SUPPORT_EMAIL || undefined };
-    await sgMail.send(payload);
+    try {
+      await deliver(msg);
+    } catch (err) {
+      // A deleted or inactive Brevo template must not block the email: fall back to the inline HTML.
+      if (msg.templateId && /template/i.test(err.message)) { console.warn(`Template ${msg.templateId} failed (${err.message}); sending inline HTML`); entry.note = "template fallback"; await deliver({ ...msg, templateId: undefined }); }
+      else throw err;
+    }
     await record();
   } catch (err) {
-    const detail = err.response?.body?.errors?.map((e) => e.message).join("; ") || err.message;
-    entry.status = "failed"; entry.error = detail;
-    console.error(`Email (${kind}) to ${entry.to} failed: ${detail}`); await record();
-    throw new Error(detail);
+    entry.status = "failed"; entry.error = err.message;
+    console.error(`Email (${kind}) to ${entry.to} failed: ${err.message}`); await record();
+    throw err;
   }
 }
 
@@ -136,6 +190,8 @@ exports.sendReplyEmail = onDocumentCreated(
       text: emailText,
       html: emailHtml,
       replyTo: SUPPORT_EMAIL,
+      templateId: templateFor("reply"),
+      params: { subject, name: original.name || "there", body: htmlEsc(reply.body).replace(/\n/g, "<br>"), topic: original.topic || "General question", orderNumber: original.orderNumber || "", originalMessage: String(original.message || "").substring(0, 160) }
     };
 
     try {
@@ -186,7 +242,7 @@ exports.onOrderPaid = onDocumentWritten(
   const order = after;
 
   if (!MAIL_READY) {
-    console.warn("SENDGRID_API_KEY not set — skipping confirmation email for", orderId);
+    console.warn("Email not configured — skipping confirmation email for", orderId);
     return null;
   }
   if (!order.email) { console.warn("Order", orderId, "has no email"); return null; }
@@ -223,6 +279,13 @@ exports.onOrderPaid = onDocumentWritten(
       from: mailFrom(),
       replyTo: SUPPORT_EMAIL,
       subject: `Your order ${order.id || orderId} is confirmed \u2713`,
+      templateId: templateFor("order-confirmation"),
+      params: {
+        orderId: order.id || orderId, customerName: (order.customerName || "").split(" ")[0] || "",
+        items: items.map((it) => ({ name: it.name, qty: Number(it.qty) || 1, lineTotal: money((it.price || 0) * (it.qty || 1)) })),
+        subtotal: money(order.subtotal ?? total), discount: Number(order.discount) > 0 ? money(order.discount) : "", shipping: Number(order.shipping) > 0 ? money(order.shipping) : "Free",
+        total: money(order.total ?? total), address: order.address || "", trackUrl: `${PUBLIC_BASE_URL || "https://budgetthrills.web.app"}/track.html`
+      },
       html,
       text: `Order ${order.id || orderId} confirmed!\n\nTotal: $${total.toFixed(2)}\nShipping to: ${order.address || "\u2014"}\n\nTrack: https://budgetthrills.web.app/track.html\nHelp: support@budgetthrills.com`
     });
@@ -241,7 +304,7 @@ exports.onContactMessage = onDocumentCreated(
   const msg = event.data.data();
 
   if (!MAIL_READY) {
-    console.warn("SENDGRID_API_KEY not set \u2014 skipping admin alert");
+    console.warn("Email not configured \u2014 skipping admin alert");
     return null;
   }
   const adminEmail = process.env.ADMIN_EMAIL || FROM_EMAIL;
@@ -565,6 +628,9 @@ exports.onOrderFulfilment = onDocumentWritten({ document: "orders/{orderId}", da
         await sendMail("order-shipped", {
           to: after.email, from: mailFrom(), replyTo: SUPPORT_EMAIL,
           subject: `Your order ${after.id || orderId} has shipped`,
+          templateId: templateFor("order-shipped"),
+          params: { orderId: after.id || orderId, carrier, trackingNumber: tn, trackUrl, address: after.address || "", deliveryWindow: after.shippingMethod === "express" ? "2–4 business days" : "4–8 business days",
+            items: (after.items || []).map((it) => ({ name: it.name, qty: Number(it.qty) || 1 })) },
           html: `<div style="font-family:Inter,system-ui,sans-serif;max-width:560px;margin:0 auto;padding:32px 24px;background:#0A0A0A;color:#F2F2F2"><div style="color:#BFFF1A;font-size:22px;font-weight:900;margin-bottom:24px">BudgetThrills</div><h1 style="font-size:28px;margin:0 0 8px">On its way<span style="color:#BFFF1A">.</span></h1><p style="color:#A1A1AA">Order <strong style="color:#F2F2F2">${after.id || orderId}</strong> shipped with ${carrier}.</p><p style="margin:20px 0"><a href="${trackUrl}" style="background:#BFFF1A;color:#000;padding:12px 20px;border-radius:4px;text-decoration:none;font-weight:700">Track ${tn}</a></p><ul style="color:#D4D4D8;padding-left:18px">${items}</ul><p style="color:#6E6E6E;font-size:13px;margin-top:24px">Shipping to: ${after.address || ""}<br>Questions? Reply to this email.</p></div>`,
           text: `Order ${after.id || orderId} has shipped with ${carrier}. Tracking: ${tn}\n${trackUrl}`
         });
@@ -583,16 +649,42 @@ exports.emailTest = onRequest({ cors: true }, async (req, res) => {
   const admin = await requireAdmin(req);
   if (!admin) return res.status(403).json({ error: "Admin sign-in required." });
   const problems = mailConfigProblems();
-  const status = { configured: problems.length === 0, problems, from: FROM_EMAIL || null, fromName: FROM_NAME, supportEmail: SUPPORT_EMAIL || null, adminEmail: process.env.ADMIN_EMAIL || null };
+  const status = { configured: problems.length === 0, problems, provider: EMAIL_SPEC ? EMAIL_SPEC.label : EMAIL_PROVIDER, from: FROM_EMAIL || null, fromName: FROM_NAME, supportEmail: SUPPORT_EMAIL || null, adminEmail: process.env.ADMIN_EMAIL || null, templates: EMAIL_PROVIDER === "brevo" ? BREVO_TEMPLATES : null, listId: EMAIL_PROVIDER === "brevo" ? BREVO_LIST_ID : null };
   if (req.body?.check) return res.json(status);
   const to = admin.email;
   if (!to) return res.status(400).json({ ...status, error: "Your admin account has no email address." });
   try {
     await sendMail("test", { to, subject: "BudgetThrills test email", text: `This is a test from the BudgetThrills admin. Sent by ${to} at ${new Date().toISOString()}.`,
-      html: `<div style="font-family:Inter,system-ui,sans-serif;padding:24px"><h2 style="margin:0 0 8px">Email is working<span style="color:#BFFF1A">.</span></h2><p>Sent from <b>${FROM_EMAIL}</b> via SendGrid by ${to}.</p><p style="color:#666;font-size:12px">Order confirmations, shipping notices and contact replies will use this sender.</p></div>` });
+      html: `<div style="font-family:Inter,system-ui,sans-serif;padding:24px"><h2 style="margin:0 0 8px">Email is working<span style="color:#BFFF1A">.</span></h2><p>Sent from <b>${FROM_EMAIL}</b> via ${EMAIL_SPEC.label} by ${to}.</p><p style="color:#666;font-size:12px">Order confirmations, shipping notices and contact replies will use this sender.</p></div>` });
     return res.json({ ...status, ok: true, sentTo: to });
   } catch (err) {
     return res.status(502).json({ ...status, ok: false, error: err.message });
+  }
+});
+
+// ─── Newsletter signup (Brevo contact list) ───────────────────────────────────
+const BREVO_LIST_ID = Number(process.env.BREVO_LIST_ID || 2);
+/** POST /api/subscribe {email} — adds the address to the Brevo list used for drop announcements. */
+exports.subscribe = onRequest({ cors: true }, async (req, res) => {
+  if (req.method !== "POST") return res.status(405).json({ error: "Method not allowed." });
+  const email = String(req.body?.email || "").trim().toLowerCase();
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || email.length > 254) return res.status(400).json({ error: "Enter a valid email address." });
+  const key = process.env.BREVO_API_KEY;
+  if (!key) return res.status(503).json({ error: "Signups are not configured yet (BREVO_API_KEY missing)." });
+  try {
+    const r = await fetch("https://api.brevo.com/v3/contacts", {
+      method: "POST", headers: { "api-key": key, "content-type": "application/json", "accept": "application/json" },
+      body: JSON.stringify({ email, listIds: [BREVO_LIST_ID], updateEnabled: true })
+    });
+    if (!r.ok && r.status !== 204) {
+      const raw = await r.text().catch(() => "");
+      let detail = raw; try { detail = JSON.parse(raw).message || raw; } catch (e) { /* text */ }
+      if (!/already exist/i.test(detail)) { console.warn("Brevo subscribe failed:", r.status, detail); return res.status(502).json({ error: "Could not save your email right now. Please try again." }); }
+    }
+    return res.json({ ok: true });
+  } catch (err) {
+    console.error("subscribe error:", err);
+    return res.status(500).json({ error: "Could not save your email right now." });
   }
 });
 

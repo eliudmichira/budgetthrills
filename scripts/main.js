@@ -199,10 +199,24 @@
   /* ---- Newsletter ---- */
   const nlForm = document.querySelector('[data-newsletter]');
   if (nlForm) {
-    nlForm.addEventListener('submit', (e) => {
+    nlForm.addEventListener('submit', async (e) => {
       e.preventDefault();
+      const input = nlForm.querySelector('input[type="email"]');
+      const btn = nlForm.querySelector('button');
       const out = nlForm.querySelector('[data-nl-out]') || document.querySelector('[data-nl-out]');
-      if (out) out.textContent = "You're in. Check your inbox for the drop.";
+      const email = (input && input.value || '').trim();
+      if (!email) return;
+      if (btn) { btn.disabled = true; btn.textContent = 'Joining…'; }
+      try {
+        const res = await fetch('/api/subscribe', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email }) });
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok) throw new Error(data.error || 'Could not save your email right now.');
+        if (out) { out.textContent = "You're on the list. New finds land in your inbox first."; out.classList.remove('text-orange'); }
+        if (input) input.value = '';
+      } catch (err) {
+        if (out) { out.textContent = err.message; out.classList.add('text-orange'); }
+      }
+      if (btn) { btn.disabled = false; btn.textContent = 'Join →'; }
     });
   }
 
