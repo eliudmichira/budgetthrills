@@ -86,7 +86,7 @@
     const list = cat.filter(p => p.images && p.images[0]);
     if (window.BT_CATALOG_LIVE) list.sort((a, b) => (b.featured === true) - (a.featured === true) || (b.firstSeenAt || 0) - (a.firstSeenAt || 0));
     return list.slice(0, 8).map(p => ({
-      pdpId: p.id, title: p.name, desc: p.desc || '', price: p.price, wasPrice: p.originalPrice || null,
+      pdpId: p.id, title: p.name, desc: p.desc || '', price: p.price, wasPrice: p.originalPrice || null, featured: !!p.featured,
       image: p.images[0], tag: [p.category, p.tag].filter(Boolean).join(' · '), addedAt: p.firstSeenAt || 0
     }));
   }
@@ -109,14 +109,14 @@
       if (ctaLink) ctaLink.href = url;
       const img = $('drop-img'); if (img) { img.src = item.image; img.alt = item.title; }
       const tag = $('drop-tag'); if (tag) tag.textContent = item.tag || 'New arrival';
-      const shortTitle = (t) => { t = String(t || '').replace(/[<>]/g, ''); if (t.length <= 42) return t; const cut = t.slice(0, 42); return cut.slice(0, Math.max(20, cut.lastIndexOf(' '))).replace(/[\s,·-]+$/, ''); };
+      const shortTitle = (t) => { t = String(t || '').replace(/[<>]/g, '').replace(/\s*\([^)]*\)\s*/g, ' ').replace(/\s+/g, ' ').trim(); if (t.length > 42) { const cut = t.slice(0, 42); t = cut.slice(0, Math.max(20, cut.lastIndexOf(' '))); } return t.replace(/\s*\([^)]*$/, '').replace(/[\s,·\-–—:;/]+$/, ''); };
       const title = $('drop-title'); if (title) { title.innerHTML = `${shortTitle(item.title)}<span class="text-lime">.</span>`; title.title = item.title; }
       const desc = $('drop-desc'); if (desc) desc.textContent = (item.desc || '').slice(0, 140);
       const was = $('drop-was');
       if (was) { if (item.wasPrice && item.wasPrice > item.price) { was.textContent = `Listed at $${Number(item.wasPrice).toFixed(2)}`; was.classList.remove('hidden'); } else { was.classList.add('hidden'); } }
       const price = $('drop-price'); if (price) price.innerHTML = money(item.price);
       const indicator = $('drop-step-indicator'); if (indicator) indicator.textContent = `${index + 1} of ${pool.length}`;
-      const eyebrow = $('drop-eyebrow'); if (eyebrow) eyebrow.textContent = item.addedAt ? `Added ${rel(item.addedAt)}` : 'New this week';
+      const eyebrow = $('drop-eyebrow'); if (eyebrow) { const ageDays = item.addedAt ? (Date.now() - item.addedAt) / 864e5 : 99; eyebrow.textContent = ageDays <= 7 ? `Added ${rel(item.addedAt)}` : (item.featured ? 'Featured' : 'Top pick'); }
     };
     if (isTransition && mediaLink) {
       mediaLink.classList.add('opacity-30', 'scale-[0.98]');

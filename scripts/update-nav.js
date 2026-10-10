@@ -9,9 +9,9 @@ function getHeaderHtml(active = '') {
       <a href="/" class="flex items-center">
         <img loading="lazy" src="/brand/logo-dark.svg" alt="BudgetThrills" class="h-7 w-auto">
       </a>
-      <nav class="hidden md:flex items-center gap-10 text-[13px] font-medium">
+      <nav class="hidden md:flex items-center gap-10 text-[13px] font-medium" data-catalog-nav>
         <a href="/gaming.html" class="${active === 'gaming' ? 'text-lime font-semibold' : 'hover:text-lime transition'}">Gaming</a>
-        <a href="/collection.html" class="${active === 'drip' ? 'text-lime font-semibold' : 'hover:text-lime transition'}">Drip</a>
+        <a href="/collection.html" class="${active === 'drip' ? 'text-lime font-semibold' : 'hover:text-lime transition'}">Sneakers</a>
         <a href="/phones.html" class="${active === 'phones' ? 'text-lime font-semibold' : 'hover:text-lime transition'}">Phones</a>
         <a href="/tech.html" class="${active === 'tech' ? 'text-lime font-semibold' : 'hover:text-lime transition'}">Tech</a>
       </nav>
@@ -40,7 +40,7 @@ function getHeaderHtml(active = '') {
     <nav data-nav-menu class="hidden md:hidden hairline-t">
       <div class="px-6 py-4 flex flex-col gap-4 text-sm">
         <a href="/gaming.html" class="${active === 'gaming' ? 'text-lime font-semibold' : ''}">Gaming</a>
-        <a href="/collection.html" class="${active === 'drip' ? 'text-lime font-semibold' : ''}">Drip</a>
+        <a href="/collection.html" class="${active === 'drip' ? 'text-lime font-semibold' : ''}">Sneakers</a>
         <a href="/phones.html" class="${active === 'phones' ? 'text-lime font-semibold' : ''}">Phones</a>
         <a href="/tech.html" class="${active === 'tech' ? 'text-lime font-semibold' : ''}">Tech</a>
       </div>
@@ -52,7 +52,7 @@ function getFooterShopHtml(active = '') {
   return `        <div class="eyebrow mb-5">Shop</div>
         <ul class="space-y-3 text-sm">
           <li><a href="/gaming.html" class="${active === 'gaming' ? 'text-lime' : 'hover:text-lime transition'}">Gaming</a></li>
-          <li><a href="/collection.html" class="${active === 'drip' ? 'text-lime' : 'hover:text-lime transition'}">Drip</a></li>
+          <li><a href="/collection.html" class="${active === 'drip' ? 'text-lime' : 'hover:text-lime transition'}">Sneakers</a></li>
           <li><a href="/phones.html" class="${active === 'phones' ? 'text-lime' : 'hover:text-lime transition'}">Phones</a></li>
           <li><a href="/tech.html" class="${active === 'tech' ? 'text-lime' : 'hover:text-lime transition'}">Tech</a></li>
         </ul>`;

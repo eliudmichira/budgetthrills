@@ -42,10 +42,10 @@ const DEFAULT_SETTINGS = {
   categories: [
     { name: "Tech",        weight: 0.20, url: "/tech.html",        keywords: ["mechanical keyboard", "wireless gaming mouse", "usb-c hub", "portable ssd 1tb", "webcam 4k"] },
     { name: "Accessories", weight: 0.15, url: "/accessories.html", keywords: ["seiko automatic watch", "anker power bank", "leather wallet rfid", "ray-ban sunglasses", "belkin charger"] },
-    { name: "Tools",       weight: 0.15, url: "/trending.html",    keywords: ["dewalt 20v tool only", "milwaukee m18 tool only", "makita 18v tool only", "dewalt battery 5ah"] },
-    { name: "Home",        weight: 0.10, url: "/trending.html",    keywords: ["ninja air fryer", "dyson v8", "vitamix blender", "kitchenaid hand mixer", "instant pot"] },
-    { name: "Audio",       weight: 0.10, url: "/trending.html",    keywords: ["focusrite scarlett", "shure sm58", "audio-technica turntable", "jbl flip 6", "sony wh-1000xm4"] },
-    { name: "Toys",        weight: 0.10, url: "/trending.html",    keywords: ["lego retired set", "hot wheels premium", "funko pop exclusive", "nerf elite"] },
+    { name: "Tools",       weight: 0.15, url: "/category.html?c=Tools", keywords: ["dewalt 20v tool only", "milwaukee m18 tool only", "makita 18v tool only", "dewalt battery 5ah"] },
+    { name: "Home",        weight: 0.10, url: "/category.html?c=Home", keywords: ["ninja air fryer", "dyson v8", "vitamix blender", "kitchenaid hand mixer", "instant pot"] },
+    { name: "Audio",       weight: 0.10, url: "/category.html?c=Audio", keywords: ["focusrite scarlett", "shure sm58", "audio-technica turntable", "jbl flip 6", "sony wh-1000xm4"] },
+    { name: "Toys",        weight: 0.10, url: "/category.html?c=Toys", keywords: ["lego retired set", "hot wheels premium", "funko pop exclusive", "nerf elite"] },
     { name: "Gaming",      weight: 0.10, url: "/gaming.html",      keywords: ["xbox elite controller series 2", "dualsense edge", "nintendo switch pro controller", "logitech g pro"] },
     { name: "Sneakers",    weight: 0.05, url: "/collection.html",  keywords: ["nike air max new with box", "adidas samba new with box", "new balance 574 new"] },
     { name: "Phones",      weight: 0.05, url: "/phones.html",      keywords: ["iphone 13 unlocked refurbished", "pixel 7 unlocked refurbished"] }
@@ -136,7 +136,7 @@ function shippingCost(item) {
  * Returns { ok, reasons[], score, landed, sale } for a search summary.
  * Rejections are hard rules; score orders the survivors.
  */
-function evaluate(item, settings, category) {
+function evaluate(item, settings, category, keyword) {
   const reasons = [];
   const price = Number(item.price?.value);
   const currency = item.price?.currency;
@@ -164,6 +164,7 @@ function evaluate(item, settings, category) {
 
   // Titles that signal risk or unsellable listings.
   if (/\b(lot of|bulk|parts only|for parts|read description|as is|broken|cracked|locked|bad esn|blacklisted|replica|read!!)\b/i.test(item.title || "")) reasons.push("title flag");
+  if (keyword) titleProblems(item.title, keyword).forEach((p) => reasons.push("title:" + p));
 
   let score = 0;
   if (item.topRatedBuyingExperience) score += 30;
@@ -193,22 +194,96 @@ function stripHtml(html) {
     .replace(/<br\s*\/?>/gi, " ").replace(/<[^>]+>/g, " ").replace(/&nbsp;/g, " ").replace(/&amp;/g, "&")
     .replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/\s+/g, " ").trim();
 }
-function cleanTitle(t) {
-  return String(t || "").replace(/\s+/g, " ").replace(/[★⭐🔥✨]+/g, "").trim();
+// ---------------------------------- titles ----------------------------------
+// eBay titles are keyword soup. Customers should see a product name, and the sync should
+// refuse clones, accessories and parts that match a brand search without being the product.
+const NOISE_PHRASES = /\b(brand new|new in box|new sealed|factory sealed|sealed|new with tags?|new without tags?|nwt|nwot|nib|bnib|in hand|ships? (fast|free|today|same day)|same day ship\w*|free ship\w*|fast ship\w*|us seller|100% (authentic|genuine)|authentic|genuine|rare|htf|hard to find|retired|discontinued|limited|read|look|wow|hot|sale|deal|must see|l@@k|new)\b/gi;
+const PAREN_NOISE = /\b(tool[- ]only|bare tool|new|sealed|retired|free|fast|ship\w*|read|no box|with box|w\/ ?box|box|used|refurb\w*|open box|oem|genuine|authentic|rare|htf|nib|nwt|lot|in hand|20(2[4-9]))\b/i;
+const ACRONYMS = new Set(["usb","ssd","hdd","rgb","led","oled","lcd","qled","hdmi","nvme","ram","gpu","cpu","tv","xl","xxl","uhd","hdr","amd","ati","nfc","gps","lte","esim","bt","pc","ps4","ps5","xbox","vr","ar","ai","dj","usa","uk","eu","abs","fm","am","dvd","cd","ssl","atx","itx","sfx","ttl","iso","oem","mtb","bmx","suv","atv","utv","rv","ac","dc","ev","ii","iii","iv","vi","vii","mk","mkii","se","pro","max","mini","air","plus","ultra","fuel","m12","m18","v20","v8","v10","v11","v12","v15","k2","k6","k8","g2","g3","g4","g5","x","xt","xr","xs","rtx","gtx","rx","ryzen"]);
+const BRAND_CASE = { dewalt: "DeWalt", lego: "LEGO", jbl: "JBL", iphone: "iPhone", ipad: "iPad", imac: "iMac", macbook: "MacBook", airpods: "AirPods", playstation: "PlayStation", dualsense: "DualSense", kitchenaid: "KitchenAid", "ray-ban": "Ray-Ban", rayban: "Ray-Ban", gopro: "GoPro", steelseries: "SteelSeries", hyperx: "HyperX", vitamix: "Vitamix", nerf: "Nerf", funko: "Funko", yeti: "YETI", ryobi: "RYOBI", makita: "Makita", milwaukee: "Milwaukee", dyson: "Dyson", ninja: "Ninja", seiko: "Seiko", casio: "Casio", sony: "Sony", bose: "Bose", nike: "Nike", adidas: "adidas", apple: "Apple", samsung: "Samsung", google: "Google", logitech: "Logitech", razer: "Razer", corsair: "Corsair", keychron: "Keychron", anker: "Anker", belkin: "Belkin", shure: "Shure", focusrite: "Focusrite", oakley: "Oakley", garmin: "Garmin", fitbit: "Fitbit", xbox: "Xbox", nintendo: "Nintendo", lenovo: "Lenovo", asus: "ASUS", msi: "MSI", hp: "HP", dell: "Dell", acer: "Acer" };
+
+function cleanTitleInfo(raw) {
+  let t = String(raw || "").replace(/[™®©]/g, "").replace(/[★⭐🔥✨💥🎁❤️✅🆕]+/g, " ").replace(/\s+/g, " ").trim();
+  const toolOnly = /\btool[- ]only\b|\bbare[- ]tool\b|\(no battery\)|\bno battery\b/i.test(t);
+  // parenthetical / bracketed noise
+  t = t.replace(/[\(\[][^\)\]]*[\)\]]/g, (g) => (PAREN_NOISE.test(g) ? " " : g));
+  t = t.replace(/\btool[- ]only\b|\bbare[- ]tool\b|\bno battery( or charger)?( included)?\b/gi, " ");
+  t = t.replace(/\*+[^*]+\*+/g, " ").replace(/!{2,}/g, " ").replace(/\bw\/\b/gi, "with ");
+  t = t.replace(NOISE_PHRASES, " ");
+  // separators and leftovers
+  t = t.replace(/\s*[|•·]\s*/g, " - ").replace(/\s*-\s*-\s*/g, " - ").replace(/,\s*,/g, ",").replace(/\s+/g, " ").trim();
+  t = t.replace(/^[\s\-–—,:;/]+|[\s\-–—,:;/]+$/g, "").replace(/\(\s*\)|\[\s*\]/g, "").replace(/\s+/g, " ").trim();
+  t = t.replace(/\s+(20(2[4-9]))$/, "");
+  // casing: shouting words become Title Case unless they are known acronyms or brand spellings
+  t = t.split(" ").map((w) => {
+    const bare = w.replace(/[^a-z0-9\-]/gi, "").toLowerCase();
+    if (BRAND_CASE[bare]) return w.replace(new RegExp(bare, "i"), BRAND_CASE[bare]);
+    if (/^[A-Z][A-Z0-9\-]{3,}$/.test(w) && !/\d/.test(w) && !ACRONYMS.has(bare)) return w[0] + w.slice(1).toLowerCase();
+    if (/^[A-Z]{2,3}$/.test(w) && !ACRONYMS.has(bare) && bare.length === 3 && !/^(max|pro|air|new|the|and|for|all|set|kit|usb|led)$/.test(bare)) return w;
+    return w;
+  }).join(" ");
+  // length: cut at a word boundary, never leaving an open bracket
+  if (t.length > 80) { t = t.slice(0, 80); t = t.slice(0, Math.max(40, t.lastIndexOf(" "))); }
+  t = t.replace(/\s*\([^)]*$/, "").replace(/[\s\-–—,:;/]+$/g, "").trim();
+  return { name: t || String(raw || "Item").slice(0, 80), toolOnly };
+}
+function cleanTitle(t) { return cleanTitleInfo(t).name; }
+
+const ACCESSORY_WORDS = ["case","cases","cover","covers","skin","skins","stand","mount","holder","bracket","strap","band","cable","cord","adapter","charger","battery","batteries","protector","sleeve","pouch","bag","filter","filters","blade","blades","bit","bits","replacement","spare","parts","decal","decals","sticker","stickers","grip","grips","hook","clip","tray","shelf","lanyard","tether","wrap","pad","pads","insert","inserts","insole","insoles","laces","manual","box only","empty box","remote only","controller only","cap","caps","keycap","keycaps","dock","cradle","film","screen protector","lens cap","hood"];
+const KEYWORD_STOP = new Set(["tool","only","new","retired","set","sets","with","box","unlocked","refurbished","renewed","bundle","kit","edition","series","the","a","an","of","for","and","in","to","exclusive","premium","promo"]);
+const BRAND_ALIASES = { milwaukee: ["milwaukee"], dewalt: ["dewalt","de walt"], makita: ["makita"], ryobi: ["ryobi"], dyson: ["dyson"], ninja: ["ninja"], vitamix: ["vitamix"], kitchenaid: ["kitchenaid","kitchen aid"], "instant pot": ["instant pot","instapot"], focusrite: ["focusrite"], shure: ["shure"], "audio-technica": ["audio-technica","audio technica"], jbl: ["jbl"], sony: ["sony"], bose: ["bose"], nintendo: ["nintendo"], logitech: ["logitech"], xbox: ["xbox","microsoft"], playstation: ["playstation","sony"], dualsense: ["dualsense","sony","playstation"], nike: ["nike","jordan"], adidas: ["adidas"], "new balance": ["new balance"], iphone: ["apple","iphone"], ipad: ["apple","ipad"], macbook: ["apple","macbook"], airpods: ["apple","airpods"], pixel: ["google","pixel"], samsung: ["samsung","galaxy"], seiko: ["seiko"], casio: ["casio","g-shock"], citizen: ["citizen"], anker: ["anker"], "ray-ban": ["ray-ban","rayban","ray ban"], oakley: ["oakley"], belkin: ["belkin"], lego: ["lego"], "hot wheels": ["hot wheels","hotwheels"], funko: ["funko"], nerf: ["nerf"], keychron: ["keychron"], razer: ["razer"], corsair: ["corsair"], gopro: ["gopro"], garmin: ["garmin"], yeti: ["yeti"], stanley: ["stanley"] };
+function brandOfKeyword(kw) { const k = String(kw || "").toLowerCase(); return Object.keys(BRAND_ALIASES).sort((a, b) => b.length - a.length).find((b) => k.includes(b)) || null; }
+
+/**
+ * Reasons a listing is not the product the keyword asked for: clones ("For Milwaukee…"),
+ * accessories and parts ("…Stand for Focusrite", "…Battery for Dyson"), unbranded items,
+ * or titles that don't contain the keyword at all. Empty array = fine.
+ */
+function titleProblems(rawTitle, keyword, brandAspect) {
+  const problems = [];
+  const t = " " + String(rawTitle || "").toLowerCase().replace(/[^a-z0-9+&/\- ]/g, " ").replace(/\s+/g, " ") + " ";
+  if (/^\s(for|fits?|fit for|compatible|compatibl|replacement|replaces|aftermarket|generic|universal|upgrade for)\b/.test(t)) problems.push("clone or accessory ('for/fits/compatible' title)");
+  if (/\b(compatible with|fits? (for|most|all|the)|replacement for|aftermarket|generic|unbranded|no brand|3rd party|third[- ]party|for use with|works with|designed for|suitable for)\b/.test(t)) problems.push("compatible-with wording");
+  // the part of the title before any "with / includes / +" describes the product; after it, the extras
+  const core = t.split(/\b(with|includes?|incl|plus)\b|\s[+&]\s/)[0];
+  const kw = String(keyword || "").toLowerCase();
+  // Only flag accessory words when the search itself is for a main product; a search for
+  // "anker power bank" or "usb-c hub" is an accessory category and gets a pass here.
+  const keywordIsAccessory = /\b(power bank|charger|charging|hub|cable|case|stand|mount|adapter|battery|batteries|protector|strap|band|keycaps?|dock|holder|wallet|bag|sleeve|grip|pad|mat)\b/.test(kw);
+  const accessory = (!kw || keywordIsAccessory) ? null : ACCESSORY_WORDS.find((w) => new RegExp("\\b" + w.replace(/ /g, "\\s") + "\\b").test(core));
+  if (accessory) problems.push(`accessory/part (${accessory})`);
+  if (kw) {
+    const tokens = kw.split(/[^a-z0-9\-]+/).filter((w) => w && !KEYWORD_STOP.has(w));
+    const missing = tokens.filter((w) => !t.includes(w.replace(/-/g, " ")) && !t.includes(w.replace(/-/g, "")) && !t.includes(w));
+    if (missing.length) problems.push(`keyword mismatch (${missing.join(", ")})`);
+    const brand = brandOfKeyword(kw);
+    if (brand) {
+      const aliases = BRAND_ALIASES[brand];
+      if (!aliases.some((a) => t.includes(" " + a + " ") || t.includes(" " + a))) problems.push(`brand ${brand} not in title`);
+      const ba = String(brandAspect || "").toLowerCase().trim();
+      if (ba && !/^(does not apply|n\/a|na|none|-)$/.test(ba)) {
+        if (/unbranded|generic|universal|no brand|oem replacement/.test(ba)) problems.push("unbranded");
+        else if (!aliases.some((a) => ba.includes(a)) && !aliases.some((a) => a.includes(ba))) problems.push(`brand aspect "${brandAspect}" is not ${brand}`);
+      }
+    }
+  } else if (/\b(unbranded|generic)\b/.test(t)) problems.push("unbranded");
+  return problems;
 }
 
-function buildProduct(summary, detail, evalResult, category, settings) {
+function buildProduct(summary, detail, evalResult, category, settings, keyword) {
   const images = [];
   const push = (u) => { if (u && /^https?:\/\//.test(u) && !images.includes(u)) images.push(u.replace(/s-l\d+\.(jpg|webp)/, "s-l1600.$1")); };
   push(detail.image?.imageUrl || summary.image?.imageUrl);
   (detail.additionalImages || summary.additionalImages || []).forEach((i) => push(i.imageUrl));
-  const title = cleanTitle(detail.title || summary.title);
+  const rawTitle = String(detail.title || summary.title || "");
+  const { name: title, toolOnly } = cleanTitleInfo(rawTitle);
   const brand = detail.brand || (detail.localizedAspects || []).find((a) => a.name === "Brand")?.value || "";
   const msrp = Number(detail.marketingPrice?.originalPrice?.value || summary.marketingPrice?.originalPrice?.value) || 0;
   const originalPrice = msrp > evalResult.sale ? Math.round(msrp * 100) / 100 : null;
   const returnsDays = Number(detail.returnTerms?.returnPeriod?.value) || 0;
   const condition = CONDITIONS[Number(detail.conditionId || summary.conditionId)] || detail.condition || summary.condition || "New";
   const desc = stripHtml(detail.shortDescription || detail.description).slice(0, 600) || `${title}. ${condition} condition, ships from a top-rated US seller.`;
+  const toolNote = toolOnly ? "Tool only: battery and charger are not included. " : "";
   const id = slugify(title) + "-" + shortHash(summary.itemId);
   const variants = (detail.localizedAspects || []).filter((a) => /size|storage|capacity/i.test(a.name)).map((a) => a.value).filter(Boolean);
   const color = (detail.localizedAspects || []).find((a) => /colou?r/i.test(a.name))?.value;
@@ -217,7 +292,8 @@ function buildProduct(summary, detail, evalResult, category, settings) {
     id, name: title, category: category.name, categoryUrl: category.url || "/trending.html",
     tag: condition, price: evalResult.sale, originalPrice,
     discount: originalPrice ? "Save " + Math.round((1 - evalResult.sale / originalPrice) * 100) + "%" : null,
-    desc, details: `${condition}. Ships from the US within 1 business day. ${returnsDays ? returnsDays + "-day returns accepted." : ""}`.trim(),
+    desc, details: `${toolNote}${condition}. Ships from the US within 1 business day. ${returnsDays ? returnsDays + "-day returns accepted." : ""}`.trim(),
+    rawTitle, sourceKeyword: keyword || null, toolOnly,
     brand, colors: [{ name: color || "Standard", hex: "#1C1C1C", active: true }], sizes: variants.length ? variants.slice(0, 6) : ["Standard"],
     images: images.slice(0, 8),
     source: "ebay", ebayItemId: summary.itemId, ebayUrl: detail.itemWebUrl || summary.itemWebUrl || "",
@@ -232,6 +308,9 @@ function buildProduct(summary, detail, evalResult, category, settings) {
 
 /* ---------------------------------- sync ---------------------------------- */
 
+const CATEGORY_PAGES = { Gaming: "/gaming.html", Phones: "/phones.html", Tech: "/tech.html", Accessories: "/accessories.html", Sneakers: "/collection.html" };
+const categoryPageFor = (name) => CATEGORY_PAGES[name] || ("/category.html?c=" + encodeURIComponent(name));
+
 async function loadSettings(db) {
   const snap = await db.collection("settings").doc("sync").get();
   const s = { ...DEFAULT_SETTINGS, ...(snap.exists ? snap.data() : {}) };
@@ -240,6 +319,7 @@ async function loadSettings(db) {
   // Weights are a mix, not absolutes: normalise so 90% or 120% totals still spread maxProducts fully.
   const totalWeight = s.categories.reduce((n, c) => n + (Number(c.weight) || 0), 0) || 1;
   s.categories = s.categories.map((c) => ({ ...c, weight: (Number(c.weight) || 0) / totalWeight }));
+  s.categories = s.categories.map((c) => ({ ...c, url: (!c.url || c.url === "/trending.html") ? categoryPageFor(c.name) : c.url }));
   s.minFreshPerCategory = Math.max(0, Number(s.minFreshPerCategory ?? DEFAULT_SETTINGS.minFreshPerCategory) || 0);
   s.newPerCategoryPerRun = Math.max(s.minFreshPerCategory, Number(s.newPerCategoryPerRun) || 0);
   return s;
@@ -249,7 +329,7 @@ async function loadSettings(db) {
 async function refreshExisting(db, token, settings, log) {
   const snap = await db.collection("products").where("source", "==", "ebay").get();
   // Listings the admin blocked or the sync rotated out stay retired; only sold-out/ended ones are rechecked.
-  const docs = snap.docs.filter((d) => d.data().ebayItemId && !["rotated out", "blocked by admin"].includes(d.data().retiredReason));
+  const docs = snap.docs.filter((d) => d.data().ebayItemId && !["rotated out", "blocked by admin"].includes(d.data().retiredReason) && !/^screened out/.test(d.data().retiredReason || ""));
   const counts = { checked: docs.length, repriced: 0, retired: 0, restored: 0, calls: 0 };
   for (let i = 0; i < docs.length; i += 20) {
     const batch = docs.slice(i, i + 20);
@@ -323,7 +403,7 @@ async function discover(db, token, settings, existingIds, log, deps = {}) {
       for (const it of json.itemSummaries || []) {
         counts.considered++;
         if (existingIds.has(it.itemId) || blocked.has(it.itemId)) continue;
-        const ev = evaluate(it, settings, cat);
+        const ev = evaluate(it, settings, cat, kw);
         if (!ev.ok) { ev.reasons.forEach((r) => { const k = r.split(":")[0]; counts.rejected[k] = (counts.rejected[k] || 0) + 1; }); continue; }
         candidates.push({ it, ev, kw });
       }
@@ -342,7 +422,10 @@ async function discover(db, token, settings, existingIds, log, deps = {}) {
       if (settings.requireReturns && detail.returnTerms && detail.returnTerms.returnsAccepted === false) continue;
       const avail = detail.estimatedAvailabilities?.[0];
       if (avail && avail.estimatedAvailabilityStatus === "OUT_OF_STOCK") continue;
-      const product = buildProduct(c.it, detail, c.ev, cat, settings);
+      const detailBrand = detail.brand || (detail.localizedAspects || []).find((x) => x.name === "Brand")?.value || "";
+      const late = titleProblems(detail.title || c.it.title, c.kw, detailBrand);
+      if (late.length) { late.forEach((r) => { counts.rejected["title"] = (counts.rejected["title"] || 0) + 1; }); continue; }
+      const product = buildProduct(c.it, detail, c.ev, cat, settings, c.kw);
       await db.collection("products").doc(product.id).set(product, { merge: false });
       existingIds.add(c.it.itemId); seenTitles.add(key);
       added++; counts.added++; counts.byCategory[cat.name].added++;
@@ -367,6 +450,35 @@ async function discover(db, token, settings, existingIds, log, deps = {}) {
   return counts;
 }
 
+/** Re-apply the title rules to listings already in the catalog: retire clones/accessories, tidy names. */
+async function rescreen(db, log) {
+  const snap = await db.collection("products").where("source", "==", "ebay").get();
+  const counts = { checked: 0, retired: 0, renamed: 0 };
+  let wb = db.batch(), n = 0;
+  const flush = async () => { if (n) { await wb.commit(); wb = db.batch(); n = 0; } };
+  for (const d of snap.docs) {
+    const p = d.data();
+    if (p.active === false) continue;
+    counts.checked++;
+    const raw = p.rawTitle || p.name || "";
+    const problems = titleProblems(raw, p.sourceKeyword || "", p.brand || "");
+    if (problems.length) {
+      wb.set(d.ref, { active: false, retiredReason: "screened out: " + problems[0], retiredAt: FieldValue.serverTimestamp(), updatedAt: FieldValue.serverTimestamp() }, { merge: true });
+      counts.retired++; n++; log(`screened out ${p.id}: ${problems[0]}`);
+    } else {
+      const { name, toolOnly } = cleanTitleInfo(raw);
+      if (name && name !== p.name) {
+        const patch = { name, rawTitle: raw, toolOnly, updatedAt: FieldValue.serverTimestamp() };
+        if (toolOnly && !/tool only/i.test(p.details || "")) patch.details = "Tool only: battery and charger are not included. " + (p.details || "");
+        wb.set(d.ref, patch, { merge: true }); counts.renamed++; n++;
+      }
+    }
+    if (n >= 400) await flush();
+  }
+  await flush();
+  return counts;
+}
+
 /** Compile the storefront document from active, unhidden products. */
 async function publishLiveCatalog(db = getFirestore("default")) {
   const snap = await db.collection("products").where("active", "==", true).get();
@@ -374,7 +486,7 @@ async function publishLiveCatalog(db = getFirestore("default")) {
   const products = snap.docs.map((d) => d.data()).filter((p) => !p.hidden && Array.isArray(p.images) && p.images.length)
     .sort((a, b) => (b.featured === true) - (a.featured === true) || toMs(b.firstSeenAt) - toMs(a.firstSeenAt))
     .map((p) => ({
-      id: p.id, name: p.name, category: p.category, categoryUrl: p.categoryUrl || "/trending.html", tag: p.tag || "New",
+      id: p.id, name: p.name, category: p.category, categoryUrl: (!p.categoryUrl || p.categoryUrl === "/trending.html") ? categoryPageFor(p.category) : p.categoryUrl, tag: p.tag || "New",
       price: Number(p.priceOverride) > 0 ? Number(p.priceOverride) : Number(p.price), originalPrice: p.originalPrice || null, discount: p.discount || null,
       desc: p.desc || "", details: p.details || "", brand: p.brand || "", colors: p.colors || [{ name: "Standard", hex: "#1C1C1C", active: true }],
       sizes: p.sizes || ["Standard"], images: (p.images || []).slice(0, 6), featured: !!p.featured, source: p.source || "manual",
@@ -400,6 +512,7 @@ async function runSync({ trigger = "schedule" } = {}) {
       const existing = new Set();
       (await db.collection("products").where("source", "==", "ebay").select("ebayItemId").get()).forEach((d) => existing.add(d.data().ebayItemId));
       summary.refresh = await refreshExisting(db, token, settings, log);
+      summary.rescreen = await rescreen(db, log);
       summary.discover = await discover(db, token, settings, existing, log);
       summary.published = await publishLiveCatalog(db);
       summary.apiCalls = summary.refresh.calls + summary.discover.calls;
@@ -415,4 +528,4 @@ async function runSync({ trigger = "schedule" } = {}) {
   return summary;
 }
 
-module.exports = { runSync, publishLiveCatalog, discover, loadSettings, evaluate, priceFor, applyEnding, marginAt, DEFAULT_SETTINGS, CONDITIONS };
+module.exports = { runSync, publishLiveCatalog, discover, loadSettings, rescreen, evaluate, priceFor, applyEnding, marginAt, cleanTitle, cleanTitleInfo, titleProblems, DEFAULT_SETTINGS, CONDITIONS };

@@ -48,9 +48,9 @@
       <a href="/" class="flex items-center">
         <img loading="lazy" src="/brand/logo-dark.svg" alt="BudgetThrills" class="h-7 w-auto">
       </a>
-      <nav class="hidden md:flex items-center gap-10 text-[13px] font-medium">
+      <nav class="hidden md:flex items-center gap-10 text-[13px] font-medium" data-catalog-nav>
         <a href="/gaming.html" class="hover:text-lime transition">Gaming</a>
-        <a href="/collection.html" class="hover:text-lime transition">Drip</a>
+        <a href="/collection.html" class="hover:text-lime transition">Sneakers</a>
         <a href="/phones.html" class="hover:text-lime transition">Phones</a>
         <a href="/tech.html" class="hover:text-lime transition">Tech</a>
       </nav>
@@ -77,9 +77,9 @@
       </div>
     </div>
     <nav data-nav-menu class="hidden md:hidden hairline-t">
-      <div class="px-6 py-4 flex flex-col gap-4 text-sm">
+      <div class="px-6 py-4 flex flex-col gap-4 text-sm" data-catalog-nav-mobile>
         <a href="/gaming.html" class="">Gaming</a>
-        <a href="/collection.html" class="">Drip</a>
+        <a href="/collection.html" class="">Sneakers</a>
         <a href="/phones.html" class="">Phones</a>
         <a href="/tech.html" class="">Tech</a>
       </div>
@@ -159,7 +159,7 @@
         </a>
         <a href="/collection.html" class="group block py-12 md:py-16 md:px-8 md:border-r hairline">
           <div class="text-mute text-xs">02</div>
-          <div class="display text-[40px] sm:text-[54px] mt-3 group-hover:text-lime transition">Drip</div>
+          <div class="display text-[40px] sm:text-[54px] mt-3 group-hover:text-lime transition">Sneakers</div>
           <div class="text-mute text-sm mt-2">Sneakers &amp; Streetwear · 26 styles</div>
         </a>
         <a href="/phones.html" class="group block py-12 md:py-16 md:px-8 md:border-r hairline">
@@ -185,7 +185,7 @@
           <div class="eyebrow mb-4">Currently</div>
           <h2 class="display text-[52px] sm:text-[88px]">Trending<span class="text-lime">.</span></h2>
         </div>
-        <a href="/trending.html" class="link-mute text-[13px] tracking-wider uppercase font-medium hidden sm:inline">View all 95 →</a>
+        <a href="/trending.html" class="link-mute text-[13px] tracking-wider uppercase font-medium hidden sm:inline">View all <span data-catalog-count>95</span> →</a>
       </div>
 
       <div class="grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-10" data-reveal data-catalog-featured>
@@ -434,87 +434,6 @@
     </div>
   </section>
 
-  <!-- ============ 7. UGC ============ -->
-  <section class="hairline-t py-20 sm:py-32 lg:py-44">
-    <div class="max-w-7xl mx-auto px-6 lg:px-10">
-      <div class="flex items-end justify-between mb-16 gap-6" data-reveal>
-        <div>
-          <div class="eyebrow mb-4">#BudgetThrills</div>
-          <h2 class="display text-[52px] sm:text-[88px] leading-[0.9]">In the<br>wild<span class="text-lime">.</span></h2>
-        </div>
-        <a href="https://instagram.com/budgetthrills" class="link-mute text-[13px] tracking-wider uppercase font-medium hidden sm:inline">Tag us →</a>
-      </div>
-
-      <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6" data-reveal>
-
-        <!-- 1. Sneakers -->
-        <div class="group relative aspect-[3/4] sm:aspect-[4/5] rounded-lg overflow-hidden bg-bgElev border border-white/5">
-          <img src="https://i.ebayimg.com/images/g/Tf4AAeSwEChqcrXi/s-l1600.jpg" alt="Jordan 11 PE Chrome Sneakers" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
-          <div class="absolute top-3 left-3 flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-black/60 backdrop-blur-md text-[11px] font-medium text-white/90">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" class="text-lime"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
-            @marcus.fits
-          </div>
-          <a href="/pdp.html?id=nike-air-max-dn-men-s-running-" class="absolute inset-x-3 bottom-3 p-3 rounded-lg bg-black/85 backdrop-blur-md border border-white/10 flex items-center justify-between opacity-95 group-hover:opacity-100 transition">
-            <div>
-              <span class="text-[10px] tracking-[0.2em] uppercase font-bold text-lime block">Sneakers</span>
-              <span class="text-xs font-semibold text-white">Nike Air Max Dn · $50.00</span>
-            </div>
-            <span class="text-xs text-lime font-bold">Shop →</span>
-          </a>
-        </div>
-
-        <!-- 2. Phones -->
-        <div class="group relative aspect-[3/4] sm:aspect-[4/5] rounded-lg overflow-hidden bg-bgElev border border-white/5">
-          <img src="https://i.ebayimg.com/images/g/7lIAAOSwy4dkW9k4/s-l1600.jpg" alt="Apple iPhone 14 128GB Unlocked" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
-          <div class="absolute top-3 left-3 flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-black/60 backdrop-blur-md text-[11px] font-medium text-white/90">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" class="text-lime"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
-            @sarah.desk
-          </div>
-          <a href="/pdp.html?id=apple-iphone-14-128gb-unlocked" class="absolute inset-x-3 bottom-3 p-3 rounded-lg bg-black/85 backdrop-blur-md border border-white/10 flex items-center justify-between opacity-95 group-hover:opacity-100 transition">
-            <div>
-              <span class="text-[10px] tracking-[0.2em] uppercase font-bold text-lime block">Phones</span>
-              <span class="text-xs font-semibold text-white">iPhone 14 128GB · $288.95</span>
-            </div>
-            <span class="text-xs text-lime font-bold">Shop →</span>
-          </a>
-        </div>
-
-        <!-- 3. Audio & Tech -->
-        <div class="group relative aspect-[3/4] sm:aspect-[4/5] rounded-lg overflow-hidden bg-bgElev border border-white/5">
-          <img src="https://i.ebayimg.com/images/g/dtEAAeSwc8FqjH-N/s-l1600.jpg" alt="Sony WH-1000XM4 Wireless Headphones" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
-          <div class="absolute top-3 left-3 flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-black/60 backdrop-blur-md text-[11px] font-medium text-white/90">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" class="text-lime"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
-            @jordan.sound
-          </div>
-          <a href="/pdp.html?id=sony-wh-1000xm4-wireless-noise" class="absolute inset-x-3 bottom-3 p-3 rounded-lg bg-black/85 backdrop-blur-md border border-white/10 flex items-center justify-between opacity-95 group-hover:opacity-100 transition">
-            <div>
-              <span class="text-[10px] tracking-[0.2em] uppercase font-bold text-lime block">Tech</span>
-              <span class="text-xs font-semibold text-white">Sony WH-1000XM4 · $90.99</span>
-            </div>
-            <span class="text-xs text-lime font-bold">Shop →</span>
-          </a>
-        </div>
-
-        <!-- 4. Accessories & Watches -->
-        <div class="group relative aspect-[3/4] sm:aspect-[4/5] rounded-lg overflow-hidden bg-bgElev border border-white/5">
-          <img src="https://i.ebayimg.com/images/g/RyYAAeSweY5qheTe/s-l1600.jpg" alt="Seiko 5 Automatic Watch" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
-          <div class="absolute top-3 left-3 flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-black/60 backdrop-blur-md text-[11px] font-medium text-white/90">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" class="text-lime"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
-            @daily.curation
-          </div>
-          <a href="/pdp.html?id=seiko-5-automatic-silver-dial-" class="absolute inset-x-3 bottom-3 p-3 rounded-lg bg-black/85 backdrop-blur-md border border-white/10 flex items-center justify-between opacity-95 group-hover:opacity-100 transition">
-            <div>
-              <span class="text-[10px] tracking-[0.2em] uppercase font-bold text-lime block">Accessories</span>
-              <span class="text-xs font-semibold text-white">Seiko 5 Automatic · $198.19</span>
-            </div>
-            <span class="text-xs text-lime font-bold">Shop →</span>
-          </a>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
   <!-- ============ 8. NEWSLETTER ============ -->
   <section class="hairline-t py-32 sm:py-48">
     <div class="max-w-4xl mx-auto px-6 lg:px-10 text-center" data-reveal>
@@ -542,7 +461,7 @@
                                 <div class="eyebrow mb-5">Shop</div>
         <ul class="space-y-3 text-sm">
           <li><a href="/gaming.html" class="hover:text-lime transition">Gaming</a></li>
-          <li><a href="/collection.html" class="hover:text-lime transition">Drip</a></li>
+          <li><a href="/collection.html" class="hover:text-lime transition">Sneakers</a></li>
           <li><a href="/phones.html" class="hover:text-lime transition">Phones</a></li>
           <li><a href="/tech.html" class="hover:text-lime transition">Tech</a></li>
         </ul>
