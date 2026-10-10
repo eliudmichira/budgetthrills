@@ -31,6 +31,16 @@ const FROM_NAME      = process.env.EMAIL_FROM_NAME || process.env.SENDGRID_FROM_
 const SUPPORT_EMAIL  = process.env.SUPPORT_EMAIL || FROM_EMAIL;
 const MAIL_READY     = !!(EMAIL_SPEC && EMAIL_KEY && FROM_EMAIL);
 const mailFrom = (name) => ({ email: FROM_EMAIL, name: name || FROM_NAME });
+// Brevo transactional templates (editable at app.brevo.com -> Transactional -> Templates).
+// Defaults are the templates created for this account; override per kind with
+// BREVO_TEMPLATE_ORDER_CONFIRMATION / BREVO_TEMPLATE_ORDER_SHIPPED / BREVO_TEMPLATE_REPLY, or set to 0 to use inline HTML.
+const BREVO_TEMPLATES = {
+  "order-confirmation": Number(process.env.BREVO_TEMPLATE_ORDER_CONFIRMATION ?? 1),
+  "order-shipped":      Number(process.env.BREVO_TEMPLATE_ORDER_SHIPPED ?? 2),
+  "reply":              Number(process.env.BREVO_TEMPLATE_REPLY ?? 3)
+};
+const templateFor = (kind) => (EMAIL_PROVIDER === "brevo" && BREVO_TEMPLATES[kind] > 0) ? BREVO_TEMPLATES[kind] : null;
+const money = (n) => "$" + (Number(n) || 0).toFixed(2);
 const htmlEsc = (v) => String(v ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 function mailConfigProblems() {
   const p = [];
@@ -50,7 +60,9 @@ async function deliver(msg) {
   if (EMAIL_PROVIDER === "brevo") {
     url = "https://api.brevo.com/v3/smtp/email";
     headers = { "api-key": EMAIL_KEY, "content-type": "application/json", "accept": "application/json" };
-    body = { sender: { email: from.email, name: from.name }, to: to.map((email) => ({ email })), subject: msg.subject, htmlContent: html, ...(msg.text ? { textContent: msg.text } : {}), ...(replyTo ? { replyTo: { email: replyTo } } : {}) };
+    body = msg.templateId
+      ? { sender: { email: from.email, name: from.name }, to: to.map((email) => ({ email })), templateId: Number(msg.templateId), params: msg.params || {}, ...(replyTo ? { replyTo: { email: replyTo } } : {}) }
+      : { sender: { email: from.email, name: from.name }, to: to.map((email) => ({ email })), subject: msg.subject, htmlContent: html, ...(msg.text ? { textContent: msg.text } : {}), ...(replyTo ? { replyTo: { email: replyTo } } : {}) };
   } else if (EMAIL_PROVIDER === "resend") {
     url = "https://api.resend.com/emails";
     headers = { "Authorization": `Bearer ${EMAIL_KEY}`, "content-type": "application/json" };
@@ -78,7 +90,13 @@ async function sendMail(kind, msg) {
     throw new Error(entry.error);
   }
   try {
-    await deliver(msg);
+    try {
+      await deliver(msg);
+    } catch (err) {
+      // A deleted or inactive Brevo template must not block the email: fall back to the inline HTML.
+      if (msg.templateId && /template/i.test(err.message)) { console.warn(`Template ${msg.templateId} failed (${err.message}); sending inline HTML`); entry.note = "template fallback"; await deliver({ ...msg, templateId: undefined }); }
+      else throw err;
+    }
     await record();
   } catch (err) {
     entry.status = "failed"; entry.error = err.message;
@@ -172,6 +190,8 @@ exports.sendReplyEmail = onDocumentCreated(
       text: emailText,
       html: emailHtml,
       replyTo: SUPPORT_EMAIL,
+      templateId: templateFor("reply"),
+      params: { subject, name: original.name || "there", body: htmlEsc(reply.body).replace(/\n/g, "<br>"), topic: original.topic || "General question", orderNumber: original.orderNumber || "", originalMessage: String(original.message || "").substring(0, 160) }
     };
 
     try {
@@ -259,6 +279,13 @@ exports.onOrderPaid = onDocumentWritten(
       from: mailFrom(),
       replyTo: SUPPORT_EMAIL,
       subject: `Your order ${order.id || orderId} is confirmed \u2713`,
+      templateId: templateFor("order-confirmation"),
+      params: {
+        orderId: order.id || orderId, customerName: (order.customerName || "").split(" ")[0] || "",
+        items: items.map((it) => ({ name: it.name, qty: Number(it.qty) || 1, lineTotal: money((it.price || 0) * (it.qty || 1)) })),
+        subtotal: money(order.subtotal ?? total), discount: Number(order.discount) > 0 ? money(order.discount) : "", shipping: Number(order.shipping) > 0 ? money(order.shipping) : "Free",
+        total: money(order.total ?? total), address: order.address || "", trackUrl: `${PUBLIC_BASE_URL || "https://budgetthrills.web.app"}/track.html`
+      },
       html,
       text: `Order ${order.id || orderId} confirmed!\n\nTotal: $${total.toFixed(2)}\nShipping to: ${order.address || "\u2014"}\n\nTrack: https://budgetthrills.web.app/track.html\nHelp: support@budgetthrills.com`
     });
@@ -601,6 +628,9 @@ exports.onOrderFulfilment = onDocumentWritten({ document: "orders/{orderId}", da
         await sendMail("order-shipped", {
           to: after.email, from: mailFrom(), replyTo: SUPPORT_EMAIL,
           subject: `Your order ${after.id || orderId} has shipped`,
+          templateId: templateFor("order-shipped"),
+          params: { orderId: after.id || orderId, carrier, trackingNumber: tn, trackUrl, address: after.address || "", deliveryWindow: after.shippingMethod === "express" ? "2–4 business days" : "4–8 business days",
+            items: (after.items || []).map((it) => ({ name: it.name, qty: Number(it.qty) || 1 })) },
           html: `<div style="font-family:Inter,system-ui,sans-serif;max-width:560px;margin:0 auto;padding:32px 24px;background:#0A0A0A;color:#F2F2F2"><div style="color:#BFFF1A;font-size:22px;font-weight:900;margin-bottom:24px">BudgetThrills</div><h1 style="font-size:28px;margin:0 0 8px">On its way<span style="color:#BFFF1A">.</span></h1><p style="color:#A1A1AA">Order <strong style="color:#F2F2F2">${after.id || orderId}</strong> shipped with ${carrier}.</p><p style="margin:20px 0"><a href="${trackUrl}" style="background:#BFFF1A;color:#000;padding:12px 20px;border-radius:4px;text-decoration:none;font-weight:700">Track ${tn}</a></p><ul style="color:#D4D4D8;padding-left:18px">${items}</ul><p style="color:#6E6E6E;font-size:13px;margin-top:24px">Shipping to: ${after.address || ""}<br>Questions? Reply to this email.</p></div>`,
           text: `Order ${after.id || orderId} has shipped with ${carrier}. Tracking: ${tn}\n${trackUrl}`
         });
@@ -619,7 +649,7 @@ exports.emailTest = onRequest({ cors: true }, async (req, res) => {
   const admin = await requireAdmin(req);
   if (!admin) return res.status(403).json({ error: "Admin sign-in required." });
   const problems = mailConfigProblems();
-  const status = { configured: problems.length === 0, problems, provider: EMAIL_SPEC ? EMAIL_SPEC.label : EMAIL_PROVIDER, from: FROM_EMAIL || null, fromName: FROM_NAME, supportEmail: SUPPORT_EMAIL || null, adminEmail: process.env.ADMIN_EMAIL || null };
+  const status = { configured: problems.length === 0, problems, provider: EMAIL_SPEC ? EMAIL_SPEC.label : EMAIL_PROVIDER, from: FROM_EMAIL || null, fromName: FROM_NAME, supportEmail: SUPPORT_EMAIL || null, adminEmail: process.env.ADMIN_EMAIL || null, templates: EMAIL_PROVIDER === "brevo" ? BREVO_TEMPLATES : null, listId: EMAIL_PROVIDER === "brevo" ? BREVO_LIST_ID : null };
   if (req.body?.check) return res.json(status);
   const to = admin.email;
   if (!to) return res.status(400).json({ ...status, error: "Your admin account has no email address." });
@@ -629,6 +659,32 @@ exports.emailTest = onRequest({ cors: true }, async (req, res) => {
     return res.json({ ...status, ok: true, sentTo: to });
   } catch (err) {
     return res.status(502).json({ ...status, ok: false, error: err.message });
+  }
+});
+
+// ─── Newsletter signup (Brevo contact list) ───────────────────────────────────
+const BREVO_LIST_ID = Number(process.env.BREVO_LIST_ID || 2);
+/** POST /api/subscribe {email} — adds the address to the Brevo list used for drop announcements. */
+exports.subscribe = onRequest({ cors: true }, async (req, res) => {
+  if (req.method !== "POST") return res.status(405).json({ error: "Method not allowed." });
+  const email = String(req.body?.email || "").trim().toLowerCase();
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || email.length > 254) return res.status(400).json({ error: "Enter a valid email address." });
+  const key = process.env.BREVO_API_KEY;
+  if (!key) return res.status(503).json({ error: "Signups are not configured yet (BREVO_API_KEY missing)." });
+  try {
+    const r = await fetch("https://api.brevo.com/v3/contacts", {
+      method: "POST", headers: { "api-key": key, "content-type": "application/json", "accept": "application/json" },
+      body: JSON.stringify({ email, listIds: [BREVO_LIST_ID], updateEnabled: true })
+    });
+    if (!r.ok && r.status !== 204) {
+      const raw = await r.text().catch(() => "");
+      let detail = raw; try { detail = JSON.parse(raw).message || raw; } catch (e) { /* text */ }
+      if (!/already exist/i.test(detail)) { console.warn("Brevo subscribe failed:", r.status, detail); return res.status(502).json({ error: "Could not save your email right now. Please try again." }); }
+    }
+    return res.json({ ok: true });
+  } catch (err) {
+    console.error("subscribe error:", err);
+    return res.status(500).json({ error: "Could not save your email right now." });
   }
 });
 

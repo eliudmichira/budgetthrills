@@ -1466,7 +1466,7 @@ async function checkEmailConfig() {
   try {
     const r = await adminFetch('/api/email-test', { check: true });
     state.innerHTML = r.configured ? '<span class="st good">Configured</span>' : '<span class="st warn">Not configured</span>';
-    box.innerHTML = r.configured ? `${esc(r.provider || '')} · sending as <b style="color:var(--a-text)">${esc(r.fromName)} &lt;${esc(r.from)}&gt;</b>${r.supportEmail && r.supportEmail !== r.from ? ` · replies to ${esc(r.supportEmail)}` : ''}${r.adminEmail ? ` · alerts to ${esc(r.adminEmail)}` : ''}` : `${r.provider ? esc(r.provider) + ' · ' : ''}<ul style="margin:4px 0 0;padding-left:18px">${(r.problems || []).map(x => `<li>${esc(x)}</li>`).join('')}</ul>`;
+    box.innerHTML = r.configured ? `${esc(r.provider || '')} · sending as <b style="color:var(--a-text)">${esc(r.fromName)} &lt;${esc(r.from)}&gt;</b>${r.supportEmail && r.supportEmail !== r.from ? ` · replies to ${esc(r.supportEmail)}` : ''}${r.adminEmail ? ` · alerts to ${esc(r.adminEmail)}` : ''}${r.templates ? `<div class="faint" style="margin-top:4px">Brevo templates: confirmation #${r.templates['order-confirmation']}, shipped #${r.templates['order-shipped']}, reply #${r.templates['reply']} · signups go to list #${r.listId}</div>` : ''}` : `${r.provider ? esc(r.provider) + ' · ' : ''}<ul style="margin:4px 0 0;padding-left:18px">${(r.problems || []).map(x => `<li>${esc(x)}</li>`).join('')}</ul>`;
   } catch (err) {
     state.innerHTML = '<span class="st neutral">Unknown</span>';
     box.textContent = 'Could not reach the email function: ' + err.message + '. Deploy functions first.';

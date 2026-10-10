@@ -21,6 +21,7 @@
       { "source": "/api/run-catalog-sync", "function": "runCatalogSync" },
       { "source": "/api/publish-catalog", "function": "publishCatalog" },
       { "source": "/api/email-test", "function": "emailTest" },
+      { "source": "/api/subscribe", "function": "subscribe" },
       { "source": "/sitemap.xml", "function": "sitemap" },
       { "source": "**", "destination": "/404.html" }
     ],
