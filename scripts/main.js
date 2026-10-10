@@ -248,6 +248,19 @@
     });
   });
 
+  // Mobile nav toggle
+  document.querySelectorAll('[data-nav-toggle]').forEach(function (btn) {
+    btn.addEventListener('click', function (e) {
+      e.stopPropagation();
+      var nav = btn.closest('header') ? btn.closest('header').querySelector('[data-nav-menu]') : document.querySelector('[data-nav-menu]');
+      if (nav) {
+        nav.classList.toggle('hidden');
+        var expanded = !nav.classList.contains('hidden');
+        btn.setAttribute('aria-expanded', String(expanded));
+      }
+    });
+  });
+
   // Global image error fallback guard to prevent broken image icons
   document.addEventListener('error', function (e) {
     if (e.target && e.target.tagName === 'IMG') {

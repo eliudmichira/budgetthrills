@@ -357,8 +357,50 @@
       });
     }
 
+    function renderRecommendations() {
+      const recWrap = document.querySelector('[data-cart-recommendations]');
+      if (!recWrap) return;
+      const catalog = window.BT_CATALOG || [];
+      if (!catalog.length) return;
+      const cartIds = new Set(getCart().map(i => i.id));
+      const candidates = catalog.filter(p => p && p.id && !cartIds.has(p.id) && p.images && p.images[0]);
+      if (candidates.length < 4) return;
+      // Pick 4 diverse products across categories
+      const byCat = {};
+      candidates.forEach(p => { (byCat[p.category] = byCat[p.category] || []).push(p); });
+      const picked = [];
+      const catLists = Object.values(byCat);
+      let idx = 0;
+      while (picked.length < 4 && catLists.some(l => l.length > 0)) {
+        const list = catLists[idx % catLists.length];
+        if (list.length > 0) picked.push(list.shift());
+        idx++;
+      }
+      if (picked.length === 4) {
+        recWrap.innerHTML = picked.map(item => `
+          <a href="/pdp.html?id=${encodeURIComponent(item.id)}" class="card group">
+            <div class="card-media aspect-[4/5]">
+              <img class="img-primary" src="${item.images[0]}" alt="${item.name}" loading="lazy">
+              ${item.images[1] ? `<img class="img-hover" src="${item.images[1]}" alt="" loading="lazy">` : ''}
+              <span class="card-cta">View →</span>
+            </div>
+            <div class="pt-5">
+              <h3 class="text-sm font-medium group-hover:text-lime transition">${item.name}</h3>
+              <div class="text-mute text-xs mt-1">${item.tag || item.category}</div>
+              <div class="mt-2 font-semibold" lang="en-US" translate="no">$${Number(item.price).toFixed(2)}</div>
+            </div>
+          </a>
+        `).join('');
+      }
+    }
+
     render();
-    window.addEventListener('bt:cart-updated', render);
+    renderRecommendations();
+    window.addEventListener('bt:cart-updated', () => {
+      render();
+      renderRecommendations();
+    });
+    window.addEventListener('bt:catalog-updated', renderRecommendations);
     window.addEventListener('bt:settings-loaded', render);
   }
 
